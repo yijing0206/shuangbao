@@ -80,6 +80,46 @@ h3{font-size:18px;margin:16px 0 8px}
 .modal{position:fixed;inset:0;background:rgba(58,46,74,.45);display:none;align-items:center;justify-content:center;z-index:70;padding:16px}
 .modal .sheet{background:#fff;border-radius:26px;padding:18px;max-width:360px;width:100%;box-shadow:0 8px 0 var(--line)}
 .modal input{width:100%;font:800 26px var(--font);letter-spacing:10px;text-align:center;border:3px solid var(--line);border-radius:16px;padding:10px;margin:6px 0}
+.hud{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;margin:2px 0 12px}
+.hud .chip{background:#fff;border-radius:999px;padding:6px 12px;font-weight:800;font-size:15px;box-shadow:0 3px 0 var(--line)}
+.flame{display:inline-block;animation:flick .5s infinite alternate}
+.flame.off{filter:grayscale(1);opacity:.5;animation:none}
+@keyframes flick{from{transform:scale(1) rotate(-5deg)}to{transform:scale(1.18) rotate(5deg)}}
+.tamas{display:flex;flex-wrap:wrap;gap:18px;justify-content:center}
+.tama{flex:1 1 300px;max-width:420px;display:flex;flex-direction:column;align-items:center;--c:var(--blue)}
+.tama.g6{--c:var(--red)}
+.egg{position:relative;width:min(300px,84vw);aspect-ratio:300/360;border-radius:50% 50% 46% 46% / 58% 58% 42% 42%;padding:15% 11% 0;display:flex;flex-direction:column;align-items:center;
+  box-shadow:inset -12px -16px 0 rgba(58,46,74,.07), inset 12px 12px 0 rgba(255,255,255,.6), 0 8px 0 var(--line)}
+.tama.g4 .egg{background:radial-gradient(rgba(255,255,255,.85) 3px,transparent 4px) 0 0/24px 24px, linear-gradient(165deg,#FFFFFF 0%,#D6EEFF 45%,#8CCBFF 100%)}
+.tama.g6 .egg{background:radial-gradient(rgba(255,255,255,.75) 3px,transparent 4px) 0 0/24px 24px, linear-gradient(165deg,#FFD6EC 0%,#F3B8E6 45%,#C3A4FF 100%)}
+.egg .tag{font-weight:800;font-size:13px;color:var(--ink);background:rgba(255,255,255,.8);border-radius:999px;padding:2px 10px;margin-bottom:6px;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+.bezel{background:#FFFDF6;border-radius:24px;padding:5px 7px;width:80%;box-shadow:inset 0 0 0 4px rgba(58,46,74,.14),0 3px 0 rgba(58,46,74,.1)}
+.icons{display:flex;justify-content:space-around}
+.icons button{border:none;background:transparent;font-size:17px;line-height:1;padding:3px 5px;border-radius:9px;opacity:.4;cursor:pointer;touch-action:manipulation}
+.icons button.sel{opacity:1;background:#FFF1A8;box-shadow:0 0 0 2px #FFD23F}
+.lcd{display:block;width:100%;aspect-ratio:1;border-radius:12px;image-rendering:pixelated;box-shadow:inset 0 0 0 3px rgba(58,46,74,.25)}
+.abc{display:flex;gap:7%;justify-content:center;margin-top:6%}
+.abc button{width:48px;height:48px;border-radius:50%;border:none;font:900 15px/1 var(--font);color:var(--ink);background:#FFE066;box-shadow:0 4px 0 #D9A800;cursor:pointer;touch-action:manipulation}
+.abc button:nth-child(2){transform:translateY(8px)}
+.abc button .lbl{display:block;font-size:10px;font-weight:700;margin-top:2px}
+.abc button:active{box-shadow:none;margin-top:4px}
+.knob{position:absolute;right:-8px;top:44%;width:16px;height:36px;border-radius:8px;border:none;background:#FFE066;box-shadow:0 3px 0 #D9A800,inset 0 -6px 0 rgba(0,0,0,.08);cursor:pointer}
+.tama.g4 .knob{left:-8px;right:auto}
+.tmsg{min-height:1.5em;font-weight:800;text-align:center;margin:10px 4px 0;font-size:15px}
+.tpanel{width:100%;background:#fff;border-radius:22px;padding:12px 14px;margin-top:8px;box-shadow:0 4px 0 var(--line);border:3px solid var(--c)}
+.tpanel h4{margin:0 0 6px;font-size:16px}
+.meter{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;margin:5px 0}
+.meter span{width:5.6em;flex:none}
+.meter .bar{flex:1;height:12px;background:#EDE6F5;border-radius:6px;overflow:hidden}
+.meter .bar i{display:block;height:100%;border-radius:6px;background:var(--mc)}
+.foods{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.food{border:3px solid var(--c);background:#fff;border-radius:16px;padding:7px 10px;font:700 14px var(--font);cursor:pointer;color:var(--ink)}
+.food.sel{background:color-mix(in srgb,var(--c) 20%,#fff)}
+.food:disabled{opacity:.45;cursor:default}
+.species{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:8px;margin:10px 0}
+.species button{border:3px solid var(--line);background:#fff;border-radius:16px;padding:8px 4px;font:700 14px var(--font);cursor:pointer;color:var(--ink)}
+.species button b{display:block;font-size:26px}
+.species button.on{border-color:var(--ink);background:#FFF6D6}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -101,6 +141,13 @@ a{color:var(--blue-d)}
 <body>
 <canvas id="fx"></canvas>
 <div class="toast" id="toast"></div>
+<div class="modal" id="adoptModal" role="dialog" aria-modal="true"><div class="sheet">
+  <h3 id="adoptTitle" style="margin-top:0">🥚 領養寵物</h3>
+  <p style="color:var(--ink2);margin:0">選一種你喜歡的寵物，再幫牠取名字。</p>
+  <div class="species" id="speciesGrid"></div>
+  <input id="petNameIn" type="text" maxlength="8" placeholder="幫牠取名字" style="letter-spacing:2px;font-size:20px">
+  <div class="row"><button class="btn b-mint" id="adoptOk">💖 就是牠了！</button><button class="btn ghost b-gray" id="adoptCancel">等一下</button></div>
+</div></div>
 <div class="modal" id="pinModal" role="dialog" aria-modal="true"><div class="sheet">
   <h3 id="pinTitle" style="margin-top:0">👩‍⚕️ 家長確認</h3>
   <p id="pinWhat" style="color:var(--ink2)"></p>
@@ -127,8 +174,9 @@ a{color:var(--blue-d)}
   <!-- 遊戲 -->
   <section class="panel on" id="p-game">
     <div class="console">
-      <div class="screen"><canvas id="pet" width="640" height="320" aria-label="共享寵物星寶"></canvas></div>
-      <div class="msg" id="msg">🥚 星寶還在蛋裡！先選信心、再選答案，答對就能讓牠孵化！</div>
+      <div class="hud" id="hud"></div>
+      <div class="tamas" id="tamas"></div>
+      <div class="msg" id="msg">🥚 每個人都有自己的電子寵物！先領養，再答題賺 ⭐ 買食物餵牠。</div>
       <div class="row center" id="consoleBtns">
         <button class="btn b-purple small" id="redeemBtn">🎁 兌換家庭特權</button>
         <button class="btn b-gray small" id="howBtn">❓ 怎麼玩</button>
@@ -238,10 +286,10 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "2.0.0";
+const APP_VERSION = "3.0.0";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 const SUBJECTS = {
   "國語":{cls:"b-red",color:"#FF4B55",emoji:"📖"},
@@ -350,13 +398,13 @@ const SCIENCE = [
  ["👩‍🏫 費曼法／教學效應","能教別人才算真懂，教的人學最多","小老師卡：小六教、小四說回來（+2 星）"],
  ["🎯 刻意練習＋即時回饋","專練卡住的點，馬上知道對錯","選錯會說明那個選項錯在哪、給提示，再試一次"],
  ["🤔 後設認知","知道自己會不會，才知道要練什麼","作答前先選信心 1～3，答完比對「我以為」和「實際」"],
- ["🌱 成長型思維","能力是練出來的，錯誤是線索","選錯時星寶會打氣、不扣分，還有第二次機會"]
+ ["🌱 成長型思維","能力是練出來的，錯誤是線索","選錯時寵物會打氣、不扣分，還有第二次機會；寵物不會死，沒玩只會想睡、餵了就恢復"]
 ];
 const HABITS = [
  ["👀 提示：讓它顯而易見","固定在晚餐後：碗放進水槽，就打開星寶冒險機"],
  ["😍 渴望：讓它有吸引力","抽卡、團隊星星、星寶進化、小六當隊長、小四當計分員"],
  ["👌 回應：讓它簡單","只玩 3 關、15～20 分鐘。很累的晚上只玩 1 關也算數"],
- ["🎉 獎勵：讓它令人滿足","星星、彩紙、連續天數火焰 🔥，每 15 星換家庭特權"]
+ ["🎉 獎勵：讓它令人滿足","答對的星星買食物餵自己的寵物、看牠孵化進化；連續天數火焰 🔥；每 15 星換家庭特權"]
 ];
 const AI_RULES = ["先自己想 3 分鐘，寫下答案或卡住的地方，才可以問 AI。","只問提示、不問答案；AI 直接給答案時，要說「請改成提示」。","AI 也會錯：它說的事實，要用課本或第二個來源核對。","不給 AI 個資：姓名、學校、班級、照片都不要。","問完要能不看 AI 自己講一遍，才算學會。","小四使用 AI 時，大人或小六要在旁邊。"];
 const LADDER = ["是什麼？（定義：質數是什麼？）","為什麼？（原因：為什麼 1 不是質數？）","怎麼做？（方法：怎麼最快找到公因數？）","如果……會怎樣？（推論：如果半徑變 2 倍呢？）","這和……有什麼關係？（連結：分數除法和分披薩有什麼關係？）","怎麼證明我是對的？（證據：我可以用什麼方法檢查？）"];
@@ -369,11 +417,11 @@ const PROMPTS = [
  ["❓ 五個為什麼","關於＿＿，請陪我玩「連問五個為什麼」，每次只問一個，我回答後再繼續。"]
 ];
 const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（提取練習）。","2～12 分 🎲 抽 2～3 關：先選信心，再各自作答選擇題；選錯會給提示，可以再試一次。","12～16 分 🤝 合體關：小老師、為什麼、生活解謎，關主只追問。","16～18 分 🔄 出題反轉：互相出一題，由對方評「好題目」。","18～20 分 ⭐ 結算：看星寶長多大，各說一句「我今天學會……／我還不會……」，錯題寫成錯題卡。"];
-const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
+const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/22（四）","認識規則＋數學A","—","15 分"],["10/23（五）","自然A","數學A","15 分"],["10/24（六）","社會A、國語A","自然A","20 分"],["10/25（日，光復節）","英語A 家庭英語診所","數學A、社會A、國語A","25 分"],["10/26（一，補假）","數學B","自然A、英語A","20 分"],["10/27（二）","自然B","社會A、國語A、數學B","20 分"],["10/28（三）","社會B、國語B","英語A","20 分"],["10/29（四）","數學C","數學A（第 7 天）、自然B","20 分"],["10/30（五）","出題對決（全科）","社會B、國語B、數學B","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一課","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
 const NEXT = ["拿到老師的範圍單後，把估計範圍換成正式範圍，每課補 3 張任務卡。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
-const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！星寶長大了！🌱"];
+const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
 /* =========================================================
@@ -414,8 +462,14 @@ function defaultSave(){
     playDates: [],      // ["2026-10-22", ...] 台灣日期
     daily: {},          // { "2026-10-22": { g4:{stars,actions,misses}, g6:{...}, team:{stars,actions} } }
     settings: { petName:"星寶", names:{g4:"小四", g6:"小六"}, parentPin:null },
-    history: []         // 版本升級紀錄
+    history: [],        // 版本升級紀錄
+    pets: { g4: defaultPet(), g6: defaultPet() },   // v3：每個孩子自己的電子寵物
+    help: { count:0, gifts:0, teach:0 }              // v3：互助次數
   };
+}
+function defaultPet(){
+  return { species:null, name:"", adoptedOn:null, xp:0, wallet:0, fullness:70, happiness:70, learn:40, poop:0, lightsOff:false,
+           lastTickOn:null, fedCount:0, play:{date:null,n:0}, giftsGiven:0, giftsReceived:0, subjectXP:{}, stageSeen:0 };
 }
 function defaultCardProgress(){
   return { cleared:false, firstClearedOn:null, lastPlayedOn:null, playedOn:[], stars:{g4:0,g6:0,team:0}, misses:{g4:0,g6:0}, opened:0, mc:{} };
@@ -454,6 +508,18 @@ const MIGRATIONS = {
     }
     if(!isObj(s.settings)) s.settings = {};
     if(!("parentPin" in s.settings)) s.settings.parentPin = null;
+    return s;
+  },
+  // v2 → v3：一隻共用星寶 → 每人一隻寵物。舊的團隊星星不拆不扣：兩隻寵物都繼承原本星寶的成長值，再各送 3 顆 ⭐ 見面禮
+  3: function(s){
+    const T = typeof s.teamStars === "number" ? s.teamStars : 0;
+    if(!isObj(s.pets)) s.pets = {};
+    for(const g of ["g4","g6"]){
+      if(!isObj(s.pets[g])) s.pets[g] = defaultPet();
+      const pt = s.pets[g];
+      if(!pt.migratedV3){ pt.xp = Math.max(pt.xp||0, T); pt.wallet = (pt.wallet||0) + 3; pt.inheritedXp = T; pt.migratedV3 = true; }
+    }
+    if(!isObj(s.help)) s.help = {count:0, gifts:0, teach:0};
     return s;
   }
 };
@@ -512,8 +578,8 @@ function cardProg(id){
   return S.cards[id];
 }
 function dayRec(date){
-  if(!S.daily[date]) S.daily[date] = {g4:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, g6:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, team:{stars:0,actions:0}, cards:{}};
-  fillDefaults(S.daily[date], {g4:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, g6:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, team:{stars:0,actions:0}, cards:{}});
+  if(!S.daily[date]) S.daily[date] = {g4:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, g6:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, team:{stars:0,actions:0}, cards:{}, pets:{g4:{fed:0,played:0,cleaned:0,gifts:0}, g6:{fed:0,played:0,cleaned:0,gifts:0}}};
+  fillDefaults(S.daily[date], {g4:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, g6:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, team:{stars:0,actions:0}, cards:{}, pets:{g4:{fed:0,played:0,cleaned:0,gifts:0}, g6:{fed:0,played:0,cleaned:0,gifts:0}}});
   return S.daily[date];
 }
 function markPlayed(cardId){
@@ -736,14 +802,14 @@ function pick(g, i, ev){
       award(g, n, st.result === "right" ? HAPPY[Math.floor(Math.random()*HAPPY.length)] : "第二次就答對，好厲害！👍", ev);
     }else{
       persist();
-      if(ok){ petFx("happy","答對了！（練習模式）"); confetti(40, ev); setMsg("答對了！今天這題已經拿過星星，明天再來複習會更牢 🧠"); }
-      else { petFx("cheer", CHEER[Math.floor(Math.random()*CHEER.length)]); hearts(); setMsg("沒關係！看看為什麼，這張卡明天會出現「⏰ 該複習」。"); }
+      if(ok){ petFx(g,"happy","答對了！（練習模式）"); confetti(40, ev); setMsg("答對了！今天這題已經拿過星星，明天再來複習會更牢 🧠"); }
+      else { petFx(g,"cheer", CHEER[Math.floor(Math.random()*CHEER.length)]); hearts(g); setMsg("沒關係！看看為什麼，這張卡明天會出現「⏰ 該複習」。"); }
       renderAll(false);
     }
   }else{
     markPlayed(curId); persist();
     const m = CHEER[Math.floor(Math.random()*CHEER.length)];
-    petFx("cheer", m); hearts(); setMsg(`${m} 看看提示，再選一次。`);
+    petFx(g,"cheer", m); hearts(g); setMsg(`${m} 看看提示，再選一次。`);
     renderAll(false);
   }
   renderCard();
@@ -763,16 +829,24 @@ function award(who, n, text, ev){
   const p = cardProg(curId);
   p.stars[who] = (p.stars[who]||0) + n;
   markPlayed(curId);
-  persist();
-  const sb = stageOf(before), sa = stageOf(S.teamStars);
-  const privBefore = Math.floor(before/PRIVILEGE_EVERY), privAfter = Math.floor(S.teamStars/PRIVILEGE_EVERY);
-  if(sa > sb){
-    const m = `進化了！變成${STAGES[sa].name}！${STAGES[sa].emoji}`;
-    petFx("evolve", m); confetti(220, ev); setMsg(m);
+  const card = CARDS.find(c => c.id === curId);
+  if(who === "team"){
+    for(const g of ["g4","g6"]){ const pt = S.pets[g]; pt.xp += n; pt.happiness = Math.min(100, pt.happiness + 10); pt.learn = Math.min(100, pt.learn + 8); }
+    S.help.count += 1; S.help.teach += 1;
+    persist();
+    const m = `${text||"合體成功！"} 兩隻寵物都 +${fmt(n)} 成長值 🤝`;
+    petFx("both","happy", "互助 +1！"); confetti(120, ev); setMsg(m);
+    setTimeout(() => { checkEvolve("g4"); checkEvolve("g6"); }, 900);
   }else{
+    const pt = S.pets[who];
+    pt.wallet += n; pt.happiness = Math.min(100, pt.happiness + 3); pt.learn = Math.min(100, pt.learn + (n >= 1 ? 12 : 6));
+    if(card) pt.subjectXP[card.subject] = (pt.subjectXP[card.subject]||0) + n;
+    persist();
     const m = text || HAPPY[Math.floor(Math.random()*HAPPY.length)];
-    petFx("happy", m); confetti(90, ev); setMsg(`${m}（+${fmt(n)} ⭐）`);
+    petFx(who, "happy", `+${fmt(n)} ⭐`); confetti(90, ev);
+    setMsg(`${m}（+${fmt(n)} ⭐ 存進${KIDLBL[who]}的寵物錢包，去餵牠吧！）`);
   }
+  const privBefore = Math.floor(before/PRIVILEGE_EVERY), privAfter = Math.floor(S.teamStars/PRIVILEGE_EVERY);
   if(privAfter > privBefore) setTimeout(()=>toast("🎁 又可以兌換一個家庭特權了！"),600);
   renderAll(false);
 }
@@ -802,13 +876,11 @@ function requireParent(what, ok){
 function setMsg(t){ $("msg").textContent = t; }
 
 function renderEvo(){
-  const s = S.teamStars, st = stageOf(s);
   const avail = availablePrivileges();
-  $("evoLine").textContent = st < 3
-    ? `🥚 → 🐣 星寶寶（5 星）→ 🐥 少年星寶（15 星）→ 🌟 超進化星寶（30 星）。再 ${fmt(STAGES[st+1].min - s)} 顆進化！`
-    : `🌟 已達最終進化！每 15 顆星換一個家庭特權。目前可兌換：${avail} 個`;
+  $("evoLine").textContent = `⭐ 全隊累積 ${fmt(S.teamStars)} 顆，每 15 顆換一個家庭特權（目前可兌換 ${avail} 個）。寵物成長：🥚 → 寶寶（5）→ 少年（15）→ 成體（30，依最強科目分支）`;
   $("redeemBtn").style.display = avail > 0 ? "" : "none";
   $("redeemBtn").textContent = `🎁 兌換家庭特權（${avail}）🔒`;
+  renderPets();
 }
 function availablePrivileges(){
   const earned = Math.floor(S.teamStars / PRIVILEGE_EVERY);
@@ -885,15 +957,16 @@ function renderLog(){
   const due = CARDS.filter(c => reviewDue(c.id)).length;
   $("stats").innerHTML = [
     ["⭐ 團隊星星", fmt(S.teamStars)],["🔵 小四星星", fmt(S.kidStars.g4)],["🔴 小六星星", fmt(S.kidStars.g6)],["🤝 合體星星", fmt(S.kidStars.team)],
-    ["🔥 連續天數", si.current],["🏆 最長連續", si.best],["🗺️ 過關數", `${cleared}/${CARDS.length}`],["⏰ 該複習", due]
+    ["🔥 連續天數", si.current],["🏆 最長連續", si.best],["🗺️ 過關數", `${cleared}/${CARDS.length}`],["⏰ 該複習", due],["🤝 互助", S.help.count],["🐣 寵物", ["g4","g6"].map(g=>S.pets[g].species?`${SPECIES[S.pets[g].species].emoji}${petStageName(S.pets[g])}`:"🥚").join(" ")]
   ].map(x=>`<div class="stat"><b>${x[1]}</b>${x[0]}</div>`).join("");
   const days = Object.keys(S.daily).sort().reverse().slice(0,30);
   const code = (id) => (CARDS.find(c => c.id === id) || {code:id}).code;
   const kid = (r) => `⭐${fmt(r.stars)}｜✔${r.right||0} ½${r.retry||0} ✘${r.wrong||0}`;
   const detail = (r) => Object.entries(r.cards||{}).map(([id,v]) => `${code(id)}：${["g4","g6"].filter(g=>v[g]).map(g=>`${g==="g4"?"四":"六"} ✔${v[g].right} ½${v[g].retry} ✘${v[g].wrong}`).join("，")}`).join("；") || "—";
-  table("logTable", ["日期（台灣）","🔵 小四","🔴 小六","🤝 合體星","每關對錯"],
-    days.length ? days.map(d => { const r = S.daily[d]; return [d, kid(r.g4), kid(r.g6), fmt(r.team.stars), detail(r)]; })
-                : [["還沒有紀錄","開始玩第一關吧！","","",""]]);
+  const care = (r) => { const pp = r.pets||{}; return ["g4","g6"].map(g => { const x = pp[g]||{}; return `${g==="g4"?"四":"六"} 🍙${x.fed||0} 🎾${x.played||0} 🧽${x.cleaned||0} 🎁${x.gifts||0}`; }).join("｜"); };
+  table("logTable", ["日期（台灣）","🔵 小四","🔴 小六","🤝 合體星","每關對錯","寵物照顧"],
+    days.length ? days.map(d => { const r = S.daily[d]; return [d, kid(r.g4), kid(r.g6), fmt(r.team.stars), detail(r), care(r)]; })
+                : [["還沒有紀錄","開始玩第一關吧！","","","",""]]);
 }
 
 /* 家長 PIN 重設（長按 5 秒） */
@@ -957,114 +1030,368 @@ $("restorePrev").onclick = () => {
 const INK = "#3A2E4A";
 const CANDY = ["#FF5A5F","#3DA5FF","#FFD23F","#3DDC97","#B388FF","#FF8FC7"];
 const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const pet = {fx:{kind:"idle",at:0,msg:""}, parts:[]};
-function petFx(kind,msg){ pet.fx = {kind, at:performance.now(), msg}; if(kind!=="cheer") petBurst(kind); }
+// ===== 雙寶寵物機（原創設計：蛋形掌機＋像素寵物） =====
 function rr(ctx,x,y,w,h,r){ const k=Math.min(r,h/2,w/2); ctx.beginPath(); ctx.moveTo(x+k,y); ctx.arcTo(x+w,y,x+w,y+h,k); ctx.arcTo(x+w,y+h,x,y+h,k); ctx.arcTo(x,y+h,x,y,k); ctx.arcTo(x,y,x+w,y,k); ctx.closePath(); }
 function starPath(ctx,x,y,r){ ctx.beginPath(); for(let i=0;i<10;i++){ const a=-Math.PI/2+i*Math.PI/5, k=i%2?r*.45:r; const px=x+Math.cos(a)*k, py=y+Math.sin(a)*k; i?ctx.lineTo(px,py):ctx.moveTo(px,py);} ctx.closePath(); }
-function heartPath(ctx,x,y,s){ ctx.beginPath(); ctx.moveTo(x,y+s*.3); ctx.bezierCurveTo(x-s,y-s*.5,x-s*.4,y-s*1.1,x,y-s*.45); ctx.bezierCurveTo(x+s*.4,y-s*1.1,x+s,y-s*.5,x,y+s*.3); ctx.closePath(); }
-function face(ctx,ey,gap,mood,t,size){
-  ctx.strokeStyle=INK; ctx.fillStyle=INK; ctx.lineWidth=4; ctx.lineCap="round";
-  const blink = t%3.4<.12;
-  for(const sx of [-gap,gap]){
-    if(mood==="happy"||mood==="evolve"){ ctx.beginPath(); ctx.arc(sx,ey+3,size,Math.PI*1.1,Math.PI*1.9); ctx.stroke(); }
-    else if(blink){ ctx.beginPath(); ctx.moveTo(sx-size,ey); ctx.lineTo(sx+size,ey); ctx.stroke(); }
-    else { ctx.beginPath(); ctx.ellipse(sx,ey,size*.8,size,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(sx+size*.3,ey-size*.35,size*.32,0,Math.PI*2); ctx.fill(); ctx.fillStyle=INK; }
+const SPECIES = {
+  cat:  {name:"星喵", emoji:"🐱", body:"#B9A2FF", belly:"#ECE4FF", ear:"cat"},
+  bunny:{name:"星兔", emoji:"🐰", body:"#FFA8CF", belly:"#FFE6F2", ear:"bunny"},
+  bear: {name:"星熊", emoji:"🐻", body:"#FFC27A", belly:"#FFEBCD", ear:"bear"},
+  dino: {name:"星龍", emoji:"🦕", body:"#7FDDAA", belly:"#DDF8E9", ear:"dino"},
+  whale:{name:"星鯨", emoji:"🐳", body:"#86C5FF", belly:"#E1F2FF", ear:"whale"}
+};
+const PET_STAGE_NAMES = ["蛋","寶寶","少年","成體"];
+const BRANCH = {"數學":{title:"數學博士",color:"#2F9BFF"},"自然":{title:"自然探險家",color:"#22C08A"},"社會":{title:"地球旅行家",color:"#F2B600"},"國語":{title:"文字魔法師",color:"#FF4B55"},"英語":{title:"英語小達人",color:"#9B6BFF"}};
+const FOODS = [
+  {id:"apple",  emoji:"🍎", name:"蘋果",     cost:1, full:15, happy:5,  xp:1},
+  {id:"onigiri",emoji:"🍙", name:"飯糰",     cost:2, full:30, happy:5,  xp:2},
+  {id:"cake",   emoji:"🍰", name:"草莓蛋糕", cost:3, full:15, happy:25, xp:3}
+];
+const ICONS = [{id:"feed",e:"🍙",t:"餵食"},{id:"play",e:"🎾",t:"玩耍"},{id:"clean",e:"🧽",t:"清潔"},{id:"light",e:"💡",t:"睡覺/開燈"},{id:"status",e:"📊",t:"狀態"},{id:"gift",e:"🎁",t:"送禮"}];
+const OTHER = {g4:"g6", g6:"g4"};
+const KIDLBL = {g4:"小四", g6:"小六"};
+const PLAY_PER_DAY = 3;
+const TAMA = {g4:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0}, g6:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0}};
+
+function branchOf(pt){
+  const e = Object.entries(pt.subjectXP||{}).sort((a,b) => b[1]-a[1])[0];
+  return e && BRANCH[e[0]] ? BRANCH[e[0]] : {title:"星光守護者", color:"#FFD23F"};
+}
+function petStageName(pt){ const st = pt.species ? stageOf(pt.xp) : 0; return st===3 ? branchOf(pt).title : PET_STAGE_NAMES[st]; }
+function petLabel(g){ const pt = S.pets[g]; return pt.name || `${KIDLBL[g]}的寵物`; }
+
+// 每天沒照顧：飽足／開心／學習力慢慢下降（最低 10，不會死），可能出現便便
+function tickPets(){
+  const today = twDate(); let ch = false;
+  for(const g of ["g4","g6"]){
+    const pt = S.pets[g];
+    if(!pt.lastTickOn){ pt.lastTickOn = today; ch = true; continue; }
+    const n = dayDiff(pt.lastTickOn, today);
+    if(n > 0){
+      pt.fullness = Math.max(10, pt.fullness - 25*n); pt.happiness = Math.max(10, pt.happiness - 20*n); pt.learn = Math.max(10, pt.learn - 15*n);
+      if(pt.species) pt.poop = Math.min(3, pt.poop + n);
+      pt.lastTickOn = today; ch = true;
+    }
   }
-  ctx.fillStyle="rgba(255,120,150,.55)"; ctx.beginPath();
-  ctx.ellipse(-gap-size*1.6,ey+size*1.9,size*1.2,size*.7,0,0,Math.PI*2); ctx.ellipse(gap+size*1.6,ey+size*1.9,size*1.2,size*.7,0,0,Math.PI*2); ctx.fill();
-  const my = ey+size*2.4;
-  if(mood==="happy"||mood==="evolve"){ ctx.fillStyle="#E8475F"; ctx.beginPath(); ctx.arc(0,my,size*1.3,0,Math.PI); ctx.closePath(); ctx.fill(); }
-  else if(mood==="cheer"){ ctx.strokeStyle=INK; ctx.beginPath(); ctx.arc(0,my-size*.2,size*.7,Math.PI*.1,Math.PI*.9); ctx.stroke();
-    ctx.fillStyle="#7FD3FF"; ctx.beginPath(); ctx.ellipse(gap+size*2.4,ey-size*1.6,size*.5,size*.8,0,0,Math.PI*2); ctx.fill(); }
-  else { ctx.strokeStyle=INK; ctx.beginPath(); ctx.arc(0,my-size*.4,size*.9,Math.PI*.15,Math.PI*.85); ctx.stroke(); }
+  if(ch) persist();
 }
-function drawPet(ctx,stage,stars,t,mood,cx,cy){
-  const bob = still?0:(mood==="happy"||mood==="evolve")?-Math.abs(Math.sin(t*9))*26:Math.sin(t*2.2)*4;
-  const tilt = still?0:mood==="cheer"?Math.sin(t*5)*.09:0;
-  ctx.fillStyle="rgba(58,46,74,.16)"; ctx.beginPath(); ctx.ellipse(cx,cy+66,62+bob*.4,12,0,0,Math.PI*2); ctx.fill();
-  ctx.save(); ctx.translate(cx,cy+bob); ctx.rotate(tilt); ctx.strokeStyle=INK; ctx.lineWidth=4;
-  if(stage===0){
-    const near = stars>=3; ctx.rotate(still?0:Math.sin(t*(near?9:3))*(near?.14:.06));
-    ctx.fillStyle="#FFF4D6"; ctx.beginPath(); ctx.ellipse(0,0,50,62,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle="#FFB4C8"; for(const [sx,sy,r] of [[-22,-28,9],[20,-12,12],[-14,22,10],[24,30,7]]){ ctx.beginPath(); ctx.arc(sx,sy,r,0,Math.PI*2); ctx.fill(); }
-    ctx.fillStyle="#8EC5FF"; starPath(ctx,0,-42,9); ctx.fill();
-    if(stars>=2){ ctx.beginPath(); ctx.moveTo(-30,-6); ctx.lineTo(-18,4); ctx.lineTo(-8,-6); ctx.lineTo(4,6); if(near){ ctx.lineTo(16,-4); ctx.lineTo(28,6);} ctx.stroke(); }
-    ctx.lineWidth=3; ctx.beginPath(); ctx.arc(-14,14,6,Math.PI*.1,Math.PI*.9); ctx.moveTo(20,14); ctx.arc(14,14,6,Math.PI*.1,Math.PI*.9); ctx.stroke();
-  }else{
-    const body=["","#9BE7C4","#8EC5FF","#C9A7FF"][stage], rx=[0,54,64,74][stage], ry=[0,50,58,66][stage];
-    const flap = still?0:Math.sin(t*(mood==="happy"?14:4))*.3;
-    if(stage>=2){ for(const side of [-1,1]){ ctx.save(); ctx.translate(side*(rx-6),-8); ctx.rotate(side*(.4+flap)); ctx.fillStyle=stage===3?"#FFE36E":"#E3F2FF"; ctx.beginPath(); ctx.ellipse(side*22,0,stage===3?34:24,stage===3?18:13,0,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.restore(); } }
-    if(stage===3 && !still){ for(let i=0;i<6;i++){ const a=t*1.2+i*Math.PI/3; ctx.fillStyle=CANDY[i]; starPath(ctx,Math.cos(a)*(rx+34),Math.sin(a)*(ry+26)-6,7); ctx.fill(); } }
-    if(stage>=2){ ctx.fillStyle=body; for(const side of [-1,1]){ ctx.beginPath(); ctx.moveTo(side*20,-ry+8); ctx.lineTo(side*40,-ry-22); ctx.lineTo(side*46,-ry+18); ctx.closePath(); ctx.fill(); ctx.stroke(); } }
-    ctx.fillStyle=body; for(const side of [-1,1]){ ctx.beginPath(); ctx.ellipse(side*24,ry-4,16,10,0,0,Math.PI*2); ctx.fill(); ctx.stroke(); }
-    ctx.beginPath(); ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
-    ctx.fillStyle="rgba(255,255,255,.45)"; ctx.beginPath(); ctx.ellipse(0,ry*.35,rx*.55,ry*.42,0,0,Math.PI*2); ctx.fill();
-    if(stage===3){ ctx.fillStyle="#FFD23F"; starPath(ctx,0,-ry-14,18); ctx.fill(); ctx.stroke(); }
-    else { ctx.strokeStyle="#2E9E62"; ctx.beginPath(); ctx.moveTo(0,-ry); ctx.quadraticCurveTo(2,-ry-14,0,-ry-20); ctx.stroke();
-      ctx.fillStyle="#3DDC97"; ctx.beginPath(); ctx.ellipse(10,-ry-22,12,6,-.5,0,Math.PI*2); if(stage===2) ctx.ellipse(-10,-ry-22,12,6,.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=INK; }
-    face(ctx,-ry*.18,rx*.34,mood,t,stage===1?7:8);
+tickPets();
+setInterval(() => { tickPets(); renderPets(); }, 60000);
+
+function tmsg(g, text){ const el = $("tmsg-"+g); if(!el) return; el.textContent = text; clearTimeout(TAMA[g].msgT); TAMA[g].msgT = setTimeout(() => { el.textContent = ""; }, 3500); }
+function petFx(g, kind, msg, extra){
+  if(g === "both"){ petFx("g4",kind,msg,extra); petFx("g6",kind,msg,extra); return; }
+  const T = TAMA[g]; T.fx = Object.assign({kind, at:performance.now(), msg}, extra||{});
+  if(kind === "happy" || kind === "evolve") sparkle(g, 8);
+  if(msg) tmsg(g, msg);
+}
+function sparkle(g, n){ for(let i=0;i<n;i++) TAMA[g].parts.push({x:6+Math.random()*20, y:10+Math.random()*12, vy:-.06-Math.random()*.06, life:50+Math.random()*30, k:"spark"}); }
+function hearts(g){ for(let i=0;i<5;i++) TAMA[g].parts.push({x:9+Math.random()*12, y:18+Math.random()*4, vy:-.05-Math.random()*.04, life:70, k:"heart"}); }
+
+function checkEvolve(g){
+  const pt = S.pets[g]; if(!pt.species) return;
+  const st = stageOf(pt.xp);
+  if(st > pt.stageSeen){
+    const from = pt.stageSeen;
+    TAMA[g].anim = {kind: from===0 ? "hatch" : "evolve", at: performance.now(), from, to: st};
+    pt.stageSeen = st; persist();
+    const nm = st===3 ? branchOf(pt).title : PET_STAGE_NAMES[st];
+    setTimeout(() => { confetti(200); tmsg(g, from===0 ? `🐣 ${pt.name} 孵化了！` : `✨ ${pt.name} 進化成「${nm}」！`); setMsg(from===0 ? `🐣 ${KIDLBL[g]}的 ${pt.name} 孵化了！` : `✨ ${KIDLBL[g]}的 ${pt.name} 進化成「${nm}」了！`); }, 1500);
+    renderPets();
   }
-  ctx.restore();
 }
-function flame(ctx,x,y,streak,t){
-  const s = streak<=0?9:11+Math.min(streak,14)*.9, fl = still?1:1+Math.sin(t*13)*.06;
-  ctx.save(); ctx.translate(x,y); ctx.scale(fl,1/fl);
-  ctx.fillStyle = streak<=0?"#B9B2C4":"#FF7A1A";
-  ctx.beginPath(); ctx.moveTo(0,-s*1.5); ctx.bezierCurveTo(s*1.1,-s*.4,s*.9,s*.9,0,s*.9); ctx.bezierCurveTo(-s*.9,s*.9,-s*1.1,-s*.4,0,-s*1.5); ctx.fill();
-  if(streak>0){ ctx.fillStyle="#FFD23F"; ctx.beginPath(); ctx.moveTo(0,-s*.6); ctx.bezierCurveTo(s*.6,0,s*.5,s*.8,0,s*.8); ctx.bezierCurveTo(-s*.5,s*.8,-s*.6,0,0,-s*.6); ctx.fill(); }
-  ctx.restore();
+
+// ---- 寵物動作
+function needPet(g){ if(!S.pets[g].species){ openAdopt(g); return false; } return true; }
+function feed(g, i){
+  if(!needPet(g)) return;
+  const pt = S.pets[g], f = FOODS[i];
+  if(pt.lightsOff){ tmsg(g, "💤 燈關著，牠在睡覺～按 💡 開燈"); return; }
+  if(pt.wallet < f.cost){ tmsg(g, `⭐ 不夠（要 ${f.cost} 顆），去答題賺星星吧！`); return; }
+  if(pt.fullness >= 95 && f.id !== "cake"){ tmsg(g, "😋 吃好飽了，等一下再吃～"); return; }
+  pt.wallet -= f.cost; pt.xp += f.xp; pt.fullness = Math.min(100, pt.fullness + f.full); pt.happiness = Math.min(100, pt.happiness + f.happy);
+  pt.fedCount += 1; if(pt.fedCount % 3 === 0) pt.poop = Math.min(3, pt.poop + 1);
+  dayRec(twDate()).pets[g].fed += 1; markPlayed(null); persist();
+  petFx(g, "eat", `${f.emoji} 好好吃！成長值 +${f.xp}`, {food:f.id}); hearts(g);
+  setTimeout(() => checkEvolve(g), 1600);
+  renderPets();
 }
-function petBurst(kind){
-  const n = kind==="evolve"?120:50;
-  for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, sp=3+Math.random()*(kind==="evolve"?7:5);
-    pet.parts.push({x:320,y:170,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,r:4+Math.random()*4,rot:Math.random()*6,vr:(Math.random()-.5)*.4,color:CANDY[i%6],life:80+Math.random()*40,shape:i%5?"rect":"spark"}); }
+function play(g){
+  if(!needPet(g)) return;
+  const pt = S.pets[g], today = twDate();
+  if(pt.lightsOff){ tmsg(g, "💤 牠在睡覺，先開燈吧"); return; }
+  if(pt.play.date !== today) pt.play = {date:today, n:0};
+  if(pt.play.n >= PLAY_PER_DAY){ petFx(g, "idle", "😴 今天玩夠了，答題讓牠學新東西吧！"); return; }
+  pt.play.n += 1; pt.happiness = Math.min(100, pt.happiness + 15); pt.fullness = Math.max(10, pt.fullness - 5);
+  dayRec(today).pets[g].played += 1; persist();
+  petFx(g, "play", `🎾 好好玩！開心 +15（今天還能玩 ${PLAY_PER_DAY - pt.play.n} 次）`); hearts(g);
+  renderPets();
 }
-function petHearts(){ for(let i=0;i<10;i++) pet.parts.push({x:320+(Math.random()-.5)*120,y:230,vx:(Math.random()-.5)*.8,vy:-.8-Math.random()*.8,r:7+Math.random()*4,rot:0,vr:0,color:i%2?CANDY[5]:CANDY[0],life:90,shape:"heart"}); }
-function hearts(){ petHearts(); }
-const W=640,H=320;
-const pc = $("pet"), pctx = pc.getContext("2d");
-(function setupPet(){ const dpr=Math.min(window.devicePixelRatio||1,2); pc.width=W*dpr; pc.height=H*dpr; pctx.setTransform(dpr,0,0,dpr,0,0); })();
-const t0 = performance.now();
-function petFrame(now){
-  const ctx = pctx, t=(now-t0)/1000, s=S.teamStars, st=stageOf(s), fx=pet.fx, age=now-fx.at;
-  const mood = age<2200?fx.kind:"idle";
-  const sky = ctx.createLinearGradient(0,0,0,H); sky.addColorStop(0,"#BFE9FF"); sky.addColorStop(1,"#FFE5F1"); ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
-  ctx.fillStyle="rgba(255,255,255,.9)";
-  for(let i=0;i<3;i++){ const cx=((still?0:t*(10+i*4))+i*240)%(W+160)-80, cy=96+i*26; ctx.beginPath(); ctx.arc(cx,cy,16,0,Math.PI*2); ctx.arc(cx+18,cy-8,20,0,Math.PI*2); ctx.arc(cx+40,cy,15,0,Math.PI*2); ctx.fill(); }
-  ctx.fillStyle="#BDF0B5"; ctx.beginPath(); ctx.moveTo(0,270); ctx.quadraticCurveTo(160,236,320,262); ctx.quadraticCurveTo(480,288,640,250); ctx.lineTo(640,320); ctx.lineTo(0,320); ctx.closePath(); ctx.fill();
-  ctx.fillStyle="#FF8FC7"; for(const [x,y] of [[60,290],[130,300],[520,292],[590,280]]){ ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill(); }
-  drawPet(ctx,st,s,t,mood,W/2,204);
-  // HUD
-  ctx.fillStyle="rgba(255,255,255,.9)"; rr(ctx,10,8,W-20,76,22); ctx.fill();
-  ctx.fillStyle=INK; ctx.font="800 24px "+getComputedStyle(document.body).fontFamily; ctx.textBaseline="middle"; ctx.textAlign="left";
-  const title=`Lv.${st+1} ${S.settings.petName}・${STAGES[st].name}`; ctx.fillText(title,26,32);
-  const tw=ctx.measureText(title).width; ctx.fillStyle="#FFC21A"; starPath(ctx,26+tw+20,32,13); ctx.fill(); ctx.fillStyle=INK; ctx.fillText(fmt(s),26+tw+38,32);
-  const bx=26,bw=W-370,by=56; ctx.fillStyle="#EDE6F5"; rr(ctx,bx,by,bw,16,8); ctx.fill();
-  const lo=STAGES[st].min, hi=st<3?STAGES[st+1].min:lo+PRIVILEGE_EVERY;
-  const frac = st<3?Math.min(1,(s-lo)/(hi-lo)):(s%PRIVILEGE_EVERY)/PRIVILEGE_EVERY;
-  if(frac>0){ const g=ctx.createLinearGradient(bx,0,bx+bw,0); g.addColorStop(0,"#FF8FC7"); g.addColorStop(.5,"#FFD23F"); g.addColorStop(1,"#3DDC97"); ctx.fillStyle=g; rr(ctx,bx,by,Math.max(16,bw*frac),16,8); ctx.fill(); }
-  ctx.font="700 16px "+getComputedStyle(document.body).fontFamily; ctx.textAlign="left"; ctx.fillStyle=INK;
-  ctx.fillText(st<3?`再 ${fmt(hi-s)} 顆進化`:`再 ${fmt(PRIVILEGE_EVERY-(s%PRIVILEGE_EVERY))} 顆換特權`, bx+bw+10, by+9);
+function clean(g){
+  if(!needPet(g)) return;
+  const pt = S.pets[g];
+  if(!pt.poop){ petFx(g, "happy", "✨ 已經很乾淨囉！"); return; }
+  pt.poop = 0; pt.happiness = Math.min(100, pt.happiness + 5); dayRec(twDate()).pets[g].cleaned += 1; persist();
+  petFx(g, "clean", "🧽 洗香香，好舒服！"); sparkle(g, 10); renderPets();
+}
+function toggleLight(g){
+  if(!needPet(g)) return;
+  const pt = S.pets[g]; pt.lightsOff = !pt.lightsOff; persist();
+  tmsg(g, pt.lightsOff ? "💤 晚安～" : "☀️ 早安！"); renderPets();
+}
+function gift(g){
+  const pt = S.pets[g], o = S.pets[OTHER[g]];
+  if(pt.wallet < 1){ tmsg(g, "⭐ 不夠，先答題賺星星，再送給對方吧！"); return; }
+  pt.wallet -= 1; pt.giftsGiven += 1; o.xp += 1; o.happiness = Math.min(100, o.happiness + 15); o.giftsReceived += 1;
+  S.help.count += 1; S.help.gifts += 1; dayRec(twDate()).pets[g].gifts += 1; markPlayed(null); persist();
+  petFx(g, "happy", `🎁 送出 1 ⭐ 給 ${petLabel(OTHER[g])}！`);
+  petFx(OTHER[g], "happy", `💌 收到 ${KIDLBL[g]} 的禮物！成長值 +1`); hearts(OTHER[g]);
+  setMsg(`🤝 互助 +1！${KIDLBL[g]}送了 1 ⭐ 給${KIDLBL[OTHER[g]]}的 ${petLabel(OTHER[g])}。`);
+  setTimeout(() => checkEvolve(OTHER[g]), 1200);
+  TAMA[g].sub = null; renderPets();
+}
+function activate(g, i){
+  const id = ICONS[i].id, T = TAMA[g]; T.sel = i;
+  if(!needPet(g) && id !== "gift" && id !== "status") return;
+  if(id === "feed"){ T.sub = "feed"; T.subSel = Math.min(T.subSel, FOODS.length-1); }
+  else if(id === "play") { T.sub = null; play(g); }
+  else if(id === "clean"){ T.sub = null; clean(g); }
+  else if(id === "light"){ T.sub = null; toggleLight(g); }
+  else if(id === "status"){ T.sub = T.sub === "status" ? null : "status"; }
+  else if(id === "gift"){ T.sub = "gift"; }
+  renderPets();
+}
+function abc(g, key){
+  const T = TAMA[g], pt = S.pets[g];
+  if(key === "A"){ if(T.sub === "feed") T.subSel = (T.subSel + 1) % FOODS.length; else { T.sub = null; T.sel = (T.sel + 1) % ICONS.length; } renderPets(); return; }
+  if(key === "B"){
+    if(!pt.species){ openAdopt(g); return; }
+    if(T.sub === "feed"){ feed(g, T.subSel); return; }
+    if(T.sub === "gift"){ gift(g); return; }
+    if(T.sub === "status"){ T.sub = null; renderPets(); return; }
+    activate(g, T.sel); return;
+  }
+  if(key === "C"){ T.sub = null; renderPets(); }
+}
+
+// ---- 領養
+let adoptFor = null, adoptPick = "cat";
+function openAdopt(g){
+  adoptFor = g; const taken = S.pets[OTHER[g]].species;
+  adoptPick = Object.keys(SPECIES).find(k => k !== taken) || "cat";
+  $("adoptTitle").textContent = `🥚 ${KIDLBL[g]}：領養你的寵物`;
+  const draw = () => {
+    $("speciesGrid").innerHTML = Object.entries(SPECIES).map(([k,v]) => `<button data-sp="${k}" class="${k===adoptPick?"on":""}"><b>${v.emoji}</b>${v.name}${k===taken?"<br><small>（對方選了）</small>":""}</button>`).join("");
+    $("speciesGrid").querySelectorAll("[data-sp]").forEach(b => b.onclick = () => { adoptPick = b.dataset.sp; if(!$("petNameIn").dataset.touched) $("petNameIn").value = SPECIES[adoptPick].name; draw(); });
+  };
+  $("petNameIn").value = SPECIES[adoptPick].name; delete $("petNameIn").dataset.touched;
+  $("petNameIn").oninput = () => { $("petNameIn").dataset.touched = "1"; };
+  draw(); $("adoptModal").style.display = "flex";
+}
+$("adoptCancel").onclick = () => { $("adoptModal").style.display = "none"; };
+$("adoptOk").onclick = () => {
+  const g = adoptFor; if(!g) return;
+  const pt = S.pets[g]; const nm = ($("petNameIn").value || "").trim().slice(0,8) || SPECIES[adoptPick].name;
+  pt.species = adoptPick; pt.name = nm; pt.adoptedOn = twDate(); pt.lastTickOn = pt.lastTickOn || twDate();
+  persist(); $("adoptModal").style.display = "none";
+  tmsg(g, `💖 你好，${nm}！`); setMsg(`🥚 ${KIDLBL[g]}領養了 ${SPECIES[adoptPick].emoji} ${nm}！答題賺 ⭐，買食物讓牠長大。`);
+  renderPets(); setTimeout(() => checkEvolve(g), 400);
+};
+
+// ---- 畫面（HTML）
+function deviceHTML(g){
+  const ic = (a,b) => ICONS.slice(a,b).map((x,j) => `<button data-icon="${a+j}" data-g="${g}" title="${x.t}" aria-label="${x.t}">${x.e}</button>`).join("");
+  return `<div class="tama ${g}" id="tama-${g}">
+    <div class="egg">
+      <button class="knob" data-knob="${g}" aria-label="旋鈕：打招呼"></button>
+      <div class="tag" id="tag-${g}"></div>
+      <div class="bezel">
+        <div class="icons" id="iconsTop-${g}">${ic(0,3)}</div>
+        <canvas class="lcd" id="lcd-${g}" aria-label="${KIDLBL[g]}的寵物"></canvas>
+        <div class="icons" id="iconsBot-${g}">${ic(3,6)}</div>
+      </div>
+      <div class="abc"><button data-abc="A" data-g="${g}">A<span class="lbl">選單</span></button><button data-abc="B" data-g="${g}">B<span class="lbl">確認</span></button><button data-abc="C" data-g="${g}">C<span class="lbl">取消</span></button></div>
+    </div>
+    <div class="tmsg" id="tmsg-${g}"></div>
+    <div class="tpanel" id="tpanel-${g}"></div>
+  </div>`;
+}
+function meter(label, v, color){ return `<div class="meter"><span>${label}</span><div class="bar"><i style="width:${Math.max(4,Math.min(100,v))}%;--mc:${color}"></i></div><b>${Math.round(v)}</b></div>`; }
+function panelHTML(g){
+  const pt = S.pets[g], T = TAMA[g], cls = g === "g4" ? "b-blue" : "b-red";
+  const wallet = `<p style="margin:6px 0;font-weight:700">👛 錢包 ⭐ <b data-wallet="${g}">${fmt(pt.wallet)}</b>　🎁 送出 ${pt.giftsGiven}・收到 ${pt.giftsReceived}</p>`;
+  if(!pt.species) return `<h4>${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}還沒領養寵物</h4>${wallet}<p class="note">已經有成長值 ${fmt(pt.xp)}${pt.inheritedXp?`（繼承自原本的星寶）`:""}，領養後就會用上。</p><button class="btn ${cls}" data-adopt="${g}">🥚 領養我的寵物（B）</button>`;
+  const sp = SPECIES[pt.species], st = stageOf(pt.xp);
+  const lo = STAGES[st].min, hi = st < 3 ? STAGES[st+1].min : null;
+  const grow = st < 3 ? (pt.xp - lo) / (hi - lo) * 100 : 100;
+  let sub = "";
+  if(T.sub === "feed") sub = `<div class="foods">${FOODS.map((f,i) => `<button class="food ${T.subSel===i?"sel":""}" data-food="${i}" data-g="${g}" ${pt.wallet<f.cost?"disabled":""}>${f.emoji} ${f.name} ⭐${f.cost}</button>`).join("")}</div><p class="note">A 換食物・B 餵牠・C 返回。🍎＋1 成長、🍙＋2、🍰＋3 而且超開心</p>`;
+  else if(T.sub === "gift") sub = `<button class="btn b-pink" data-dogift="${g}" style="margin-top:6px">🎁 送 1 ⭐ 給 ${esc(petLabel(OTHER[g]))}（B）</button><p class="note">互助：對方的寵物成長值 +1、開心 +15。C 返回</p>`;
+  else if(T.sub === "status") sub = `<p class="note">📊 狀態畫面，按 C 返回</p>`;
+  return `<h4>${sp.emoji} ${esc(pt.name)}・${petStageName(pt)}</h4>
+    ${meter("🌱 成長", grow, "linear-gradient(90deg,#FF8FC7,#FFD23F,#3DDC97)")}
+    <p class="note" style="margin:0 0 4px">${st<3?`成長值 ${fmt(pt.xp)}，再 ${fmt(hi-pt.xp)} 就進化`:`成長值 ${fmt(pt.xp)}・最強科目分支：${branchOf(pt).title}`}</p>
+    ${meter("🍙 飽足", pt.fullness, "#FF9F43")}${meter("💖 開心", pt.happiness, "#FF6FA8")}${meter("📚 學習力", pt.learn, "#6C8CFF")}
+    ${wallet}${pt.poop?`<p class="note">💩 ×${pt.poop}，按 🧽 清潔</p>`:""}${pt.lightsOff?`<p class="note">💤 睡覺中，按 💡 開燈</p>`:""}${sub}`;
+}
+function renderPets(){
+  const box = $("tamas"); if(!box) return;
+  if(!$("lcd-g4")){
+    box.innerHTML = deviceHTML("g4") + deviceHTML("g6"); setupLcds();
+    box.addEventListener("click", (e) => {
+      const b = e.target.closest("button"); if(!b) return;
+      if(b.dataset.icon) activate(b.dataset.g, Number(b.dataset.icon));
+      else if(b.dataset.abc) abc(b.dataset.g, b.dataset.abc);
+      else if(b.dataset.knob){ const g = b.dataset.knob; if(S.pets[g].species && !S.pets[g].lightsOff){ petFx(g,"happy","👋 嗨嗨！"); } else if(!S.pets[g].species) openAdopt(g); }
+      else if(b.dataset.adopt) openAdopt(b.dataset.adopt);
+      else if(b.dataset.food){ TAMA[b.dataset.g].subSel = Number(b.dataset.food); feed(b.dataset.g, Number(b.dataset.food)); }
+      else if(b.dataset.dogift) gift(b.dataset.dogift);
+    });
+  }
+  for(const g of ["g4","g6"]){
+    const pt = S.pets[g], T = TAMA[g];
+    $("tag-"+g).textContent = `${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}・${pt.species ? pt.name : "等待領養"}`;
+    document.querySelectorAll(`#tama-${g} [data-icon]`).forEach(b => b.classList.toggle("sel", Number(b.dataset.icon) === T.sel));
+    $("tpanel-"+g).innerHTML = panelHTML(g);
+  }
   const si = streakInfo();
-  flame(ctx,W-168,48,si.current,t);
-  ctx.textAlign="left"; ctx.font="800 22px "+getComputedStyle(document.body).fontFamily;
-  ctx.fillText(`連續 ${si.current} 天`,W-146,36);
-  ctx.font="700 15px "+getComputedStyle(document.body).fontFamily; ctx.fillStyle="#6B5F7A";
-  ctx.fillText(si.playedToday?"今天已打卡 ✔":"今天還沒玩",W-146,64);
-  if(age<2600 && fx.msg){
-    ctx.font="800 21px "+getComputedStyle(document.body).fontFamily;
-    const mw=Math.min(W-24,ctx.measureText(fx.msg).width+32), mx=Math.min(Math.max(W/2-mw/2,12),W-mw-12), my=94;
-    ctx.fillStyle="#fff"; rr(ctx,mx,my,mw,40,20); ctx.fill(); ctx.beginPath(); ctx.moveTo(W/2-10,my+39); ctx.lineTo(W/2+10,my+39); ctx.lineTo(W/2,my+52); ctx.closePath(); ctx.fill();
-    ctx.fillStyle=INK; ctx.textAlign="center"; ctx.fillText(fx.msg,mx+mw/2,my+20);
-  }
-  for(const p of pet.parts){ p.x+=p.vx; p.y+=p.vy; if(p.shape==="rect") p.vy+=.22; p.rot+=p.vr; p.life--;
-    ctx.save(); ctx.globalAlpha=Math.max(0,Math.min(1,p.life/40)); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.color;
-    if(p.shape==="rect") ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r); else if(p.shape==="heart"){ heartPath(ctx,0,0,p.r); ctx.fill(); } else { starPath(ctx,0,0,p.r); ctx.fill(); }
-    ctx.restore(); }
-  pet.parts = pet.parts.filter(p => p.life>0 && p.y<H+30);
-  requestAnimationFrame(petFrame);
+  $("hud").innerHTML = `<span class="chip"><span class="flame ${si.current?"":"off"}">🔥</span> 連續 ${si.current} 天・${si.playedToday?"今天已打卡 ✔":"今天還沒玩"}</span><span class="chip">🤝 互助 <b id="helpN">${S.help.count}</b> 次</span><span class="chip">⭐ 全隊 ${fmt(S.teamStars)}</span>`;
 }
-requestAnimationFrame(petFrame);
+
+// ---- 像素液晶畫面
+const GRID = 32, CELLPX = 6, LCDW = GRID * CELLPX;
+const lcdCtx = {};
+function setupLcds(){
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  for(const g of ["g4","g6"]){ const c = $("lcd-"+g); c.width = LCDW*dpr; c.height = LCDW*dpr; const x = c.getContext("2d"); x.setTransform(dpr,0,0,dpr,0,0); x.imageSmoothingEnabled = false; lcdCtx[g] = x; }
+}
+function px(ctx,x,y,c){ ctx.fillStyle = c; ctx.fillRect(Math.round(x)*CELLPX, Math.round(y)*CELLPX, CELLPX, CELLPX); }
+function pat(ctx, rows, x, y, colors, cut){
+  rows.forEach((r,j) => { for(let i=0;i<r.length;i++){ if(cut && i >= r.length - cut) continue; const ch = r[i]; if(ch !== " " && colors[ch]) px(ctx, x+i, y+j, colors[ch]); } });
+}
+const _spr = new Map();
+function sprite(sp, stage, mood, blink, acc){
+  const key = [sp.ear, sp.body, stage, mood, blink, acc].join("|");
+  if(_spr.has(key)) return _spr.get(key);
+  const fill = new Map(), feat = new Map(), K = (x,y) => y*GRID + x;
+  const put = (m,x,y,c) => { if(x>=0 && y>=0 && x<GRID && y<GRID) m.set(K(x,y), c); };
+  const ell = (cx,cy,rx,ry,c) => { for(let y=Math.floor(cy-ry); y<=Math.ceil(cy+ry); y++) for(let x=Math.floor(cx-rx); x<=Math.ceil(cx+rx); x++){ const dx=(x+.5-cx)/rx, dy=(y+.5-cy)/ry; if(dx*dx+dy*dy <= 1) put(fill,x,y,c); } };
+  const cx = 16, base = 27, B = sp.body;
+  let top;
+  if(stage === 0){
+    const cy = base - 8; ell(cx, cy, 6.2, 8.2, "#FFF6DC"); top = cy - 8;
+    for(const [x,y] of [[13,13],[14,13],[18,16],[19,16],[15,21],[16,21],[12,18],[20,22]]) put(feat,x,y,B);
+  }else{
+    const rx = [0,6,8,10][stage], ry = [0,5.5,7,8.5][stage], cy = base - ry; top = Math.round(cy - ry);
+    if(sp.ear === "cat"){ for(const side of [-1,1]){ const ex = side<0 ? cx - Math.round(rx*.55) - 1 : cx + Math.round(rx*.55); for(let i=0;i<3;i++) for(let w=-(2-i); w<=(2-i); w++) put(fill, ex+w, top+1-i, B); } }
+    if(sp.ear === "bunny"){ for(const ex of [cx-4, cx+2]){ for(let y=top-6; y<=top+1; y++){ put(fill,ex,y,B); put(fill,ex+1,y,B); } for(let y=top-5; y<=top-1; y++) put(feat, ex + (ex<cx?1:0), y, "#FFD3E6"); } }
+    if(sp.ear === "bear"){ ell(cx - rx + 2.2, top + 1.5, 2.3, 2.3, B); ell(cx + rx - 2.2, top + 1.5, 2.3, 2.3, B); }
+    if(sp.ear === "dino"){ for(const s of [-3,0,3]){ put(fill, cx+s-1, top, "#3DBE7A"); put(fill, cx+s, top, "#3DBE7A"); put(fill, cx+s-1, top-1, "#3DBE7A"); put(fill, cx+s, top-1, "#3DBE7A"); } }
+    if(sp.ear === "whale"){ put(fill, cx+rx, Math.round(cy)+1, B); put(fill, cx+rx+1, Math.round(cy), B); put(fill, cx-rx-1, Math.round(cy)+1, B); put(fill, cx-rx-2, Math.round(cy), B); }
+    ell(cx, cy, rx, ry, B);
+    ell(cx, cy + ry*.35, rx*.6, ry*.45, sp.belly);
+    const fx1 = cx - Math.round(rx/2) - 1, fx2 = cx + Math.round(rx/2);
+    put(fill, fx1, base, B); put(fill, fx1+1, base, B); put(fill, fx2-1, base, B); put(fill, fx2, base, B);
+    if(stage >= 2){ put(fill, cx-rx-1, Math.round(cy)+2, B); put(fill, cx+rx, Math.round(cy)+2, B); }
+    const e = Math.max(2, Math.round(rx*.38)), ey = Math.round(cy - ry*.2), xl = cx - 1 - e, xr = cx + e;
+    const two = stage >= 2;
+    if(mood === "sleep" || mood === "hungry"){ for(const x of [xl, xr]){ put(feat,x,ey,INK); put(feat, x<cx?x-1:x+1, ey, INK); } }
+    else if(mood === "happy" || mood === "eat" || mood === "play" || mood === "evolve" || mood === "clean"){ for(const x of [xl, xr]){ put(feat,x-1,ey,INK); put(feat,x,ey-1,INK); put(feat,x+1,ey,INK); } }
+    else if(blink){ for(const x of [xl, xr]){ put(feat,x,ey,INK); put(feat,x+(x<cx?-1:1),ey,INK); } }
+    else { for(const x of [xl, xr]){ put(feat,x,ey,INK); put(feat,x,ey-1,INK); if(two){ const x2 = x<cx ? x-1 : x+1; put(feat,x2,ey,INK); put(feat,x2,ey-1,"#FFFFFF"); } } }
+    put(feat, xl-1, ey+2, "#FF9FC0"); put(feat, xr+1, ey+2, "#FF9FC0");
+    const my = ey + 2;
+    if(mood === "happy" || mood === "evolve" || mood === "play" || mood === "clean"){ put(feat,15,my,"#E8475F"); put(feat,16,my,"#E8475F"); put(feat,15,my+1,"#E8475F"); put(feat,16,my+1,"#E8475F"); put(feat,14,my,INK); put(feat,17,my,INK); }
+    else if(mood === "eat"){ put(feat,15,my,"#E8475F"); put(feat,16,my,"#E8475F"); put(feat,15,my+1,INK); put(feat,16,my+1,INK); }
+    else if(mood === "sad" || mood === "cheer" || mood === "hungry"){ put(feat,14,my+1,INK); put(feat,15,my,INK); put(feat,16,my,INK); put(feat,17,my+1,INK); if(mood==="cheer") put(feat, xr+2, ey-2, "#7FD3FF"); }
+    else if(mood === "sleep"){ put(feat,15,my,INK); put(feat,16,my,INK); }
+    else { put(feat,14,my,INK); put(feat,15,my+1,INK); put(feat,16,my+1,INK); put(feat,17,my,INK); }
+    if(acc){ for(let x=13; x<=18; x++) put(fill, x, top-1, acc); for(const x of [13,15,16,18]) put(fill, x, top-2, acc); put(fill,13,top-3,acc); put(fill,18,top-3,acc); put(feat,15,top-1,"#FFFFFF"); }
+  }
+  const out = [];
+  for(const k of fill.keys()){ const x = k % GRID, y = (k - x) / GRID; for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const nk = K(x+dx, y+dy); if(x+dx>=0 && x+dx<GRID && y+dy>=0 && y+dy<GRID && !fill.has(nk)) out.push([x+dx, y+dy, INK]); } }
+  const cells = [];
+  for(const [k,c] of fill){ const x = k % GRID; cells.push([x, (k-x)/GRID, feat.get(k) || c]); }
+  for(const [k,c] of feat){ if(!fill.has(k)){ const x = k % GRID; cells.push([x, (k-x)/GRID, c]); } }
+  const res = {cells: cells.concat(out), top};
+  _spr.set(key, res); return res;
+}
+function drawSprite(ctx, spr, dx, dy, override){ for(const [x,y,c] of spr.cells) px(ctx, x+dx, y+dy, override || c); }
+const FOOD_PAT = {
+  apple:  {rows:["  G  "," RRR ","RRRRR","RRRRR"," RRR "], colors:{R:"#FF4B55",G:"#3DBE7A"}},
+  onigiri:{rows:["  W  "," WWW ","WWWWW","WNNNW"," NNN "], colors:{W:"#FFFFFF",N:"#2F3A3A"}},
+  cake:   {rows:["  R  ","PPPPP","WWWWW","PPPPP","PPPPP"], colors:{R:"#FF4B55",P:"#FFB3D1",W:"#FFF6DC"}}
+};
+const POOP = {rows:["  B ", " BB ", "BBBB", "BBBB"], colors:{B:"#A0673A"}};
+const HEART = {rows:[" X X ","XXXXX"," XXX ","  X  "], colors:{X:"#FF6FA8"}};
+const SPARK = {rows:[" Y ","YYY"," Y "], colors:{Y:"#FFD23F"}};
+const ZZZ = {rows:["ZZZ","  Z"," Z ","ZZZ"], colors:{Z:"#FFFFFF"}};
+const BALL = {rows:[" PP ","PYYP","PYYP"," PP "], colors:{P:"#FF6FA8",Y:"#FFE36E"}};
+const LCD_STARS = [[3,3],[9,6],[27,4],[22,9],[5,11],[29,13],[14,2],[18,6],[25,1],[1,8]];
+
+function drawStatus(ctx, pt, dark){
+  ctx.fillStyle = dark ? "#FFFFFF" : INK; ctx.font = "800 15px " + getComputedStyle(document.body).fontFamily; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+  const rows = [["飽足", pt.fullness], ["開心", pt.happiness], ["學習", pt.learn]];
+  rows.forEach(([lb, v], i) => {
+    const y = 34 + i*44; ctx.fillStyle = dark ? "#FFFFFF" : INK; ctx.fillText(lb, 10, y);
+    const n = Math.ceil(v/25);
+    for(let h=0; h<4; h++) pat(ctx, HEART.rows, 9 + h*5, Math.round(y/CELLPX) - 2, {X: h < n ? "#FF6FA8" : (dark?"#555A8A":"#D9D2E6")});
+  });
+  ctx.fillStyle = dark ? "#FFFFFF" : INK; ctx.font = "700 13px " + getComputedStyle(document.body).fontFamily;
+  ctx.fillText(`⭐ ${fmt(pt.wallet)}　成長 ${fmt(pt.xp)}`, 10, 168);
+}
+function drawLcd(g, now){
+  const ctx = lcdCtx[g]; if(!ctx) return;
+  const pt = S.pets[g], T = TAMA[g], t = now/1000;
+  const sp = pt.species ? SPECIES[pt.species] : {ear:"none", body:"#CFC6E0", belly:"#FFFFFF"};
+  const dark = pt.lightsOff;
+  const bg = ctx.createLinearGradient(0,0,0,LCDW);
+  if(dark){ bg.addColorStop(0,"#1F2150"); bg.addColorStop(1,"#3A2E6A"); } else { bg.addColorStop(0, g==="g4" ? "#E3F3FF" : "#FBE8FF"); bg.addColorStop(1,"#F4FFF4"); }
+  ctx.fillStyle = bg; ctx.fillRect(0,0,LCDW,LCDW);
+  LCD_STARS.forEach(([x,y],i) => { const on = still || ((Math.floor(t*2.2) + i) % 3 !== 0); if(on){ const c = dark ? "#FFE36E" : (i%2 ? "#C9B6FF" : "#FFC7E0"); px(ctx,x,y,c); if(dark && i%3===0){ px(ctx,x-1,y,c); px(ctx,x+1,y,c); px(ctx,x,y-1,c); px(ctx,x,y+1,c); } } });
+  for(let x=0; x<GRID; x++){ px(ctx, x, 28, dark ? "#4A4C8C" : "#BDEBC8"); for(let y=29; y<GRID; y++) px(ctx, x, y, dark ? "#35376E" : ((x+y)%2 ? "#D7F5DE" : "#CDEFD6")); }
+  if(T.sub === "status"){ drawStatus(ctx, pt, dark); return; }
+  const stage = pt.species ? stageOf(pt.xp) : 0;
+  const fx = T.fx && now - T.fx.at < 1800 ? T.fx : null;
+  const mood = dark ? "sleep" : fx ? fx.kind : (pt.fullness < 35 ? "hungry" : pt.happiness < 35 ? "sad" : "idle");
+  const blink = mood === "idle" && (t % 3.2) < .15;
+  let dx = 0, dy = 0;
+  if(!still){
+    if(mood === "happy" || mood === "evolve" || mood === "clean") dy = -Math.round(Math.abs(Math.sin(t*8))*3);
+    else if(mood === "play"){ dy = -Math.round(Math.abs(Math.sin(t*7))*4); dx = Math.round(Math.sin(t*3.5)*5); }
+    else if(mood === "idle" || mood === "hungry" || mood === "sad"){ dy = Math.floor(t*2) % 2 ? -1 : 0; dx = Math.round(Math.sin(t*.7)*4); }
+    if(stage === 0 && !dark){ const k = Math.floor(t*3) % 6; dx = k===0 ? 1 : k===3 ? -1 : 0; dy = 0; }
+  }
+  const acc = stage === 3 ? branchOf(pt).color : null;
+  const A = T.anim;
+  if(A && now - A.at < 2700){
+    const e = (now - A.at) / 1000;
+    if(A.kind === "hatch"){
+      if(e < 1.3){ const egg = sprite(sp, 0, "idle", false, null); const w = Math.floor(e*14) % 2 ? 1 : -1; drawSprite(ctx, egg, w, 0);
+        const crack = [[13,17],[14,16],[15,17],[16,16],[17,17],[18,16],[19,17]]; crack.slice(0, Math.ceil(e/1.3*crack.length)).forEach(([x,y]) => px(ctx, x+w, y, INK)); }
+      else if(e < 1.6){ ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0,0,LCDW,LCDW); }
+      else { drawSprite(ctx, sprite(sp, A.to, "happy", false, A.to===3?acc:null), 0, -Math.round(Math.abs(Math.sin(e*8))*3)); if(Math.random() < .3) sparkle(g, 1); }
+    }else{
+      if(e < 1.8){ ctx.fillStyle = Math.floor(e/.15) % 2 ? "#FFF6A8" : "#FFFFFF"; ctx.fillRect(0,0,LCDW,LCDW*0.93);
+        const which = Math.floor(e/.15) % 2 ? A.to : A.from; drawSprite(ctx, sprite(sp, which, "idle", false, null), 0, 0, Math.floor(e/.3) % 2 ? INK : "#B39BFF"); }
+      else { drawSprite(ctx, sprite(sp, A.to, "evolve", false, acc), 0, -Math.round(Math.abs(Math.sin(e*8))*3)); if(Math.random() < .3) sparkle(g, 1); }
+    }
+  }else{
+    if(A) T.anim = null;
+    drawSprite(ctx, sprite(sp, stage, stage===0 ? "idle" : mood, blink, acc), dx, dy);
+    if(!pt.species){ ctx.fillStyle = INK; ctx.font = "900 22px " + getComputedStyle(document.body).fontFamily; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("?", LCDW/2 + dx*CELLPX, 112);
+      ctx.font = "800 13px " + getComputedStyle(document.body).fontFamily; ctx.fillText("按 B 領養", LCDW/2, 14); }
+  }
+  for(let i=0; i<pt.poop; i++){ const [x,y] = [[26,24],[2,24],[23,24]][i]; pat(ctx, POOP.rows, x, y, POOP.colors); if(!still && Math.floor(t*2+i)%2) { px(ctx,x+1,y-2,"#9C93A8"); px(ctx,x+3,y-3,"#9C93A8"); } }
+  if(fx && fx.kind === "eat" && FOOD_PAT[fx.food]){ const bites = Math.min(4, Math.floor((now - fx.at)/400)); const f = FOOD_PAT[fx.food]; pat(ctx, f.rows, 23, 20, f.colors, bites); }
+  if(fx && fx.kind === "play"){ const bx = 14 + Math.round(Math.sin(t*3.5 + 1.6)*9), by = 6 + Math.round(Math.abs(Math.cos(t*5))*6); pat(ctx, BALL.rows, bx, by, BALL.colors); }
+  if(dark){ const zy = 6 - Math.floor((t*1.5) % 3); pat(ctx, ZZZ.rows, 22, zy, ZZZ.colors); }
+  if(!dark && !fx && pt.species && stage > 0 && mood === "hungry"){ ctx.font = "16px sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("🍙❔", 160, 26); }
+  for(const p of T.parts){ p.y += p.vy; p.life--; const r = p.k === "heart" ? HEART : SPARK; if(p.life > 0) pat(ctx, r.rows, p.x, p.y, r.colors); }
+  T.parts = T.parts.filter(p => p.life > 0 && p.y > -4);
+}
+function tamaLoop(now){ drawLcd("g4", now); drawLcd("g6", now); requestAnimationFrame(tamaLoop); }
+requestAnimationFrame(tamaLoop);
 
 /* 全螢幕彩紙 */
 const fxc = $("fx"), fxx = fxc.getContext("2d"); let fxParts = [], fxRunning = false;
@@ -1102,8 +1429,10 @@ function drawCompound(){
 
 function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); }
 renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState();
-(function greet(){ const st=stageOf(S.teamStars), si=streakInfo();
-  if(S.teamStars>0) setMsg(`${STAGES[st].emoji} 歡迎回來！${S.settings.petName}現在是「${STAGES[st].name}」，有 ⭐ ${fmt(S.teamStars)} 顆。${si.playedToday?"今天已經打卡了 🔥":"今天玩一關，連續天數就會 +1 🔥"}`); })();
+(function greet(){ const si=streakInfo(); const a=S.pets.g4, b=S.pets.g6;
+  const need = ["g4","g6"].filter(g => !S.pets[g].species).map(g => KIDLBL[g]);
+  if(need.length) setMsg(`🥚 ${need.join("、")}還沒領養寵物！按寵物機上的 B 鍵領養。${S.teamStars>0?`原本星寶的成長值（${fmt(S.teamStars)}）兩隻寵物都會繼承喔！`:""}`);
+  else setMsg(`👋 歡迎回來！${a.name} 和 ${b.name} 在等你們。${si.playedToday?"今天已經打卡了 🔥":"今天玩一關，連續天數就會 +1 🔥"}`); })();
 // 跨分頁同步：同一台裝置開兩個分頁時，以最新存檔為準
 addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ S = migrate(JSON.parse(e.newValue)); renderAll(true); }catch(err){} } });
 // 測試用（不影響遊戲）

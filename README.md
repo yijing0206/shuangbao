@@ -15,13 +15,24 @@
 - 題庫原始檔不放在公開 repo，存在機器上的 `/workspace/shuangbao-src/questions.json`。改完執行 `node /workspace/shuangbao-src/build.mjs index.html`，會把題庫寫進 `/*__MCQ__*/…/*__END_MCQ__*/` 區塊。如果原始檔不見了，可以用頁面裡的 `secret()` 和 `MCQ_KEY` 解回來。
 - 題目 id（例如 `math-a-g4-1`）和卡片 id 一樣，發布後永遠不改。
 
+## 電子寵物（v3）
+- 每個孩子各有一台蛋形寵物機（小四藍白、小六粉紫），液晶畫面裡是像素寵物。造型是原創的，沒有使用任何品牌的名稱或角色。
+- 第一次使用按 B 鍵（或「領養」）：從 星喵、星兔、星熊、星龍、星鯨 選一隻，再幫牠取名字。
+- 選單有 🍙 餵食、🎾 玩耍、🧽 清潔、💡 睡覺／開燈、📊 狀態、🎁 送禮。A 鍵移動游標或換食物，B 鍵確認，C 鍵取消；直接點圖示也可以。側邊旋鈕可以跟寵物打招呼。
+- 選擇題答對的 ⭐ 會存進自己的錢包，用來買食物：🍎 1 顆（成長 +1）、🍙 2 顆（+2）、🍰 3 顆（+3，開心 +25）。
+- 狀態有三項：飽足、開心、學習力。答對會提升學習力。每過一天沒照顧，飽足 −25、開心 −20、學習力 −15，最低降到 10，寵物不會死。另外每天會多一坨便便（最多 3 坨）。每餵 3 次也會出現便便。
+- 玩耍一天最多 3 次。
+- 進化看成長值：蛋 → 寶寶（5）→ 少年（15）→ 成體（30）。孵化和進化都有動畫。成體會依照得到最多星星的科目分支成數學博士、自然探險家、地球旅行家、文字魔法師、英語小達人。
+- 互助：送 1 ⭐ 給對方的寵物（對方成長 +1、開心 +15）；合體關教學經家長 PIN 確認後，兩隻寵物都會加成長值。每次都會讓「🤝 互助」計數 +1。
+- v2 → v3 遷移：原本共用星寶的成長值（= `teamStars`），兩隻寵物都完整繼承，另外各送 3 ⭐ 見面禮。`teamStars` 保留，繼續用來兌換家庭特權，不會扣除。
+
 ## 存檔格式
 - 存在 `localStorage["shuangbao-save"]`，內容是 JSON。
 - 升級前和匯入前，會把舊存檔複製到 `localStorage["shuangbao-save-prev"]`。
 
 ```jsonc
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "createdAt": "ISO", "updatedAt": "ISO", "appVersionLastSeen": "1.0.0",
   "teamStars": 0,                      // 星寶的總星星數（可以有 .5），決定進化階段
   "kidStars": { "g4": 0, "g6": 0, "team": 0 },
@@ -36,14 +47,21 @@
   "daily": { "YYYY-MM-DD": { "g4": {"stars":0,"actions":0,"misses":0,"right":0,"retry":0,"wrong":0},   // right/retry/wrong 為 v2
                              "g6": {"stars":0,"actions":0,"misses":0,"right":0,"retry":0,"wrong":0},
                              "team": {"stars":0,"actions":0},
-                             "cards": { "<cardId>": { "g4": {"right":0,"retry":0,"wrong":0}, "g6": {…} } } } },
+                             "cards": { "<cardId>": { "g4": {"right":0,"retry":0,"wrong":0}, "g6": {…} } },
+                             "pets": { "g4": {"fed":0,"played":0,"cleaned":0,"gifts":0}, "g6": {…} } } },   // pets 為 v3
   "settings": { "petName": "星寶", "names": { "g4": "小四", "g6": "小六" }, "parentPin": null },   // PIN 只存雜湊值
+  "pets": { "g4": { "species":"dino", "name":"小恐龍", "adoptedOn":"YYYY-MM-DD", "xp":0, "wallet":0,
+                   "fullness":70, "happiness":70, "learn":40, "poop":0, "lightsOff":false, "lastTickOn":"YYYY-MM-DD",
+                   "fedCount":0, "play":{"date":null,"n":0}, "giftsGiven":0, "giftsReceived":0, "subjectXP":{"數學":0},
+                   "stageSeen":0, "inheritedXp":0, "migratedV3":true }, "g6": { … } },        // v3
+  "help": { "count":0, "gifts":0, "teach":0 },                                             // v3 互助
   "history": [ { "at": "ISO", "from": 0, "to": 1, "app": "1.0.0" } ]   // 升級紀錄
 }
 ```
 
 - 連續天數不存，每次都從 `playDates` 算：從台灣時間的今天（今天還沒玩就從昨天）往回數連續的日期。
 - 「該複習」也不存，每次重新算：有 `wrongPending` 的題目，隔天就該複習；另外從 `firstClearedOn` 和 `playedOn` 算第 1、3、7、14 天的複習。
+- 版本紀錄：v2 → v3 加入 `pets`、`help` 和每日的 `pets`。
 - 版本紀錄：v1 → v2 加入 `cards.*.mc`、每日的 `right/retry/wrong/cards` 和 `settings.parentPin`，舊欄位和星星全部保留。
 - 內容資料（`CARDS`、`FLIPS`、`SCOPE` 等）寫在程式裡，不放進存檔。
 
