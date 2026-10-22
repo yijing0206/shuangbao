@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FF5A5F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🌟%3C/text%3E%3C/svg%3E">
+<title>雙寶複習冒險隊 🌟 星寶冒險機</title>
+<style>
+:root{
+  --red:#FF4B55; --red-d:#C9303A; --blue:#2F9BFF; --blue-d:#1C6FC4;
+  --yellow:#FFD23F; --yellow-d:#D9A800; --mint:#3DDC97; --mint-d:#22A56C;
+  --pink:#FF8FC7; --purple:#B388FF; --ink:#3A2E4A; --ink2:#6B5F7A;
+  --bg:#FFF7FB; --card:#FFFFFF; --line:#EADFF2;
+  --font: "PingFang TC","Noto Sans TC","Microsoft JhengHei","Heiti TC",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:var(--font);color:var(--ink);background:
+  radial-gradient(circle at 10% 0%,#FFE3F1 0,transparent 40%),
+  radial-gradient(circle at 90% 10%,#DDF1FF 0,transparent 40%),var(--bg);
+  min-height:100vh;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:1080px;margin:0 auto;padding:12px 12px 80px}
+header.top{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between;margin:6px 0 12px}
+header.top h1{font-size:clamp(20px,4.6vw,30px);margin:0;letter-spacing:1px}
+header.top h1 small{display:block;font-size:13px;color:var(--ink2);font-weight:500;letter-spacing:0}
+nav.tabs{display:flex;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;gap:8px;margin:0 0 14px;position:sticky;top:0;z-index:20;padding:8px 0;background:linear-gradient(var(--bg) 70%,transparent)}
+.tab{flex:0 0 auto;white-space:nowrap;border:none;border-radius:999px;padding:10px 14px;font:600 15px var(--font);background:#fff;color:var(--ink);box-shadow:0 3px 0 var(--line);cursor:pointer}
+.tab.on{background:var(--ink);color:#fff;box-shadow:0 3px 0 #000}
+.panel{display:none}.panel.on{display:block;animation:pop .35s ease-out}
+@keyframes pop{0%{transform:scale(.96);opacity:0}70%{transform:scale(1.01);opacity:1}100%{transform:none}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-3deg)}75%{transform:rotate(3deg)}}
+@media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+.console{border-radius:34px;border-left:16px solid var(--blue);border-right:16px solid var(--red);background:#fff;padding:10px;box-shadow:0 8px 0 var(--line)}
+.screen{position:relative;border-radius:22px;overflow:hidden;background:#BFE9FF}
+#pet{display:block;width:100%;height:auto;aspect-ratio:640/320}
+.msg{text-align:center;font-weight:700;font-size:17px;margin:10px 6px;min-height:1.5em}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.center{justify-content:center}
+.btn{border:none;border-radius:999px;padding:11px 16px;font:700 15px/1.2 var(--font);cursor:pointer;color:#fff;
+  background:var(--c,var(--blue));box-shadow:0 5px 0 var(--cd,var(--blue-d));transition:transform .08s,box-shadow .08s;touch-action:manipulation}
+.btn:active{transform:translateY(5px);box-shadow:0 0 0 var(--cd,var(--blue-d))}
+.btn.big{font-size:18px;padding:15px 22px}
+.btn.ghost{background:#fff;color:var(--ink);border:3px solid var(--c,var(--blue));box-shadow:0 5px 0 var(--line)}
+.btn.small{font-size:13px;padding:8px 12px}
+.b-blue{--c:var(--blue);--cd:var(--blue-d)} .b-red{--c:var(--red);--cd:var(--red-d)}
+.b-yellow{--c:var(--yellow);--cd:var(--yellow-d);color:var(--ink)} .b-mint{--c:var(--mint);--cd:var(--mint-d)}
+.b-gray{--c:#9C93A8;--cd:#6F6780} .b-purple{--c:var(--purple);--cd:#8A5CE0} .b-pink{--c:var(--pink);--cd:#E0609F}
+h2{font-size:22px;margin:22px 0 10px}
+h3{font-size:18px;margin:16px 0 8px}
+.map{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.lvl{position:relative;border:4px solid var(--c);background:color-mix(in srgb,var(--c) 14%,#fff);border-radius:24px;padding:10px 12px;min-width:96px;flex:1 1 96px;max-width:150px;text-align:center;cursor:pointer;font-family:var(--font);color:var(--ink);box-shadow:0 5px 0 var(--line)}
+.lvl.done{background:var(--c);color:#fff}
+.lvl.sel{outline:4px dashed var(--ink);outline-offset:3px}
+.lvl .n{white-space:nowrap;font-size:18px;font-weight:800}.lvl .c{font-size:12px;font-weight:700}.lvl .t{font-size:12px}
+.lvl .due{position:absolute;top:-10px;right:-8px;background:var(--yellow);color:var(--ink);border-radius:999px;font-size:11px;font-weight:800;padding:3px 7px;box-shadow:0 2px 0 var(--yellow-d);animation:wiggle 1.2s infinite}
+.kids{display:flex;flex-wrap:wrap;gap:14px;align-items:stretch}
+.kid{flex:1 1 300px;min-width:0;border-radius:26px;padding:16px;border:4px solid var(--c);background:color-mix(in srgb,var(--c) 10%,#fff)}
+.kid.g4{--c:var(--blue)} .kid.g6{--c:var(--red)} .kid.team{--c:var(--yellow);flex-basis:100%}
+.badge{display:inline-block;border-radius:999px;padding:5px 12px;font-weight:800;font-size:14px;color:#fff;background:var(--c)}
+.kid.team .badge{color:var(--ink)}
+.q{font-size:18px;line-height:1.65;margin:12px 0}
+.hint,.ans{font-size:16px;line-height:1.6;border-radius:16px;padding:10px 12px;margin:8px 0;background:#fff;border:2px dashed var(--c)}
+.ans{border-style:solid}
+.conf{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;color:var(--ink2);margin:6px 0 10px}
+.conf button{border:2px solid var(--c);background:#fff;border-radius:999px;padding:4px 10px;font:600 14px var(--font);cursor:pointer}
+.conf button.on{background:var(--c);color:#fff}
+.box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
+th{font-size:13px;color:var(--ink2)}
+.tscroll{overflow-x:auto}
+.warn{background:#FFF3C4;border:3px solid var(--yellow);border-radius:20px;padding:12px 14px;font-weight:600;line-height:1.6}
+.stats{display:flex;flex-wrap:wrap;gap:10px}
+.stat{flex:1 1 130px;background:#fff;border-radius:20px;padding:12px;box-shadow:0 5px 0 var(--line);text-align:center}
+.stat b{display:block;font-size:26px}
+.prompt{background:#F4F0FF;border-radius:16px;padding:12px;margin:8px 0;line-height:1.6;font-size:15px}
+textarea{width:100%;min-height:110px;border-radius:16px;border:3px solid var(--line);padding:10px;font:13px/1.4 ui-monospace,monospace}
+ul,ol{line-height:1.7;padding-left:22px}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:50;width:100vw;height:100vh}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;z-index:60;display:none;max-width:92vw;text-align:center}
+a{color:var(--blue-d)}
+.foot{font-size:12px;color:var(--ink2);margin-top:30px;text-align:center}
+</style>
+</head>
+<body>
+<canvas id="fx"></canvas>
+<div class="toast" id="toast"></div>
+<div class="wrap">
+  <header class="top">
+    <h1>🌟 雙寶複習冒險隊<small>新光國小 四年級 🔵 × 六年級 🔴｜115 學年上學期期中考</small></h1>
+    <div class="row"><span id="saveState" style="font-size:13px;color:var(--ink2)"></span></div>
+  </header>
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-p="game">🎮 遊戲</button>
+    <button class="tab" data-p="scope">📚 考試範圍</button>
+    <button class="tab" data-p="science">🧠 學習秘訣</button>
+    <button class="tab" data-p="ai">🤖 AI 助教</button>
+    <button class="tab" data-p="parent">👪 家長</button>
+    <button class="tab" data-p="log">📅 紀錄</button>
+    <button class="tab" data-p="save">💾 存檔</button>
+  </nav>
+
+  <!-- 遊戲 -->
+  <section class="panel on" id="p-game">
+    <div class="console">
+      <div class="screen"><canvas id="pet" width="640" height="320" aria-label="共享寵物星寶"></canvas></div>
+      <div class="msg" id="msg">🥚 星寶還在蛋裡，答題、互教、出好題目就能讓牠孵化！</div>
+      <div class="row center" id="consoleBtns">
+        <button class="btn b-purple small" id="redeemBtn">🎁 兌換家庭特權</button>
+        <button class="btn b-gray small" id="howBtn">❓ 怎麼玩</button>
+      </div>
+      <p style="text-align:center;font-size:13px;color:var(--ink2);margin:8px 4px" id="evoLine"></p>
+    </div>
+
+    <h2>🗺️ 選關地圖</h2>
+    <div class="row" id="filters"></div>
+    <div class="map" id="map"></div>
+    <div class="row" style="margin-top:16px">
+      <button class="btn b-blue big" id="randBtn">🎲 隨機抽一關</button>
+      <button class="btn b-red big" id="flipBtn">🔄 抽出題反轉卡</button>
+    </div>
+    <div id="flipBox"></div>
+    <div id="card"></div>
+  </section>
+
+  <!-- 範圍 -->
+  <section class="panel" id="p-scope">
+    <div class="warn">⚠️ 範圍是「推估」的，不是學校公告。新光國小官網和教務處公告查不到這次考試範圍；教科書版本是學校公告的（官方），單元範圍是用各版本 115 學年課程進度推算的。請用聯絡簿或老師的範圍單核對。</div>
+    <div class="box">
+      <p><b>🏫 學校：</b>高雄市左營區新光國小（華夏路 800 號）。臺中也有一所新光國小，這裡以高雄左營為準。</p>
+      <p><b>🗓️ 考試週：</b>高雄市行事曆：考兩次的國小，第一次定期評量在 11/2～11/6；考三次的學校第一次已在 10/12～10/16，下一次在 11/23～11/27。新光自己的行事曆沒找到。</p>
+      <p><b>📘 教科書版本（官方）：</b>學校公告〈115 學年度教科用書版本總表〉（115.05.20 選用小組通過）。</p>
+      <p><b>🚫 未列入：</b>閩南語（四年級真平、六年級康軒），一般不考紙筆定期評量。</p>
+    </div>
+    <div class="row"><button class="btn b-blue" data-g="g4" id="sg4">🔵 四年級</button><button class="btn ghost b-red" data-g="g6" id="sg6">🔴 六年級</button></div>
+    <div class="box tscroll"><table id="scopeTable"></table></div>
+    <h3>🔗 資料來源</h3>
+    <ul id="sources"></ul>
+  </section>
+
+  <!-- 學習科學 -->
+  <section class="panel" id="p-science">
+    <h2>🧠 藏在遊戲裡的學習科學</h2>
+    <div class="box tscroll"><table id="sciTable"></table></div>
+    <h2>🔥 原子習慣：每天 15～20 分鐘</h2>
+    <div class="box tscroll"><table id="habitTable"></table></div>
+    <div class="box"><p>📈 <b>複利效應：</b>每天進步 1%，30 天後是原本的 <b>1.35 倍</b>；每天退步 1%，只剩 <b>0.74 倍</b>。</p><canvas id="compound" width="640" height="220" style="width:100%;height:auto"></canvas></div>
+  </section>
+
+  <!-- AI -->
+  <section class="panel" id="p-ai">
+    <h2>🤖 AI 是助教，不是答案機</h2>
+    <div class="kids">
+      <div class="kid g4"><span class="badge">📏 使用 AI 的家規</span><ul id="aiRules"></ul></div>
+      <div class="kid g6"><span class="badge">🪜 提問力階梯</span><ol id="ladder"></ol></div>
+    </div>
+    <h3>💬 蘇格拉底提示詞（點「複製」，把＿＿換成題目）</h3>
+    <div id="prompts"></div>
+  </section>
+
+  <!-- 家長 -->
+  <section class="panel" id="p-parent">
+    <h2>👪 家長帶玩指南</h2>
+    <div class="box">
+      <p>🔴 <b>小六（紅隊）</b>：隊長＋小老師，負責講解，但只能問問題、畫圖，不能直接講答案。</p>
+      <p>🔵 <b>小四（藍隊）</b>：提問官＋計分員，每局至少問一個「為什麼」，負責按星星。</p>
+      <p>👩‍⚕️ <b>媽媽</b>：關主，計時、追問「你怎麼知道的？」，不講答案、不改考卷。</p>
+    </div>
+    <h3>⏱️ 一局 20 分鐘</h3>
+    <ol id="session"></ol>
+    <h3>⭐ 星星規則（團隊共用）</h3>
+    <div class="box tscroll"><table id="starTable"></table></div>
+    <h3>🌱 成長型思維說法</h3>
+    <div class="box tscroll"><table id="mindTable"></table></div>
+    <h3>🗓️ 考前 11 天計畫（10/22～11/1）</h3>
+    <div class="box tscroll"><table id="planTable"></table></div>
+    <p class="box">♻️ 之後每次大考都用同一套：考前 14 天開始，前 7 天每天 1 張新卡，後 7 天只做間隔複習和出題對決，最後一天只複習錯題卡。</p>
+    <h3>🚀 下一版：孩子的 AI 家教</h3>
+    <ol id="nextList"></ol>
+  </section>
+
+  <!-- 紀錄 -->
+  <section class="panel" id="p-log">
+    <h2>📅 每日紀錄</h2>
+    <div class="stats" id="stats"></div>
+    <div class="box tscroll"><table id="logTable"></table></div>
+  </section>
+
+  <!-- 存檔 -->
+  <section class="panel" id="p-save">
+    <h2>💾 存檔與備份</h2>
+    <div class="box">
+      <p>✅ 每次按星星都會<b>自動存檔</b>在這台裝置的這個瀏覽器裡（同一個網址）。之後更新版本，進度會自動接續。</p>
+      <p>🛟 換手機、換瀏覽器、清除瀏覽資料前，請先<b>匯出存檔</b>。建議每週下載一次檔案備份。</p>
+    </div>
+    <h3>📤 匯出存檔</h3>
+    <div class="row"><button class="btn b-blue" id="exportCode">📋 產生並複製存檔碼</button><button class="btn b-mint" id="exportFile">⬇️ 下載存檔檔案</button></div>
+    <textarea id="codeOut" readonly placeholder="按上面按鈕產生存檔碼"></textarea>
+    <h3>📥 匯入存檔</h3>
+    <textarea id="codeIn" placeholder="把存檔碼貼在這裡（SB1: 開頭）"></textarea>
+    <div class="row"><button class="btn b-red" id="importCode">📥 用存檔碼匯入</button>
+      <label class="btn b-yellow" style="display:inline-block">📂 上傳存檔檔案<input type="file" id="importFile" accept=".json,application/json,text/plain" style="display:none"></label></div>
+    <p style="font-size:13px;color:var(--ink2)">匯入前會先把目前進度備份到「上一份存檔」，可以用下面按鈕救回。</p>
+    <div class="row"><button class="btn ghost b-gray small" id="restorePrev">↩️ 救回上一份存檔</button></div>
+    <p class="foot" id="verLine"></p>
+  </section>
+</div>
+
+<script>
+"use strict";
+/* =========================================================
+   1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
+   ========================================================= */
+const APP_VERSION = "1.0.0";
+const SAVE_KEY = "shuangbao-save";
+const PREV_KEY = "shuangbao-save-prev";
+const SCHEMA_VERSION = 1;
+
+const SUBJECTS = {
+  "國語":{cls:"b-red",color:"#FF4B55",emoji:"📖"},
+  "數學":{cls:"b-blue",color:"#2F9BFF",emoji:"🔢"},
+  "自然":{cls:"b-mint",color:"#22C08A",emoji:"🔬"},
+  "社會":{cls:"b-yellow",color:"#F2B600",emoji:"🗺️"},
+  "英語":{cls:"b-purple",color:"#9B6BFF",emoji:"🔤"}
+};
+
+const CARDS = [
+ {id:"math-a",code:"數學A",subject:"數學",title:"大數字 × 質因數",
+  g4:{q:"讀出 36,050,800，並說出 3 在哪一位、代表多少。",hint:"從右邊每 4 位切一段，先找「萬」在哪裡。",a:"三千六百零五萬零八百；3 在千萬位，代表 30,000,000。"},
+  g6:{q:"把 36 和 48 做質因數分解，再用短除法找最大公因數和最小公倍數。",hint:"先用最小的質數 2 一直除，除不下去再換 3。",a:"36 = 2×2×3×3，48 = 2×2×2×2×3；最大公因數 12，最小公倍數 144。"},
+  kind:"生活解謎",together:"36 顆糖、48 片餅乾要分成一模一樣的禮物袋，不能剩。最多可以分幾袋？每袋各裝什麼？小四用除法一個一個試，小六用短除法，比比看誰的方法快、為什麼。",togetherAns:"12 袋，每袋 3 顆糖、4 片餅乾。",
+  extra:"小老師卡：小六用 1 分鐘解釋「為什麼 1 不是質數」，小四要能用自己的話說回來才算過關。"},
+ {id:"math-b",code:"數學B",subject:"數學",title:"乘除 × 分數除法",
+  g4:{q:"一盒巧克力有 24 顆，買 35 盒共幾顆？再把這些平分給 28 人，每人幾顆？",hint:"先估算：24 接近 25，35 盒大約是多少？",a:"24 × 35 = 840 顆；840 ÷ 28 = 30 顆。"},
+  g6:{q:"3/4 公升果汁，每杯倒 1/8 公升，可以倒幾杯？再算 2/3 ÷ 4。",hint:"畫一條線段，把 3/4 切成一格一格的 1/8。",a:"3/4 ÷ 1/8 = 6 杯；2/3 ÷ 4 = 1/6。"},
+  kind:"為什麼卡",together:"為什麼「除以 1/8」答案反而變大？小四先猜，小六畫圖說明，最後小四要用自己的話講一次。",togetherAns:"除法在問「裡面裝得下幾份」。每份越小，裝得下的份數就越多。",
+  extra:"如果卡：果汁變成原來的 2 倍，可以倒幾杯？先不要算，用推理說出答案（12 杯）。"},
+ {id:"math-c",code:"數學C",subject:"數學",title:"角度 × 圓",
+  g4:{q:"時鐘 3 點整，時針和分針的夾角是幾度？4 點整呢？各是什麼角？",hint:"鐘面一圈 360 度，分成 12 大格，每格幾度？",a:"每格 30 度。3 點整是 90 度（直角）；4 點整是 120 度（鈍角）。"},
+  g6:{q:"直徑 10 公分的圓，圓周長和面積各是多少？（圓周率用 3.14）",hint:"周長 = 直徑 × 圓周率；面積 = 半徑 × 半徑 × 圓周率。",a:"周長 31.4 公分；面積 5 × 5 × 3.14 = 78.5 平方公分。"},
+  kind:"如果卡",together:"如果圓的半徑變成 2 倍，周長和面積各變成幾倍？小四用圓規畫兩個圓幫忙，小六推理並說明。",togetherAns:"周長變 2 倍，面積變 4 倍。",
+  extra:"生活解謎：找家裡三個圓形物品（碗、杯口、時鐘）。小四量直徑，小六算周長，再用繩子實際量，看差多少、為什麼會有誤差。"},
+ {id:"sci-a",code:"自然A",subject:"自然",title:"月亮 × 熱",
+  g4:{q:"月亮在天空中怎麼移動？月相大約多久循環一次？",hint:"想想太陽每天怎麼移動。",a:"月亮也是東升西落；月相大約 29～30 天循環一次。"},
+  g6:{q:"熱有哪三種傳播方式？各舉一個生活例子。",hint:"湯匙、煮開水、曬太陽。",a:"傳導：湯匙放進熱湯，柄會變燙。對流：煮水時，水會上下流動。輻射：太陽的熱穿過太空來到地球。"},
+  kind:"為什麼卡",together:"太空幾乎沒有空氣，太陽的熱怎麼傳到地球？月亮自己會發光嗎？兩人各說一個猜想，再翻課本驗證。",togetherAns:"太陽的熱靠輻射傳來，不需要物質。月亮自己不發光，是反射太陽光。",
+  extra:"生活解謎：設計一個讓便當保溫最久的方法，並說出用到哪一種熱的傳播原理。"},
+ {id:"sci-b",code:"自然B",subject:"自然",title:"水域 × 天氣",
+  g4:{q:"布袋蓮為什麼能浮在水面？魚用什麼呼吸？",hint:"捏捏看布袋蓮膨大的葉柄，裡面有什麼？",a:"布袋蓮的葉柄膨大，裡面有很多空氣，所以能浮起來；魚用鰓呼吸。"},
+  g6:{q:"雲和霧有什麼相同和不同？露和霜呢？",hint:"都和「水蒸氣遇冷」有關，差別在位置和溫度。",a:"雲和霧都是水蒸氣遇冷凝結成的小水滴，雲在高空、霧貼近地面。露是水蒸氣在冷的物體表面凝結成水滴；霜是溫度更低（約 0°C 以下）時直接變成冰晶。"},
+  kind:"小老師卡",together:"小六畫出水循環並講給小四聽；小四在圖上標出池塘、溪流、海洋的水生生物住在哪一段。最後一起推理：如果上游的水被汙染，會影響到哪裡？",togetherAns:"",
+  extra:"如果卡：颱風要來了，家裡要做哪三件準備？小四想家附近的水溝和水池，小六想天氣圖和颱風路徑告訴我們什麼。"},
+ {id:"soc-a",code:"社會A",subject:"社會",title:"地圖 × 戰後經濟",
+  g4:{q:"一張地圖通常有哪四個工具？各有什麼用？",hint:"名字、方向、距離、符號。",a:"圖名（看主題）、方向標（看方位）、比例尺（算實際距離）、圖例（看懂符號）。"},
+  g6:{q:"戰後臺灣的經濟大致怎麼轉變？舉一項重大建設或產業當例子。",hint:"田裡 → 工廠 → 晶片。",a:"從農業為主，轉型成工商業社會，再發展高科技產業，被稱為「科技島」。重大建設例如高速公路、港口等交通建設。"},
+  kind:"生活解謎",together:"打開地圖 App，規劃從家裡到蓮池潭的路線。小四負責方向和比例尺，小六說出沿路哪些交通建設讓這一帶變方便、對產業有什麼影響。",togetherAns:"",
+  extra:"為什麼卡：為什麼工廠多的地方，人口也會跟著變多？會帶來什麼新問題？"},
+ {id:"soc-b",code:"社會B",subject:"社會",title:"地形人口 × 消費理財",
+  g4:{q:"臺灣常見的地形有哪些？少子化和高齡化分別是什麼意思？",hint:"從高到低排排看。",a:"山地、丘陵、臺地、盆地、平原。少子化是出生的小孩變少；高齡化是老年人口的比例變高。"},
+  g6:{q:"什麼是理性消費？買東西前可以問自己哪三個問題？",hint:"需要、價格與品質、預算。",a:"依照需要和能力做選擇。可以問：我是需要還是想要？價格和品質划算嗎？在不在預算內？"},
+  kind:"生活解謎",together:"給你們 500 元辦一場家庭野餐：小六做預算表、比價；小四查天氣和地形，選地點。最後兩人一起向爸媽簡報，說明為什麼這樣選。",togetherAns:"",
+  extra:"如果卡：每個月存 100 元，存到國中畢業（3 年）有多少？改成每月 150 元呢？存錢和投資的風險有什麼不同？（3,600 元／5,400 元）"},
+ {id:"chi-a",code:"國語A",subject:"國語",title:"形近字 × 文言格言",
+  g4:{q:"「警」和「驚」怎麼分？各造一個詞。再說說什麼是倒敘法。",hint:"看下面的部件：一個是「言」，一個是「馬」。",a:"警（言）：警察、警告；驚（馬）：驚訝、吃驚。倒敘法是先寫結果或最精彩的部分，再回頭說事情的經過。"},
+  g6:{q:"《朱子治家格言》中「一粥一飯，當思來處不易」是什麼意思？你生活中哪裡做得到？",hint:"一碗粥、一碗飯，經過哪些人的手才到你面前？",a:"每一碗粥、每一口飯都得來不容易，要懂得珍惜。生活例子自由回答，說得出具體行動就過關。"},
+  kind:"出題卡",together:"小六用「當……就……」或「假如……就……」出一題造句給小四；小四用課文生字出一題「選對字」給小六。出題的人要先寫好自己的答案。",togetherAns:"",
+  extra:"證據卡：小四的〈我的籃球夢〉和小六的第一單元，都在談怎麼面對挑戰嗎？各從自己的課文找一句當證據，說服對方。"},
+ {id:"chi-b",code:"國語B",subject:"國語",title:"人物傳記 × 美食文學",
+  g4:{q:"人物傳記通常會寫哪些內容？從〈永遠的馬偕〉找出三件讓人敬佩的事。",hint:"生平、重要事蹟、精神。",a:"通常會寫出生背景、重要事蹟、遇到的困難和留下的影響；三件事請對照課文找。"},
+  g6:{q:"〈臺灣美食詩選〉和〈珍珠奶茶〉怎麼讓讀者「嘗到」味道？找一句用到感官摹寫的句子。",hint:"視覺、聽覺、嗅覺、味覺、觸覺。",a:"請對照課文；能指出句子並說出用了哪一種感官就算過關。"},
+  kind:"為什麼卡",together:"為什麼一種食物（例如珍珠奶茶）能變成一個地方的代表？小四從「家鄉特色」想，小六從「文化和產業」想，最後合成一句結論。",togetherAns:"",
+  extra:"近義詞挑戰：「千變萬化、變化多端、瞬息萬變」有什麼細微不同？小四說例句，小六判斷用得對不對並說出理由。"},
+ {id:"eng-a",code:"英語A",subject:"英語",title:"家人職業 × 國家與生病",
+  g4:{q:"看家人照片練問答：Who's he? Is she a nurse?",hint:"He's my … ／ Yes, she is. No, she isn't.",a:"He's my father. ／ Yes, she is. 或 No, she isn't."},
+  g6:{q:"回答：Where are you from? What's wrong? Do you have a headache?",hint:"I'm from … ／ I have a … ／ Yes, I do. No, I don't.",a:"I'm from Japan. ／ I have a cold. ／ Yes, I do. 或 No, I don't."},
+  kind:"角色扮演",together:"開一間「家庭英語診所」🏥：小六演從外國來的病人，小四當醫生或護士。小四要問 Where are you from? 和 What's wrong?，小六用 Unit 2 的句子回答。演完互換角色。",togetherAns:"",
+  extra:"出題卡：各出 3 題英文問題給對方，至少一題是 Yes/No 問句。"}
+];
+
+const FLIPS = [
+ {id:"flip-12",text:"出一題「答案是 12」的應用題給對方。"},
+ {id:"flip-mcq",text:"出一題選擇題，三個選項都要看起來很像對的。"},
+ {id:"flip-comic",text:"把今天學的一個觀念畫成 4 格漫畫，請對方說出你在畫什麼。"},
+ {id:"flip-whatif",text:"出一題「如果……會怎樣？」，最好連你自己都想知道答案。"},
+ {id:"flip-mistake",text:"找一題你今天答錯的，改一個數字或條件，變成新題目考對方。"},
+ {id:"flip-core",text:"用一句話考對方：這個單元最重要的一件事是什麼？"},
+ {id:"flip-draw",text:"出一題要「畫圖才解得開」的題目。"},
+ {id:"flip-bug",text:"說一個課本裡的觀念，故意講錯一個地方，請對方抓錯。"}
+];
+
+const STAGES = [
+ {name:"神秘蛋",min:0,emoji:"🥚"},{name:"星寶寶",min:5,emoji:"🐣"},
+ {name:"少年星寶",min:15,emoji:"🐥"},{name:"超進化星寶",min:30,emoji:"🌟"}
+];
+const PRIVILEGE_EVERY = 15;
+const REVIEW_DAYS = [1,3,7,14];
+
+const SCOPE = {
+ g4:[["國語","康軒","第一、二單元：L1 水陸小高手、L2 放學後、L3 我的籃球夢、學習地圖一、L4 永遠的馬偕、L5 假如我有三天的光明、L6 攀登生命的高峰","康軒四上課文表、臺北太平國小 114 康軒週次"],
+  ["數學","南一","第 1～4 單元：一億以內的數、乘法、角度、除法（可能到第 5 單元三角形）","均一類南一四上單元表"],
+  ["英語","何嘉仁 Super Fun 3","Topic 1（Lesson 1～2：Who's he? / Is he a doctor?）＋ Review 1，可能含 Lesson 3","臺南學甲國小 115 學年課程計畫"],
+  ["社會","翰林","第 1～3 單元：家鄉的地圖與運用、家鄉的地形與氣候、家鄉的人口與生活","新北屈尺國小 115 學年翰林週次"],
+  ["自然","翰林","第 1～2 單元：閃亮的天空（月亮位置、月相）、水域環境（水生植物、水生動物）","新北屈尺國小 115 學年翰林週次"]],
+ g6:[["國語","康軒","第一、二單元：L1 跑道、L2 朱子治家格言選、L3 談遇見更好的自己、學習地圖一、L4 臺灣美食詩選、L5 最好的味覺禮物、L6 珍珠奶茶、學習地圖二、閱讀階梯一（可能到 L7 大小剛好的鞋子）","屏東某國小 115 學年康軒六上週次"],
+  ["數學","南一","第 1～4 單元：質因數分解和短除法、分數的除法、小數的除法、圓周率和圓面積","臺北 115 學年南一六上計畫（第 10 週紙筆評量）"],
+  ["英語","康軒 Wonder World 7","Starter、Unit 1 Whale Watching（Where are you from?）、Unit 2 Having a Cold（What's wrong?）、Review 1","臺北文林國小 113 學年 WW7 計畫（版次可能更新）"],
+  ["社會","翰林","第 1～2 單元：戰後經濟發展與轉型、消費選擇與理財規劃","屏東某國小 115 學年翰林六上週次"],
+  ["自然","翰林","第 1～2 單元：熱的影響與傳播、多變的天氣（雲霧露霜、天氣圖、颱風）","新北屈尺國小 115 學年翰林週次"]]
+};
+const SOURCES = [
+ ["新光國小 115 學年度教科用書版本總表（公告）","https://www.skps.kh.edu.tw/upload/179/103_78675_media/02_115%E7%A2%BA%E5%AE%9A%E9%81%B8%E7%94%A8%E7%89%88%E6%9C%AC(%E5%85%AC%E5%91%8A).pdf"],
+ ["新光國小教務處最新消息（查無考試範圍公告）","https://www.skps.kh.edu.tw/view/index.php?WebID=179&MainType=101&SubType=0&MainMenuId=9244&SubMenuId=0"],
+ ["高雄市教育局 115 學年度第一學期行事曆","https://www.kusjh.kh.edu.tw/upload/files/115-1.pdf"],
+ ["康軒四上語文重點統整表","http://sunnyteaching680228.blogspot.com/2026/06/blog-post.html"],
+ ["115 學年六年級國語（康軒）教學計畫","https://www.cp.ptc.edu.tw/storage/134679/134679_115_B-01_6A.pdf"],
+ ["115 學年六年級社會（翰林）教學計畫","https://www.cp.ptc.edu.tw/storage/134679/134679_115_B-05_6A.pdf"],
+ ["115 學年六年級數學（南一）課程計畫","https://tten.tp.edu.tw/Login/Downment?grade=6&spid=ba4f2695-d3a9-4657-93ab-42ed636628f7&subject=Mathematics"],
+ ["均一：適南一版六年級（115 學年）","https://www.junyiacademy.org/topics/tainan-di-n-m6"],
+ ["均一：類南一版四年級","https://www.junyiacademy.org/topics/n-m4a"],
+ ["新北屈尺國小 115 學年自然課程計畫（翰林四、六年級）","https://www.ccyes.ntpc.edu.tw/p/406-1000-8856,r157.php"],
+ ["新北屈尺國小 115 學年社會課程計畫（翰林四年級）","https://www.ccyes.ntpc.edu.tw/p/406-1000-8855,r157.php"],
+ ["臺南學甲國小 115 學年四年級英語 Super Fun 3","https://course.tn.edu.tw/course/115E%E5%AD%B8%E7%94%B2%E5%9C%8B%E5%B0%8FC5-1%E9%A0%98%E5%9F%9F%E5%AD%B8%E7%BF%92%E8%AA%B2%E7%A8%8B(%E8%AA%BF%E6%95%B4)%E8%A8%88%E7%95%AB%E6%99%AE%E9%80%9A%E7%8F%AD%E5%9B%9B%E5%B9%B4%E7%B4%9A%E8%8B%B1%E8%AA%9E070620099.pdf"],
+ ["臺北文林國小六年級英語 Wonder World 7 教學計畫","https://tten.tp.edu.tw/Login/Downment?grade=6&spid=9f3d5bc6-624c-4f24-b987-078022adc4cd&subject=English"]
+];
+const SCIENCE = [
+ ["🔁 提取練習","從腦中「拿出來」比再讀一次記得更牢","答案預設藏起來，先說答案再翻開"],
+ ["⏰ 間隔重複","快忘記時再複習，記憶最持久","過關後第 1、3、7、14 天，地圖上會跳出「該複習」"],
+ ["🔀 交錯練習","不同主題混著練，更會判斷該用哪一招","選「全部」隨機抽不同科目"],
+ ["🔗 精緻化","問「為什麼」、連到生活，知識才會黏住","為什麼卡、生活解謎"],
+ ["✍️ 生成效應","自己產生的東西比被告知的記得更好","出題反轉卡、造句出題"],
+ ["👩‍🏫 費曼法／教學效應","能教別人才算真懂，教的人學最多","小老師卡：小六教、小四說回來（+2 星）"],
+ ["🎯 刻意練習＋即時回饋","專練卡住的點，馬上知道對錯","翻答案立即對照；錯題卡只練卡住的那一步"],
+ ["🤔 後設認知","知道自己會不會，才知道要練什麼","答題前先按信心 1～3"],
+ ["🌱 成長型思維","能力是練出來的，錯誤是線索","按「還不會」星寶會打氣、不扣分"]
+];
+const HABITS = [
+ ["👀 提示：讓它顯而易見","固定在晚餐後：碗放進水槽，就打開星寶冒險機"],
+ ["😍 渴望：讓它有吸引力","抽卡、團隊星星、星寶進化、小六當隊長、小四當計分員"],
+ ["👌 回應：讓它簡單","只玩 3 關、15～20 分鐘。很累的晚上只玩 1 關也算數"],
+ ["🎉 獎勵：讓它令人滿足","星星、彩紙、連續天數火焰 🔥，每 15 星換家庭特權"]
+];
+const AI_RULES = ["先自己想 3 分鐘，寫下答案或卡住的地方，才可以問 AI。","只問提示、不問答案；AI 直接給答案時，要說「請改成提示」。","AI 也會錯：它說的事實，要用課本或第二個來源核對。","不給 AI 個資：姓名、學校、班級、照片都不要。","問完要能不看 AI 自己講一遍，才算學會。","小四使用 AI 時，大人或小六要在旁邊。"];
+const LADDER = ["是什麼？（定義：質數是什麼？）","為什麼？（原因：為什麼 1 不是質數？）","怎麼做？（方法：怎麼最快找到公因數？）","如果……會怎樣？（推論：如果半徑變 2 倍呢？）","這和……有什麼關係？（連結：分數除法和分披薩有什麼關係？）","怎麼證明我是對的？（證據：我可以用什麼方法檢查？）"];
+const PROMPTS = [
+ ["💡 提示模式","我是國小＿年級學生，正在複習＿＿。請不要直接給答案，一次只給我一個提示並問我一個問題，等我回答後再給下一個提示。"],
+ ["🔍 檢查想法","這是我的答案和想法：＿＿。請先不要說對不對，問我兩個問題，讓我自己找出哪裡可能有錯。"],
+ ["👩‍🏫 費曼檢查","我要用自己的話解釋＿＿給你聽。請扮演一個好奇的三年級小朋友，聽不懂就追問我。"],
+ ["🎯 出題教練","請根據＿＿出 3 題由簡單到難的題目。一次只給一題，等我回答完再給回饋和下一題。"],
+ ["🩺 錯題醫生","這題我錯了：＿＿。請用問問題的方式，幫我找出是哪一步想錯，最後讓我自己說出正確做法。"],
+ ["❓ 五個為什麼","關於＿＿，請陪我玩「連問五個為什麼」，每次只問一個，我回答後再繼續。"]
+];
+const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（提取練習）。","2～12 分 🎲 抽 2～3 關：先按信心，各自闖關，卡住才翻提示。","12～16 分 🤝 合體關：小老師、為什麼、生活解謎，關主只追問。","16～18 分 🔄 出題反轉：互相出一題，由對方評「好題目」。","18～20 分 ⭐ 結算：看星寶長多大，各說一句「我今天學會……／我還不會……」，錯題寫成錯題卡。"];
+const STAR_RULES = [["先自己說出答案（不管對錯）","+1"],["答錯後，自己找出錯在哪一步","+1"],["講解到對方能用自己的話說回來","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題","+2"],["出一題對方覺得「好題目」的題","+2"],["一起解開合體關","+1"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
+const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
+const PLAN = [["10/22（四）","認識規則＋數學A","—","15 分"],["10/23（五）","自然A","數學A","15 分"],["10/24（六）","社會A、國語A","自然A","20 分"],["10/25（日，光復節）","英語A 家庭英語診所","數學A、社會A、國語A","25 分"],["10/26（一，補假）","數學B","自然A、英語A","20 分"],["10/27（二）","自然B","社會A、國語A、數學B","20 分"],["10/28（三）","社會B、國語B","英語A","20 分"],["10/29（四）","數學C","數學A（第 7 天）、自然B","20 分"],["10/30（五）","出題對決（全科）","社會B、國語B、數學B","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一課","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
+const NEXT = ["拿到老師的範圍單後，把估計範圍換成正式範圍，每課補 3 張任務卡。","建立錯題記憶庫：記下日期和錯在哪一步，自動排第 1、3、7 天複習。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！星寶長大了！🌱"];
+const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
+
+/* =========================================================
+   2. 進度資料（SAVE）＋ 版本升級 migrate()
+   規則：只新增欄位、不刪不改舊欄位；卡片用穩定 id 當 key
+   ========================================================= */
+function twDate(d){
+  d = d || new Date();
+  try{
+    return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Taipei",year:"numeric",month:"2-digit",day:"2-digit"}).format(d);
+  }catch(e){
+    const t = new Date(d.getTime() + 8*3600*1000);
+    return t.toISOString().slice(0,10);
+  }
+}
+function addDays(dateStr,n){
+  const [y,m,dd] = dateStr.split("-").map(Number);
+  const t = new Date(Date.UTC(y,m-1,dd)+n*86400000);
+  return t.toISOString().slice(0,10);
+}
+function dayDiff(a,b){ // b - a in days
+  const pa=a.split("-").map(Number), pb=b.split("-").map(Number);
+  return Math.round((Date.UTC(pb[0],pb[1]-1,pb[2])-Date.UTC(pa[0],pa[1]-1,pa[2]))/86400000);
+}
+
+function defaultSave(){
+  const now = new Date().toISOString();
+  return {
+    schemaVersion: SCHEMA_VERSION,
+    createdAt: now,
+    updatedAt: now,
+    appVersionLastSeen: APP_VERSION,
+    teamStars: 0,
+    kidStars: {g4:0, g6:0, team:0},
+    redeemed: 0,
+    cards: {},          // { [cardId]: CardProgress }
+    flips: {},          // { [flipId]: { drawn, good } }
+    playDates: [],      // ["2026-10-22", ...] 台灣日期
+    daily: {},          // { "2026-10-22": { g4:{stars,actions,misses}, g6:{...}, team:{stars,actions} } }
+    settings: { petName:"星寶", names:{g4:"小四", g6:"小六"} },
+    history: []         // 版本升級紀錄
+  };
+}
+function defaultCardProgress(){
+  return { cleared:false, firstClearedOn:null, lastPlayedOn:null, playedOn:[], stars:{g4:0,g6:0,team:0}, misses:{g4:0,g6:0}, opened:0 };
+}
+function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
+// 把預設值補進舊資料：只補缺少的欄位，絕不覆蓋已有值
+function fillDefaults(target, defaults){
+  for(const k in defaults){
+    if(!(k in target) || target[k] === undefined || target[k] === null && defaults[k] !== null){
+      target[k] = JSON.parse(JSON.stringify(defaults[k]));
+    }else if(isObj(defaults[k]) && isObj(target[k])){
+      fillDefaults(target[k], defaults[k]);
+    }
+  }
+  return target;
+}
+
+// 每一個版本升級一步。未來新增 v2 時：在這裡加 2: (s)=>{...; return s;}，SCHEMA_VERSION 改 2
+const MIGRATIONS = {
+  // v0（沒有 schemaVersion 的舊資料，例如只有 stars 數字）→ v1
+  1: function(s){
+    const out = defaultSave();
+    if(typeof s.stars === "number") out.teamStars = s.stars;
+    if(typeof s.teamStars === "number") out.teamStars = s.teamStars;
+    for(const k in s){ if(!(k in out)) out[k] = s[k]; } // 不認識的欄位也保留
+    return out;
+  }
+};
+
+function migrate(raw){
+  let s = isObj(raw) ? raw : {};
+  let v = typeof s.schemaVersion === "number" ? s.schemaVersion : 0;
+  const from = v;
+  while(v < SCHEMA_VERSION){
+    const step = MIGRATIONS[v+1];
+    if(step) s = step(s);
+    v = v + 1;
+    s.schemaVersion = v;
+  }
+  // 存檔比程式新（例如舊網址開到新存檔）：不降級、不刪資料，只補欄位
+  fillDefaults(s, defaultSave());
+  for(const id in s.cards){ if(isObj(s.cards[id])) fillDefaults(s.cards[id], defaultCardProgress()); }
+  if(!Array.isArray(s.playDates)) s.playDates = [];
+  s.playDates = Array.from(new Set(s.playDates.filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d)))).sort();
+  if(from !== SCHEMA_VERSION){
+    s.history.push({at:new Date().toISOString(), from:from, to:s.schemaVersion, app:APP_VERSION});
+  }
+  if(s.appVersionLastSeen !== APP_VERSION){ s.appVersionLastSeen = APP_VERSION; }
+  return s;
+}
+
+let storageOK = true;
+function loadSave(){
+  let raw = null;
+  try{ raw = localStorage.getItem(SAVE_KEY); }catch(e){ storageOK = false; }
+  if(!raw) return migrate(defaultSave());
+  try{
+    const parsed = JSON.parse(raw);
+    const before = parsed.schemaVersion;
+    if(before !== SCHEMA_VERSION){
+      try{ localStorage.setItem(PREV_KEY, raw); }catch(e){}
+    }
+    return migrate(parsed);
+  }catch(e){
+    // 壞掉的存檔不要丟掉：先備份到 PREV_KEY
+    try{ localStorage.setItem(PREV_KEY, raw); }catch(e2){}
+    return migrate(defaultSave());
+  }
+}
+let S = loadSave();
+function persist(){
+  S.updatedAt = new Date().toISOString();
+  try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); storageOK = true; }
+  catch(e){ storageOK = false; }
+  renderSaveState();
+}
+persist();
+
+function cardProg(id){
+  if(!S.cards[id]) S.cards[id] = defaultCardProgress();
+  return S.cards[id];
+}
+function dayRec(date){
+  if(!S.daily[date]) S.daily[date] = {g4:{stars:0,actions:0,misses:0}, g6:{stars:0,actions:0,misses:0}, team:{stars:0,actions:0}};
+  fillDefaults(S.daily[date], {g4:{stars:0,actions:0,misses:0}, g6:{stars:0,actions:0,misses:0}, team:{stars:0,actions:0}});
+  return S.daily[date];
+}
+function markPlayed(cardId){
+  const today = twDate();
+  if(!S.playDates.includes(today)){ S.playDates.push(today); S.playDates.sort(); }
+  if(cardId){
+    const p = cardProg(cardId);
+    if(!p.playedOn.includes(today)) p.playedOn.push(today);
+    p.lastPlayedOn = today;
+  }
+}
+// 連續天數：從台灣時間今天（今天還沒玩就從昨天）往回數
+function streakInfo(){
+  const set = new Set(S.playDates);
+  const today = twDate();
+  let start = set.has(today) ? today : addDays(today,-1);
+  let n = 0;
+  while(set.has(start)){ n++; start = addDays(start,-1); }
+  let best = 0, run = 0, prev = null;
+  for(const d of S.playDates){
+    run = (prev && dayDiff(prev,d) === 1) ? run+1 : 1;
+    if(run > best) best = run;
+    prev = d;
+  }
+  return {current:n, best:best, playedToday:set.has(today)};
+}
+// 間隔複習：第一次過關後第 1、3、7、14 天
+function reviewDue(id){
+  const p = S.cards[id];
+  if(!p || !p.firstClearedOn) return false;
+  const today = twDate();
+  for(const m of REVIEW_DAYS){
+    const dueOn = addDays(p.firstClearedOn, m);
+    if(dayDiff(dueOn, today) >= 0){
+      const doneAfter = p.playedOn.some(d => dayDiff(dueOn, d) >= 0);
+      if(!doneAfter) return true;
+    }
+  }
+  return false;
+}
+function stageOf(s){ return s>=30?3:s>=15?2:s>=5?1:0; }
+
+/* =========================================================
+   3. 介面
+   ========================================================= */
+const $ = (id) => document.getElementById(id);
+const esc = (t) => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let filter = "全部";
+let curId = CARDS[0].id;
+let rev = {h4:false,a4:false,h6:false,a6:false,at:false};
+let conf = {g4:0,g6:0};
+let flipIdx = -1;
+
+function toast(t){ const el=$("toast"); el.textContent=t; el.style.display="block"; clearTimeout(toast._t); toast._t=setTimeout(()=>el.style.display="none",2200); }
+function renderSaveState(){
+  const el = document.getElementById("saveState"); if(!el) return;
+  el.textContent = storageOK ? "💾 已自動存檔" : "⚠️ 這個瀏覽器不能存檔（無痕模式？）請用匯出備份";
+}
+
+document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
+  document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === "p-"+b.dataset.p));
+  if(b.dataset.p === "log") renderLog();
+  if(b.dataset.p === "science") drawCompound();
+  window.scrollTo({top:0,behavior:"smooth"});
+}));
+
+function renderFilters(){
+  const names = ["全部"].concat(Object.keys(SUBJECTS));
+  $("filters").innerHTML = names.map(n => {
+    const cls = n === "全部" ? "b-gray" : SUBJECTS[n].cls;
+    const em = n === "全部" ? "🌈" : SUBJECTS[n].emoji;
+    return `<button class="btn ${cls} ${filter===n?"":"ghost"}" data-f="${n}">${em} ${n}</button>`;
+  }).join("");
+  $("filters").querySelectorAll("button").forEach(b => b.onclick = () => {
+    filter = b.dataset.f; renderFilters(); renderMap();
+    const first = pool()[0]; if(first) openCard(first.id);
+  });
+}
+function pool(){ return filter === "全部" ? CARDS : CARDS.filter(c => c.subject === filter); }
+function renderMap(){
+  $("map").innerHTML = pool().map(c => {
+    const p = S.cards[c.id]; const done = p && p.cleared; const due = reviewDue(c.id);
+    const n = CARDS.indexOf(c)+1;
+    return `<button class="lvl ${done?"done":""} ${c.id===curId?"sel":""}" style="--c:${SUBJECTS[c.subject].color}" data-id="${c.id}">
+      ${due?'<span class="due">⏰ 該複習</span>':""}
+      <div class="n">${done?"⭐":SUBJECTS[c.subject].emoji} 第${n}關</div><div class="c">${c.code}</div><div class="t">${done?"已過關":esc(c.title)}</div></button>`;
+  }).join("");
+  $("map").querySelectorAll(".lvl").forEach(b => b.onclick = () => openCard(b.dataset.id));
+}
+function openCard(id){
+  curId = id; rev = {h4:false,a4:false,h6:false,a6:false,at:false}; conf = {g4:0,g6:0};
+  const p = cardProg(id); p.opened++; persist();
+  renderMap(); renderCard();
+  const el = $("card"); el.classList.remove("panel"); void el.offsetWidth;
+}
+function kidHTML(c, g){
+  const isG4 = g === "g4"; const lv = c[g];
+  const h = isG4 ? rev.h4 : rev.h6, a = isG4 ? rev.a4 : rev.a6;
+  const team = isG4 ? "🔵 藍隊・小四關" : "🔴 紅隊・小六關";
+  const cls = isG4 ? "b-blue" : "b-red";
+  return `<div class="kid ${g}">
+    <span class="badge">${team}</span>
+    <p class="q">${esc(lv.q)}</p>
+    <div class="conf" style="--c:${isG4?"var(--blue)":"var(--red)"}">先猜信心：${[1,2,3].map(n=>`<button data-conf="${g}" data-n="${n}" class="${conf[g]===n?"on":""}">${"⭐".repeat(n)}</button>`).join("")}</div>
+    ${h?`<div class="hint">💡 提示：${esc(lv.hint)}</div>`:""}
+    ${a?`<div class="ans">✅ 參考答案：${esc(lv.a)}</div>`:""}
+    <div class="row">
+      <button class="btn ghost ${cls}" data-rev="${isG4?"h4":"h6"}">${h?"收起提示":"💡 看提示"}</button>
+      <button class="btn ghost ${cls}" data-rev="${isG4?"a4":"a6"}">${a?"收起答案":"🙈 先說答案，再翻開"}</button>
+    </div>
+    <div class="row" style="margin-top:12px">
+      <button class="btn ${cls}" data-award="${g}" data-n="1" data-m="">🙋 我自己想出來了 +1</button>
+      <button class="btn ${cls}" data-award="${g}" data-n="1" data-m="找到錯誤就是進步！🔍">🔍 錯了，但找到錯在哪 +1</button>
+      <button class="btn b-pink" data-miss="${g}">🤗 還不會</button>
+    </div>
+  </div>`;
+}
+function renderCard(){
+  const c = CARDS.find(x => x.id === curId) || CARDS[0];
+  const n = CARDS.indexOf(c)+1;
+  $("card").innerHTML = `<div class="panel on" style="display:block">
+    <h2>${SUBJECTS[c.subject].emoji} 第 ${n} 關・${c.code}｜${esc(c.title)} ${reviewDue(c.id)?"⏰":""}</h2>
+    <div class="kids">${kidHTML(c,"g4")}${kidHTML(c,"g6")}
+      <div class="kid team"><span class="badge">🤝 合體關・${esc(c.kind)}</span>
+        <p class="q">${esc(c.together)}</p>
+        ${rev.at && c.togetherAns?`<div class="ans">✅ 參考答案：${esc(c.togetherAns)}</div>`:""}
+        <div class="hint">🎁 加碼：${esc(c.extra)}</div>
+        <div class="row">
+          ${c.togetherAns?`<button class="btn ghost b-yellow" data-rev="at">${rev.at?"收起答案":"🙈 翻開合體關答案"}</button>`:""}
+          <button class="btn b-red" data-award="team" data-n="2" data-m="教的人學最多！👩‍🏫">👩‍🏫 教到對方能說回來 +2</button>
+          <button class="btn b-blue" data-award="team" data-n="2" data-m="好問題！🤔">🤔 問出「如果…會怎樣」+2</button>
+          <button class="btn b-mint" data-award="team" data-n="1" data-m="合體成功！🤝">🤝 一起解開了 +1</button>
+        </div>
+      </div>
+    </div></div>`;
+  const root = $("card");
+  root.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { rev[b.dataset.rev] = !rev[b.dataset.rev]; renderCard(); });
+  root.querySelectorAll("[data-conf]").forEach(b => b.onclick = () => { conf[b.dataset.conf] = Number(b.dataset.n); renderCard(); });
+  root.querySelectorAll("[data-award]").forEach(b => b.onclick = (e) => award(b.dataset.award, Number(b.dataset.n), b.dataset.m, e));
+  root.querySelectorAll("[data-miss]").forEach(b => b.onclick = (e) => miss(b.dataset.miss, e));
+}
+
+function award(who, n, text, ev){
+  const before = S.teamStars;
+  S.teamStars += n;
+  S.kidStars[who] = (S.kidStars[who]||0) + n;
+  const today = twDate(); const d = dayRec(today);
+  d[who].stars += n; d[who].actions += 1;
+  const p = cardProg(curId);
+  p.stars[who] = (p.stars[who]||0) + n;
+  if(!p.cleared){ p.cleared = true; p.firstClearedOn = today; }
+  markPlayed(curId);
+  persist();
+  const sb = stageOf(before), sa = stageOf(S.teamStars);
+  const privBefore = Math.floor(before/PRIVILEGE_EVERY), privAfter = Math.floor(S.teamStars/PRIVILEGE_EVERY);
+  if(sa > sb){
+    const m = `進化了！變成${STAGES[sa].name}！${STAGES[sa].emoji}`;
+    petFx("evolve", m); confetti(220, ev); setMsg(m);
+  }else{
+    const m = text || HAPPY[Math.floor(Math.random()*HAPPY.length)];
+    petFx("happy", m); confetti(90, ev); setMsg(`${m}（+${n} ⭐）`);
+    if(privAfter > privBefore) setTimeout(()=>toast("🎁 又可以兌換一個家庭特權了！"),600);
+  }
+  renderAll(false);
+}
+function miss(who, ev){
+  const d = dayRec(twDate()); d[who].misses += 1; d[who].actions += 1;
+  const p = cardProg(curId); p.misses[who] = (p.misses[who]||0) + 1;
+  markPlayed(curId);
+  persist();
+  const m = CHEER[Math.floor(Math.random()*CHEER.length)];
+  petFx("cheer", m); hearts();
+  setMsg(`${m} 把這題寫成錯題卡，明天、第 3 天、第 7 天再挑戰。`);
+  renderAll(false);
+}
+function setMsg(t){ $("msg").textContent = t; }
+
+function renderEvo(){
+  const s = S.teamStars, st = stageOf(s);
+  const avail = availablePrivileges();
+  $("evoLine").textContent = st < 3
+    ? `🥚 → 🐣 星寶寶（5 星）→ 🐥 少年星寶（15 星）→ 🌟 超進化星寶（30 星）。再 ${STAGES[st+1].min - s} 顆進化！`
+    : `🌟 已達最終進化！每 15 顆星換一個家庭特權。目前可兌換：${avail} 個`;
+  $("redeemBtn").style.display = avail > 0 ? "" : "none";
+  $("redeemBtn").textContent = `🎁 兌換家庭特權（${avail}）`;
+}
+function availablePrivileges(){
+  const earned = Math.floor(S.teamStars / PRIVILEGE_EVERY);
+  return Math.max(0, earned - S.redeemed);
+}
+$("redeemBtn").onclick = () => {
+  if(availablePrivileges() <= 0) return;
+  if(!confirm("確定要兌換一個家庭特權嗎？（選週末活動、決定晚餐、多一個睡前故事…）")) return;
+  S.redeemed++; persist(); renderEvo(); confetti(160); toast("🎁 兌換成功！跟媽媽說你們選了什麼～");
+};
+$("howBtn").onclick = () => {
+  document.querySelector('.tab[data-p="parent"]').click();
+};
+$("randBtn").onclick = () => {
+  const list = pool().filter(c => c.id !== curId);
+  const due = list.filter(c => reviewDue(c.id));
+  const from = due.length && Math.random() < 0.6 ? due : (list.length ? list : pool());
+  openCard(from[Math.floor(Math.random()*from.length)].id);
+  $("card").scrollIntoView({behavior:"smooth",block:"start"});
+};
+$("flipBtn").onclick = () => {
+  let n = Math.floor(Math.random()*FLIPS.length); if(n === flipIdx) n = (n+1)%FLIPS.length; flipIdx = n;
+  const f = FLIPS[n];
+  S.flips[f.id] = S.flips[f.id] || {drawn:0,good:0}; S.flips[f.id].drawn++; persist();
+  $("flipBox").innerHTML = `<div class="kid team" style="margin-top:14px"><span class="badge">🔄 出題反轉卡</span><p class="q">${esc(f.text)}</p>
+   <div class="row"><button class="btn b-blue" id="flipG4">🔵 小四出了好題目 +2</button><button class="btn b-red" id="flipG6">🔴 小六出了好題目 +2</button></div></div>`;
+  $("flipG4").onclick = (e) => { S.flips[f.id].good++; award("g4",2,"好題目！出題的人學最多！✍️",e); };
+  $("flipG6").onclick = (e) => { S.flips[f.id].good++; award("g6",2,"好題目！出題的人學最多！✍️",e); };
+};
+
+/* 範圍、學習科學、AI、家長 */
+function table(el, head, rows){
+  $(el).innerHTML = `<thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody>`;
+}
+function renderScope(g){
+  table("scopeTable", ["科目","版本（官方）","估計範圍 ⚠️","推估依據"], SCOPE[g]);
+  $("sg4").className = "btn b-blue" + (g==="g4"?"":" ghost");
+  $("sg6").className = "btn b-red" + (g==="g6"?"":" ghost");
+}
+$("sg4").onclick = () => renderScope("g4"); $("sg6").onclick = () => renderScope("g6");
+function renderStatic(){
+  renderScope("g4");
+  $("sources").innerHTML = SOURCES.map(s => `<li><a href="${esc(s[1])}" target="_blank" rel="noopener">${esc(s[0])}</a></li>`).join("");
+  table("sciTable", ["技巧","一句話解釋","遊戲裡怎麼做"], SCIENCE);
+  table("habitTable", ["習慣四步驟","我們家的做法"], HABITS);
+  $("aiRules").innerHTML = AI_RULES.map(t=>`<li>${esc(t)}</li>`).join("");
+  $("ladder").innerHTML = LADDER.map(t=>`<li>${esc(t)}</li>`).join("");
+  $("prompts").innerHTML = PROMPTS.map((p,i)=>`<div class="prompt"><b>${esc(p[0])}</b><br>${esc(p[1])}<div class="row" style="margin-top:8px"><button class="btn small b-purple" data-copy="${i}">📋 複製</button></div></div>`).join("");
+  $("prompts").querySelectorAll("[data-copy]").forEach(b => b.onclick = () => copyText(PROMPTS[Number(b.dataset.copy)][1]));
+  $("session").innerHTML = SESSION.map(t=>`<li>${esc(t)}</li>`).join("");
+  table("starTable", ["做到這件事","團隊星星"], STAR_RULES);
+  table("mindTable", ["🙅 不要說","🙆 改成說"], MINDSET);
+  table("planTable", ["日期","新卡","複習舊卡","時間"], PLAN);
+  $("nextList").innerHTML = NEXT.map(t=>`<li>${esc(t)}</li>`).join("");
+  $("verLine").textContent = `程式版本 ${APP_VERSION}｜存檔格式 v${SCHEMA_VERSION}｜存檔位置 localStorage「${SAVE_KEY}」`;
+}
+function copyText(t){
+  const done = () => toast("📋 已複製！");
+  if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(t).then(done, () => fallbackCopy(t)); }
+  else fallbackCopy(t);
+}
+function fallbackCopy(t){
+  const ta = document.createElement("textarea"); ta.value = t; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); toast("📋 已複製！"); }catch(e){ toast("請手動長按複製"); }
+  ta.remove();
+}
+
+/* 紀錄 */
+function renderLog(){
+  const si = streakInfo();
+  const cleared = CARDS.filter(c => S.cards[c.id] && S.cards[c.id].cleared).length;
+  $("stats").innerHTML = [
+    ["⭐ 團隊星星", S.teamStars],["🔵 小四星星", S.kidStars.g4],["🔴 小六星星", S.kidStars.g6],["🤝 合體星星", S.kidStars.team],
+    ["🔥 連續天數", si.current],["🏆 最長連續", si.best],["🗺️ 過關數", `${cleared}/${CARDS.length}`],["📆 玩過天數", S.playDates.length]
+  ].map(x=>`<div class="stat"><b>${x[1]}</b>${x[0]}</div>`).join("");
+  const days = Object.keys(S.daily).sort().reverse().slice(0,30);
+  table("logTable", ["日期（台灣）","🔵 小四 星／次／還不會","🔴 小六 星／次／還不會","🤝 合體星"],
+    days.length ? days.map(d => { const r = S.daily[d]; return [d, `${r.g4.stars} ／ ${r.g4.actions} ／ ${r.g4.misses}`, `${r.g6.stars} ／ ${r.g6.actions} ／ ${r.g6.misses}`, `${r.team.stars}`]; })
+                : [["還沒有紀錄","開始玩第一關吧！","",""]]);
+}
+
+/* 匯出／匯入 */
+function encodeSave(obj){
+  const json = JSON.stringify(obj);
+  const bytes = new TextEncoder().encode(json);
+  let bin = ""; bytes.forEach(b => bin += String.fromCharCode(b));
+  return "SB1:" + btoa(bin);
+}
+function decodeSave(code){
+  code = code.trim();
+  if(code.startsWith("{")) return JSON.parse(code);
+  if(code.startsWith("SB1:")) code = code.slice(4);
+  const bin = atob(code.replace(/\s+/g,""));
+  const bytes = Uint8Array.from(bin, c => c.charCodeAt(0));
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+$("exportCode").onclick = () => { const c = encodeSave(S); $("codeOut").value = c; copyText(c); };
+$("exportFile").onclick = () => {
+  const blob = new Blob([JSON.stringify(S,null,2)], {type:"application/json"});
+  const a = document.createElement("a"); a.href = URL.createObjectURL(blob);
+  a.download = `雙寶存檔-${twDate()}.json`; document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast("⬇️ 存檔檔案已下載");
+};
+function doImport(obj){
+  if(!isObj(obj) || (!("teamStars" in obj) && !("schemaVersion" in obj) && !("stars" in obj))){ alert("這看起來不是雙寶冒險隊的存檔 🙏"); return; }
+  const incoming = migrate(JSON.parse(JSON.stringify(obj)));
+  const msg = `要用匯入的存檔取代目前進度嗎？\n\n目前：⭐ ${S.teamStars} 顆、玩過 ${S.playDates.length} 天\n匯入：⭐ ${incoming.teamStars} 顆、玩過 ${incoming.playDates.length} 天\n\n（目前進度會先備份成「上一份存檔」）`;
+  if(!confirm(msg)) return;
+  try{ localStorage.setItem(PREV_KEY, JSON.stringify(S)); }catch(e){}
+  S = incoming; persist(); renderAll(true); confetti(150); toast("📥 匯入成功！星寶回來了～");
+}
+$("importCode").onclick = () => {
+  const t = $("codeIn").value; if(!t.trim()){ toast("請先貼上存檔碼"); return; }
+  try{ doImport(decodeSave(t)); }catch(e){ alert("存檔碼讀不懂，請確認有完整複製（SB1: 開頭）🙏"); }
+};
+$("importFile").onchange = (e) => {
+  const f = e.target.files && e.target.files[0]; if(!f) return;
+  const r = new FileReader();
+  r.onload = () => { try{ doImport(decodeSave(String(r.result))); }catch(err){ alert("這個檔案讀不懂 🙏"); } e.target.value = ""; };
+  r.readAsText(f);
+};
+$("restorePrev").onclick = () => {
+  let raw = null; try{ raw = localStorage.getItem(PREV_KEY); }catch(e){}
+  if(!raw){ toast("沒有上一份存檔"); return; }
+  try{ doImport(JSON.parse(raw)); }catch(e){ alert("上一份存檔讀不懂 🙏"); }
+};
+
+/* =========================================================
+   4. 星寶動畫（canvas）
+   ========================================================= */
+const INK = "#3A2E4A";
+const CANDY = ["#FF5A5F","#3DA5FF","#FFD23F","#3DDC97","#B388FF","#FF8FC7"];
+const still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const pet = {fx:{kind:"idle",at:0,msg:""}, parts:[]};
+function petFx(kind,msg){ pet.fx = {kind, at:performance.now(), msg}; if(kind!=="cheer") petBurst(kind); }
+function rr(ctx,x,y,w,h,r){ const k=Math.min(r,h/2,w/2); ctx.beginPath(); ctx.moveTo(x+k,y); ctx.arcTo(x+w,y,x+w,y+h,k); ctx.arcTo(x+w,y+h,x,y+h,k); ctx.arcTo(x,y+h,x,y,k); ctx.arcTo(x,y,x+w,y,k); ctx.closePath(); }
+function starPath(ctx,x,y,r){ ctx.beginPath(); for(let i=0;i<10;i++){ const a=-Math.PI/2+i*Math.PI/5, k=i%2?r*.45:r; const px=x+Math.cos(a)*k, py=y+Math.sin(a)*k; i?ctx.lineTo(px,py):ctx.moveTo(px,py);} ctx.closePath(); }
+function heartPath(ctx,x,y,s){ ctx.beginPath(); ctx.moveTo(x,y+s*.3); ctx.bezierCurveTo(x-s,y-s*.5,x-s*.4,y-s*1.1,x,y-s*.45); ctx.bezierCurveTo(x+s*.4,y-s*1.1,x+s,y-s*.5,x,y+s*.3); ctx.closePath(); }
+function face(ctx,ey,gap,mood,t,size){
+  ctx.strokeStyle=INK; ctx.fillStyle=INK; ctx.lineWidth=4; ctx.lineCap="round";
+  const blink = t%3.4<.12;
+  for(const sx of [-gap,gap]){
+    if(mood==="happy"||mood==="evolve"){ ctx.beginPath(); ctx.arc(sx,ey+3,size,Math.PI*1.1,Math.PI*1.9); ctx.stroke(); }
+    else if(blink){ ctx.beginPath(); ctx.moveTo(sx-size,ey); ctx.lineTo(sx+size,ey); ctx.stroke(); }
+    else { ctx.beginPath(); ctx.ellipse(sx,ey,size*.8,size,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle="#fff"; ctx.beginPath(); ctx.arc(sx+size*.3,ey-size*.35,size*.32,0,Math.PI*2); ctx.fill(); ctx.fillStyle=INK; }
+  }
+  ctx.fillStyle="rgba(255,120,150,.55)"; ctx.beginPath();
+  ctx.ellipse(-gap-size*1.6,ey+size*1.9,size*1.2,size*.7,0,0,Math.PI*2); ctx.ellipse(gap+size*1.6,ey+size*1.9,size*1.2,size*.7,0,0,Math.PI*2); ctx.fill();
+  const my = ey+size*2.4;
+  if(mood==="happy"||mood==="evolve"){ ctx.fillStyle="#E8475F"; ctx.beginPath(); ctx.arc(0,my,size*1.3,0,Math.PI); ctx.closePath(); ctx.fill(); }
+  else if(mood==="cheer"){ ctx.strokeStyle=INK; ctx.beginPath(); ctx.arc(0,my-size*.2,size*.7,Math.PI*.1,Math.PI*.9); ctx.stroke();
+    ctx.fillStyle="#7FD3FF"; ctx.beginPath(); ctx.ellipse(gap+size*2.4,ey-size*1.6,size*.5,size*.8,0,0,Math.PI*2); ctx.fill(); }
+  else { ctx.strokeStyle=INK; ctx.beginPath(); ctx.arc(0,my-size*.4,size*.9,Math.PI*.15,Math.PI*.85); ctx.stroke(); }
+}
+function drawPet(ctx,stage,stars,t,mood,cx,cy){
+  const bob = still?0:(mood==="happy"||mood==="evolve")?-Math.abs(Math.sin(t*9))*26:Math.sin(t*2.2)*4;
+  const tilt = still?0:mood==="cheer"?Math.sin(t*5)*.09:0;
+  ctx.fillStyle="rgba(58,46,74,.16)"; ctx.beginPath(); ctx.ellipse(cx,cy+66,62+bob*.4,12,0,0,Math.PI*2); ctx.fill();
+  ctx.save(); ctx.translate(cx,cy+bob); ctx.rotate(tilt); ctx.strokeStyle=INK; ctx.lineWidth=4;
+  if(stage===0){
+    const near = stars>=3; ctx.rotate(still?0:Math.sin(t*(near?9:3))*(near?.14:.06));
+    ctx.fillStyle="#FFF4D6"; ctx.beginPath(); ctx.ellipse(0,0,50,62,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle="#FFB4C8"; for(const [sx,sy,r] of [[-22,-28,9],[20,-12,12],[-14,22,10],[24,30,7]]){ ctx.beginPath(); ctx.arc(sx,sy,r,0,Math.PI*2); ctx.fill(); }
+    ctx.fillStyle="#8EC5FF"; starPath(ctx,0,-42,9); ctx.fill();
+    if(stars>=2){ ctx.beginPath(); ctx.moveTo(-30,-6); ctx.lineTo(-18,4); ctx.lineTo(-8,-6); ctx.lineTo(4,6); if(near){ ctx.lineTo(16,-4); ctx.lineTo(28,6);} ctx.stroke(); }
+    ctx.lineWidth=3; ctx.beginPath(); ctx.arc(-14,14,6,Math.PI*.1,Math.PI*.9); ctx.moveTo(20,14); ctx.arc(14,14,6,Math.PI*.1,Math.PI*.9); ctx.stroke();
+  }else{
+    const body=["","#9BE7C4","#8EC5FF","#C9A7FF"][stage], rx=[0,54,64,74][stage], ry=[0,50,58,66][stage];
+    const flap = still?0:Math.sin(t*(mood==="happy"?14:4))*.3;
+    if(stage>=2){ for(const side of [-1,1]){ ctx.save(); ctx.translate(side*(rx-6),-8); ctx.rotate(side*(.4+flap)); ctx.fillStyle=stage===3?"#FFE36E":"#E3F2FF"; ctx.beginPath(); ctx.ellipse(side*22,0,stage===3?34:24,stage===3?18:13,0,0,Math.PI*2); ctx.fill(); ctx.stroke(); ctx.restore(); } }
+    if(stage===3 && !still){ for(let i=0;i<6;i++){ const a=t*1.2+i*Math.PI/3; ctx.fillStyle=CANDY[i]; starPath(ctx,Math.cos(a)*(rx+34),Math.sin(a)*(ry+26)-6,7); ctx.fill(); } }
+    if(stage>=2){ ctx.fillStyle=body; for(const side of [-1,1]){ ctx.beginPath(); ctx.moveTo(side*20,-ry+8); ctx.lineTo(side*40,-ry-22); ctx.lineTo(side*46,-ry+18); ctx.closePath(); ctx.fill(); ctx.stroke(); } }
+    ctx.fillStyle=body; for(const side of [-1,1]){ ctx.beginPath(); ctx.ellipse(side*24,ry-4,16,10,0,0,Math.PI*2); ctx.fill(); ctx.stroke(); }
+    ctx.beginPath(); ctx.ellipse(0,0,rx,ry,0,0,Math.PI*2); ctx.fill(); ctx.stroke();
+    ctx.fillStyle="rgba(255,255,255,.45)"; ctx.beginPath(); ctx.ellipse(0,ry*.35,rx*.55,ry*.42,0,0,Math.PI*2); ctx.fill();
+    if(stage===3){ ctx.fillStyle="#FFD23F"; starPath(ctx,0,-ry-14,18); ctx.fill(); ctx.stroke(); }
+    else { ctx.strokeStyle="#2E9E62"; ctx.beginPath(); ctx.moveTo(0,-ry); ctx.quadraticCurveTo(2,-ry-14,0,-ry-20); ctx.stroke();
+      ctx.fillStyle="#3DDC97"; ctx.beginPath(); ctx.ellipse(10,-ry-22,12,6,-.5,0,Math.PI*2); if(stage===2) ctx.ellipse(-10,-ry-22,12,6,.5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle=INK; }
+    face(ctx,-ry*.18,rx*.34,mood,t,stage===1?7:8);
+  }
+  ctx.restore();
+}
+function flame(ctx,x,y,streak,t){
+  const s = streak<=0?9:11+Math.min(streak,14)*.9, fl = still?1:1+Math.sin(t*13)*.06;
+  ctx.save(); ctx.translate(x,y); ctx.scale(fl,1/fl);
+  ctx.fillStyle = streak<=0?"#B9B2C4":"#FF7A1A";
+  ctx.beginPath(); ctx.moveTo(0,-s*1.5); ctx.bezierCurveTo(s*1.1,-s*.4,s*.9,s*.9,0,s*.9); ctx.bezierCurveTo(-s*.9,s*.9,-s*1.1,-s*.4,0,-s*1.5); ctx.fill();
+  if(streak>0){ ctx.fillStyle="#FFD23F"; ctx.beginPath(); ctx.moveTo(0,-s*.6); ctx.bezierCurveTo(s*.6,0,s*.5,s*.8,0,s*.8); ctx.bezierCurveTo(-s*.5,s*.8,-s*.6,0,0,-s*.6); ctx.fill(); }
+  ctx.restore();
+}
+function petBurst(kind){
+  const n = kind==="evolve"?120:50;
+  for(let i=0;i<n;i++){ const a=Math.random()*Math.PI*2, sp=3+Math.random()*(kind==="evolve"?7:5);
+    pet.parts.push({x:320,y:170,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp-4,r:4+Math.random()*4,rot:Math.random()*6,vr:(Math.random()-.5)*.4,color:CANDY[i%6],life:80+Math.random()*40,shape:i%5?"rect":"spark"}); }
+}
+function petHearts(){ for(let i=0;i<10;i++) pet.parts.push({x:320+(Math.random()-.5)*120,y:230,vx:(Math.random()-.5)*.8,vy:-.8-Math.random()*.8,r:7+Math.random()*4,rot:0,vr:0,color:i%2?CANDY[5]:CANDY[0],life:90,shape:"heart"}); }
+function hearts(){ petHearts(); }
+const W=640,H=320;
+const pc = $("pet"), pctx = pc.getContext("2d");
+(function setupPet(){ const dpr=Math.min(window.devicePixelRatio||1,2); pc.width=W*dpr; pc.height=H*dpr; pctx.setTransform(dpr,0,0,dpr,0,0); })();
+const t0 = performance.now();
+function petFrame(now){
+  const ctx = pctx, t=(now-t0)/1000, s=S.teamStars, st=stageOf(s), fx=pet.fx, age=now-fx.at;
+  const mood = age<2200?fx.kind:"idle";
+  const sky = ctx.createLinearGradient(0,0,0,H); sky.addColorStop(0,"#BFE9FF"); sky.addColorStop(1,"#FFE5F1"); ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle="rgba(255,255,255,.9)";
+  for(let i=0;i<3;i++){ const cx=((still?0:t*(10+i*4))+i*240)%(W+160)-80, cy=96+i*26; ctx.beginPath(); ctx.arc(cx,cy,16,0,Math.PI*2); ctx.arc(cx+18,cy-8,20,0,Math.PI*2); ctx.arc(cx+40,cy,15,0,Math.PI*2); ctx.fill(); }
+  ctx.fillStyle="#BDF0B5"; ctx.beginPath(); ctx.moveTo(0,270); ctx.quadraticCurveTo(160,236,320,262); ctx.quadraticCurveTo(480,288,640,250); ctx.lineTo(640,320); ctx.lineTo(0,320); ctx.closePath(); ctx.fill();
+  ctx.fillStyle="#FF8FC7"; for(const [x,y] of [[60,290],[130,300],[520,292],[590,280]]){ ctx.beginPath(); ctx.arc(x,y,5,0,Math.PI*2); ctx.fill(); }
+  drawPet(ctx,st,s,t,mood,W/2,204);
+  // HUD
+  ctx.fillStyle="rgba(255,255,255,.9)"; rr(ctx,10,8,W-20,76,22); ctx.fill();
+  ctx.fillStyle=INK; ctx.font="800 24px "+getComputedStyle(document.body).fontFamily; ctx.textBaseline="middle"; ctx.textAlign="left";
+  const title=`Lv.${st+1} ${S.settings.petName}・${STAGES[st].name}`; ctx.fillText(title,26,32);
+  const tw=ctx.measureText(title).width; ctx.fillStyle="#FFC21A"; starPath(ctx,26+tw+20,32,13); ctx.fill(); ctx.fillStyle=INK; ctx.fillText(String(s),26+tw+38,32);
+  const bx=26,bw=W-370,by=56; ctx.fillStyle="#EDE6F5"; rr(ctx,bx,by,bw,16,8); ctx.fill();
+  const lo=STAGES[st].min, hi=st<3?STAGES[st+1].min:lo+PRIVILEGE_EVERY;
+  const frac = st<3?Math.min(1,(s-lo)/(hi-lo)):(s%PRIVILEGE_EVERY)/PRIVILEGE_EVERY;
+  if(frac>0){ const g=ctx.createLinearGradient(bx,0,bx+bw,0); g.addColorStop(0,"#FF8FC7"); g.addColorStop(.5,"#FFD23F"); g.addColorStop(1,"#3DDC97"); ctx.fillStyle=g; rr(ctx,bx,by,Math.max(16,bw*frac),16,8); ctx.fill(); }
+  ctx.font="700 16px "+getComputedStyle(document.body).fontFamily; ctx.textAlign="left"; ctx.fillStyle=INK;
+  ctx.fillText(st<3?`再 ${hi-s} 顆進化`:`再 ${PRIVILEGE_EVERY-(s%PRIVILEGE_EVERY)} 顆換特權`, bx+bw+10, by+9);
+  const si = streakInfo();
+  flame(ctx,W-168,48,si.current,t);
+  ctx.textAlign="left"; ctx.font="800 22px "+getComputedStyle(document.body).fontFamily;
+  ctx.fillText(`連續 ${si.current} 天`,W-146,36);
+  ctx.font="700 15px "+getComputedStyle(document.body).fontFamily; ctx.fillStyle="#6B5F7A";
+  ctx.fillText(si.playedToday?"今天已打卡 ✔":"今天還沒玩",W-146,64);
+  if(age<2600 && fx.msg){
+    ctx.font="800 21px "+getComputedStyle(document.body).fontFamily;
+    const mw=Math.min(W-24,ctx.measureText(fx.msg).width+32), mx=Math.min(Math.max(W/2-mw/2,12),W-mw-12), my=94;
+    ctx.fillStyle="#fff"; rr(ctx,mx,my,mw,40,20); ctx.fill(); ctx.beginPath(); ctx.moveTo(W/2-10,my+39); ctx.lineTo(W/2+10,my+39); ctx.lineTo(W/2,my+52); ctx.closePath(); ctx.fill();
+    ctx.fillStyle=INK; ctx.textAlign="center"; ctx.fillText(fx.msg,mx+mw/2,my+20);
+  }
+  for(const p of pet.parts){ p.x+=p.vx; p.y+=p.vy; if(p.shape==="rect") p.vy+=.22; p.rot+=p.vr; p.life--;
+    ctx.save(); ctx.globalAlpha=Math.max(0,Math.min(1,p.life/40)); ctx.translate(p.x,p.y); ctx.rotate(p.rot); ctx.fillStyle=p.color;
+    if(p.shape==="rect") ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r); else if(p.shape==="heart"){ heartPath(ctx,0,0,p.r); ctx.fill(); } else { starPath(ctx,0,0,p.r); ctx.fill(); }
+    ctx.restore(); }
+  pet.parts = pet.parts.filter(p => p.life>0 && p.y<H+30);
+  requestAnimationFrame(petFrame);
+}
+requestAnimationFrame(petFrame);
+
+/* 全螢幕彩紙 */
+const fxc = $("fx"), fxx = fxc.getContext("2d"); let fxParts = [], fxRunning = false;
+function sizeFx(){ const dpr=Math.min(window.devicePixelRatio||1,2); fxc.width=innerWidth*dpr; fxc.height=innerHeight*dpr; fxx.setTransform(dpr,0,0,dpr,0,0); }
+addEventListener("resize", sizeFx); sizeFx();
+function confetti(n, ev){
+  if(still) return;
+  const x0 = ev && ev.clientX ? ev.clientX : innerWidth/2, y0 = ev && ev.clientY ? ev.clientY : innerHeight/3;
+  for(let i=0;i<n;i++){ const a=-Math.PI/2+(Math.random()-.5)*Math.PI*1.4, sp=6+Math.random()*9;
+    fxParts.push({x:x0,y:y0,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,r:4+Math.random()*5,rot:Math.random()*6,vr:(Math.random()-.5)*.5,c:CANDY[i%6],life:120+Math.random()*60,s:i%7===0?"star":"rect"}); }
+  if(!fxRunning){ fxRunning=true; requestAnimationFrame(fxFrame); }
+}
+function fxFrame(){
+  fxx.clearRect(0,0,innerWidth,innerHeight);
+  for(const p of fxParts){ p.x+=p.vx; p.y+=p.vy; p.vy+=.28; p.vx*=.99; p.rot+=p.vr; p.life--;
+    fxx.save(); fxx.globalAlpha=Math.max(0,Math.min(1,p.life/40)); fxx.translate(p.x,p.y); fxx.rotate(p.rot); fxx.fillStyle=p.c;
+    if(p.s==="rect") fxx.fillRect(-p.r,-p.r/2,p.r*2,p.r); else { starPath(fxx,0,0,p.r+2); fxx.fill(); } fxx.restore(); }
+  fxParts = fxParts.filter(p => p.life>0 && p.y<innerHeight+40);
+  if(fxParts.length) requestAnimationFrame(fxFrame); else { fxRunning=false; fxx.clearRect(0,0,innerWidth,innerHeight); }
+}
+
+/* 複利圖 */
+function drawCompound(){
+  const c=$("compound"), ctx=c.getContext("2d"), w=640, h=220, dpr=Math.min(window.devicePixelRatio||1,2);
+  c.width=w*dpr; c.height=h*dpr; ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+  const X=(d)=>40+d*(w-60)/30, Y=(v)=>h-30-(v-.7)/(1.4-.7)*(h-50);
+  ctx.strokeStyle="#EADFF2"; ctx.lineWidth=1; ctx.font="12px "+getComputedStyle(document.body).fontFamily; ctx.fillStyle="#6B5F7A";
+  for(const v of [.7,1,1.4]){ ctx.beginPath(); ctx.moveTo(40,Y(v)); ctx.lineTo(w-20,Y(v)); ctx.stroke(); ctx.fillText(v.toFixed(1)+"倍",2,Y(v)+4); }
+  for(const d of [0,10,20,30]) ctx.fillText(`第${d}天`,X(d)-14,h-10);
+  const line=(f,col,dash)=>{ ctx.strokeStyle=col; ctx.lineWidth=4; ctx.setLineDash(dash||[]); ctx.beginPath(); for(let d=0;d<=30;d++){ const v=f(d); d?ctx.lineTo(X(d),Y(v)):ctx.moveTo(X(d),Y(v)); } ctx.stroke(); ctx.setLineDash([]); };
+  line(()=>1,"#B9B2C4",[6,6]); line(d=>Math.pow(1.01,d),"#3DDC97"); line(d=>Math.pow(.99,d),"#FF4B55");
+  ctx.fillStyle="#22A56C"; ctx.font="700 13px "+getComputedStyle(document.body).fontFamily; ctx.fillText("每天進步 1% → 1.35 倍 🚀",X(13),Y(1.3));
+  ctx.fillStyle="#C9303A"; ctx.fillText("每天退步 1% → 0.74 倍",X(16),Y(.79));
+}
+
+function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); }
+renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState();
+(function greet(){ const st=stageOf(S.teamStars), si=streakInfo();
+  if(S.teamStars>0) setMsg(`${STAGES[st].emoji} 歡迎回來！${S.settings.petName}現在是「${STAGES[st].name}」，有 ⭐ ${S.teamStars} 顆。${si.playedToday?"今天已經打卡了 🔥":"今天玩一關，連續天數就會 +1 🔥"}`); })();
+// 跨分頁同步：同一台裝置開兩個分頁時，以最新存檔為準
+addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ S = migrate(JSON.parse(e.newValue)); renderAll(true); }catch(err){} } });
+// 測試用（不影響遊戲）
+window.__shuangbao = { get save(){ return S; }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY };
+</script>
+</body>
+</html>
