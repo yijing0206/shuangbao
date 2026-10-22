@@ -65,6 +65,21 @@ h3{font-size:18px;margin:16px 0 8px}
 .conf{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:14px;color:var(--ink2);margin:6px 0 10px}
 .conf button{border:2px solid var(--c);background:#fff;border-radius:999px;padding:4px 10px;font:600 14px var(--font);cursor:pointer}
 .conf button.on{background:var(--c);color:#fff}
+.opts{display:grid;grid-template-columns:1fr;gap:10px;margin:8px 0}
+@media (min-width:560px){.opts{grid-template-columns:1fr 1fr}}
+.opt{border:3px solid var(--c);background:#fff;color:var(--ink);border-radius:18px;padding:12px 14px;font:700 16px/1.45 var(--font);text-align:left;cursor:pointer;box-shadow:0 4px 0 var(--line);touch-action:manipulation}
+.opt:active:not(:disabled){transform:translateY(3px);box-shadow:none}
+.opt:disabled{cursor:default;opacity:.55}
+.opt.right{background:#DFF8EC;border-color:var(--mint-d);opacity:1}
+.opt.wrong{background:#FFE3E6;border-color:var(--red);opacity:1;animation:wiggle .4s 2}
+.qdots{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0}
+.qdot{border:2px solid var(--c);background:#fff;border-radius:999px;padding:4px 10px;font:700 13px var(--font);cursor:pointer;color:var(--ink)}
+.qdot.on{background:var(--c);color:#fff}
+.conf button:disabled{cursor:default}
+.note{font-size:13px;color:var(--ink2);margin:6px 0}
+.modal{position:fixed;inset:0;background:rgba(58,46,74,.45);display:none;align-items:center;justify-content:center;z-index:70;padding:16px}
+.modal .sheet{background:#fff;border-radius:26px;padding:18px;max-width:360px;width:100%;box-shadow:0 8px 0 var(--line)}
+.modal input{width:100%;font:800 26px var(--font);letter-spacing:10px;text-align:center;border:3px solid var(--line);border-radius:16px;padding:10px;margin:6px 0}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -86,6 +101,14 @@ a{color:var(--blue-d)}
 <body>
 <canvas id="fx"></canvas>
 <div class="toast" id="toast"></div>
+<div class="modal" id="pinModal" role="dialog" aria-modal="true"><div class="sheet">
+  <h3 id="pinTitle" style="margin-top:0">👩‍⚕️ 家長確認</h3>
+  <p id="pinWhat" style="color:var(--ink2)"></p>
+  <input id="pinIn" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="••••">
+  <input id="pinIn2" type="password" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" placeholder="再輸入一次">
+  <p id="pinErr" style="color:var(--red-d);font-weight:700;min-height:1.2em"></p>
+  <div class="row"><button class="btn b-mint" id="pinOk">✅ 確認</button><button class="btn ghost b-gray" id="pinCancel">取消</button></div>
+</div></div>
 <div class="wrap">
   <header class="top">
     <h1>🌟 雙寶複習冒險隊<small>新光國小 四年級 🔵 × 六年級 🔴｜115 學年上學期期中考</small></h1>
@@ -105,7 +128,7 @@ a{color:var(--blue-d)}
   <section class="panel on" id="p-game">
     <div class="console">
       <div class="screen"><canvas id="pet" width="640" height="320" aria-label="共享寵物星寶"></canvas></div>
-      <div class="msg" id="msg">🥚 星寶還在蛋裡，答題、互教、出好題目就能讓牠孵化！</div>
+      <div class="msg" id="msg">🥚 星寶還在蛋裡！先選信心、再選答案，答對就能讓牠孵化！</div>
       <div class="row center" id="consoleBtns">
         <button class="btn b-purple small" id="redeemBtn">🎁 兌換家庭特權</button>
         <button class="btn b-gray small" id="howBtn">❓ 怎麼玩</button>
@@ -203,6 +226,9 @@ a{color:var(--blue-d)}
       <label class="btn b-yellow" style="display:inline-block">📂 上傳存檔檔案<input type="file" id="importFile" accept=".json,application/json,text/plain" style="display:none"></label></div>
     <p style="font-size:13px;color:var(--ink2)">匯入前會先把目前進度備份到「上一份存檔」，可以用下面按鈕救回。</p>
     <div class="row"><button class="btn ghost b-gray small" id="restorePrev">↩️ 救回上一份存檔</button></div>
+    <h3>🔒 家長 PIN</h3>
+    <p style="font-size:13px;color:var(--ink2)">合體關、出題反轉卡的星星和兌換特權，都要輸入家長 PIN。忘記 PIN：長按下面按鈕 5 秒可以清除，下次使用時重新設定。</p>
+    <div class="row"><button class="btn ghost b-gray small" id="pinReset">⏳ 長按 5 秒清除家長 PIN</button></div>
     <p class="foot" id="verLine"></p>
   </section>
 </div>
@@ -212,10 +238,10 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "1.0.0";
+const APP_VERSION = "2.0.0";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 const SUBJECTS = {
   "國語":{cls:"b-red",color:"#FF4B55",emoji:"📖"},
@@ -227,53 +253,33 @@ const SUBJECTS = {
 
 const CARDS = [
  {id:"math-a",code:"數學A",subject:"數學",title:"大數字 × 質因數",
-  g4:{q:"讀出 36,050,800，並說出 3 在哪一位、代表多少。",hint:"從右邊每 4 位切一段，先找「萬」在哪裡。",a:"三千六百零五萬零八百；3 在千萬位，代表 30,000,000。"},
-  g6:{q:"把 36 和 48 做質因數分解，再用短除法找最大公因數和最小公倍數。",hint:"先用最小的質數 2 一直除，除不下去再換 3。",a:"36 = 2×2×3×3，48 = 2×2×2×2×3；最大公因數 12，最小公倍數 144。"},
   kind:"生活解謎",together:"36 顆糖、48 片餅乾要分成一模一樣的禮物袋，不能剩。最多可以分幾袋？每袋各裝什麼？小四用除法一個一個試，小六用短除法，比比看誰的方法快、為什麼。",togetherAns:"12 袋，每袋 3 顆糖、4 片餅乾。",
   extra:"小老師卡：小六用 1 分鐘解釋「為什麼 1 不是質數」，小四要能用自己的話說回來才算過關。"},
  {id:"math-b",code:"數學B",subject:"數學",title:"乘除 × 分數除法",
-  g4:{q:"一盒巧克力有 24 顆，買 35 盒共幾顆？再把這些平分給 28 人，每人幾顆？",hint:"先估算：24 接近 25，35 盒大約是多少？",a:"24 × 35 = 840 顆；840 ÷ 28 = 30 顆。"},
-  g6:{q:"3/4 公升果汁，每杯倒 1/8 公升，可以倒幾杯？再算 2/3 ÷ 4。",hint:"畫一條線段，把 3/4 切成一格一格的 1/8。",a:"3/4 ÷ 1/8 = 6 杯；2/3 ÷ 4 = 1/6。"},
   kind:"為什麼卡",together:"為什麼「除以 1/8」答案反而變大？小四先猜，小六畫圖說明，最後小四要用自己的話講一次。",togetherAns:"除法在問「裡面裝得下幾份」。每份越小，裝得下的份數就越多。",
   extra:"如果卡：果汁變成原來的 2 倍，可以倒幾杯？先不要算，用推理說出答案（12 杯）。"},
  {id:"math-c",code:"數學C",subject:"數學",title:"角度 × 圓",
-  g4:{q:"時鐘 3 點整，時針和分針的夾角是幾度？4 點整呢？各是什麼角？",hint:"鐘面一圈 360 度，分成 12 大格，每格幾度？",a:"每格 30 度。3 點整是 90 度（直角）；4 點整是 120 度（鈍角）。"},
-  g6:{q:"直徑 10 公分的圓，圓周長和面積各是多少？（圓周率用 3.14）",hint:"周長 = 直徑 × 圓周率；面積 = 半徑 × 半徑 × 圓周率。",a:"周長 31.4 公分；面積 5 × 5 × 3.14 = 78.5 平方公分。"},
   kind:"如果卡",together:"如果圓的半徑變成 2 倍，周長和面積各變成幾倍？小四用圓規畫兩個圓幫忙，小六推理並說明。",togetherAns:"周長變 2 倍，面積變 4 倍。",
   extra:"生活解謎：找家裡三個圓形物品（碗、杯口、時鐘）。小四量直徑，小六算周長，再用繩子實際量，看差多少、為什麼會有誤差。"},
  {id:"sci-a",code:"自然A",subject:"自然",title:"月亮 × 熱",
-  g4:{q:"月亮在天空中怎麼移動？月相大約多久循環一次？",hint:"想想太陽每天怎麼移動。",a:"月亮也是東升西落；月相大約 29～30 天循環一次。"},
-  g6:{q:"熱有哪三種傳播方式？各舉一個生活例子。",hint:"湯匙、煮開水、曬太陽。",a:"傳導：湯匙放進熱湯，柄會變燙。對流：煮水時，水會上下流動。輻射：太陽的熱穿過太空來到地球。"},
   kind:"為什麼卡",together:"太空幾乎沒有空氣，太陽的熱怎麼傳到地球？月亮自己會發光嗎？兩人各說一個猜想，再翻課本驗證。",togetherAns:"太陽的熱靠輻射傳來，不需要物質。月亮自己不發光，是反射太陽光。",
   extra:"生活解謎：設計一個讓便當保溫最久的方法，並說出用到哪一種熱的傳播原理。"},
  {id:"sci-b",code:"自然B",subject:"自然",title:"水域 × 天氣",
-  g4:{q:"布袋蓮為什麼能浮在水面？魚用什麼呼吸？",hint:"捏捏看布袋蓮膨大的葉柄，裡面有什麼？",a:"布袋蓮的葉柄膨大，裡面有很多空氣，所以能浮起來；魚用鰓呼吸。"},
-  g6:{q:"雲和霧有什麼相同和不同？露和霜呢？",hint:"都和「水蒸氣遇冷」有關，差別在位置和溫度。",a:"雲和霧都是水蒸氣遇冷凝結成的小水滴，雲在高空、霧貼近地面。露是水蒸氣在冷的物體表面凝結成水滴；霜是溫度更低（約 0°C 以下）時直接變成冰晶。"},
   kind:"小老師卡",together:"小六畫出水循環並講給小四聽；小四在圖上標出池塘、溪流、海洋的水生生物住在哪一段。最後一起推理：如果上游的水被汙染，會影響到哪裡？",togetherAns:"",
   extra:"如果卡：颱風要來了，家裡要做哪三件準備？小四想家附近的水溝和水池，小六想天氣圖和颱風路徑告訴我們什麼。"},
  {id:"soc-a",code:"社會A",subject:"社會",title:"地圖 × 戰後經濟",
-  g4:{q:"一張地圖通常有哪四個工具？各有什麼用？",hint:"名字、方向、距離、符號。",a:"圖名（看主題）、方向標（看方位）、比例尺（算實際距離）、圖例（看懂符號）。"},
-  g6:{q:"戰後臺灣的經濟大致怎麼轉變？舉一項重大建設或產業當例子。",hint:"田裡 → 工廠 → 晶片。",a:"從農業為主，轉型成工商業社會，再發展高科技產業，被稱為「科技島」。重大建設例如高速公路、港口等交通建設。"},
   kind:"生活解謎",together:"打開地圖 App，規劃從家裡到蓮池潭的路線。小四負責方向和比例尺，小六說出沿路哪些交通建設讓這一帶變方便、對產業有什麼影響。",togetherAns:"",
   extra:"為什麼卡：為什麼工廠多的地方，人口也會跟著變多？會帶來什麼新問題？"},
  {id:"soc-b",code:"社會B",subject:"社會",title:"地形人口 × 消費理財",
-  g4:{q:"臺灣常見的地形有哪些？少子化和高齡化分別是什麼意思？",hint:"從高到低排排看。",a:"山地、丘陵、臺地、盆地、平原。少子化是出生的小孩變少；高齡化是老年人口的比例變高。"},
-  g6:{q:"什麼是理性消費？買東西前可以問自己哪三個問題？",hint:"需要、價格與品質、預算。",a:"依照需要和能力做選擇。可以問：我是需要還是想要？價格和品質划算嗎？在不在預算內？"},
   kind:"生活解謎",together:"給你們 500 元辦一場家庭野餐：小六做預算表、比價；小四查天氣和地形，選地點。最後兩人一起向爸媽簡報，說明為什麼這樣選。",togetherAns:"",
   extra:"如果卡：每個月存 100 元，存到國中畢業（3 年）有多少？改成每月 150 元呢？存錢和投資的風險有什麼不同？（3,600 元／5,400 元）"},
  {id:"chi-a",code:"國語A",subject:"國語",title:"形近字 × 文言格言",
-  g4:{q:"「警」和「驚」怎麼分？各造一個詞。再說說什麼是倒敘法。",hint:"看下面的部件：一個是「言」，一個是「馬」。",a:"警（言）：警察、警告；驚（馬）：驚訝、吃驚。倒敘法是先寫結果或最精彩的部分，再回頭說事情的經過。"},
-  g6:{q:"《朱子治家格言》中「一粥一飯，當思來處不易」是什麼意思？你生活中哪裡做得到？",hint:"一碗粥、一碗飯，經過哪些人的手才到你面前？",a:"每一碗粥、每一口飯都得來不容易，要懂得珍惜。生活例子自由回答，說得出具體行動就過關。"},
   kind:"出題卡",together:"小六用「當……就……」或「假如……就……」出一題造句給小四；小四用課文生字出一題「選對字」給小六。出題的人要先寫好自己的答案。",togetherAns:"",
   extra:"證據卡：小四的〈我的籃球夢〉和小六的第一單元，都在談怎麼面對挑戰嗎？各從自己的課文找一句當證據，說服對方。"},
  {id:"chi-b",code:"國語B",subject:"國語",title:"人物傳記 × 美食文學",
-  g4:{q:"人物傳記通常會寫哪些內容？從〈永遠的馬偕〉找出三件讓人敬佩的事。",hint:"生平、重要事蹟、精神。",a:"通常會寫出生背景、重要事蹟、遇到的困難和留下的影響；三件事請對照課文找。"},
-  g6:{q:"〈臺灣美食詩選〉和〈珍珠奶茶〉怎麼讓讀者「嘗到」味道？找一句用到感官摹寫的句子。",hint:"視覺、聽覺、嗅覺、味覺、觸覺。",a:"請對照課文；能指出句子並說出用了哪一種感官就算過關。"},
   kind:"為什麼卡",together:"為什麼一種食物（例如珍珠奶茶）能變成一個地方的代表？小四從「家鄉特色」想，小六從「文化和產業」想，最後合成一句結論。",togetherAns:"",
   extra:"近義詞挑戰：「千變萬化、變化多端、瞬息萬變」有什麼細微不同？小四說例句，小六判斷用得對不對並說出理由。"},
  {id:"eng-a",code:"英語A",subject:"英語",title:"家人職業 × 國家與生病",
-  g4:{q:"看家人照片練問答：Who's he? Is she a nurse?",hint:"He's my … ／ Yes, she is. No, she isn't.",a:"He's my father. ／ Yes, she is. 或 No, she isn't."},
-  g6:{q:"回答：Where are you from? What's wrong? Do you have a headache?",hint:"I'm from … ／ I have a … ／ Yes, I do. No, I don't.",a:"I'm from Japan. ／ I have a cold. ／ Yes, I do. 或 No, I don't."},
   kind:"角色扮演",together:"開一間「家庭英語診所」🏥：小六演從外國來的病人，小四當醫生或護士。小四要問 Where are you from? 和 What's wrong?，小六用 Unit 2 的句子回答。演完互換角色。",togetherAns:"",
   extra:"出題卡：各出 3 題英文問題給對方，至少一題是 Yes/No 問句。"}
 ];
@@ -288,6 +294,18 @@ const FLIPS = [
  {id:"flip-draw",text:"出一題要「畫圖才解得開」的題目。"},
  {id:"flip-bug",text:"說一個課本裡的觀念，故意講錯一個地方，請對方抓錯。"}
 ];
+
+// 選擇題題庫：答案、提示、解說都經過輕度加密，作答後才解開（原始檔不在公開 repo）
+const MCQ = /*__MCQ__*/{"math-a":[{"id":"math-a-g4-1","g":"g4","q":"36,050,800 要怎麼讀？","o":["三千六百五十萬八百","三千六百零五萬零八百","三百六十萬五千零八百","三千六百零五萬八千"],"s":"CEoWQ1RWTkMHwKKnAyYBACAFmur/h8HoQlVPBiUIAxAYARc2lcbAjtL9UVdf13c4eqin1Z9V8+qQ6OOO/8OGYDtjSC16WyNf7sqQ686E4u2HcjRmZhV8ZS2UX0oQQ1RFUVdD0q21yqCv1Y9T+++T6f5HUVdf17htdjR6dyOWQ1BFUYHb7onBYnw4ensfaUsO+o344oviz4b2XHEeUHwlcUcm34Hu14viyYb2XHsFa3sfZ0sO3oHj8oj760Ffwn8fYn0DVUkgyoDT4IbJ4oLvbnEeUHsfaEw28UpZQxlFWBpN0rq/xHsfaZ+DkOj4hvTjQlFPBiAIDhsiAjM3lP3QjtLrh/HJBxECAAQcDQE2leDlQV1RV1FPCggpBRgdx4OUQUpPQ4ra74f6Wn8rcX0vdEsM9YzN4Yra747TbnAtfn0hckkZ/EhBQYra74XXYn4rU3sfZ42aUVtXW0yC3O2GfzpsZDt5SxpQ68dVUVZXUo7Tan0ATX8GW0AK+ofJ7Yrf74f3TX0ATX0SZkw28UoIHA=="},{"id":"math-a-g4-2","g":"g4","q":"36,050,800 裡的「3」在哪一位？代表多少？","o":["百萬位，代表 3,000,000","千萬位，代表 30,000,000","億位，代表 300,000,000","千萬位，代表 3,000"],"s":"CEoWQ1RWTkMHwKKnAyYBACAFmur/h/vfjd31BxgOBRgeACI3kOj0hvfZgeHuBxUGBRgeDT8akOj0hOPmivHDARgEAQEhDT8akOj0hOPkivHDARgH1bh5fQBR38SQ2NCD3+yAXgenyrr6x5WUmujshO7shPTXBAQMxqC/ARI7nNT5h/Lnh9bJCxoPAAAwACI1m/jZhdPqjd3jBBEFAiM6xZyWl9PWic/PQlJPBxgOAiAfACI1m/jZjtLrhtjwByg0AAAwxZyGX1hFUUJXUlGMYhqnyrrox5XNUVhXW0yC5OyJdyBhXhh5SQ5SzuWT9NaI3vtXwnw4a34KXUgs947p4YfM+oXSb34dSX0SZkcm34zI7I3n4ENDwKqn3Lp6YStSzuWdx+9HW0GLXxVjcyB5bCJQ7+GW4exFTkNcwKKnAiUSAD87ltj4hdThjd3jBiUDAiM8DQ4elPLxhO7bisfuCi8aAiUSAD87l9D1ienTjd31BxUGDggzARI7lPLxQV1Hh9HeBAAqxqu/AC89l9D1hOPkivHDARgHxOXi"},{"id":"math-a-g6-1","g":"g6","q":"36 的質因數分解是哪一個？","o":["4 × 9","2 × 3 × 6","2 × 2 × 3 × 3","2 × 2 × 9"],"s":"CEoWQ1RVTkMHwKKnDis1ADQWlf3NhObhisbMBQIBADcQARc2luj+hPXHhPTXCxs4Dj4eAzcZkOj5id3NhPTXARgIBRgd0Uw28l6W4e9eQof3TXA2TH4KXUoh/YfJ/kxLQARN2Lq20LiixZ2WsP9VUFZHX0FdwlsSxqq/JjiWSkhIQVxHofZP0LhGcbisxWwhU1ua3eKBze6KYhNgfTh5cBdf8NWT+cGP0cuJdyBmZhq9yY3BUVIOQ15FWENbwn0XarimxUY1zozN7Ij/zYncSH4QXncjaUY09436zorcx4Tpb30NYHsfZ42aUVlXW0xRQoXXb34dSXAsT0kjy4fJ7VhHX0FdwlsSxqt8ZS2UX0pGQ1RFW0GLWhVjfjd3VgVQ5tCa3eJeQlxP0bhGcbisBi80URUI"},{"id":"math-a-g6-2","g":"g6","q":"36 和 48 的最大公因數和最小公倍數各是多少？","o":["最大公因數 6，最小公倍數 144","最大公因數 12，最小公倍數 144","最大公因數 12，最小公倍數 1728","最大公因數 4，最小公倍數 72"],"s":"CEoWQ1RWTkMHwKKnAQw3AjAbmvHRh93yjd3jBiAFAQMrDDYSluDFhOvOh+HkBA09ACoNAzM/lu3EhP7rhfvrCisvAwM/AzoOlOrPh8PFgeHtwLSng7qlx0gp3oHsxYjU947TeKuzxn0NaY+CS0iQ8eKO+8VP0HsFZ6p8ZS6FnNT5hOfOQlJPBwoJxqx8ZS1Q7+iQxcmC582KeThjcyC/2I+EU6viQVxHofZP0bi4xqmtChMtlfT1hN7oh+TDBxgIAA0nxZKWQlpVovlHUUGsdbixxqW/1JuCkOj3jtLvhMvNBAcgCSQF1J2WsP9VUFpTQlxP0a6lJQ+/0ZdZz+FXTUwQQFsUwKin3LqpxUku3I3wzYv8wof6Wnc5anwiY0sO/o7tzoj74oTLRX8fYncjaUow/oHsxYrf6YThWXAsQHA2Q0w28UpZQ1xFWENe1aq9xqW/1pmWsP9VVVaI3u2IeSxjaD14fhdSyvCQ7sSB+s6KZzRgZhV5cBdZz+SR2eOB+s6JfhhgVhd4fytV8+pXTUxUQFtN1aqlAiASAzcZU1xNQYn95oTvb34QXncjaZiEU6vCQVpfQoj2Rnw9a38EREw28UoIHA=="}],"math-b":[{"id":"math-b-g4-1","g":"g4","q":"一盒巧克力有 24 顆，35 盒共有幾顆？","o":["192 顆","720 顆","840 顆","860 顆"],"s":"CEoWQ1RVTkMHwKKnAx0XARMGlMbijtL9UFVPBBYgDicOxZ2DnNT5U1tHofZP0a2lAzw4AhsylszvhN72jd3wBx4IAQw3AjQCltT6hsDwgeHtwLSng7qlx52CU6viQV1SQlxP0KylJQ+/1p+WWEhHVU6k9UFawqWl0aqvxYSWQlpFQVNHWlVfARgHAiQvAgEhU1pAQa3wQlJawqWl3q+qChM6lMXhh8/vh9/nBBYgDicOChM6lvj9hv7hgeHtwLSnkbqlno2GUVJXU1pHofZP0bhifBx2ZwxSy+idwOKPxOCKTTNjbgi/0p2GnNT9h/bIQlJfwnw9a34HSo+FnNT8jtLrh9HiCyUPAiUSAhIYlu74hsDwhtnvBDQkBRgdx4OUQkpPQ1lVUkGKbTJiSA97XymWQVxVovlHUVGAXhRsZBx5eSaWQVxVovlHV0GJUApgbDh8ZS2UX0pGQ1RFh+zuBiUIDxgtARI7m870hOjqhMvNBAcgAiAfAwMXkOj3QxMa"},{"id":"math-b-g4-2","g":"g4","q":"把 840 顆巧克力平分給 28 人，每人幾顆？","o":["3 顆","30 顆","300 顆","32 顆"],"s":"CEoWQ1RWTkMHwKKnAx0XDQYQlv3zjtL9WlVPIS+l1KC/AzcZlszvhN72jd3wBxAgAycHARUwltb5iPPFi+PrBAQMAiAfAC89U1iW4exFTkMKwKKn3qyvxWwBU1pNQVNHUVGMYhpgaTd7XgpR58CR2PaB0fSJSDpjeT1wWTWES0i29k5UUkFSwqCx1nsfZ42aUR9XWxVFUkNVwH0QYH8FYUo2+IzI7IbB44nMfri1CSQTADQWlOrPQVZTUkGJTQyl3qy/AAssl9Lzhdbnh+HkwqhmZhq9yY2EUVJXU1ZHofZP0ai1xqW/3ZuGQ4fJ7YvDyITLRXw/YHsfZ42aUVtXW0xVWkGsdbi21LiixZePRYfJ7YjI9kFX1qilAzwFBi80URUI"},{"id":"math-b-g6-1","g":"g6","q":"3/4 公升果汁，每杯倒 1/8 公升，可以倒幾杯？","o":["3/32 杯","6 杯","1/6 杯","4 杯"],"s":"CEoWQ1RWTkMHwKKnDzkTAjQYlvTdhPvogeHj0bexxnA8REYr0Y7p6Ive3ITvabi0yaB8ZSJV8+qT6+RHUU5bwn4KfX4XdUsN1khNQYnl2ITnZH4qa38FYUo+9Y7g2Y3n4ENDwP2n3LqsypuWTkhDTlaI3u2HQTlsezp5eSaWRUiQ4eVHU05XDSQJABEfARQTlfDaQVhHhPzAARgHATYIABM5nNTvUkFTQqLYwqmq3riixZyZR0i29k5fTVBP37izBRgdx4OUBEpPGkxXQFtNCxgcAAAwxZyZR0i29k5WTVmAXhRsfzx7XgpT++6T9NaPxOCLWwBhXT16SyxR6eyQ4fyB99mMYhqnyrqtx5WUlujnh/vfh+H9CxQqDxoVARUwnNTviczMi/jLBA09AiASDQE8nNT5h+Tti/jLBA09AxgNDC44l9bzgu7lQE1N0bq/xKmw3Y9T9sSQ7OmBzfVP07exxn0aSUo79I3F7oHb7onsX30FdH8FYUkr3I7g2Yj74YfAdrixxn4CSkoS6Yv140waHw=="},{"id":"math-b-g6-2","g":"g6","q":"2/3 ÷ 4 = ？","o":["8/3","6","2/7","1/6"],"s":"CEoWQ1RUTkMHwKKnABIVxZ2ZQEiQ2N2C6ueJagil0rh7XhJZz+STzuGD2dyJfhttSBJ6QQhf8eyT+cGPzOuKUhdqWge9yY3TUVJXU0FUQqLYwqyl27itypyWsP9VUEFTQlxP0Le01LiixZ6ZRYv144ve0YTnZH4NdrirxUsNzofJ7YjI7YXUX3w9Zn0xf0kZ50hHTl1Hh9HgARgHxLS9ko2MCEpFQ1RFWk5cwn4dSbitypyWsP9VVYHb7oj2Rn42c30ef0k+44zM+YjU94XVZHsFZLqzx56USUqT6+RHVkGKcBSl1LesxUoK94367Ird5ILvYLqpxKq9341T++6T9NaO+8WLWT1jcyx5cBdZz+SR2eOB+s6JaBJgbh55SiJT+ciR2eSC7NqMYhqnm+U="}],"math-c":[{"id":"math-c-g4-1","g":"g4","q":"時鐘 3 點整，時針和分針的夾角是幾度？","o":["3 度","60 度","90 度（直角）","180 度（平角）"],"s":"CEoWQ1RVTkMHwKKnDwgHDDIUl9D1hPLvQlJZ0rhgXD5wWSNT++6T6f5HU1NPBzwiADgjChM6lcf6h87bh9jRByIjCSQAx4OUFkpPQ4jI7YTLRX4lWris05+WsN9VUFxHX0Fc0rhgXD58ZS2FU4HO/4jy1oTYTLi2xn07QkkWz4fJ7V1HofZP0ail27im1Y9Tyc6a3eKB+s6IeSxtQQp8ZS2UX0oCQ1QcQFFN2Lq2xn4HSkoS1I7V3Yjy2o7Tbnw9a34HSkoM1Y7g2YHb7ofAbX0hQX4/WUku3EhGUU6C2MeMYhqnyrqux5WURVhVhNTBhPnAwqqlDyMBAzoCnNT9U06CxsaJQiRqWhF8ZS2UX0pGQ1RFU1lfwn0/QH4HSo+AU4HO/4jy1o7Tbn0AT34/XEYx7o798Yrf4ob0Vn8yfHsfZ43LDg=="},{"id":"math-c-g4-2","g":"g4","q":"4 點整，時針和分針的夾角是幾度？是什麼角？","o":["120 度，鈍角","120 度，銳角","90 度，直角","150 度，鈍角"],"s":"CEoWQ1RXTkMHwKKn0rh2XjFQ5tyQ1sBHVkGKRj9jRiR8ZS1Q3PyS+tqPxfOKRj9sZBx5fQBTw+ea3fFFTkMKwKKn0rhcco+FQ0hIQV9VUkGKWD5mZhp5SjuWSlhVhNTBh8XIARgEADcLxZ6OQ0iQ28iC0u6AXhRjbxh7XgpQ68ec6eOPxfOMYhqnyrrox5XNUVlXW0yO6NKHRQptQBl5SjuWSlhVhNTBh9HgDSQJ16qvxUoM1Y7a9U5eUkGKWD5gQj98ZS2UX0pHQ1RFW1FPByIjAAAwxZyWmtPrh/vTgeHtwLSn1bqlx56DQ0iQ28iB+s5P17hsXQZ5cBtZz+BAQYvDxYfPXnc5b3sfZ43LDg=="},{"id":"math-c-g6-1","g":"g6","q":"直徑 10 公分的圓，圓周長是多少？（圓周率用 3.14）","o":["15.7 公分","31.4 公分","62.8 公分","78.5 公分"],"s":"CEoWQ1RWTkMHwKKnAwQMAD4emv3CQVNHhfrbByYUxlsIxUoq4I3kyYnp5YLvYLqpxP29342HQ0i29k5UTFBbwqWl1amx0Y9T9sSQ6eiE4uNNzrryxKLkx5+USUpEVEBQQof3TX0IbH0hdI915EiQ/f2C88mIbB9qWhR6VT5SyvCR2+hHUILvYLqpxKq9342AQUZNQYj/zYflaLi01rh4cBlQ+/iQ7OSC3PCITA9ifBx8ZS2UX0pGQ1RFVVlB17hjfjd2eA1R2uWa3eKC9M+LXxVjYRF3TB1Q68eQ2N2B9NiKZzRgbh58ZS2UDhU="},{"id":"math-c-g6-2","g":"g6","q":"直徑 10 公分的圓，面積是多少平方公分？（圓周率用 3.14）","o":["31.4","314","78.5","15.7"],"s":"CEoWQ1RVTkMHwKKnDwU9AgY7U1VVhOPth9/+wlsSxn0Sb0oI4ki29k6C/vKKczBiaB98ZS1T/uKQ3/+B+s6KRgJgVglwWTCUX0oQQ1RFh+zlByYUxqW/1J+WsN9VU05aQlSMYhqwxlsIxZqWsP9VUkBWVkFSwq+9yK2/ABYFlf7MhOvLh+npARgHxLS9ko2MCEpFQ1RFUVBB1rhjfjd6eTxT4sCc9NmI3u2LWhVjfjd2eA1R2uWW4exFTkNewKKn1amrxUku3I7/64n81oTRc38QUH0Sb0oI4o/b9oHb6lBfwlsSxqmvxWwhU1tbUFqI3uiAXhRgYxB2fAtSyM1VU43n4ENDwKun3Lqu0IGBU47tzk5SQqL4wqur16xwWSNT/uKQ3/+PxOCLWwBgYzF5SQ5V8+pXHBM="}],"sci-a":[{"id":"sci-a-g4-1","g":"g4","q":"一個晚上，月亮在天空中大致怎麼移動？","o":["從西邊升起，往東邊落下","一直停在同一個位置","從東邊升起，往西邊落下","從南邊升起，往北邊落下"],"s":"CEoWQ1RVTkMHwKKnABssAywFlszfiPfahM7gBzwsAyYBADwcmur/hOPgitTYARgEAws1DC08m/jIhdbsgeHtwLSng7qlx0ok/43Ry4f+34XXYn4tRXcjaUkq+4zPz4n76YnaVXw7YH4HSkkrwo345obC3Yn/X3sFZHEffEku3I3uwYnl2ITzUn8VZXAYT0oBwo3pyYba64LvYLqpxO+939SUQ0pPQ4jx24T/c38eXn0QaEsM9YfJ7Yjk0YfsUX0hTHEGWEw28UpZQ19FWEOGeAxhXhh5SxpQ6uqc9/2C5OyHRRhgSQdwWSNQ7+CR28CA+OWLXxViWzZ5eSxQ59Gdz+SE4uNNzrq2xKK9AzM+l9LbhMrAiubbBAAqAyYBAzIHltb1icvYhcbUBxMQBRgdx9LL"},{"id":"sci-a-g4-2","g":"g4","q":"月相（月亮的圓缺）大約多久循環一次？","o":["大約 1 天","大約 7 天","大約 29～30 天","大約 365 天"],"s":"CEoWQ1RVTkMHwKKnDiYtAzQwluDohdbnh+nfBiAOAiAfAC89luDohdbnjd3jBzwiASwbAAssl9HwjtL4QE1Nh7q/xH4DbUgty43RxonT5kFd23c4eKuvxUoS2o3Ly4n10oXXYn4pR3cjaUoB3YzN7IvD+IXXYn0FbX4DbUAK/4DL04j85ITfU34dSXwheEgz1I7p6Yn82onHYH8fYnsfZ42aUR9XWxVFUkNVwKmlAzw2DQwXlfT9hdTJhP3sBAU0AxUYDQoJm/jIjtLrhtzpByUnARMfABYIl9H7hdbqis/lARgHxLS91I2MUV9VhMrOh8XIBSwBAxc1ABEolf7Fh/Lvis/lBBAVAiAVABMQlfT9gu7lQE1N0bq/xKup0I9T18GQxcmA1uWJejdhXhh6XBtV8+pXHBM="},{"id":"sci-a-g6-1","g":"g6","q":"金屬湯匙放進熱湯裡，過一會兒湯匙柄也變燙了。這主要是哪一種熱的傳播？","o":["對流","輻射","傳導","蒸發"],"s":"CEoWQ1RVTkMHwKKnAR4uAzcZldrKif/whNjABxQcDxgGAC89kOj5hPXdi8r7ARgIAiAfDRgZlurGiO/ph+/UBQIBBRgdx4OUFkpPQ4nh04TRfH4/TX0lQ0Yd64/v5Yv70of5W3c5an4tWkcn5I3u24fM9oTtUX0NVn4lTkoM1YzI74n95oTzUn4TX3cjaUo52I330ovX7ILvYHECd30uSUg/yo39xIvJ24f3cX0HVX0va0gwwov140xLQBZN2OOn1rqlx0oG/o7A4If6wofZUHEucn4Xc0kG0IHe9YjS44Tkd3c5an4mSko66o7tzov82IjEdnsFZLqzx56USUqd3dWC0uWLWhVsehh3Qy5Q/c2dxtaI3u2KYRdjfTR6QQVf6tWW4exFTkNcwKKnDgonAjYKlfDah9jVi8r7CjYPABAPAx8VmsPhjtLrhtniBAAqAR4uAjUylurGh/zKhPfWByQKBRgdx9LL"},{"id":"sci-a-g6-2","g":"g6","q":"太空幾乎沒有空氣，太陽的熱是怎麼傳到地球的？","o":["傳導","對流","太空裡的空氣把熱帶過來","輻射"],"s":"CEoWQ1RUTkMHwKKnAws1ARc2lMDbhOzUhefeBA48AyQQARc7mvT1icjmhtrUBiUQARE2DRwcltHehNH+jd3wwLSng7qlx0cKyI3F5Yrf74jzYnAjZ38WTEcF2YfJ7YvozYXUR38sWXEea0gq7I/c24n95oTLSH8sXHcjaUk/84zOxIvDyIj2X38fYn8ZVEc1zo/u1Yjpx4TtUX0NVn0DVUgm8Iv140xLQBZN2OOn1rqlx0o0wI3F74bB44jyQn8MT3AsT0sO84316ojpx4XXYn0FbX0dVkAK/43Ry4nO2ITWXHw8aH4HSkgfyY/v5Y3n4ENDwKmn3Lp6VSJQxumdx++O/8GJVCpsTQx5bTlQw8ucyvqB1+CKaQ1mZhq9yY2EUVJXhMrNhcjVByE7AiERAx0klfT8hsfdhNHMARgHxOXi"}],"sci-b":[{"id":"sci-b-g4-1","g":"g4","q":"布袋蓮為什麼能浮在水面上？","o":["葉柄膨大，裡面有很多空氣","根很長，可以抓住水面","葉子會像魚一樣游泳","它很重，所以會浮起來"],"s":"CEoWQ1RXTkMHwKKnABUQAyI5lPT+hNbkisPkCgsrDh43AAsRlPLxif/uhP7rDSQJDjs+DDIUluv6h9vQhdfQBiAFADA8Bi80UURXBExdQITXYXAnbXAMS0gs94Dk6Ij45onpSn0hQX0cakkG0I/l4oHb7onMQ3EYRH4DbEoI+43R+4vi54fUXX8sXH4vRkgs94/c24fx8Y7Tbn4MZnwkQEc1zo7Az4v7yoffVnEYRHsfZ42aUR9XWxVFU0NVwH09ZXA9bkcl3Y/v5YjH24TxYH0ZTn4vUUcV0ofJ7Yrf2YnJY34dSX0PXUkixYHR64vv5ILvYLqpxKq9341Q1+WS6MeD2uyJfhtjXiB5VhxT5fyW4exFTkNcwKKnAAUuDQoJm97/idLygeHuCi4PAzwFAgYMldjWh+fqitflBzY8AAAMAxoYkOj3QxMa"},{"id":"sci-b-g4-2","g":"g4","q":"魚用什麼呼吸？","o":["肺","鰭","鰓","皮膚上的鱗片"],"s":"CEoWQ1RVTkMHwKKnAQQUAjM9msXviM7Kh+TGBxkxAiAfDDk9l9D1hP7vhfvrBwQ1AA4mBi80UURXBExdQIjCeH8RTnEvdkonz43l2YHb7oT/Wn0KcH4lU0oq247F1YbEw4b1Zn41QX4vRkw28UpZQxlFWBpN0rq/xH8LTUc0yY3k3Yv32ob1Zn4dSXwlX0w28oHayYfK+IbCa3c5anEwTUYb6YDT4IjSzIXXaH41UnECR0k56I7Fwo3n4ENDwKmn3Lp2VQJQ68eS9caD3OeJWiBjVSt8ZS5SzPWT7e+C29KHQzlifBx8ZS2UX0pGQ1RFi9D4BRECAiAkDQk3lfDahdH6iszYCiIuDzMLBi80URUI"},{"id":"sci-b-g6-1","g":"g6","q":"雲和霧有什麼相同和不同？","o":["都是水蒸氣遇冷凝結成的小水滴；雲在高空，霧貼近地面","雲是水蒸氣，霧是小水滴","雲是煙，霧是水","雲是小水滴，霧是冰晶"],"s":"CEoWQ1RXTkMHwKKnACgrDT0OldjWhvLsh9/4BxA1Aw8RChMpleDkhO72hf3kByYSAxAvAjUymvPHhPzri/3IBAAqAiMfDBUKnNTqQ0JFB0NVwHEeVH0NaUYq1IH23Ij/zYffVnAXXn4vRkY39I3z1ovg/4bacn4Ndn8FYUoG/I7F1Yjc1o7TanEufn82X0gs94Hu04re/YTgTXAGW34DbEoG/I3z0Yj+1I7Ta3c5an0oS0o+1o3pyYra74bSTHc5fHEEV0oq24He+YnO2I7TbnEZQXAtWUcJ4o3p0Yf6wILvYLqpxO+939SUQkpPQ4jX1on9Wn41RX4HSkgq+IzN7IbB6Yb1Zn41RXE0cUAK/4/p6ovZ9YnJaX8fYnEEV0oBwY/D8oj/zYTfbX41Un4kUUsM9Yv140xLQFNN2LpsfSp7XSJQ68eS5PeI3u2JejdjVix3dxdQw8uQ5vOA1/GJaghifBx8ZS2UX0pGQ1RFi/3IBAAqAygQAx8CldPBjtLrh/PjCwM3AiAfAwcVkOj3QxMa"},{"id":"sci-b-g6-2","g":"g6","q":"冬天清晨葉子上的「霜」是怎麼形成的？","o":["雨水結冰後掉到葉子上","溫度很低（約 0°C 以下）時，空氣中的水蒸氣在物體表面變成小冰晶","葉子裡的水跑出來","雲飄下來黏在葉子上"],"s":"CEoWQ1RWTkMHwKKnDwQDAD06mvTHhNDvh+LgDSQJAy8xACcTlvTdh9TMh9vJARgHxLS9gI2MUY7PyovdxIj2b30NVn07QkgC90hFo94kQoXUR3w9bX4GZ0AK/4/c24jXwYXXT38fYn4vUUcky47Fwov7yoTpVX8fYn8WTEYd54DUyYf6wIb0Vn4LQ3Axb0k+443F7ovh0of2VHc5an0vVEku3IHp/YHb+YfVSX0/QH4td0Y00IHP3Yra7If2YHc5an0YeEgD44798YjX1ofUVnc5an0vVEku3IHp043n4ENDwO+n3OO91Y2MUYHuyYjX1obacn0DVn4RbEsO+IzL54jI9onTYX0GaX0ZVUYtyo7994vh0ojzUnc5anwnaEku3IHp/Y3n4ENDwKqn3Lp2eTNR6eyT0dqD3OeHZTJiTyJ5VQxSy8WS++qB0tWHcCBjVjt8ZS2UX0pGQ1RFi/rdBwQtDzMHAgYMnNT5hdbqhP3sCyMKAwQ3DT4/lsXlhdbtgeHtwOX4"}],"soc-a":[{"id":"soc-a-g4-1","g":"g4","q":"在地圖上，想算出兩地的「實際距離」，要用哪一個工具？","o":["圖例","比例尺","方向標","圖名"],"s":"CEoWQ1RWTkMHwKKnAws1ARc2luj+hNnCh+TYBwkPDjArARIWkOj5hPLXh/35BiAPxqm/ACoaluDzjtL6h87JCwIeAzwFDC4WkOj4jtL4QE1Nh7q/xH4wcUsI+I3F24bGyobLWH0ZVn0Dc0sO+Y/v5YbQ/4j0QH0Xan0wQ0Ys6IDC/If8wIb1Zn4qcnwhbkAK/436zorcx4b7Snw7YH4QfkgY5I3ax4f9+YnYf3EeRHsfZ42aUR9XWxVFUkNVwH0ZcHwhbkku3I3k64bP1oXSQn8pQHAGeksN0IDUyYrc4ojVXnsFZLqzx52USUqT99eC8vCJSgFjfjd6dCVe29yR3M6B9NiLXxVmZhq9yY2FUVJXhPLxh/HiBAAqAwkVDQcCl9XViO7+h93aBwQ1AwQJAjUyl9DOiM/rgeHtwOX4"},{"id":"soc-a-g4-2","g":"g4","q":"地圖上的 ⛩️、🏫 這些符號代表什麼，要看哪裡？","o":["比例尺","方向標","圖例","圖名"],"s":"CEoWQ1RVTkMHwKKnAxsQAAIhlu3NhdbnhMnMDSQJDj88DCg9lcf6hdbnh+HkBTQjDgEAAjUylvTFh/jegeHtwLSng7qlx0oq5YzL6obNyIf3bH0ZVn0Dc0sO+Y7a7ovn6YbDRHAceXsfZEYX/ID804rcwYnOSnw+ZnElWUw28UpZQxlFWBpN0rq/xH4wcUsI+I3F24j/zYb7Snw7YH8xckcB7oHuw4n95oLvYLqpxKm9341Q5dGQ8f+ByviJejdiehN5cxZSzuWS++qE4uNNzrq2xKK9ADMglvj4hOHNisvFCxgcAyQqADMGlvTjhPLPhfTEBiMFDyIjBi80URUI"},{"id":"soc-a-g6-1","g":"g6","q":"戰後臺灣的經濟，大致是怎麼轉變的？","o":["高科技產業 → 工業 → 農業","工業 → 農業 → 高科技產業","一直都以農業為主","以農業為主 → 工業發展 → 高科技產業"],"s":"CEoWQ1RUTkMHwKKnABssAywFnNTvhvrXisLOwnoDdLh6UgpTyMhVg+j1Qof2VH8MYXsfZ42aUQ1XW0yB6tGKXBRtYSJ4ZAxT9uCR2suP3NOJRzViZCJ7XRRZz+ST78uP8/aIeyRgVw16UgpQ1sWa3eaC5duKbTtgbDh6UgpZz+Ga3eKC5OyHXxFgeBN4fBNTwv2cyvaAxfCJaBhicjp5QAJV8+pXTUwQQFsUwKin3Lp2RSlTyeeQ7uOD2OeMYhqnyrqux5WUleDFhNDrh+nyBAQaAAAwDREElc3YhuzdhtnUARgHxLS9142MUY3L7YrZ5ITYR34gS30NaUgR4o7/4YnzwIfKT38fYn4wcUsI+IDD64rZ5InZaHEufnsfZ43LDg=="},{"id":"soc-a-g6-2","g":"g6","q":"下列哪一項是 1970 年代「十大建設」中的交通建設？","o":["中山高速公路","臺灣高鐵","臺北 101","新竹科學園區"],"s":"CEoWQ1RXTkMHwKKnAxUeAAsRltPPicbKh/3Hwqm80ai/ABYCl9PWjtLrhOLcBBs2Dxo8AzY0lujshNnVhdf8BAQMAiMfDBUKkOj3Q0JFB0NVwHw9S30uVEYd64H1/ovizonYTXc5bn0DbkY34IzN4Yb+/Y7Ta34dSX0SZEoS1I3O24bPz4XWaXw9ZncjaUcY4I349ovr9YXVRnEFfH4EUUkgyozL3oHb7oXWfX08TX0VTEoB1o7QzIn+3oTed3sFZLqzx9iUSRNXUExdQIjEenEVU34HSo+EQ1hCQYve1ofmb3EFfHAkb0w28UpZQ1xFWEOHZSJgag+/1J+HU47tzk5VUlFbwn08Un0xaUoB1o/v5YvDxYfHcXc5anwnaEku3I344IvDxYTUWHAtS3sfZ42aUVtXW0yB9NGISSFiQQl6SBdT7/qQ7O5HU1hX0rhgXyx5bT9R2OOa3eKC3OmGZRVtQBlwWSNSzu6R2eOC/smKbxlgQj96XhVe28Wdws+E4uNNn+U="}],"soc-b":[{"id":"soc-b-g4-1","g":"g4","q":"臺灣的地形中，哪一種「海拔最高、坡度最陡」？","o":["平原","盆地","臺地","山地"],"s":"CEoWQ1RUTkMHwKKnARYWAB4HltnZh/jbh/LFBiAFATAxADMGltXXjtL4QE1Nh7q/xH0uVEoqw47A1ojs9ofzYnEufnsfZEor0o3Px4j74oj2Q3sFZHAYX0g30I3N2YbB6YTzUn04RHEdYUkq+ozN+Yf+14LvY3ACXH0DVUw28o/u54v70oLvY308VX0Rekw28UpZQxlFWBpN0rq/xH0mVko47I3p0YvswIfzYnw4aHsfZEkq843M0ov6xILvYLqpxKm9341R6O6Q/d6B+s6KeQNgdzB2TjdV8+mR2cOO9PKLXxZifBx6eR9TzsqW4exFTkNdwKKnDh8lADMGlfDaiM7li+LHByE2AwU5Bi83lvndhPLqit3sCwEkAQIbDAQulvTFjtLrhM77Byk0AwQvARI4kOj3QxMa"},{"id":"soc-b-g4-2","g":"g4","q":"「高齡化」是什麼意思？","o":["出生的小孩越來越少","老年人口占全部人口的比例越來越高","老人都搬到鄉下住","人口總數一直增加"],"s":"CEoWQ1RWTkMHwKKnDx8SDBQolvTdgu7rhM77BiYOBRgSChMsm+j0hdTdh/3HBBEFAAQWARUMm8vUiPPFh+zPBzwfAygOBi80UURXBExdQIjEenE4R30Tc0ku3ID14Ive1oXVWH0KRX8FYUkZ54zL6obJ6IjEensFZHsfaUoxyY/h/on95oTfbX0oT3Axb0oG4ov17Ij/zYTfc30odn0Tc0AK/43wyIvn6YTXWnw9ZnAqUkgvz4/h/o3n4ENDwO+n3OO91Y2MUYH1+Ij/zYTfc30odn0Tc0w28UpZQ1xFWEOGSQBsWzl6aTle2cKS++qB+s6JTQxhWBNwWSNSy+WT+cGD3+6KfjBgdTJ3Rg5V8+pXTUxUQFtNCzMdDyU+ACMgl9D4h/bIisvFBiI/Axc8AhcLlf3Ngu7lQBwS"},{"id":"soc-b-g6-1","g":"g6","q":"下面哪一個是「理性消費」的做法？","o":["看到特價就多買一些","先想清楚是需要還是想要，再比較價格、品質和預算","買最貴的一定最好","同學有，我也一定要有"],"s":"CEoWQ1RWTkMHwKKnAQgZAy8Rld79idzcQlxPBiYYAR04DSgclt/EhvTji/3vCj4EAwoTDSwLluLuhO/9i+DXBAsCBRgdx4OUFkpPQ4n35IfvRX4zbnAtXkcQ8o3w6Yvv5IfXZ3sFanEDZUcQ8ov17Iv17oLvbn4GVXA5ZEw2/ofJ7Yvh74fAdnA5ZX0cXEkWz43n7Yv044ncSHc5anwnQ0sO543pyYfH8obBdX0AQXsfZ42aUR9XWxVFUkNVwH8RTnwnaEo+w4/v5Yj604nKXXc5an0ZaEsIzI3b/Yre/Yf3TX4wTHAtXkw28UpZQ1xFWEOKYSFjRiR2TjdSy+WR2e6CzPuKcRltVTJ6QBJQ+/6c4MeC8umHZTJgUSl8ZS2UX0pGQ1RFi+H2BAAqAxcIACcGlvj5hOryh9zeCwc6CSQTARc7l9D1hMD9hPnACh8vAy8uAjUymvT1icjmgeHtwOX4"},{"id":"soc-b-g6-2","g":"g6","q":"每個月存 150 元，存 3 年，一共存了多少元？（不算利息）","o":["450 元","1,800 元","5,400 元","4,500 元"],"s":"CEoWQ1RVTkMHwKKn1bh6XBtQ7+GQ2NCC4uqJfhBqWge9yY3TUVJXUk6C29VP37i20Lh6ZSRQ7+Ca3eJWV1FPIQ+l1a6/2I+DX1xFUU6C5+KMYhqnyrrox5XNUVhXW0xTV1FPBAAqxqmq1Y915EhGjtLrhOvlARgJAyErBi87lP3Dh+b3geHjBAQNBRgSARUwkOj3Q0JFU0NVwKmp3qivxUku3I3Y+U5WQoTWVnc5bqmtxUo2+I7p6YHb64LvYLqpxKu9342CX11FUU6B+s5P0621xlsIxZyGnNT5Uk6C29WJejel1a6/AC89lfT9gu7lQBwS"}],"chi-a":[{"id":"chi-a-g4-1","g":"g4","q":"選出正確的字：他看到恐龍化石，覺得很（ ）訝。","o":["警","敬","驚","擎"],"s":"CEoWQ1RVTkMHwKKnAxcIACcGmsHvhPTghfvrARgJDzEFBi87nNT5hdbsi/zNBAAqAiMfDBUKmuvdhdXRjd3wwLSng7qlx0w2/4Hc+43n74XXaXEYRH4HSkw2/4HTzY3n747Tbn0Xan0Qcko+w4Hc+4v95Yfza3ESencjaUoQ8YHc+4bP/4LvY30VZXE2f0AK6Iv17YbKxILvb3w9bXECR0ku3Iv17YbP4oLvb3c5an05Z0cb1Y3a/o3n44nCRH0UbHsfZ42aUR9XWxVFUkNVwHsFanAyQ0w2/ozN6of6wIf3TXAtZncjaUku3IDYx4v26ILvY3AoQH0wekgs94DYx43n4ENDwKmn3Lp8ZSNQ5sSW4eOB+s6KUhJjczR4fytQ5sSW4exFTkNcwKKnBRgTAzw4kOj4h/bIhPLhBzwsAQIbAzw4nNT5hdbsi/zNBAAqABEUBi80URUI"},{"id":"chi-a-g4-2","g":"g4","q":"什麼是「倒敘法」？","o":["依照事情發生的先後順序寫","先寫結果或最精彩的部分，再回頭說事情的經過","整篇文章只寫對話","把句子的字倒過來寫"],"s":"CEoWQ1RWTkMHwKKnBRgTAC8kkOj4h/bIhOvlBwsvAiAfAwEDlu39h+XYh+nfBxEIDwU9AREwnNTqQ0JFB0NVwH0FdH4KfUkF5o7tzovi6oTASX8wdn4BeUk+5Y7p4YnV3ITSS38fYn8WYkkYxofJ7Yvh74T0fHElS3wlQUsN0I/D8ofm7I7Tbn0KSXwkQEomy43J9IbJ4onvZ3ArZnwnbko4yIv140xLQBZN2OOn1rqlx0Y26o7tzofH5If6en42c3sfZ42aUVpXW0yC7cuKTTNgVhV3TB5Sy+WT+cGC4vOJdwBmZhq9yY2FUVJXhO71hPT3BAAqDjIgAzoCl9L+h+3ihfvrCzgDAyIQChM6l9D4h/bIhOvlBzUSAxgNDC44l9bzgu7lQBwS"},{"id":"chi-a-g6-1","g":"g6","q":"「一粥一飯，當思來處不易」是什麼意思？","o":["每天只要吃粥和飯就好","煮粥比煮飯還難","每一碗粥、每一口飯都得來不容易，要懂得珍惜","吃飯前要先想好菜單"],"s":"CEoWQ1RVTkMHwKKnBRgTAREwm/HghdbqhPn8ARgICSQFARc2lMriiM3Ihdf8CxkLAws1ARUtl9LPhvTjhOjkBBEIAxAvARIWmvXXhOfqjd3wwLSng7qlx0Y26o36xIjo8ojpcH4Nd30fdEAK/4HW/onuy4bZcXEEaHAhV0oS2Iv14Ifm6YjvY3sFZ38cXEgz3Y787IvZ9YXRZHc5anA5ZEg5/o72/YHb7oXXb34wTHAtXkw28UpZQxlFWBpN0rq/xHEYaEYN7YzN7Ij/zYTgSHAGW30PZksN84HP3YHb7of3TXAjZ38QaEk174v140xLQFBN2LpmZhR7XSJQ6/uW4eOB7uaKXA9hWB57XSJT3dGT+f2I3u2LWhVjfjd5Sjtez+uc+s2A58+MYhqnyrqsx5WUkOj5h+76geHiBAAqABssACcGlsb2hvTjht/pCgEQCSQTARc7lfDah+3Uiu7zBw4rBRgdx9LL"},{"id":"chi-a-g6-2","g":"g6","q":"「半絲半縷，恆念物力維艱」最接近哪一個意思？","o":["絲線很細，很容易斷","衣服、用品就算只有一點點，也要常想到它得來不容易","做衣服太難，所以不要學","東西越貴越要買"],"s":"CEoWQ1RWTkMHwKKnBRgTAy4wltfAgu7qX0GKWiBgXiB5ZhxT+9ia3fWE4u2IazFgbAN4UwJe+tmW4eNaQobmS3A2YX0hcksI9Y3L6YbZ+YnkRHsFZLqzx8qUSUqc4feC7cSKcBRhXhJ7XS9T/M2T6f6C0uyAXgJgdht4fyte1emS7uOB4f2AXhRiTyd4fytV8+mS9caA+OWLWwdtQBl4aiJQ8PSa3eKC+cGIYCJgWA97Wylf8NWR2eOCzNiJegtmZhq9yY3BUVIOQ15FWEOMYhRgaxJ4UB1T/uKS2dmE4uyJejdtTDJ6WydTw/mS++qD2uGGWQZsXQZwWSNSy+WT+cGPyMuIVQJjeht5cxhV8+pXTUxVQFtNCx8IDyMBAzcZlOf4h+37hejGCisCBRgdx4OUQEpPQ4v17ondVXA3Un8FYUkrwoDQ3onjw4j4fnsFZLrimA=="}],"chi-b":[{"id":"chi-b-g4-1","g":"g4","q":"「人物傳記」通常「不會」寫哪一種內容？","o":["人物的出生和成長背景","人物做過的重要事情","人物對別人或社會的影響","作者自己編出來、沒有發生過的情節"],"s":"CEoWQ1RUTkMHwKKnAxosDQculsfehvTjhPnABQQaAiIlAjMpl9L+gu7lQE1Nh7q/xHwlX0g/2o330obP+ofPW34WfH8DekoZ1Y/v5Yrd2IT9bnw/bXcjaUsN+I/B2Inz/YTWUXsFZ3EYaEcQ8ozP6obe/YT9bn04V3EAWkAK/4zN7Ij74YTnWX4BaX8oTUY2047H84n+3ob7fXEEaH8FYUsM+Iv140xLQBZN2OOn1rqlx0c1/47szoj/zYTtUXAtfn0nXUoZ2I/v5YvixYTBW3sFZLqzx56USUqc5uOPxOCLWBNtXwd5fQBT8dudyfaA+OWGZRVsXQZ8ZS2UX0pHQ1RFh9zeCwc6AwoTAh0IlM3rhdf4h9nXBzcuAwQ3AC0Fm8Dtic3GgeHtwOX4"},{"id":"chi-b-g4-2","g":"g4","q":"馬偕博士是從哪一個國家來到臺灣的？","o":["美國","加拿大","英國","荷蘭"],"s":"CEoWQ1RWTkMHwKKnDxgGAC89lvT+hMDRhfvrBwQOAA8IARc8lfT8hdbnhejoBD0WDgkWxV8p/umW4exFTkMKwKKnDz4zAC4jl9bzienNh+vPBBM6Azw4ChM6QlBCU06C29WKaihjUTl5VRtZz+SQ492B9/iMYhltRxR2YwRZz+CQ2MWD2NuJaQxibwFwWSZV8+md38iCz9mJQjlqWhR7XS9R5/eQxOeA79qIVz5tYSJ4ZAxV8+pXTUwQQFsUwKin3Lp7XSJQ68eS3+CC/uqKdAxqWhR5ZhxQ8NuTxP2P8+iKfhNjcQ98ZS2UX0pHQ1RFiureBwQOAQIbADM9lf/ih/bIhdDcBzUSAA8IBi80UURXUkxdQIniVXAdS3wlX0ku3EhEVk6D2veIVhhgbih3YhVR8suS++qI3u2JTQxsQDR6ZDpQ5MGQ3+aCxvuMYhqnm+U="},{"id":"chi-b-g6-1","g":"g6","q":"下面哪一句主要用了「味覺」摹寫？","o":["夜市燈火通明，人潮擠滿了街道","油鍋裡傳來滋滋作響的聲音","一口咬下，酸酸甜甜的滋味在舌尖散開","遠遠就聞到滷肉飯的香氣"],"s":"CEoWQ1RVTkMHwKKnAwksDQkMlfDahvrPh/LFBiAFAxgUADYelsbth+r4h+74BQIBCSQAx4OUFkpPQ43n7ojqWnEAXn8LeUgi74v17I3n7onnbn01cHsfaEY1zo7tzonzyonnbnElS30Hcko+w4/v5Yv20YjucXc5an0uSUkgz43k0obB2If+W30qTXsfZ42aUR9XWxVFUkNVwHsFan8YbUg32IH1+4j/7ILvb34dSX8Dbko+w4/v5YHb7oTeTn4TWnA5c0cQyYv140xLQFBN2LpmZhR5XiRQyOOR3PKO/d6MYhVjfjd3ZBJT+9iS++qI3u2KUzRjcCR3ZBJe1dKW4exFTkNcwKKnBRgTDS4oluDFgu7qhPnABw8ADj4lBi80URUI"},{"id":"chi-b-g6-2","g":"g6","q":"「剛起鍋的炸雞外皮酥脆，咬下去喀滋一聲」用了哪兩種摹寫？","o":["視覺和嗅覺","觸覺（口感）和聽覺","味覺和嗅覺","只有視覺"],"s":"CEoWQ1RWTkMHwKKnBRgTDCoTm+zzgu7qhPnABiMFDyIjAyspm87PjtL4geHjBw4FACMUARc2m+nHgu7qhPnABQwtAws1DQwXlezqhOHwhfvrDSQaxLS9gI2MUYv17Yfix4nrZHsFa34HSkg/6oHI84v17oT3Vn0yUn4beko55I390Yn95oTgQX4BeXcjaUoH347j3YbA2onJWHc5fXsfaUog847O6orf4onuUHsFa34HSkc3zo390Yn95o7Tbn00Sn4JWUc3zoDT243n4ENDwO+n3OO91Y2MUY36xIvK8onMQ343dH4DbEoZ2I/p6ovv0ob1ZnEkaXAWV0k+5YD0/4vv0ob1Zn41RX0OVkw28UpZQ1xFWEOKbT1gSwh5Vz1T3MOc5NaA9v2GWyFiSxF6dBxf8vua3eKD2/6JUApgSTN2QzZQw8uW4exFTkNcwKKnAxc6AAImlvTdhMHMh+7MBBwaAwoTDS4EmvfGgu7lQBwS"}],"eng-a":[{"id":"eng-a-g4-1","g":"g4","q":"看著爸爸的照片，朋友問：Who's he? 怎麼回答？","o":["She's my mother.","He's my father.","Yes, he is.","I'm fine."],"s":"CEoWQ1RWTkMHwKKnjv2/AzcZlPzChvr4jd3jBw0KAQIbAzcZkOj5hdXxhPnACjI1BRgSBi80UURXBExdQDYHjb/2xvD62o9T5ueW4eKD2feJejdtTCh8ZSJZz+SQ+vCAz/VPqv2ilbjynI/QEhwdBBxJjd3nBiMTAAAwAycnlPLxhubfhenXDSQMBRgdx4OUBEpPGkxXQFtNiv2lAAAwAjsBlPzqjtLrEQkKwn4Ma34HSkoTwI/h/o3n4ENDwKqn3LrGgNyZPQdVhvrPht/pBwMbATULxebFUwAQT0BJXUGGYgFiTjZ6cCBf0uSW4exFTkNcwKKnr7/yxcnfHQ1bQYj/zYT0fH8ocrjXitiWEhoQQRcIF15Nn+U="},{"id":"eng-a-g4-2","g":"g4","q":"Is she a nurse?（她是護士。）怎麼回答？","o":["Yes, he is.","Yes, she does.","Yes, she is.","No, I'm not."],"s":"CEoWQ1RVTkMHwKKnAw0QACATlPzdQScUQhIHh3c5an0Ee0gb54zM/onzykEciv2lAwoTxcbFkOj3Q0JFB0NVwNH2xuv3gIGYXVdVhvTjiuPABzYfAwMBAgIilfDaQTcCEU1PkfDgxvHsy0AK/43lx4vJ+If3TbjLibS/lsfTUwEGD0kTTENDwO+n3OO91Y2MUY3g7on95of3Tbj2jv1wWSdT1tGa3eeI3u2LWhVjfje/jcpV8+pXTUxWQFtNq+ulDw4UDA8blPLxhPvoh+7KCj4EAQw3xcbFU43u/4nK9o7Tbnw9a38LTY/SHA0Ggu7lQE1N0bq/xH0Kakgs947tzovC247Tbnw9a34HSksL04v140waHw=="},{"id":"eng-a-g6-1","g":"g6","q":"Where are you from? 最適合的回答是？","o":["I'm eleven.","I'm fine, thank you.","I have a cold.","I'm from Japan."],"s":"CEoWQ1RUTkMHwKKnsfD6l8qWlv36hvTjhPnAARgJAws1DQwXkOj4gu7lQE1Nh7q/xM/3gN3TUwkHBE4eDRRPhOrqi6e/ADo5kOj5hdPHh9/xBwsvDjs+AREwkOj4jtLrh/rxBTURxtG4iI/QAQcYQUVHh/3kBzYzBRgdx4OUBEpPGkxXQFtNCxgcAAAwADQolMXhQSYIFUEAjvylh+r6xdbZBldXTUxWQFtNCxgcAAAwADQolMXhQSYIFUEOkP2ln/fq2o2aUVpXW0yO4viJejdgfQZ4SDuWJAAUFUkUQhYdjfbi2brimA=="},{"id":"eng-a-g6-2","g":"g6","q":"醫生問：What's wrong? 最適合的回答是？","o":["I have a headache.","I'm from Canada.","Yes, I do.","It's sunny."],"s":"CEoWQ1RXTkMHwKKnsfD+kYjFUx8HDgAAXUGJejdgcxd8ZSNSzsiT4eCO2N2LWB5mZhV8ZS2UX0oQQ1RFNQkOlr/2xu/tisHRTEiQ9OGC8cuHQTlhXhV3bT1Q7+Wa3eKC+f+ITwylr7j3hNnTUwlVCQsGBgAMiv2lybj+xczZHwxVTk4GQgcKlP33BRgdx4OUBEpPGkxWQFtNCxgcAAAwADQolMXhQTkPBxMKwvn3g7jmitqWFRoaDFFFTkNdwKKnv/3syY//UwwaT06B+s6KeQZiSwy/ocCWCgcAT0BJXUGGYgFiTjZ6cCBf0uSW4exFTkNcwKKnDxgGAzcZlvPrhsPzh8XGBCgmBRgdx9LL"}]}/*__END_MCQ__*/;
+const MCQ_KEY = "shuangbao★星寶";
+const _secretCache = new Map();
+function secret(q){
+  if(_secretCache.has(q.id)) return _secretCache.get(q.id);
+  const bin = atob(q.s), key = new TextEncoder().encode(MCQ_KEY);
+  const bytes = Uint8Array.from(bin, (c,i) => c.charCodeAt(0) ^ key[i % key.length]);
+  const v = JSON.parse(new TextDecoder().decode(bytes)); _secretCache.set(q.id, v); return v;
+}
+function cardQs(cardId, g){ return (MCQ[cardId]||[]).filter(q => q.g === g); }
 
 const STAGES = [
  {name:"神秘蛋",min:0,emoji:"🥚"},{name:"星寶寶",min:5,emoji:"🐣"},
@@ -324,15 +342,15 @@ const SOURCES = [
  ["臺北文林國小六年級英語 Wonder World 7 教學計畫","https://tten.tp.edu.tw/Login/Downment?grade=6&spid=9f3d5bc6-624c-4f24-b987-078022adc4cd&subject=English"]
 ];
 const SCIENCE = [
- ["🔁 提取練習","從腦中「拿出來」比再讀一次記得更牢","答案預設藏起來，先說答案再翻開"],
- ["⏰ 間隔重複","快忘記時再複習，記憶最持久","過關後第 1、3、7、14 天，地圖上會跳出「該複習」"],
+ ["🔁 提取練習","從腦中「拿出來」比再讀一次記得更牢","選擇題一定要真的選，選了才看得到答案和解說"],
+ ["⏰ 間隔重複","快忘記時再複習，記憶最持久","答錯的卡隔天就跳出「該複習」；過關後第 1、3、7、14 天再複習"],
  ["🔀 交錯練習","不同主題混著練，更會判斷該用哪一招","選「全部」隨機抽不同科目"],
  ["🔗 精緻化","問「為什麼」、連到生活，知識才會黏住","為什麼卡、生活解謎"],
  ["✍️ 生成效應","自己產生的東西比被告知的記得更好","出題反轉卡、造句出題"],
  ["👩‍🏫 費曼法／教學效應","能教別人才算真懂，教的人學最多","小老師卡：小六教、小四說回來（+2 星）"],
- ["🎯 刻意練習＋即時回饋","專練卡住的點，馬上知道對錯","翻答案立即對照；錯題卡只練卡住的那一步"],
- ["🤔 後設認知","知道自己會不會，才知道要練什麼","答題前先按信心 1～3"],
- ["🌱 成長型思維","能力是練出來的，錯誤是線索","按「還不會」星寶會打氣、不扣分"]
+ ["🎯 刻意練習＋即時回饋","專練卡住的點，馬上知道對錯","選錯會說明那個選項錯在哪、給提示，再試一次"],
+ ["🤔 後設認知","知道自己會不會，才知道要練什麼","作答前先選信心 1～3，答完比對「我以為」和「實際」"],
+ ["🌱 成長型思維","能力是練出來的，錯誤是線索","選錯時星寶會打氣、不扣分，還有第二次機會"]
 ];
 const HABITS = [
  ["👀 提示：讓它顯而易見","固定在晚餐後：碗放進水槽，就打開星寶冒險機"],
@@ -350,11 +368,11 @@ const PROMPTS = [
  ["🩺 錯題醫生","這題我錯了：＿＿。請用問問題的方式，幫我找出是哪一步想錯，最後讓我自己說出正確做法。"],
  ["❓ 五個為什麼","關於＿＿，請陪我玩「連問五個為什麼」，每次只問一個，我回答後再繼續。"]
 ];
-const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（提取練習）。","2～12 分 🎲 抽 2～3 關：先按信心，各自闖關，卡住才翻提示。","12～16 分 🤝 合體關：小老師、為什麼、生活解謎，關主只追問。","16～18 分 🔄 出題反轉：互相出一題，由對方評「好題目」。","18～20 分 ⭐ 結算：看星寶長多大，各說一句「我今天學會……／我還不會……」，錯題寫成錯題卡。"];
-const STAR_RULES = [["先自己說出答案（不管對錯）","+1"],["答錯後，自己找出錯在哪一步","+1"],["講解到對方能用自己的話說回來","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題","+2"],["出一題對方覺得「好題目」的題","+2"],["一起解開合體關","+1"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
+const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（提取練習）。","2～12 分 🎲 抽 2～3 關：先選信心，再各自作答選擇題；選錯會給提示，可以再試一次。","12～16 分 🤝 合體關：小老師、為什麼、生活解謎，關主只追問。","16～18 分 🔄 出題反轉：互相出一題，由對方評「好題目」。","18～20 分 ⭐ 結算：看星寶長多大，各說一句「我今天學會……／我還不會……」，錯題寫成錯題卡。"];
+const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/22（四）","認識規則＋數學A","—","15 分"],["10/23（五）","自然A","數學A","15 分"],["10/24（六）","社會A、國語A","自然A","20 分"],["10/25（日，光復節）","英語A 家庭英語診所","數學A、社會A、國語A","25 分"],["10/26（一，補假）","數學B","自然A、英語A","20 分"],["10/27（二）","自然B","社會A、國語A、數學B","20 分"],["10/28（三）","社會B、國語B","英語A","20 分"],["10/29（四）","數學C","數學A（第 7 天）、自然B","20 分"],["10/30（五）","出題對決（全科）","社會B、國語B、數學B","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一課","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["拿到老師的範圍單後，把估計範圍換成正式範圍，每課補 3 張任務卡。","建立錯題記憶庫：記下日期和錯在哪一步，自動排第 1、3、7 天複習。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["拿到老師的範圍單後，把估計範圍換成正式範圍，每課補 3 張任務卡。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！星寶長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -395,12 +413,12 @@ function defaultSave(){
     flips: {},          // { [flipId]: { drawn, good } }
     playDates: [],      // ["2026-10-22", ...] 台灣日期
     daily: {},          // { "2026-10-22": { g4:{stars,actions,misses}, g6:{...}, team:{stars,actions} } }
-    settings: { petName:"星寶", names:{g4:"小四", g6:"小六"} },
+    settings: { petName:"星寶", names:{g4:"小四", g6:"小六"}, parentPin:null },
     history: []         // 版本升級紀錄
   };
 }
 function defaultCardProgress(){
-  return { cleared:false, firstClearedOn:null, lastPlayedOn:null, playedOn:[], stars:{g4:0,g6:0,team:0}, misses:{g4:0,g6:0}, opened:0 };
+  return { cleared:false, firstClearedOn:null, lastPlayedOn:null, playedOn:[], stars:{g4:0,g6:0,team:0}, misses:{g4:0,g6:0}, opened:0, mc:{} };
 }
 function isObj(x){ return x && typeof x === "object" && !Array.isArray(x); }
 // 把預設值補進舊資料：只補缺少的欄位，絕不覆蓋已有值
@@ -424,6 +442,19 @@ const MIGRATIONS = {
     if(typeof s.teamStars === "number") out.teamStars = s.teamStars;
     for(const k in s){ if(!(k in out)) out[k] = s[k]; } // 不認識的欄位也保留
     return out;
+  },
+  // v1 → v2：加入選擇題作答紀錄、每日答對/答錯、家長 PIN。舊欄位與星星全部保留
+  2: function(s){
+    if(!isObj(s.cards)) s.cards = {};
+    for(const id in s.cards){ const c = s.cards[id]; if(isObj(c) && !isObj(c.mc)) c.mc = {}; }
+    if(!isObj(s.daily)) s.daily = {};
+    for(const d in s.daily){ const r = s.daily[d]; if(!isObj(r)) continue;
+      for(const g of ["g4","g6"]){ if(isObj(r[g])){ if(typeof r[g].right!=="number") r[g].right=0; if(typeof r[g].retry!=="number") r[g].retry=0; if(typeof r[g].wrong!=="number") r[g].wrong=0; } }
+      if(!isObj(r.cards)) r.cards = {};
+    }
+    if(!isObj(s.settings)) s.settings = {};
+    if(!("parentPin" in s.settings)) s.settings.parentPin = null;
+    return s;
   }
 };
 
@@ -481,8 +512,8 @@ function cardProg(id){
   return S.cards[id];
 }
 function dayRec(date){
-  if(!S.daily[date]) S.daily[date] = {g4:{stars:0,actions:0,misses:0}, g6:{stars:0,actions:0,misses:0}, team:{stars:0,actions:0}};
-  fillDefaults(S.daily[date], {g4:{stars:0,actions:0,misses:0}, g6:{stars:0,actions:0,misses:0}, team:{stars:0,actions:0}});
+  if(!S.daily[date]) S.daily[date] = {g4:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, g6:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, team:{stars:0,actions:0}, cards:{}};
+  fillDefaults(S.daily[date], {g4:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, g6:{stars:0,actions:0,misses:0,right:0,retry:0,wrong:0}, team:{stars:0,actions:0}, cards:{}});
   return S.daily[date];
 }
 function markPlayed(cardId){
@@ -510,7 +541,13 @@ function streakInfo(){
   return {current:n, best:best, playedToday:set.has(today)};
 }
 // 間隔複習：第一次過關後第 1、3、7、14 天
+function wrongDue(id){
+  const p = S.cards[id]; if(!p || !isObj(p.mc)) return false;
+  const today = twDate();
+  return Object.values(p.mc).some(r => r && r.wrongPending && r.wrongOn && dayDiff(r.wrongOn, today) >= 1);
+}
 function reviewDue(id){
+  if(wrongDue(id)) return true;
   const p = S.cards[id];
   if(!p || !p.firstClearedOn) return false;
   const today = twDate();
@@ -532,8 +569,9 @@ const $ = (id) => document.getElementById(id);
 const esc = (t) => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let filter = "全部";
 let curId = CARDS[0].id;
-let rev = {h4:false,a4:false,h6:false,a6:false,at:false};
-let conf = {g4:0,g6:0};
+let rev = {at:false};
+let qs = {};
+const fmt = (n) => Number.isInteger(n) ? String(n) : n.toFixed(1);
 let flipIdx = -1;
 
 function toast(t){ const el=$("toast"); el.textContent=t; el.style.display="block"; clearTimeout(toast._t); toast._t=setTimeout(()=>el.style.display="none",2200); }
@@ -574,67 +612,156 @@ function renderMap(){
   $("map").querySelectorAll(".lvl").forEach(b => b.onclick = () => openCard(b.dataset.id));
 }
 function openCard(id){
-  curId = id; rev = {h4:false,a4:false,h6:false,a6:false,at:false}; conf = {g4:0,g6:0};
+  curId = id; rev = {at:false}; qs = {g4:newQ(id,"g4",0), g6:newQ(id,"g6",0)};
   const p = cardProg(id); p.opened++; persist();
   renderMap(); renderCard();
   const el = $("card"); el.classList.remove("panel"); void el.offsetWidth;
 }
+function shuffle(n){ const a = Array.from({length:n}, (_,i) => i); for(let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function newQ(cardId, g, idx){
+  const list = cardQs(cardId, g); const q = list[idx];
+  return {idx, order: q ? shuffle(q.o.length) : [], picked:[], done:false, result:null, conf:0, practice:false, msg:""};
+}
+function mcRec(cardId, qid){
+  const p = cardProg(cardId); if(!isObj(p.mc)) p.mc = {};
+  if(!p.mc[qid]) p.mc[qid] = {right:0, retry:0, wrong:0, lastOn:null, lastResult:null, starOn:null, wrongPending:false, wrongOn:null, everRight:false, confLog:[]};
+  return p.mc[qid];
+}
 function kidHTML(c, g){
-  const isG4 = g === "g4"; const lv = c[g];
-  const h = isG4 ? rev.h4 : rev.h6, a = isG4 ? rev.a4 : rev.a6;
+  const isG4 = g === "g4";
   const team = isG4 ? "🔵 藍隊・小四關" : "🔴 紅隊・小六關";
   const cls = isG4 ? "b-blue" : "b-red";
+  const list = cardQs(c.id, g); const st = qs[g] || (qs[g] = newQ(c.id, g, 0));
+  const q = list[st.idx];
+  if(!q) return `<div class="kid ${g}"><span class="badge">${team}</span><p class="q">這關沒有選擇題。</p></div>`;
+  const p = S.cards[c.id] || {}; const mc = (p.mc||{});
+  const dots = list.map((x,i) => { const r = mc[x.id]; const mark = r && r.lastResult==="right" ? "✔" : r && r.lastResult==="retry" ? "½" : r && r.lastResult==="wrong" ? "✘" : "•";
+    return `<button class="qdot ${i===st.idx?"on":""}" data-goto="${g}" data-n="${i}">第${i+1}題 ${mark}</button>`; }).join("");
+  const rec = mc[q.id]; const today = twDate();
+  const sec = st.done || st.picked.length ? secret(q) : null;
+  const opts = st.order.map(i => {
+    let state = "";
+    if(st.picked.includes(i)) state = (sec && i === sec.c) ? "right" : "wrong";
+    if(st.done && sec && i === sec.c) state = "right";
+    const dis = st.done || st.picked.includes(i) || !st.conf;
+    return `<button class="opt ${state}" data-pick="${g}" data-i="${i}" ${dis?"disabled":""}>${state==="right"?"✅ ":state==="wrong"?"❌ ":""}${esc(q.o[i])}</button>`;
+  }).join("");
+  let fb = "";
+  if(!st.done && st.picked.length && sec){
+    const note = sec.w && sec.w[String(st.picked[0])];
+    fb = `<div class="hint">🤗 差一點點！${note?esc(note):""}<br>💡 提示：${esc(sec.h)}<br><b>再選一次，答對可以拿半顆星 ⭐</b></div>`;
+  }
+  if(st.done && sec){
+    const head = st.result==="right" ? "🎉 答對了！" : st.result==="retry" ? "👍 第二次答對了！" : "🌈 這題先記下來，明天再挑戰！";
+    const lastWrong = st.picked.filter(i => i !== sec.c).slice(-1)[0];
+    const note = st.result==="wrong" && lastWrong!==undefined && sec.w ? sec.w[String(lastWrong)] : "";
+    fb = `<div class="ans">${head}${st.msg?`<br>${esc(st.msg)}`:""}<br>✅ 正確答案：<b>${esc(q.o[sec.c])}</b><br>📝 為什麼：${esc(sec.e)}${note?`<br>🔍 你選的那個：${esc(note)}`:""}</div>`;
+  }
+  const nextBtn = st.done ? (st.idx < list.length-1
+      ? `<button class="btn ${cls}" data-goto="${g}" data-n="${st.idx+1}">➡️ 下一題</button>`
+      : `<button class="btn ${cls}" data-goto="${g}" data-n="0">🔁 從第 1 題再練（重新洗牌）</button>`) : "";
+  const practice = rec && rec.starOn === today && !st.done ? `<p class="note">📘 這題今天已經拿過星星，現在是練習模式（不加星）。</p>` : "";
   return `<div class="kid ${g}">
     <span class="badge">${team}</span>
-    <p class="q">${esc(lv.q)}</p>
-    <div class="conf" style="--c:${isG4?"var(--blue)":"var(--red)"}">先猜信心：${[1,2,3].map(n=>`<button data-conf="${g}" data-n="${n}" class="${conf[g]===n?"on":""}">${"⭐".repeat(n)}</button>`).join("")}</div>
-    ${h?`<div class="hint">💡 提示：${esc(lv.hint)}</div>`:""}
-    ${a?`<div class="ans">✅ 參考答案：${esc(lv.a)}</div>`:""}
-    <div class="row">
-      <button class="btn ghost ${cls}" data-rev="${isG4?"h4":"h6"}">${h?"收起提示":"💡 看提示"}</button>
-      <button class="btn ghost ${cls}" data-rev="${isG4?"a4":"a6"}">${a?"收起答案":"🙈 先說答案，再翻開"}</button>
-    </div>
-    <div class="row" style="margin-top:12px">
-      <button class="btn ${cls}" data-award="${g}" data-n="1" data-m="">🙋 我自己想出來了 +1</button>
-      <button class="btn ${cls}" data-award="${g}" data-n="1" data-m="找到錯誤就是進步！🔍">🔍 錯了，但找到錯在哪 +1</button>
-      <button class="btn b-pink" data-miss="${g}">🤗 還不會</button>
-    </div>
+    <div class="qdots">${dots}</div>
+    <p class="q">${esc(q.q)}</p>
+    <div class="conf" style="--c:${isG4?"var(--blue)":"var(--red)"}">${st.conf?"我的信心：":"👉 先選信心，才能作答："}${[1,2,3].map(n=>`<button data-conf="${g}" data-n="${n}" class="${st.conf===n?"on":""}" ${st.picked.length?"disabled":""}>${"⭐".repeat(n)}</button>`).join("")}</div>
+    ${practice}
+    <div class="opts">${opts}</div>
+    ${fb}
+    <div class="row" style="margin-top:10px">${nextBtn}</div>
   </div>`;
 }
 function renderCard(){
   const c = CARDS.find(x => x.id === curId) || CARDS[0];
+  if(!qs.g4 || !qs.g6) qs = {g4:newQ(c.id,"g4",0), g6:newQ(c.id,"g6",0)};
   const n = CARDS.indexOf(c)+1;
   $("card").innerHTML = `<div class="panel on" style="display:block">
     <h2>${SUBJECTS[c.subject].emoji} 第 ${n} 關・${c.code}｜${esc(c.title)} ${reviewDue(c.id)?"⏰":""}</h2>
     <div class="kids">${kidHTML(c,"g4")}${kidHTML(c,"g6")}
-      <div class="kid team"><span class="badge">🤝 合體關・${esc(c.kind)}</span>
+      <div class="kid team"><span class="badge">🤝 合體關・${esc(c.kind)}（開放題）</span>
         <p class="q">${esc(c.together)}</p>
         ${rev.at && c.togetherAns?`<div class="ans">✅ 參考答案：${esc(c.togetherAns)}</div>`:""}
         <div class="hint">🎁 加碼：${esc(c.extra)}</div>
+        <p class="note">👩‍⚕️ 開放題沒有標準答案，星星由家長聽完後確認（需要家長 PIN）。</p>
         <div class="row">
-          ${c.togetherAns?`<button class="btn ghost b-yellow" data-rev="at">${rev.at?"收起答案":"🙈 翻開合體關答案"}</button>`:""}
-          <button class="btn b-red" data-award="team" data-n="2" data-m="教的人學最多！👩‍🏫">👩‍🏫 教到對方能說回來 +2</button>
-          <button class="btn b-blue" data-award="team" data-n="2" data-m="好問題！🤔">🤔 問出「如果…會怎樣」+2</button>
-          <button class="btn b-mint" data-award="team" data-n="1" data-m="合體成功！🤝">🤝 一起解開了 +1</button>
+          ${c.togetherAns?`<button class="btn ghost b-yellow" data-rev="at">${rev.at?"收起答案":"🙈 討論完再翻開參考答案"}</button>`:""}
+          <button class="btn b-red" data-team="2" data-m="教的人學最多！👩‍🏫">👩‍🏫 教到對方能說回來 +2 🔒</button>
+          <button class="btn b-blue" data-team="2" data-m="好問題！🤔">🤔 問出「如果…會怎樣」+2 🔒</button>
+          <button class="btn b-mint" data-team="1" data-m="合體成功！🤝">🤝 一起解開了 +1 🔒</button>
         </div>
       </div>
     </div></div>`;
   const root = $("card");
   root.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { rev[b.dataset.rev] = !rev[b.dataset.rev]; renderCard(); });
-  root.querySelectorAll("[data-conf]").forEach(b => b.onclick = () => { conf[b.dataset.conf] = Number(b.dataset.n); renderCard(); });
-  root.querySelectorAll("[data-award]").forEach(b => b.onclick = (e) => award(b.dataset.award, Number(b.dataset.n), b.dataset.m, e));
-  root.querySelectorAll("[data-miss]").forEach(b => b.onclick = (e) => miss(b.dataset.miss, e));
+  root.querySelectorAll("[data-conf]").forEach(b => b.onclick = () => { qs[b.dataset.conf].conf = Number(b.dataset.n); renderCard(); });
+  root.querySelectorAll("[data-goto]").forEach(b => b.onclick = () => { qs[b.dataset.goto] = newQ(curId, b.dataset.goto, Number(b.dataset.n)); renderCard(); });
+  root.querySelectorAll("[data-pick]").forEach(b => b.onclick = (e) => pick(b.dataset.pick, Number(b.dataset.i), e));
+  root.querySelectorAll("[data-team]").forEach(b => b.onclick = (e) => {
+    const n = Number(b.dataset.team), m = b.dataset.m, pt = {clientX:e.clientX, clientY:e.clientY};
+    requireParent(`合體關 +${n} ⭐：${m}`, () => { markPlayed(curId); award("team", n, m, pt); });
+  });
 }
-
+function pick(g, i, ev){
+  const st = qs[g]; if(!st || st.done) return;
+  if(!st.conf){ toast("👉 先選信心，再作答"); return; }
+  const q = cardQs(curId, g)[st.idx]; if(!q) return;
+  const sec = secret(q), today = twDate();
+  const rec = mcRec(curId, q.id); const d = dayRec(today);
+  const practice = rec.starOn === today;
+  const ok = i === sec.c;
+  st.picked.push(i);
+  if(!ok){ rec.wrongPending = true; rec.wrongOn = today; d[g].misses += 1; }
+  if(ok || st.picked.length >= 2){
+    st.done = true;
+    st.result = ok ? (st.picked.length === 1 ? "right" : "retry") : "wrong";
+    rec[st.result] += 1; rec.lastResult = st.result; rec.lastOn = today;
+    rec.confLog.push([today, st.conf, st.result]); if(rec.confLog.length > 30) rec.confLog.shift();
+    if(st.result === "right" && rec.wrongOn && dayDiff(rec.wrongOn, today) >= 1) rec.wrongPending = false;
+    if(ok) rec.everRight = true;
+    if(!practice){
+      d[g][st.result] += 1; d[g].actions += 1;
+      const dc = d.cards[curId] || (d.cards[curId] = {});
+      const k = dc[g] || (dc[g] = {right:0, retry:0, wrong:0}); k[st.result] += 1;
+    }
+    // 過關：這張卡兩個年級的選擇題都至少答對過一次（或其中一個年級全部答對）
+    const p = cardProg(curId);
+    const allRight = (gg) => { const l = cardQs(curId, gg); return l.length && l.every(x => p.mc[x.id] && p.mc[x.id].everRight); };
+    if(!p.cleared && (allRight("g4") || allRight("g6"))){ p.cleared = true; p.firstClearedOn = today; }
+    markPlayed(curId);
+    st.msg = calib(st.conf, st.result);
+    if(ok && !practice){
+      rec.starOn = today;
+      const n = st.result === "right" ? 1 : 0.5;
+      award(g, n, st.result === "right" ? HAPPY[Math.floor(Math.random()*HAPPY.length)] : "第二次就答對，好厲害！👍", ev);
+    }else{
+      persist();
+      if(ok){ petFx("happy","答對了！（練習模式）"); confetti(40, ev); setMsg("答對了！今天這題已經拿過星星，明天再來複習會更牢 🧠"); }
+      else { petFx("cheer", CHEER[Math.floor(Math.random()*CHEER.length)]); hearts(); setMsg("沒關係！看看為什麼，這張卡明天會出現「⏰ 該複習」。"); }
+      renderAll(false);
+    }
+  }else{
+    markPlayed(curId); persist();
+    const m = CHEER[Math.floor(Math.random()*CHEER.length)];
+    petFx("cheer", m); hearts(); setMsg(`${m} 看看提示，再選一次。`);
+    renderAll(false);
+  }
+  renderCard();
+}
+function calib(conf, result){
+  if(conf === 3 && result === "wrong") return "🤔 信心滿滿卻答錯，這題最值得複習！";
+  if(conf === 1 && result === "right") return "😲 你比自己以為的還厲害！";
+  if(conf === 3 && result === "right") return "🎯 信心和答案都對，真的會了！";
+  return "";
+}
 function award(who, n, text, ev){
   const before = S.teamStars;
   S.teamStars += n;
   S.kidStars[who] = (S.kidStars[who]||0) + n;
   const today = twDate(); const d = dayRec(today);
-  d[who].stars += n; d[who].actions += 1;
+  d[who].stars += n; if(who === "team") d.team.actions += 1;
   const p = cardProg(curId);
   p.stars[who] = (p.stars[who]||0) + n;
-  if(!p.cleared){ p.cleared = true; p.firstClearedOn = today; }
   markPlayed(curId);
   persist();
   const sb = stageOf(before), sa = stageOf(S.teamStars);
@@ -644,20 +771,33 @@ function award(who, n, text, ev){
     petFx("evolve", m); confetti(220, ev); setMsg(m);
   }else{
     const m = text || HAPPY[Math.floor(Math.random()*HAPPY.length)];
-    petFx("happy", m); confetti(90, ev); setMsg(`${m}（+${n} ⭐）`);
-    if(privAfter > privBefore) setTimeout(()=>toast("🎁 又可以兌換一個家庭特權了！"),600);
+    petFx("happy", m); confetti(90, ev); setMsg(`${m}（+${fmt(n)} ⭐）`);
   }
+  if(privAfter > privBefore) setTimeout(()=>toast("🎁 又可以兌換一個家庭特權了！"),600);
   renderAll(false);
 }
-function miss(who, ev){
-  const d = dayRec(twDate()); d[who].misses += 1; d[who].actions += 1;
-  const p = cardProg(curId); p.misses[who] = (p.misses[who]||0) + 1;
-  markPlayed(curId);
-  persist();
-  const m = CHEER[Math.floor(Math.random()*CHEER.length)];
-  petFx("cheer", m); hearts();
-  setMsg(`${m} 把這題寫成錯題卡，明天、第 3 天、第 7 天再挑戰。`);
-  renderAll(false);
+
+/* 家長確認：4 位數 PIN（第一次使用時設定），確認後 10 分鐘內不用再輸入 */
+let parentUntil = 0;
+function pinHash(pin){ let h = 2166136261; const t = "sb-parent:" + pin; for(let i=0;i<t.length;i++){ h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16); }
+function requireParent(what, ok){
+  if(Date.now() < parentUntil){ ok(); return; }
+  const setup = !S.settings.parentPin;
+  const m = $("pinModal"); m.style.display = "flex";
+  $("pinTitle").textContent = setup ? "👩‍⚕️ 第一次使用：請家長設定 4 位數 PIN" : "👩‍⚕️ 家長確認";
+  $("pinWhat").textContent = what;
+  $("pinIn").value = ""; $("pinIn2").value = ""; $("pinIn2").style.display = setup ? "" : "none"; $("pinErr").textContent = "";
+  setTimeout(() => $("pinIn").focus(), 50);
+  $("pinOk").onclick = () => {
+    const a = $("pinIn").value.trim(), b = $("pinIn2").value.trim();
+    if(!/^\d{4}$/.test(a)){ $("pinErr").textContent = "請輸入 4 位數字"; return; }
+    if(setup){
+      if(a !== b){ $("pinErr").textContent = "兩次輸入不一樣，請再輸入一次"; return; }
+      S.settings.parentPin = pinHash(a); persist();
+    }else if(pinHash(a) !== S.settings.parentPin){ $("pinErr").textContent = "PIN 不對喔"; $("pinIn").value = ""; return; }
+    parentUntil = Date.now() + 10*60*1000; m.style.display = "none"; ok();
+  };
+  $("pinCancel").onclick = () => { m.style.display = "none"; };
 }
 function setMsg(t){ $("msg").textContent = t; }
 
@@ -665,10 +805,10 @@ function renderEvo(){
   const s = S.teamStars, st = stageOf(s);
   const avail = availablePrivileges();
   $("evoLine").textContent = st < 3
-    ? `🥚 → 🐣 星寶寶（5 星）→ 🐥 少年星寶（15 星）→ 🌟 超進化星寶（30 星）。再 ${STAGES[st+1].min - s} 顆進化！`
+    ? `🥚 → 🐣 星寶寶（5 星）→ 🐥 少年星寶（15 星）→ 🌟 超進化星寶（30 星）。再 ${fmt(STAGES[st+1].min - s)} 顆進化！`
     : `🌟 已達最終進化！每 15 顆星換一個家庭特權。目前可兌換：${avail} 個`;
   $("redeemBtn").style.display = avail > 0 ? "" : "none";
-  $("redeemBtn").textContent = `🎁 兌換家庭特權（${avail}）`;
+  $("redeemBtn").textContent = `🎁 兌換家庭特權（${avail}）🔒`;
 }
 function availablePrivileges(){
   const earned = Math.floor(S.teamStars / PRIVILEGE_EVERY);
@@ -676,8 +816,8 @@ function availablePrivileges(){
 }
 $("redeemBtn").onclick = () => {
   if(availablePrivileges() <= 0) return;
-  if(!confirm("確定要兌換一個家庭特權嗎？（選週末活動、決定晚餐、多一個睡前故事…）")) return;
-  S.redeemed++; persist(); renderEvo(); confetti(160); toast("🎁 兌換成功！跟媽媽說你們選了什麼～");
+  requireParent("兌換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事…）", () => {
+    S.redeemed++; persist(); renderEvo(); confetti(160); toast("🎁 兌換成功！跟媽媽說你們選了什麼～"); });
 };
 $("howBtn").onclick = () => {
   document.querySelector('.tab[data-p="parent"]').click();
@@ -694,9 +834,11 @@ $("flipBtn").onclick = () => {
   const f = FLIPS[n];
   S.flips[f.id] = S.flips[f.id] || {drawn:0,good:0}; S.flips[f.id].drawn++; persist();
   $("flipBox").innerHTML = `<div class="kid team" style="margin-top:14px"><span class="badge">🔄 出題反轉卡</span><p class="q">${esc(f.text)}</p>
-   <div class="row"><button class="btn b-blue" id="flipG4">🔵 小四出了好題目 +2</button><button class="btn b-red" id="flipG6">🔴 小六出了好題目 +2</button></div></div>`;
-  $("flipG4").onclick = (e) => { S.flips[f.id].good++; award("g4",2,"好題目！出題的人學最多！✍️",e); };
-  $("flipG6").onclick = (e) => { S.flips[f.id].good++; award("g6",2,"好題目！出題的人學最多！✍️",e); };
+   <div class="row"><button class="btn b-blue" id="flipG4">🔵 小四出了好題目 +2 🔒</button><button class="btn b-red" id="flipG6">🔴 小六出了好題目 +2 🔒</button></div></div>`;
+  const flipAward = (g, e) => { const pt = {clientX:e.clientX, clientY:e.clientY};
+    requireParent(`${g==="g4"?"小四":"小六"}出了好題目 +2 ⭐`, () => { S.flips[f.id].good++; markPlayed(null); award(g,2,"好題目！出題的人學最多！✍️",pt); }); };
+  $("flipG4").onclick = (e) => flipAward("g4", e);
+  $("flipG6").onclick = (e) => flipAward("g6", e);
 };
 
 /* 範圍、學習科學、AI、家長 */
@@ -740,15 +882,27 @@ function fallbackCopy(t){
 function renderLog(){
   const si = streakInfo();
   const cleared = CARDS.filter(c => S.cards[c.id] && S.cards[c.id].cleared).length;
+  const due = CARDS.filter(c => reviewDue(c.id)).length;
   $("stats").innerHTML = [
-    ["⭐ 團隊星星", S.teamStars],["🔵 小四星星", S.kidStars.g4],["🔴 小六星星", S.kidStars.g6],["🤝 合體星星", S.kidStars.team],
-    ["🔥 連續天數", si.current],["🏆 最長連續", si.best],["🗺️ 過關數", `${cleared}/${CARDS.length}`],["📆 玩過天數", S.playDates.length]
+    ["⭐ 團隊星星", fmt(S.teamStars)],["🔵 小四星星", fmt(S.kidStars.g4)],["🔴 小六星星", fmt(S.kidStars.g6)],["🤝 合體星星", fmt(S.kidStars.team)],
+    ["🔥 連續天數", si.current],["🏆 最長連續", si.best],["🗺️ 過關數", `${cleared}/${CARDS.length}`],["⏰ 該複習", due]
   ].map(x=>`<div class="stat"><b>${x[1]}</b>${x[0]}</div>`).join("");
   const days = Object.keys(S.daily).sort().reverse().slice(0,30);
-  table("logTable", ["日期（台灣）","🔵 小四 星／次／還不會","🔴 小六 星／次／還不會","🤝 合體星"],
-    days.length ? days.map(d => { const r = S.daily[d]; return [d, `${r.g4.stars} ／ ${r.g4.actions} ／ ${r.g4.misses}`, `${r.g6.stars} ／ ${r.g6.actions} ／ ${r.g6.misses}`, `${r.team.stars}`]; })
-                : [["還沒有紀錄","開始玩第一關吧！","",""]]);
+  const code = (id) => (CARDS.find(c => c.id === id) || {code:id}).code;
+  const kid = (r) => `⭐${fmt(r.stars)}｜✔${r.right||0} ½${r.retry||0} ✘${r.wrong||0}`;
+  const detail = (r) => Object.entries(r.cards||{}).map(([id,v]) => `${code(id)}：${["g4","g6"].filter(g=>v[g]).map(g=>`${g==="g4"?"四":"六"} ✔${v[g].right} ½${v[g].retry} ✘${v[g].wrong}`).join("，")}`).join("；") || "—";
+  table("logTable", ["日期（台灣）","🔵 小四","🔴 小六","🤝 合體星","每關對錯"],
+    days.length ? days.map(d => { const r = S.daily[d]; return [d, kid(r.g4), kid(r.g6), fmt(r.team.stars), detail(r)]; })
+                : [["還沒有紀錄","開始玩第一關吧！","","",""]]);
 }
+
+/* 家長 PIN 重設（長按 5 秒） */
+(function(){ const b = $("pinReset"); let t = null;
+  const start = (e) => { e.preventDefault(); b.textContent = "⏳ 繼續按住…"; t = setTimeout(() => { S.settings.parentPin = null; parentUntil = 0; persist(); b.textContent = "✅ 已清除，下次使用時重新設定"; t = null; }, 5000); };
+  const stop = () => { if(t){ clearTimeout(t); t = null; b.textContent = "⏳ 長按 5 秒清除家長 PIN"; } };
+  b.addEventListener("pointerdown", start); ["pointerup","pointerleave","pointercancel"].forEach(ev => b.addEventListener(ev, stop));
+  b.addEventListener("contextmenu", e => e.preventDefault());
+})();
 
 /* 匯出／匯入 */
 function encodeSave(obj){
@@ -884,13 +1038,13 @@ function petFrame(now){
   ctx.fillStyle="rgba(255,255,255,.9)"; rr(ctx,10,8,W-20,76,22); ctx.fill();
   ctx.fillStyle=INK; ctx.font="800 24px "+getComputedStyle(document.body).fontFamily; ctx.textBaseline="middle"; ctx.textAlign="left";
   const title=`Lv.${st+1} ${S.settings.petName}・${STAGES[st].name}`; ctx.fillText(title,26,32);
-  const tw=ctx.measureText(title).width; ctx.fillStyle="#FFC21A"; starPath(ctx,26+tw+20,32,13); ctx.fill(); ctx.fillStyle=INK; ctx.fillText(String(s),26+tw+38,32);
+  const tw=ctx.measureText(title).width; ctx.fillStyle="#FFC21A"; starPath(ctx,26+tw+20,32,13); ctx.fill(); ctx.fillStyle=INK; ctx.fillText(fmt(s),26+tw+38,32);
   const bx=26,bw=W-370,by=56; ctx.fillStyle="#EDE6F5"; rr(ctx,bx,by,bw,16,8); ctx.fill();
   const lo=STAGES[st].min, hi=st<3?STAGES[st+1].min:lo+PRIVILEGE_EVERY;
   const frac = st<3?Math.min(1,(s-lo)/(hi-lo)):(s%PRIVILEGE_EVERY)/PRIVILEGE_EVERY;
   if(frac>0){ const g=ctx.createLinearGradient(bx,0,bx+bw,0); g.addColorStop(0,"#FF8FC7"); g.addColorStop(.5,"#FFD23F"); g.addColorStop(1,"#3DDC97"); ctx.fillStyle=g; rr(ctx,bx,by,Math.max(16,bw*frac),16,8); ctx.fill(); }
   ctx.font="700 16px "+getComputedStyle(document.body).fontFamily; ctx.textAlign="left"; ctx.fillStyle=INK;
-  ctx.fillText(st<3?`再 ${hi-s} 顆進化`:`再 ${PRIVILEGE_EVERY-(s%PRIVILEGE_EVERY)} 顆換特權`, bx+bw+10, by+9);
+  ctx.fillText(st<3?`再 ${fmt(hi-s)} 顆進化`:`再 ${fmt(PRIVILEGE_EVERY-(s%PRIVILEGE_EVERY))} 顆換特權`, bx+bw+10, by+9);
   const si = streakInfo();
   flame(ctx,W-168,48,si.current,t);
   ctx.textAlign="left"; ctx.font="800 22px "+getComputedStyle(document.body).fontFamily;
@@ -949,7 +1103,7 @@ function drawCompound(){
 function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); }
 renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState();
 (function greet(){ const st=stageOf(S.teamStars), si=streakInfo();
-  if(S.teamStars>0) setMsg(`${STAGES[st].emoji} 歡迎回來！${S.settings.petName}現在是「${STAGES[st].name}」，有 ⭐ ${S.teamStars} 顆。${si.playedToday?"今天已經打卡了 🔥":"今天玩一關，連續天數就會 +1 🔥"}`); })();
+  if(S.teamStars>0) setMsg(`${STAGES[st].emoji} 歡迎回來！${S.settings.petName}現在是「${STAGES[st].name}」，有 ⭐ ${fmt(S.teamStars)} 顆。${si.playedToday?"今天已經打卡了 🔥":"今天玩一關，連續天數就會 +1 🔥"}`); })();
 // 跨分頁同步：同一台裝置開兩個分頁時，以最新存檔為準
 addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ S = migrate(JSON.parse(e.newValue)); renderAll(true); }catch(err){} } });
 // 測試用（不影響遊戲）
