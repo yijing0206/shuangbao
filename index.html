@@ -144,6 +144,53 @@ ul,ol{line-height:1.7;padding-left:22px}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:999px;font-weight:700;z-index:60;display:none;max-width:92vw;text-align:center}
 a{color:var(--blue-d)}
 .foot{font-size:12px;color:var(--ink2);margin-top:30px;text-align:center}
+
+/* v5 對戰 */
+.atag{display:inline-block;border-radius:999px;padding:1px 8px;font-size:12px;font-weight:800;color:#fff;background:var(--ac);vertical-align:middle;margin:0 2px}
+.tchart{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0}
+.tchart>span{background:#fff;border:3px solid var(--line);border-radius:16px;padding:6px 10px;font-size:14px}
+.tchart small{display:block;color:var(--ink2);font-size:12px;text-align:center}
+.skills{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+.skill{background:#fff;border:2px solid var(--line);border-radius:12px;padding:4px 8px;font-size:13px;font-weight:700}
+.skill.off{opacity:.55}.skill small{font-weight:500}
+.skbtn small{font-size:11px;font-weight:800}
+.dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px}
+.dexi{position:relative;background:#fff;border:3px solid var(--line);border-radius:16px;padding:6px;text-align:center;font-size:12px}
+.dexi canvas{width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto}
+.dexi small{display:block;font-weight:700;line-height:1.2}.dexi.win{border-color:var(--mint)}.dexi b{position:absolute;top:2px;right:6px;color:var(--mint-d)}
+.badges{display:flex;flex-wrap:wrap;gap:6px}
+.bdg{display:inline-block;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;background:#EEE9F3;color:#A79DB4;filter:grayscale(1)}
+.bdg.on{background:#FFF3C4;color:var(--ink);filter:none;box-shadow:0 2px 0 var(--yellow-d)}
+.arena{position:relative;border-radius:26px;padding:12px;background:linear-gradient(#E3F3FF 0,#FBE8FF 55%,#DDF5E3 56%,#CDEFD6 100%);border:4px solid var(--ink);overflow:hidden;min-height:300px}
+.arena.flashy::after{content:"";position:absolute;inset:0;background:#fff;animation:flashout .35s forwards;pointer-events:none}
+.atop{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:14px;font-weight:700}
+.fighters{display:flex;align-items:flex-end;justify-content:space-between;gap:6px;margin-top:8px}
+.side{flex:1 1 0;display:flex;flex-direction:column;gap:6px;min-width:0}
+.vs{font:900 22px var(--font);color:var(--ink);align-self:center;flex:0 0 auto}
+.fighter{position:relative;text-align:center;min-width:0}
+.fname{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hpbar{height:14px;border-radius:999px;background:#fff;border:2px solid var(--ink);overflow:hidden;margin:3px 0}
+.hpbar i{display:block;height:100%;width:100%;background:#3DDC97;transition:width .6s ease,background .3s}
+.hpn{font-size:12px;font-weight:700}
+.fcv canvas{width:min(150px,36vw);height:auto;aspect-ratio:1;image-rendering:pixelated;animation:bob 1.4s ease-in-out infinite}
+.side .fighter+.fighter .fcv canvas{width:min(110px,28vw)}
+.fighter.lunge .fcv{animation:lunge .45s ease}
+.fighter.hit .fcv canvas{animation:hitflash .5s}
+.fxlayer{position:absolute;inset:0;pointer-events:none}
+.dmg{position:absolute;transform:translate(-50%,0);font:900 30px var(--font);color:#fff;-webkit-text-stroke:2px var(--ink);text-shadow:0 3px 0 var(--ink);animation:dmgup 1.2s forwards;white-space:nowrap}
+.dmg.crit{font-size:40px;color:#FFD23F}.dmg.miss{color:#B9B0C6;font-size:24px}
+.banner{position:absolute;left:50%!important;top:46%!important;transform:translate(-50%,-50%);font:900 clamp(22px,6vw,38px) var(--font);color:#FF8FC7;-webkit-text-stroke:2px var(--ink);text-shadow:0 4px 0 var(--ink);animation:bannerpop 1.3s forwards;white-space:nowrap;z-index:5}
+.banner.super{color:#FFD23F}
+.tbar{height:8px;border-radius:999px;background:#EEE9F3;overflow:hidden;margin:6px 0}.tbar i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#FFD23F,#FF8A3D)}
+.rcard{background:#fff;border:3px dashed var(--c);border-radius:16px;padding:10px;margin:8px 0}.rcard p{margin:4px 0}
+.invite{border:4px solid var(--red);animation:wiggle 1.4s infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes lunge{0%,100%{transform:none}45%{transform:translateX(calc(var(--dir,1)*34px)) scale(1.08)}}
+@keyframes hitflash{0%,100%{filter:none;transform:none}15%{filter:brightness(3.5) saturate(0);transform:translateX(-8px)}35%{transform:translateX(8px)}55%{filter:brightness(2.2);transform:translateX(-5px)}75%{transform:translateX(3px)}}
+@keyframes dmgup{0%{opacity:0;transform:translate(-50%,10px) scale(.5)}18%{opacity:1;transform:translate(-50%,-14px) scale(1.25)}100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
+@keyframes bannerpop{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(-10deg)}25%{opacity:1;transform:translate(-50%,-50%) scale(1.15) rotate(3deg)}80%{opacity:1;transform:translate(-50%,-55%) scale(1)}100%{opacity:0;transform:translate(-50%,-75%) scale(1)}}
+@keyframes flashout{from{opacity:.9}to{opacity:0}}
+@media (prefers-reduced-motion: reduce){.fcv canvas,.fighter.lunge .fcv,.fighter.hit .fcv canvas,.invite{animation:none}.dmg,.banner{animation-duration:.01s}}
 </style>
 </head>
 <body>
@@ -171,6 +218,7 @@ a{color:var(--blue-d)}
   </header>
   <nav class="tabs" id="tabs">
     <button class="tab on" data-p="game">🎮 遊戲</button>
+    <button class="tab" data-p="battle">⚔️ 對戰</button>
     <button class="tab" data-p="scope">📚 考試範圍</button>
     <button class="tab" data-p="science">🧠 學習秘訣</button>
     <button class="tab" data-p="ai">🤖 AI 助教</button>
@@ -187,6 +235,7 @@ a{color:var(--blue-d)}
       <div class="msg" id="msg">🥚 每個人都有自己的電子寵物！先領養，再答題賺 ⭐ 買食物餵牠。</div>
       <div class="row center" id="consoleBtns">
         <button class="btn b-purple small" id="redeemBtn">🎁 兌換家庭特權</button>
+        <button class="btn b-red small" id="toBattle" onclick="document.querySelector('.tab[data-p=battle]').click()">⚔️ 寵物對戰</button>
         <button class="btn b-gray small" id="howBtn">❓ 怎麼玩</button>
       </div>
       <p style="text-align:center;font-size:13px;color:var(--ink2);margin:8px 4px" id="evoLine"></p>
@@ -202,6 +251,9 @@ a{color:var(--blue-d)}
     <div id="flipBox"></div>
     <div id="card"></div>
   </section>
+
+  <!-- 對戰 -->
+  <section class="panel" id="p-battle"><div id="battleBox"></div></section>
 
   <!-- 範圍 -->
   <section class="panel" id="p-scope">
@@ -296,7 +348,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "4.0.0";
+const APP_VERSION = "5.0.0";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -327,7 +379,7 @@ function addXp(g, n){ bump(S.pets[g].xpC, n); recalcAll(); }
 function earn(g, n){ bump(S.pets[g].earnC, n); recalcAll(); }
 function spend(g, n){ bump(S.pets[g].spendC, n); recalcAll(); }
 function addStars(who, n){ if(who === "team") bump(S.teamC, n); else S.kidStars[who] = (S.kidStars[who]||0) + n; recalcAll(); }
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 
 const SUBJECTS = {
   "國語":{cls:"b-red",color:"#FF4B55",emoji:"📖"},
@@ -503,7 +555,8 @@ function defaultSave(){
     history: [],        // 版本升級紀錄
     pets: { g4: defaultPet(), g6: defaultPet() },   // v3：每個孩子自己的電子寵物
     help: { count:0, gifts:0, teach:0 },             // v3：互助次數
-    teamC: {}, teamBase: 0                           // v4：合體星星（每台裝置分開計）、舊版星星底數
+    teamC: {}, teamBase: 0,                          // v4：合體星星（每台裝置分開計）、舊版星星底數
+    battle: { g4:{log:{}, cookieC:{}, candyC:{}}, g6:{log:{}, cookieC:{}, candyC:{}} }   // v5：對戰紀錄、背包用掉的點心（每台分開計）
   };
 }
 function defaultPet(){
@@ -582,6 +635,13 @@ const MIGRATIONS = {
     }
     if(!isObj(s.settings)) s.settings = {};
     if(typeof s.settings.pinT !== "number") s.settings.pinT = 0;
+    return s;
+  },
+  // v4 → v5：加入寵物對戰。能力值都從學習紀錄算，不需要轉換；只補上空的對戰紀錄
+  5: function(s){
+    if(!isObj(s.battle)) s.battle = {};
+    for(const g of ["g4","g6"]){ if(!isObj(s.battle[g])) s.battle[g] = {}; const b = s.battle[g];
+      if(!isObj(b.log)) b.log = {}; if(!isObj(b.cookieC)) b.cookieC = {}; if(!isObj(b.candyC)) b.candyC = {}; }
     return s;
   }
 };
@@ -716,6 +776,7 @@ document.querySelectorAll(".tab").forEach(b => b.addEventListener("click", () =>
   document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x === b));
   document.querySelectorAll(".panel").forEach(p => p.classList.toggle("on", p.id === "p-"+b.dataset.p));
   if(b.dataset.p === "log") renderLog();
+  if(b.dataset.p === "battle") renderBattle();
   if(b.dataset.p === "science") drawCompound();
   window.scrollTo({top:0,behavior:"smooth"});
 }));
@@ -792,7 +853,7 @@ function kidHTML(c, g){
   const nextBtn = st.done ? (st.idx < list.length-1
       ? `<button class="btn ${cls}" data-goto="${g}" data-n="${st.idx+1}">➡️ 下一題</button>`
       : `<button class="btn ${cls}" data-goto="${g}" data-n="0">🔁 從第 1 題再練（重新洗牌）</button>`) : "";
-  const practice = rec && rec.starOn === today && !st.done ? `<p class="note">📘 這題今天已經拿過星星，現在是練習模式（不加星）。</p>` : "";
+  const practice = rec && (rec.starOn === today || rec.seenOn === today) && !st.done ? `<p class="note">📘 ${rec.starOn === today ? "這題今天已經拿過星星" : "這題今天在對戰裡看過答案"}，現在是練習模式（不加星）。</p>` : "";
   return `<div class="kid ${g}">
     <span class="badge">${team}</span>
     <div class="qdots">${dots}</div>
@@ -840,7 +901,7 @@ function pick(g, i, ev){
   const q = cardQs(curId, g)[st.idx]; if(!q) return;
   const sec = secret(q), today = twDate();
   const rec = mcRec(curId, q.id); const d = dayRec(today);
-  const practice = rec.starOn === today;
+  const practice = rec.starOn === today || rec.seenOn === today;
   const ok = i === sec.c;
   st.picked.push(i);
   if(!ok){ rec.wrongPending = true; rec.wrongOn = today; d[g].misses += 1; }
@@ -1541,13 +1602,16 @@ function mergeMc(a,b){
   if(!a) return b; if(!b) return a;
   const L = (b.lastOn||"") > (a.lastOn||"") ? b : a;
   return { right:maxN(a.right,b.right), retry:maxN(a.retry,b.retry), wrong:maxN(a.wrong,b.wrong), lastOn:later(a.lastOn,b.lastOn), lastResult:L.lastResult||null,
-    starOn:later(a.starOn,b.starOn), wrongPending:!!L.wrongPending, wrongOn:later(a.wrongOn,b.wrongOn), everRight:!!(a.everRight||b.everRight),
+    starOn:later(a.starOn,b.starOn), wrongPending:!!L.wrongPending, wrongOn:later(a.wrongOn,b.wrongOn), everRight:!!(a.everRight||b.everRight), seenOn:later(a.seenOn,b.seenOn),
     confLog:((a.confLog||[]).length >= (b.confLog||[]).length ? a.confLog : b.confLog) || [] };
 }
+// Firestore 不能存「陣列裡的陣列」：雲端用字串，本機用陣列
+function confWire(L){ return (Array.isArray(L) ? L : []).map(x => Array.isArray(x) ? x.join("|") : String(x)); }
+function confLocal(L){ return (Array.isArray(L) ? L : []).map(x => Array.isArray(x) ? x : String(x).split("|").map((v,i) => i === 1 ? (+v||0) : v)); }
 function kidSection(g){
   const pt = S.pets[g], cards = {}, daily = {};
   for(const [id,c] of Object.entries(S.cards)){
-    const mc = {}; for(const [qid,r] of Object.entries(c.mc||{})) if(qid.includes("-"+g+"-")) mc[qid] = r;
+    const mc = {}; for(const [qid,r] of Object.entries(c.mc||{})) if(qid.includes("-"+g+"-")) mc[qid] = Object.assign({}, r, {confLog:confWire(r.confLog)});
     cards[id] = {mc, playedOn:c.playedOn||[], cleared:!!c.cleared, firstClearedOn:c.firstClearedOn||null, stars:((c.stars||{})[g])||0};
   }
   for(const [d,r] of Object.entries(S.daily)){
@@ -1555,7 +1619,7 @@ function kidSection(g){
     daily[d] = {k:r[g]||{}, cards:cs, pets:(r.pets||{})[g]||{}};
   }
   return { pet:{xpC:pt.xpC||{}, earnC:pt.earnC||{}, spendC:pt.spendC||{}, state:petState(pt), stateT:pt.stateT||0, fedCount:pt.fedCount||0, giftsGiven:pt.giftsGiven||0, giftsReceived:pt.giftsReceived||0, subjectXP:pt.subjectXP||{}},
-           stars:S.kidStars[g]||0, cards, daily, playDates:S.playDates||[] };
+           stars:S.kidStars[g]||0, cards, daily, playDates:S.playDates||[], battle:btRec(g) };
 }
 function mergeKid(a, b){
   if(!b) return a;
@@ -1579,7 +1643,7 @@ function mergeKid(a, b){
   return { pet:{ xpC:mergeCounter(pa.xpC,pb.xpC), earnC:mergeCounter(pa.earnC,pb.earnC), spendC:mergeCounter(pa.spendC,pb.spendC),
                  state, stateT: Math.max(pa.stateT||0, pb.stateT||0), fedCount:maxN(pa.fedCount,pb.fedCount),
                  giftsGiven:maxN(pa.giftsGiven,pb.giftsGiven), giftsReceived:maxN(pa.giftsReceived,pb.giftsReceived), subjectXP:mergeCounter(pa.subjectXP,pb.subjectXP) },
-           stars:maxN(a.stars,b.stars), cards, daily, playDates:union(a.playDates,b.playDates) };
+           stars:maxN(a.stars,b.stars), cards, daily, playDates:union(a.playDates,b.playDates), battle:mergeBattle(a.battle, b.battle) };
 }
 function importKid(g, sec){
   const pt = S.pets[g], p = sec.pet;
@@ -1589,7 +1653,7 @@ function importKid(g, sec){
   S.kidStars[g] = sec.stars;
   for(const [id,c] of Object.entries(sec.cards)){
     const lc = cardProg(id); if(!isObj(lc.mc)) lc.mc = {};
-    for(const [q,r] of Object.entries(c.mc||{})) lc.mc[q] = r;
+    for(const [q,r] of Object.entries(c.mc||{})) lc.mc[q] = Object.assign({}, r, {confLog:confLocal(r.confLog)});
     lc.playedOn = c.playedOn; lc.cleared = c.cleared; lc.firstClearedOn = c.firstClearedOn; lc.stars[g] = c.stars;
     if(!lc.lastPlayedOn || (c.playedOn.length && c.playedOn[c.playedOn.length-1] > lc.lastPlayedOn)) lc.lastPlayedOn = c.playedOn[c.playedOn.length-1] || lc.lastPlayedOn;
   }
@@ -1598,6 +1662,7 @@ function importKid(g, sec){
     for(const [id,v] of Object.entries(r.cards||{})){ day.cards[id] = day.cards[id] || {}; day.cards[id][g] = v; }
   }
   S.playDates = sec.playDates;
+  if(sec.battle){ btRec(g); S.battle[g] = mergeBattle(S.battle[g], sec.battle); }
   window.__sbLastState[g] = JSON.stringify(petState(pt));
 }
 function sharedSection(){
@@ -1620,7 +1685,7 @@ function importShared(sec){
 }
 const canon = (o) => JSON.stringify(o, (k,v) => (v && typeof v === "object" && !Array.isArray(v)) ? Object.keys(v).sort().reduce((m,x) => (m[x] = v[x], m), {}) : v);
 function remShared(d){ d = d || {}; return {teamC:d.teamC||{}, teamBase:d.teamBase||0, redeemed:d.redeemed||0, parentPin:d.parentPin||null, pinT:d.pinT||0, help:Object.assign({count:0,gifts:0,teach:0}, d.help||{}), daily:d.daily||{}}; }
-function stripRemoteKid(d){ if(!d) return null; const o = {pet:d.pet||{}, stars:d.stars||0, cards:d.cards||{}, daily:d.daily||{}, playDates:d.playDates||[]}; return o; }
+function stripRemoteKid(d){ if(!d) return null; const o = {pet:d.pet||{}, stars:d.stars||0, cards:d.cards||{}, daily:d.daily||{}, playDates:d.playDates||[], battle:mergeBattle({}, d.battle)}; return o; }
 
 // ---- Firebase
 async function loadFirebase(){
@@ -1661,11 +1726,12 @@ async function startSync(){
     const opts = {includeMetadataChanges:true};
     for(const g of ["g4","g6"]) SYNC.unsub.push(F.onSnapshot(kidRef(g), opts, (snap) => onKidSnap(g, snap), onSnapErr));
     SYNC.unsub.push(F.onSnapshot(sharedRef(), opts, onSharedSnap, onSnapErr));
+    startBattleSync();
   }catch(e){ onSyncError(e); }
   syncStarting = false;
 }
 function onSnapErr(e){ onSyncError(e); stopSync(); }
-function stopSync(){ for(const u of SYNC.unsub) try{ u(); }catch(e){} SYNC.unsub = []; }
+function stopSync(){ for(const u of SYNC.unsub) try{ u(); }catch(e){} SYNC.unsub = []; stopBattleSync(); }
 function updateStatusFromMeta(key, snap){
   if(snap) SYNC.meta[key] = {cache:snap.metadata.fromCache, pend:snap.metadata.hasPendingWrites};
   if(["denied","notfound"].includes(SYNC.status) || !SYNC.unsub.length) return;
@@ -1793,7 +1859,576 @@ function renderFamily(){
 function openJoinLink(){ if(/join=/.test(location.hash) && !DEV.family){ setTimeout(() => { const t = document.querySelector('.tab[data-p="save"]'); if(t) t.click(); renderFamily(); toast("🔗 確認家庭碼後按「加入家庭」"); }, 300); } }
 openJoinLink(); addEventListener("hashchange", openJoinLink);
 
-function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); }
+/* =========================================================
+   6. 寵物對戰（v5）：屬性相剋、能力值來自學習、每次攻擊都要答一題選擇題
+   ========================================================= */
+const ATTR = {
+  "數學":{k:"thunder", n:"雷", e:"⚡", c:"#E0A800"},
+  "自然":{k:"grass",   n:"草", e:"🌿", c:"#22C08A"},
+  "社會":{k:"earth",   n:"土", e:"⛰️", c:"#A0673A"},
+  "國語":{k:"fire",    n:"火", e:"🔥", c:"#FF4B55"},
+  "英語":{k:"water",   n:"水", e:"💧", c:"#2F9BFF"}
+};
+const NORMAL_ATTR = {k:"normal", n:"無", e:"⭐", c:"#9C93A8"};
+const ATTR_ORDER = ["thunder","grass","earth","fire","water"];
+// 五角相剋：水澆熄火、火燒草、草的根鑽開土、土把雷導進地裡、雷電導過水
+const BEATS = {water:"fire", fire:"grass", grass:"earth", earth:"thunder", thunder:"water"};
+const BEAT_WHY = {water:"水澆熄火", fire:"火燒掉草", grass:"草根鑽開土", earth:"土把雷導進地底", thunder:"雷電導過水"};
+const attrOf = (k) => Object.values(ATTR).find(a => a.k === k) || NORMAL_ATTR;
+const subjOfAttr = (k) => Object.keys(ATTR).find(s => ATTR[s].k === k) || null;
+function typeMult(a, d){ if(!a || !d || a === "normal" || d === "normal") return 1; if(BEATS[a] === d) return 1.5; if(BEATS[d] === a) return 0.67; return 1; }
+
+// 技能：每個單元兩招（少年一招、成體一招），名稱來自單元主題；要在那個單元答對過才學得會
+const SKILLS = {
+  "math-a":["質因數分解拳","大數字雷暴"], "math-b":["分數除法閃電","倒數乘法雷"], "math-c":["量角器電光","圓周率π雷環"],
+  "sci-a":["月亮相位波","熱輻射光束"], "sci-b":["布袋蓮藤鞭","水循環旋風"],
+  "soc-a":["比例尺岩彈","十大建設山崩"], "soc-b":["地形隆起","複利巨岩"],
+  "chi-a":["形近字火花","格言烈焰"], "chi-b":["摹寫火鍋拳","傳記烈火"],
+  "eng-a":["Hello 泡泡","What's wrong 水砲"]
+};
+const TACKLE = {id:"tackle", name:"星星撞擊", card:null, attr:"normal", pow:0.8, stage:2, unlocked:true, need:""};
+const BT_MAX_TURNS = {wild:5, boss:6, pvp:8, raid:8};
+const PVP_PER_DAY = 3;
+const REWARD_CAP = {npc:5, pvp:3, raid:2, candy:4};
+const CRIT_MS = 10000;
+const RAID_ID = "raid-1";
+const WILD = [
+  {id:"w-thunder", name:"電電球", attr:"thunder", body:"#FFE36E", belly:"#FFF6C2"},
+  {id:"w-grass",   name:"葉葉怪", attr:"grass",   body:"#8BE3A8", belly:"#E0F8E8"},
+  {id:"w-earth",   name:"岩岩龜", attr:"earth",   body:"#D2AE88", belly:"#F3E6D6"},
+  {id:"w-fire",    name:"火火狐", attr:"fire",    body:"#FF9A8A", belly:"#FFE3DA"},
+  {id:"w-water",   name:"泡泡魚", attr:"water",   body:"#8CCBFF", belly:"#E1F2FF"}
+];
+const BOSS_NAMES = {"math-a":"質數大王","math-b":"分數魔術師","math-c":"圓規騎士","sci-a":"月影貓頭鷹","sci-b":"颱風水母","soc-a":"地圖巨人","soc-b":"存錢豬將軍","chi-a":"錯字小妖王","chi-b":"說書火龍","eng-a":"Hello 章魚博士"};
+const MON = {};
+WILD.forEach(m => MON[m.id] = Object.assign({kind:"wild"}, m));
+CARDS.forEach(c => { const a = ATTR[c.subject]; const w = WILD.find(x => x.attr === a.k);
+  MON["boss-"+c.id] = {id:"boss-"+c.id, kind:"boss", card:c.id, name:`${c.code}關主・${BOSS_NAMES[c.id]||"關主"}`, attr:a.k, body:w.body, belly:w.belly}; });
+MON[RAID_ID] = {id:RAID_ID, kind:"raid", name:"考試大魔王", attr:"thunder", body:"#B79BEA", belly:"#EEE6FF"};
+const MON_DECO = {
+  thunder:{rows:["Y   Y"," Y Y ","YY YY"], colors:{Y:"#F2B600"}},
+  grass:  {rows:["  G  "," GGG ","GG GG","  G  "], colors:{G:"#2FA866"}},
+  earth:  {rows:[" R   R ","RRR RRR"], colors:{R:"#8D6E63"}},
+  fire:   {rows:["  O  "," OYO ","OYYYO"], colors:{O:"#FF6A3D",Y:"#FFD23F"}},
+  water:  {rows:["  B  "," BWB ","BBBBB"], colors:{B:"#3DA5FF",W:"#FFFFFF"}},
+  normal: {rows:["K     K","KK   KK"], colors:{K:"#3A2E4A"}}
+};
+const SNACKS = {cookie:{e:"🍪", n:"戰利餅乾", full:15, happy:12}, candy:{e:"🍬", n:"安慰糖", full:8, happy:15}};
+
+// ---- 存檔（每個孩子一份）：log = {對戰id: "日期|模式|結果|對手|會心|失誤|最高連擊|獎勵|命中"}
+function btRec(g){ if(!isObj(S.battle)) S.battle = {}; if(!isObj(S.battle[g])) S.battle[g] = {log:{}, cookieC:{}, candyC:{}};
+  const b = S.battle[g]; if(!isObj(b.log)) b.log = {}; if(!isObj(b.cookieC)) b.cookieC = {}; if(!isObj(b.candyC)) b.candyC = {}; return b; }
+function parseLog(id, s){ const a = String(s||"").split("|"); return {id, d:a[0], m:a[1], r:a[2], foe:a[3], crit:+a[4]||0, miss:+a[5]||0, combo:+a[6]||0, rw:a[7]||"-", hits:+a[8]||0}; }
+function logList(g){ return Object.entries(btRec(g).log).map(([id,s]) => parseLog(id, s)); }
+function mergeBattle(a, b){
+  a = a || {}; b = b || {}; const log = Object.assign({}, a.log||{});
+  for(const [id,s] of Object.entries(b.log||{})){ if(!(id in log) || (parseLog(id, log[id]).r === "p" && parseLog(id, s).r !== "p")) log[id] = s; }
+  return {log, cookieC:mergeCounter(a.cookieC, b.cookieC), candyC:mergeCounter(a.candyC, b.candyC)};
+}
+function bag(g){ const b = btRec(g); let ck = 0, cd = 0; for(const e of logList(g)){ if(e.rw === "cookie") ck++; else if(e.rw === "candy") cd++; }
+  return {cookie: Math.max(0, ck - sumC(b.cookieC)), candy: Math.max(0, cd - sumC(b.candyC))}; }
+function pvpToday(){ const t = twDate(), ids = new Set(); for(const g of ["g4","g6"]) for(const e of logList(g)) if(e.d === t && e.m === "pvp") ids.add(e.id); return ids.size; }
+
+// ---- 能力值：全部從學習紀錄算出來（不存，不會被改，也不會因為輸掉而減少）
+function learnStats(g){
+  const sub = {}; let total = 0, ever = 0;
+  for(const c of CARDS){ const p = S.cards[c.id]; if(!p || !isObj(p.mc)) continue;
+    for(const q of cardQs(c.id, g)){ const r = p.mc[q.id]; if(!r) continue;
+      const n = Math.min(3, (r.right||0) + (r.retry||0)); total += n; sub[c.subject] = (sub[c.subject]||0) + n; if(r.everRight) ever++; } }
+  return {sub, total, ever};
+}
+function primaryAttr(g){
+  const L = learnStats(g), sx = S.pets[g].subjectXP || {};
+  const e = Object.entries(L.sub).filter(x => x[1] > 0).sort((a,b) => b[1]-a[1] || (sx[b[0]]||0)-(sx[a[0]]||0))[0];
+  return e ? ATTR[e[0]].k : "normal";
+}
+function petStats(g){
+  const pt = S.pets[g], st = pt.species ? stageOf(pt.xp) : 0, L = learnStats(g), streak = Math.min(10, streakInfo().current);
+  const care = Math.min(12, Math.floor((pt.fedCount||0)/2) + Math.floor((pt.happiness||0)/25) + Math.floor((pt.fullness||0)/50));
+  const attr = primaryAttr(g), subj = subjOfAttr(attr), best = subj ? (L.sub[subj]||0) : 0;
+  return {g, stage:st, attr, total:L.total, ever:L.ever, streak, care,
+    hp: 60 + st*20 + L.total*3, atk: 12 + st*4 + Math.round(L.total*0.6) + best*2,
+    def: 10 + st*4 + care + L.ever, spd: 8 + st*3 + streak*2 + Math.round((pt.happiness||0)/20)};
+}
+const canBattle = (g) => !!S.pets[g].species && stageOf(S.pets[g].xp) >= 2;
+function skillList(g){
+  const st = stageOf(S.pets[g].xp), out = [TACKLE];
+  for(const c of CARDS){ const names = SKILLS[c.id]; if(!names) continue;
+    const p = S.cards[c.id]; const learned = !!(p && isObj(p.mc) && cardQs(c.id, g).some(q => p.mc[q.id] && p.mc[q.id].everRight));
+    names.forEach((name, i) => { const need = i === 0 ? 2 : 3;
+      out.push({id:c.id+"-"+i, name, card:c.id, attr:ATTR[c.subject].k, pow: i ? 1.35 : 1.0, stage:need, unlocked: learned && st >= need,
+        need: !learned ? `在「${c.code}」答對一題` : st < need ? `進化成${PET_STAGE_NAMES[need]}` : ""}); }); }
+  return out;
+}
+function unitOf(g){ const s = petStats(g), pt = S.pets[g];
+  return {g, name:petLabel(g), sp:pt.species, stage:s.stage, acc: s.stage === 3 ? branchOf(pt).color : null, attr:s.attr, max:s.hp, atk:s.atk, def:s.def, spd:s.spd}; }
+const hitBase = (atk, def) => atk * 2.2 * (50 / (50 + def));
+function foeUnit(monId, kids, mode){
+  const m = MON[monId], n = kids.length;
+  const avgDef = kids.reduce((a,u) => a + u.def, 0) / n, avgMax = kids.reduce((a,u) => a + u.max, 0) / n;
+  const est = kids.reduce((a,u) => a + hitBase(u.atk, avgDef), 0) / n;
+  const H = mode === "wild" ? 3 : mode === "boss" ? 4 : 5.5, F = mode === "wild" ? 5.5 : mode === "boss" ? 5 : 4.5;
+  const st = Math.max(...kids.map(u => u.stage));
+  const spd = mode === "boss" ? Math.max(...kids.map(u => u.spd)) + 1 : mode === "wild" ? Math.min(...kids.map(u => u.spd)) - 1 : Math.round(kids.reduce((a,u)=>a+u.spd,0)/n);
+  return {g:"foe", mon:monId, name:m.name, sp:null, stage: mode === "wild" ? Math.max(2, st) : 3, acc: mode === "wild" ? null : "#FFD23F",
+    attr: m.attr, max: Math.max(20, Math.round(est * H)), atk: Math.max(4, Math.round((avgMax / F) / (2.2 * 50 / (50 + avgDef)))), def: Math.round(avgDef), spd};
+}
+
+// ---- 對戰狀態（單機或雲端共用同一套規則）
+let BT = null, BQ = null, BTV = {shown:0, busy:false, hpShown:{}, queue:[]};
+const sideOf = (bt, k) => bt.mode === "pvp" ? (k === "g4" ? "A" : "B") : (k === "foe" ? "B" : "A");
+const kidsIn = (bt) => Object.keys(bt.units).filter(k => k !== "foe");
+const isKid = (k) => k === "g4" || k === "g6";
+function targetOf(bt, actor){
+  if(bt.mode === "pvp") return actor === "g4" ? "g6" : "g4";
+  if(isKid(actor)) return "foe";
+  const alive = kidsIn(bt).filter(k => bt.hp[k] > 0);
+  return alive.sort((a,b) => bt.hp[b]/bt.units[b].max - bt.hp[a]/bt.units[a].max)[0] || alive[0];
+}
+function newBattle(mode, kids, monId, ctrl, id){
+  const units = {}; kids.forEach(g => units[g] = unitOf(g));
+  if(mode !== "pvp") units.foe = foeUnit(monId, kids.map(g => units[g]), mode);
+  const order = Object.keys(units).sort((a,b) => units[b].spd - units[a].spd || (isKid(a) ? -1 : 1));
+  const hp = {}; for(const k in units) hp[k] = units[k].max;
+  return {id: id || (twDate() + "-" + randCode(6)), mode, remote:false, units, hp, order, turn:order[0], turns:0, maxTurns:BT_MAX_TURNS[mode], log:[], state:"live", winner:"", ctrl, foe:monId||("vs-"+kids.join("")), card: MON[monId] && MON[monId].card || null, missed:{}, recorded:{}};
+}
+function sideAlive(bt, side){ return Object.keys(bt.units).some(k => sideOf(bt,k) === side && bt.hp[k] > 0); }
+function sideRatio(bt, side){ const ks = Object.keys(bt.units).filter(k => sideOf(bt,k) === side); return ks.reduce((a,k) => a + bt.hp[k]/bt.units[k].max, 0) / ks.length; }
+function advance(bt){
+  if(!sideAlive(bt,"A") || !sideAlive(bt,"B")){ bt.state = "done"; bt.winner = sideAlive(bt,"A") ? "A" : sideAlive(bt,"B") ? "B" : "draw"; return; }
+  if(bt.turns >= bt.maxTurns){ const a = sideRatio(bt,"A"), b = sideRatio(bt,"B"); bt.state = "done"; bt.winner = Math.abs(a-b) < 0.005 ? "draw" : a > b ? "A" : "B"; return; }
+  let i = bt.order.indexOf(bt.turn);
+  for(let n = 0; n < bt.order.length; n++){ i = (i + 1) % bt.order.length; if(bt.hp[bt.order[i]] > 0){ bt.turn = bt.order[i]; break; } }
+  if(bt.mode === "raid" && bt.turn === "foe") bt.units.foe.attr = ATTR_ORDER[Math.floor(bt.turns/2) % 5];
+}
+function comboOf(bt, k){ let n = 0; for(let i = bt.log.length-1; i >= 0; i--){ const e = bt.log[i]; if(e.a !== k) continue; if(e.ok) n++; else break; } return n; }
+function makeEvent(bt, actor, skill, ok, crit){
+  const t = targetOf(bt, actor), A = bt.units[actor], D = bt.units[t];
+  const k = skill ? skill.attr : A.attr, pow = skill ? skill.pow : 1;
+  const m = typeMult(k, D.attr), combo = ok && isKid(actor) ? comboOf(bt, actor) + 1 : 0;
+  const dmg = ok ? Math.max(1, Math.round(hitBase(A.atk, D.def) * pow * m * (crit ? 1.5 : 1) * (1 + Math.min(3, Math.max(0, combo-1)) * 0.1) * (0.9 + Math.random()*0.2))) : 0;
+  return {a:actor, t, s: skill ? skill.name : "猛撲", k, ok:!!ok, crit:!!(ok && crit), dmg, m, combo};
+}
+function applyEvent(bt, ev){
+  bt.hp[ev.t] = Math.max(0, bt.hp[ev.t] - ev.dmg); bt.log.push(ev); if(bt.log.length > 40) bt.log = bt.log.slice(-40);
+  if(isKid(ev.a)) bt.turns += 1;
+  advance(bt);
+}
+function kidSummary(bt, g){
+  let crit = 0, miss = 0, hits = 0, combo = 0, run = 0;
+  for(const e of bt.log){ if(e.a !== g) continue; if(e.ok){ hits++; run++; combo = Math.max(combo, run); if(e.crit) crit++; } else { miss++; run = 0; } }
+  return {crit, miss, hits, combo};
+}
+function resultFor(bt, g){ if(bt.winner === "x" || bt.winner === "cancel") return "x"; if(bt.winner === "draw") return "d"; return sideOf(bt, g) === bt.winner ? "w" : "l"; }
+function rewardGroup(mode){ return mode === "pvp" ? "pvp" : mode === "raid" ? "raid" : "npc"; }
+function recordResult(bt, g){
+  const b = btRec(g), prev = b.log[bt.id];
+  if(prev && parseLog(bt.id, prev).r !== "p") return null;
+  const r = resultFor(bt, g), t = twDate(), L = logList(g).filter(e => e.d === t && e.id !== bt.id), grp = rewardGroup(bt.mode);
+  let rw = "-";
+  if(r === "w" && L.filter(e => rewardGroup(e.m) === grp && e.rw === "cookie").length < REWARD_CAP[grp]) rw = "cookie";
+  if((r === "l" || r === "d") && L.filter(e => e.rw === "candy").length < REWARD_CAP.candy) rw = "candy";
+  const s = kidSummary(bt, g);
+  const before = badgeSet(g);
+  b.log[bt.id] = [t, bt.mode, r, bt.foe, s.crit, s.miss, s.combo, rw, s.hits].join("|");
+  const pt = S.pets[g];
+  if(r !== "x"){ pt.happiness = Math.min(100, pt.happiness + (r === "w" ? 10 : 6)); markPlayed(null); }
+  const after = badgeSet(g), fresh = BADGES.filter(x => after.has(x.id) && !before.has(x.id));
+  return {g, r, rw, s, fresh};
+}
+function preRecord(bt, g){ const b = btRec(g); if(!b.log[bt.id]) b.log[bt.id] = [twDate(), bt.mode, "p", bt.foe, 0,0,0,"-",0].join("|"); }
+
+// ---- 徽章與圖鑑（全部從對戰紀錄推算）
+const BADGES = [
+  {id:"first",  e:"🥇", n:"第一次勝利",       t:"贏得第一場對戰", f:L => L.some(e => e.r === "w")},
+  {id:"perfect",e:"💯", n:"全對勝利",         t:"一題都沒錯就獲勝", f:L => L.some(e => e.r === "w" && e.miss === 0 && e.hits > 0)},
+  {id:"combo3", e:"🔗", n:"三連擊",           t:"一場裡連續答對 3 題", f:L => L.some(e => e.combo >= 3)},
+  {id:"crit10", e:"💥", n:"會心一擊 ×10",     t:"累積 10 次會心一擊", f:L => L.reduce((a,e) => a + e.crit, 0) >= 10},
+  {id:"dex",    e:"📖", n:"野生圖鑑全收集",   t:"打敗 5 種野生怪獸", f:L => WILD.every(m => L.some(e => e.foe === m.id && e.r === "w"))},
+  {id:"pvp1",   e:"🤜", n:"友誼賽初登場",     t:"完成一場兄姊友誼賽", f:L => L.some(e => e.m === "pvp" && e.r !== "p" && e.r !== "x")},
+  {id:"pvp10",  e:"🏅", n:"友誼賽 10 場",     t:"完成 10 場友誼賽", f:L => L.filter(e => e.m === "pvp" && e.r !== "p" && e.r !== "x").length >= 10},
+  {id:"raid",   e:"🛡️", n:"合體討伐成功",     t:"兩個人一起打倒考試大魔王", f:L => L.some(e => e.m === "raid" && e.r === "w")},
+  ...CARDS.map(c => ({id:"boss-"+c.id, e:SUBJECTS[c.subject].emoji, n:`${c.code}關主徽章`, t:`打敗${MON["boss-"+c.id].name}`, f:L => L.some(e => e.foe === "boss-"+c.id && e.r === "w")})),
+  {id:"bossAll",e:"👑", n:"全關主制霸",       t:"打敗全部 10 位關主", f:L => CARDS.every(c => L.some(e => e.foe === "boss-"+c.id && e.r === "w"))}
+];
+function badgeSet(g){ const L = logList(g); return new Set(BADGES.filter(b => b.f(L)).map(b => b.id)); }
+function dexState(g, id){ const L = logList(g).filter(e => e.foe === id); return L.some(e => e.r === "w") ? "win" : L.length ? "seen" : "none"; }
+
+// ---- 像素圖
+function fighterSprite(u, mood){
+  if(u.sp && SPECIES[u.sp]) return {spr: sprite(SPECIES[u.sp], Math.max(1,u.stage), mood, false, u.acc), deco:null};
+  const m = MON[u.mon] || {body:"#CFC6E0", belly:"#FFFFFF", attr:"normal"};
+  return {spr: sprite({ear:"none", body:m.body, belly:m.belly}, u.stage||2, mood, false, u.acc), deco: MON_DECO[u.mon === RAID_ID ? "normal" : m.attr], deco2: u.mon === RAID_ID ? MON_DECO[u.attr] : null};
+}
+function drawFighter(canvas, u, mood, mirror){
+  const dpr = Math.min(window.devicePixelRatio||1, 2); if(canvas.width !== LCDW*dpr){ canvas.width = LCDW*dpr; canvas.height = LCDW*dpr; }
+  const ctx = canvas.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.imageSmoothingEnabled = false; ctx.clearRect(0,0,LCDW,LCDW);
+  const f = fighterSprite(u, mood);
+  for(const [x,y,c] of f.spr.cells) px(ctx, mirror ? GRID-1-x : x, y, c);
+  for(const d of [f.deco, f.deco2]) if(d){ const w = d.rows[0].length; pat(ctx, d.rows, 16 - Math.floor(w/2), Math.max(0, f.spr.top - d.rows.length - (u.acc ? 3 : 0) + (d === f.deco2 ? -3 : 0)), d.colors); }
+}
+function drawThumb(canvas, monId, hidden){
+  const m = MON[monId]; const u = {mon:monId, stage: m.kind === "wild" ? 2 : 3, acc: m.kind === "wild" ? null : "#FFD23F", attr:m.attr};
+  drawFighter(canvas, u, "idle", false);
+  if(hidden){ const ctx = canvas.getContext("2d"); ctx.globalCompositeOperation = "source-atop"; ctx.fillStyle = "#3A2E4A"; ctx.fillRect(0,0,LCDW,LCDW); ctx.globalCompositeOperation = "source-over"; }
+}
+
+// ---- 畫面
+const attrTag = (k) => { const a = attrOf(k); return `<span class="atag" style="--ac:${a.c}">${a.e}${a.n}</span>`; };
+function chartHTML(){
+  return `<div class="tchart">${ATTR_ORDER.map(k => `${attrTag(k)}<b>剋</b>${attrTag(BEATS[k])}<small>${BEAT_WHY[k]}</small>`).map(x => `<span>${x}</span>`).join("")}</div>
+  <p class="note">⚡數學・🌿自然・⛰️社會・🔥國語・💧英語。答對最多的科目，就是寵物的主屬性。用剋對方的屬性攻擊，傷害 ×1.5「效果絕佳！」；被剋 ×0.67。</p>`;
+}
+function statRow(lb, v, max, c){ return `<div class="meter"><span>${lb}</span><div class="bar"><i style="width:${Math.max(4, Math.min(100, v/max*100))}%;--mc:${c}"></i></div><b>${v}</b></div>`; }
+function kidBattleCard(g){
+  const pt = S.pets[g], cls = g === "g4" ? "g4" : "g6";
+  if(!pt.species) return `<div class="kid ${cls}"><span class="badge">${KIDLBL[g]}</span><p>先到「🎮 遊戲」領養寵物。</p></div>`;
+  const s = petStats(g), ok = canBattle(g), bg = bag(g), sk = skillList(g);
+  const lock = ok ? "" : `<div class="hint">🔒 寵物長到「少年」（成長值 15）才能對戰。現在 ${fmt(pt.xp)} / 15，多答題、餵食就會長大！</div>`;
+  const skills = sk.map(x => `<span class="skill ${x.unlocked?"":"off"}" title="${esc(x.need)}">${attrOf(x.attr).e} ${esc(x.name)}${x.unlocked?"":` <small>🔒${esc(x.need)}</small>`}</span>`).join("");
+  return `<div class="kid ${cls}"><span class="badge">${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}・${esc(petLabel(g))}（${esc(petStageName(pt))}）${attrTag(s.attr)}</span>
+    ${statRow("❤️ 體力", s.hp, 260, "#FF6FA8")}${statRow("⚔️ 攻擊", s.atk, 80, "#FF8A3D")}${statRow("🛡️ 防禦", s.def, 70, "#3DA5FF")}${statRow("💨 速度", s.spd, 60, "#3DDC97")}
+    <p class="note">能力值從學習來：答對 ${s.total} 題次（每題最多算 3 次）、會的題目 ${s.ever} 題、連續 ${s.streak} 天、照顧 ${s.care} 分。輸了不會扣任何能力值。</p>
+    <details><summary>🎯 技能（${sk.filter(x=>x.unlocked).length}/${sk.length}）</summary><div class="skills">${skills}</div></details>
+    <p style="margin:8px 0;font-weight:700">🎒 背包：🍪 ${bg.cookie}　🍬 ${bg.candy}
+      ${ownedKids().includes(g) && bg.cookie ? `<button class="btn b-yellow small" data-eat="cookie" data-g="${g}">餵 🍪</button>` : ""}
+      ${ownedKids().includes(g) && bg.candy ? `<button class="btn b-pink small" data-eat="candy" data-g="${g}">餵 🍬</button>` : ""}</p>
+    ${lock}
+    ${ok && ownedKids().includes(g) ? `<div class="row"><button class="btn b-mint" data-wild="${g}">🌲 野生怪獸</button><button class="btn b-purple" data-bosspick="${g}">👑 關主挑戰</button></div>` : ""}
+  </div>`;
+}
+function dexHTML(g){
+  const ids = [...WILD.map(m => m.id), ...CARDS.map(c => "boss-"+c.id), RAID_ID];
+  const got = ids.filter(id => dexState(g,id) === "win").length;
+  return `<div class="kid ${g}"><span class="badge">📖 ${KIDLBL[g]}的圖鑑 ${got}/${ids.length}</span><div class="dex">${ids.map(id => { const st = dexState(g,id), m = MON[id];
+    return `<div class="dexi ${st}"><canvas data-thumb="${id}" data-hide="${st==="none"?1:0}"></canvas><small>${st==="none" ? "？？？" : esc(m.name)}</small>${st!=="none"?attrTag(m.attr):""}${st==="win"?"<b>✔</b>":""}</div>`; }).join("")}</div>
+    <h3>🏅 徽章</h3><div class="badges">${(() => { const have = badgeSet(g); return BADGES.map(b => `<span class="bdg ${have.has(b.id)?"on":""}" title="${esc(b.t)}">${b.e} ${esc(b.n)}</span>`).join(""); })()}</div></div>`;
+}
+function renderBattle(){
+  const root = $("battleBox"); if(!root) return;
+  if(BT){ renderArena(); return; }
+  const both = canBattle("g4") && canBattle("g6"), n = pvpToday(), left = PVP_PER_DAY - n;
+  const pairBtns = `<div class="row">
+      <button class="btn b-red" id="pvpLocal" ${both && left > 0 ? "" : "disabled"}>🤜 兄姊友誼賽（同一台輪流）</button>
+      <button class="btn b-blue" id="raidLocal" ${both ? "" : "disabled"}>🛡️ 合體討伐：考試大魔王</button>
+    </div>
+    <p class="note">今天的友誼賽：${n}/${PVP_PER_DAY} 場${left <= 0 ? "（打完了，明天再來！）" : ""}。${both ? "" : "兩隻寵物都長到「少年」才能友誼賽和合體討伐。"}</p>`;
+  root.innerHTML = `<h2>⚔️ 寵物對戰</h2>
+    <div class="box">${chartHTML()}<p class="note">每次攻擊都要先答一題自己年級的選擇題：答對才打得中；10 秒內答對，或選 ⭐⭐⭐ 信心又答對，就是「會心一擊」。答錯打不中，但會看到解說，這題也會進「⏰ 該複習」。</p></div>
+    <div class="kids">${["g4","g6"].map(kidBattleCard).join("")}</div>
+    <h3>👫 兩個人一起</h3>${pairBtns}
+    <div id="remoteBox">${remoteMenuHTML()}</div>
+    <div id="bossPick"></div>
+    <h3>📖 圖鑑與徽章</h3><div class="kids">${ownedKids().map(dexHTML).join("")}</div>`;
+  root.querySelectorAll("[data-thumb]").forEach(c => drawThumb(c, c.dataset.thumb, c.dataset.hide === "1"));
+  root.querySelectorAll("[data-wild]").forEach(b => b.onclick = () => startLocal("wild", [b.dataset.wild], WILD[Math.floor(Math.random()*WILD.length)].id));
+  root.querySelectorAll("[data-bosspick]").forEach(b => b.onclick = () => showBossPick(b.dataset.bosspick));
+  root.querySelectorAll("[data-eat]").forEach(b => b.onclick = () => eatSnack(b.dataset.g, b.dataset.eat));
+  if($("pvpLocal")) $("pvpLocal").onclick = () => { if(pvpToday() >= PVP_PER_DAY){ toast("今天的友誼賽打完了，明天再來！"); return; } startLocal("pvp", ["g4","g6"], null); };
+  if($("raidLocal")) $("raidLocal").onclick = () => startLocal("raid", ["g4","g6"], RAID_ID);
+  bindRemoteMenu();
+}
+function showBossPick(g){
+  const box = $("bossPick"); if(!box) return;
+  box.innerHTML = `<h3>👑 ${KIDLBL[g]}要挑戰哪一關的關主？（題目都出自那個單元）</h3><div class="map">${CARDS.map(c => { const m = MON["boss-"+c.id], st = dexState(g, m.id);
+    return `<button class="lvl" style="--c:${SUBJECTS[c.subject].color}" data-boss="${c.id}"><div class="n">${SUBJECTS[c.subject].emoji} ${c.code}</div><div class="c">${esc(BOSS_NAMES[c.id])}</div><div class="t">${attrOf(m.attr).e}${attrOf(m.attr).n}屬性 ${st==="win"?"✔":""}</div></button>`; }).join("")}</div>`;
+  box.querySelectorAll("[data-boss]").forEach(b => b.onclick = () => startLocal("boss", [g], "boss-"+b.dataset.boss));
+  box.scrollIntoView({behavior:"smooth", block:"start"});
+}
+function eatSnack(g, kind){
+  if(!ownedKids().includes(g)) return; const s = SNACKS[kind], pt = S.pets[g];
+  if(bag(g)[kind] < 1){ toast("背包裡沒有了"); return; }
+  bump(btRec(g)[kind+"C"], 1); pt.fullness = Math.min(100, pt.fullness + s.full); pt.happiness = Math.min(100, pt.happiness + s.happy);
+  persist(); petFx(g, "eat", `${s.e} ${s.n}好好吃！`, {food:"cake"}); hearts(g); toast(`${s.e} ${petLabel(g)} 吃了${s.n}！飽足 +${s.full}、開心 +${s.happy}`); renderBattle();
+}
+
+// ---- 競技場
+function startLocal(mode, kids, monId){
+  if(kids.some(g => !canBattle(g))){ toast("寵物要長到「少年」才能對戰"); return; }
+  BT = newBattle(mode, kids, monId, kids.slice()); BQ = null; BTV = {shown:0, busy:false, hpShown:Object.assign({}, BT.hp), queue:[], built:false};
+  if(mode === "pvp") kids.forEach(g => preRecord(BT, g));
+  persist(); pushNonOwnedBattle(kids);
+  renderArena(); window.scrollTo({top:0, behavior:"smooth"});
+}
+function unitLabel(bt, k){ const u = bt.units[k]; return isKid(k) ? `${k==="g4"?"🔵":"🔴"} ${KIDLBL[k]}・${esc(u.name)}` : `👾 ${esc(u.name)}`; }
+function buildArena(){
+  const bt = BT, keys = Object.keys(bt.units);
+  const left = bt.mode === "pvp" ? ["g4"] : kidsIn(bt), right = bt.mode === "pvp" ? ["g6"] : ["foe"];
+  const fighter = (k, mirror) => `<div class="fighter ${isKid(k)?k:"foe"}" id="f-${k}" style="--dir:${mirror?-1:1}">
+      <div class="fname">${unitLabel(bt,k)} <span id="fattr-${k}">${attrTag(bt.units[k].attr)}</span></div>
+      <div class="hpbar"><i id="hp-${k}"></i></div><div class="hpn" id="hpn-${k}"></div>
+      <div class="fcv"><canvas id="cv-${k}" data-mirror="${mirror?1:0}"></canvas></div></div>`;
+  $("battleBox").innerHTML = `<div class="arena" id="arena">
+      <div class="atop"><b>${bt.mode==="wild"?"🌲 野生怪獸":bt.mode==="boss"?"👑 關主挑戰":bt.mode==="pvp"?(bt.remote?"📡 跨平板友誼賽":"🤜 兄姊友誼賽"):"🛡️ 合體討伐"}</b><span id="turnInfo"></span></div>
+      <div class="fighters"><div class="side">${left.map(k => fighter(k,false)).join("")}</div><div class="vs">VS</div><div class="side">${right.map(k => fighter(k,true)).join("")}</div></div>
+      <div class="fxlayer" id="fxlayer"></div>
+    </div>
+    <div id="btAct"></div>`;
+  BTV.built = bt.id;
+  keys.forEach(k => drawUnit(k, "idle"));
+}
+function drawUnit(k, mood){ const c = $("cv-"+k); if(!c || !BT) return; const hp = BTV.hpShown[k] ?? BT.hp[k];
+  drawFighter(c, BT.units[k], hp <= 0 ? "sleep" : mood || (hp / BT.units[k].max < .3 ? "sad" : "idle"), c.dataset.mirror === "1"); }
+function updateBars(){
+  for(const k of Object.keys(BT.units)){ const hp = BTV.hpShown[k] ?? BT.hp[k], max = BT.units[k].max, el = $("hp-"+k);
+    if(el){ el.style.width = Math.max(0, hp/max*100) + "%"; el.style.background = hp/max < .3 ? "#FF4B55" : hp/max < .6 ? "#FFD23F" : "#3DDC97"; }
+    const n = $("hpn-"+k); if(n) n.textContent = `${Math.max(0,Math.round(hp))} / ${max}`;
+    const a = $("fattr-"+k); if(a) a.innerHTML = attrTag(BT.units[k].attr); }
+}
+function renderArena(){
+  if(!BT) return;
+  if(BTV.built !== BT.id || !$("arena")) buildArena();
+  // 播放還沒播過的動作
+  if(BT.log.length > BTV.shown && !BTV.busy){ playNext(); return; }
+  if(BTV.busy) return;
+  BTV.hpShown = Object.assign({}, BT.hp); updateBars();
+  Object.keys(BT.units).forEach(k => drawUnit(k));
+  const info = $("turnInfo"); if(info) info.textContent = BT.state === "live" ? `第 ${Math.min(BT.turns+1, BT.maxTurns)} / ${BT.maxTurns} 招・輪到 ${BT.turn==="foe" ? BT.units.foe.name : KIDLBL[BT.turn]}` : "結束";
+  renderAct();
+}
+function renderAct(){
+  const box = $("btAct"); if(!box) return; const bt = BT;
+  if(bt.state === "done"){ box.innerHTML = resultHTML(); bindResult(); return; }
+  if(bt.remote && bt.state === "wait"){ box.innerHTML = `<div class="box">📡 等對方平板按「接受」…</div>`; return; }
+  const k = bt.turn;
+  if(k === "foe"){ box.innerHTML = `<div class="box">👾 ${esc(bt.units.foe.name)} 準備攻擊…</div>`; if(!bt.remote) setTimeout(foeMove, still ? 150 : 700); return; }
+  if(!bt.ctrl.includes(k)){ box.innerHTML = `<div class="box">⏳ 輪到 ${KIDLBL[k]}（另一台平板）作答中…<br><small>對方超過 2 分鐘沒動作，可以按下面結束（不算輸贏）。</small><div class="row"><button class="btn ghost b-gray small" id="btAbandon">🚪 結束這場</button></div></div>`;
+    $("btAbandon").onclick = () => remoteAbandon(); return; }
+  if(BQ && BQ.g === k){ box.innerHTML = questionHTML(); bindQuestion(); return; }
+  const t = targetOf(bt, k), tAttr = bt.units[t].attr;
+  const sk = skillList(k).filter(x => x.unlocked);
+  const hint = bt.mode === "boss" ? `<p class="note">👑 關主的題目都出自「${esc(CARDS.find(c=>c.id===bt.card).code)}」。招式決定屬性和威力。</p>` : bt.mode === "raid" ? `<p class="note">🌀 大魔王每回合換屬性！現在是 ${attrTag(tAttr)}，用 ${attrTag(Object.keys(BEATS).find(x => BEATS[x] === tAttr))} 招式效果絕佳。</p>` : "";
+  box.innerHTML = `<div class="kid ${k}"><span class="badge">${k==="g4"?"🔵":"🔴"} 輪到 ${KIDLBL[k]}！選一招（對手 ${attrTag(tAttr)}）</span>${hint}
+    <div class="skills">${sk.map(x => { const m = typeMult(x.attr, tAttr);
+      return `<button class="btn ${m>1?"b-yellow":m<1?"ghost b-gray":"b-purple"} skbtn" data-sk="${x.id}">${attrOf(x.attr).e} ${esc(x.name)}${m>1?" <small>效果絕佳</small>":m<1?" <small>效果不好</small>":""}${x.pow>1?" <small>💪強</small>":""}</button>`; }).join("")}</div>
+    <div class="row" style="margin-top:8px"><button class="btn ghost b-gray small" id="btQuit">🏳️ 先離開（不算輸贏）</button></div></div>`;
+  box.querySelectorAll("[data-sk]").forEach(b => b.onclick = () => chooseSkill(k, sk.find(x => x.id === b.dataset.sk)));
+  $("btQuit").onclick = () => { if(!confirm("要離開這場對戰嗎？不會扣任何東西。")) return; if(bt.remote) remoteAbandon(); else quitBattle(); };
+}
+function quitBattle(){ if(BT && BT.mode === "pvp" && !BT.remote){ BT.winner = "x"; kidsIn(BT).forEach(g => { recordResult(BT, g); }); persist(); pushNonOwnedBattle(kidsIn(BT)); } BT = null; BQ = null; renderBattle(); }
+function pickQuestion(g, cardId){
+  const asked = new Set(BT.log.map(e => e.q).filter(Boolean).concat(BT.asked || []));
+  let pool = (cardId ? [cardId] : CARDS.map(c => c.id)).flatMap(cid => cardQs(cid, g).map(q => [cid, q]));
+  const fresh = pool.filter(([c,q]) => !asked.has(q.id)); if(fresh.length) pool = fresh;
+  const due = pool.filter(([c,q]) => { const r = S.cards[c] && isObj(S.cards[c].mc) && S.cards[c].mc[q.id]; return r && r.wrongPending; });
+  const src = due.length && Math.random() < .6 ? due : pool;
+  return src[Math.floor(Math.random() * src.length)];
+}
+function chooseSkill(g, skill){
+  const cardId = BT.mode === "boss" ? BT.card : skill.card;
+  const [cid, q] = pickQuestion(g, cardId);
+  BQ = {g, skill, cid, q, order:shuffle(q.o.length), conf:0, t0:performance.now(), picked:null};
+  (BT.asked = BT.asked || []).push(q.id);
+  renderAct();
+}
+function questionHTML(){
+  const st = BQ, q = st.q, c = CARDS.find(x => x.id === st.cid);
+  const sec = st.picked !== null ? secret(q) : null;
+  const opts = st.order.map(i => { let cls = ""; if(sec){ if(i === sec.c) cls = "right"; else if(i === st.picked) cls = "wrong"; }
+    return `<button class="opt ${cls}" data-bpick="${i}" ${sec || !st.conf ? "disabled" : ""}>${cls==="right"?"✅ ":cls==="wrong"?"❌ ":""}${esc(q.o[i])}</button>`; }).join("");
+  let fb = "";
+  if(sec){ const ok = st.picked === sec.c;
+    fb = ok ? `<div class="ans">🎯 答對了！${esc(st.skill.name)}出擊！${st.crit?"（會心一擊！）":""}</div>`
+            : `<div class="ans">💨 沒打中…但沒關係，看懂就是賺到！<br>✅ 正確答案：<b>${esc(q.o[sec.c])}</b><br>📝 為什麼：${esc(sec.e)}${sec.w && sec.w[String(st.picked)] ? `<br>🔍 你選的那個：${esc(sec.w[String(st.picked)])}` : ""}</div>
+               <div class="row" style="margin-top:8px"><button class="btn b-blue" id="bqGo">我看懂了 ➡️</button></div>`; }
+  return `<div class="kid ${st.g}"><span class="badge">${st.g==="g4"?"🔵":"🔴"} ${KIDLBL[st.g]}・${attrOf(st.skill.attr).e} ${esc(st.skill.name)}｜${SUBJECTS[c.subject].emoji} ${c.code}</span>
+    ${sec ? "" : `<div class="tbar"><i id="tbar"></i></div>`}
+    <p class="q">${esc(q.q)}</p>
+    <div class="conf" style="--c:${st.g==="g4"?"var(--blue)":"var(--red)"}">${st.conf ? "我的信心：" : "👉 先選信心："}${[1,2,3].map(n => `<button data-bconf="${n}" class="${st.conf===n?"on":""}" ${sec?"disabled":""}>${"⭐".repeat(n)}</button>`).join("")}</div>
+    <div class="opts">${opts}</div>${fb}</div>`;
+}
+function bindQuestion(){
+  const box = $("btAct");
+  box.querySelectorAll("[data-bconf]").forEach(b => b.onclick = () => { BQ.conf = Number(b.dataset.bconf); renderAct(); });
+  box.querySelectorAll("[data-bpick]").forEach(b => b.onclick = () => answerQ(Number(b.dataset.bpick)));
+  const tb = $("tbar"); if(tb && BQ.picked === null){ const left = Math.max(0, CRIT_MS - (performance.now() - BQ.t0)); tb.style.transition = "none"; tb.style.width = (left/CRIT_MS*100) + "%"; requestAnimationFrame(() => { tb.style.transition = `width ${left}ms linear`; tb.style.width = "0%"; }); }
+  if($("bqGo")) $("bqGo").onclick = () => fireAttack();
+}
+function battleMc(cardId, q, ok, conf){
+  const rec = mcRec(cardId, q.id), today = twDate(), res = ok ? "right" : "wrong";
+  rec[res] += 1; rec.lastResult = res; rec.lastOn = today;
+  rec.confLog.push([today, conf, res]); if(rec.confLog.length > 30) rec.confLog.shift();
+  if(ok){ rec.everRight = true; if(rec.wrongOn && dayDiff(rec.wrongOn, today) >= 1) rec.wrongPending = false; }
+  else { rec.wrongPending = true; rec.wrongOn = today; rec.seenOn = today; } // 對戰看過答案：今天在關卡答這題不再給星星
+  markPlayed(cardId);
+}
+function answerQ(i){
+  const st = BQ; if(!st || st.picked !== null) return; if(!st.conf){ toast("👉 先選信心"); return; }
+  st.picked = i; const sec = secret(st.q), ok = i === sec.c, ms = performance.now() - st.t0;
+  st.ok = ok; st.crit = ok && (ms <= CRIT_MS || st.conf === 3);
+  battleMc(st.cid, st.q, ok, st.conf);
+  if(!ok){ (BT.missed[st.g] = BT.missed[st.g] || []).push([st.cid, st.q.id]); }
+  persist();
+  renderAct();
+  if(ok) setTimeout(fireAttack, still ? 200 : 900);
+}
+function fireAttack(){
+  const st = BQ; if(!st || st.fired) return; st.fired = true;
+  const ev = makeEvent(BT, st.g, st.skill, st.ok, st.crit); ev.q = st.q.id;
+  BQ = null;
+  const box = $("btAct"); if(box) box.innerHTML = `<div class="box">${ev.ok ? "⚔️ " + esc(st.skill.name) + " 出擊！" : "💨 這一招沒打中…"}</div>`;
+  if(BT.remote){ remoteMove(ev); return; }
+  applyEvent(BT, ev); afterLocalChange();
+}
+function foeMove(){
+  if(!BT || BT.remote || BT.state !== "live" || BT.turn !== "foe" || BTV.busy) return;
+  const ev = makeEvent(BT, "foe", null, true, false); applyEvent(BT, ev); afterLocalChange();
+}
+function afterLocalChange(){
+  if(BT.state === "done") finishLocal();
+  renderArena();
+}
+function finishLocal(){
+  const res = []; for(const g of kidsIn(BT)) if(BT.ctrl.includes(g)){ const r = recordResult(BT, g); if(r) res.push(r); }
+  BT.results = res; persist(); pushNonOwnedBattle(kidsIn(BT));
+}
+function pushNonOwnedBattle(kids){ if(!cloudOn()) return; const {F} = SYNC.fb;
+  for(const g of kids) if(!ownedKids().includes(g)) F.setDoc(kidRef(g), {battle:{log:btRec(g).log}}, {merge:true}).catch(onSyncError); }
+
+// ---- 動畫（沒有聲音）：攻擊衝刺、受擊閃白、傷害數字、效果絕佳
+function fxText(cls, text, k){ const layer = $("fxlayer"), f = $("f-"+k); if(!layer) return; const d = document.createElement("div"); d.className = cls; d.textContent = text;
+  if(f){ const ar = $("arena").getBoundingClientRect(), r = f.getBoundingClientRect(); d.style.left = (r.left - ar.left + r.width/2) + "px"; d.style.top = (r.top - ar.top + r.height*0.35) + "px"; }
+  layer.appendChild(d); setTimeout(() => d.remove(), 1400); }
+function pulse(id, cls){ const el = $(id); if(!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), 600); }
+function playNext(){
+  if(!BT || BTV.shown >= BT.log.length){ BTV.busy = false; renderArena(); return; }
+  BTV.busy = true; const ev = BT.log[BTV.shown]; BTV.shown++;
+  const d = still ? 0.3 : 1;
+  pulse("f-"+ev.a, "lunge"); drawUnit(ev.a, "happy");
+  setTimeout(() => {
+    if(ev.ok){
+      BTV.hpShown[ev.t] = Math.max(0, (BTV.hpShown[ev.t] ?? BT.units[ev.t].max) - ev.dmg); updateBars();
+      pulse("f-"+ev.t, "hit"); drawUnit(ev.t, BTV.hpShown[ev.t] <= 0 ? "sleep" : "sad");
+      fxText(ev.crit ? "dmg crit" : "dmg", "-" + ev.dmg, ev.t);
+      if(ev.crit){ const a = $("arena"); if(a){ a.classList.remove("flashy"); void a.offsetWidth; a.classList.add("flashy"); } }
+      const words = [ev.crit ? "會心一擊！" : "", ev.m > 1 ? "效果絕佳！" : ev.m < 1 ? "效果不太好…" : "", ev.combo >= 2 ? `${ev.combo} 連擊！` : ""].filter(Boolean);
+      words.forEach((w, i) => setTimeout(() => fxText("banner" + (w.includes("絕佳") ? " super" : ""), w, ev.t), i * 380 * d));
+    }else{ fxText("dmg miss", "MISS", ev.t); }
+    setTimeout(() => { Object.keys(BT.units).forEach(k => drawUnit(k)); BTV.busy = false; renderArena(); }, still ? 200 : 1100);
+  }, still ? 60 : 280);
+}
+
+// ---- 結果
+function resultHTML(){
+  const bt = BT, mine = kidsIn(bt).filter(g => bt.ctrl.includes(g));
+  const res = bt.results || [];
+  const head = (g) => { const r = resultFor(bt, g); return r === "w" ? "🏆 勝利！" : r === "d" ? "🤝 平手！" : r === "x" ? "🚪 這場不算" : "🌈 雖敗猶榮！"; };
+  const title = bt.mode === "pvp" ? (bt.winner === "draw" ? "🤝 平手！兩個都很強！" : bt.winner === "x" ? "🚪 這場不算輸贏" : `🏆 ${KIDLBL[bt.winner === "A" ? "g4" : "g6"]} 贏了！`) : head(mine[0] || kidsIn(bt)[0]);
+  const blocks = res.map(x => {
+    const rw = x.rw === "cookie" ? "🍪 戰利餅乾 +1（放進背包）" : x.rw === "candy" ? "🍬 安慰糖 +1（放進背包）" : x.r === "x" ? "" : "今天的獎勵拿完了，明天再來～";
+    const miss = (bt.missed[x.g] || []);
+    const cards = miss.map(([cid, qid]) => { const q = (MCQ[cid]||[]).find(z => z.id === qid); if(!q) return ""; const sec = secret(q), c = CARDS.find(z => z.id === cid);
+      return `<div class="rcard"><b>📇 複習卡｜${SUBJECTS[c.subject].emoji} ${c.code}</b><p>${esc(q.q)}</p><p>✅ ${esc(q.o[sec.c])}</p><p class="note">📝 ${esc(sec.e)}</p><button class="btn b-blue small" data-review="${cid}">📚 去 ${c.code} 再練一次</button></div>`; }).join("");
+    return `<div class="kid ${x.g}"><span class="badge">${KIDLBL[x.g]}：${head(x.g)}</span>
+      <p>命中 ${x.s.hits}・會心 ${x.s.crit}・最高 ${x.s.combo} 連擊・失誤 ${x.s.miss}</p>
+      ${rw ? `<p><b>${rw}</b>　${x.r === "w" ? "開心 +10" : x.r === "x" ? "" : "開心 +6（安慰獎）"}</p>` : ""}
+      ${x.r === "l" || x.r === "d" ? `<p class="note">輸了不會扣任何能力值、星星或成長值。把下面的複習卡看懂，下次就贏回來！</p>` : ""}
+      ${x.fresh.length ? `<p>🎖️ 新徽章：${x.fresh.map(b => `<span class="bdg on">${b.e} ${esc(b.n)}</span>`).join(" ")}</p>` : ""}
+      ${cards}</div>`; }).join("");
+  return `<div class="box result"><h2 style="margin-top:0">${title}</h2>${bt.mode !== "pvp" && bt.units.foe && resultFor(bt, mine[0]||"g4") === "w" ? `<p>📖 圖鑑登錄：${esc(bt.units.foe.name)}</p>` : ""}</div>
+    <div class="kids">${blocks}</div><div class="row" style="margin-top:12px"><button class="btn b-purple big" id="btBack">⬅️ 回到對戰選單</button></div>`;
+}
+function bindResult(){
+  $("btBack").onclick = () => { if(BT && BT.remote) BTS.dismissed = BT.id; BT = null; BQ = null; renderBattle(); };
+  document.querySelectorAll("[data-review]").forEach(b => b.onclick = () => { const id = b.dataset.review; BT = null; BQ = null; document.querySelector('.tab[data-p="game"]').click(); openCard(id); setTimeout(() => { const c = $("card"); if(c) c.scrollIntoView({behavior:"smooth"}); }, 200); });
+}
+
+// ---- 跨平板友誼賽：families/{家庭碼}/battles/current（一次一場，用 transaction 輪流寫）
+const BTS = {unsub:null, doc:null, dismissed:null, toasted:null};
+const battleRef = () => SYNC.fb.F.doc(SYNC.fb.db, "families", DEV.family, "battles", "current");
+const remoteOk = () => cloudOn() && (DEV.role === "g4" || DEV.role === "g6");
+const fresh = (d, ms) => d && (Date.now() - (d.updatedAt || 0)) < ms;
+function startBattleSync(){
+  if(BTS.unsub || !SYNC.fb || !DEV.family) return;
+  BTS.unsub = SYNC.fb.F.onSnapshot(battleRef(), (snap) => onBattleDoc(snap.exists() ? snap.data() : null), () => { BTS.unsub = null; });
+}
+function stopBattleSync(){ if(BTS.unsub){ try{ BTS.unsub(); }catch(e){} BTS.unsub = null; } }
+function docToBt(d){
+  const me = DEV.role;
+  return {id:d.moves.bid, mode:"pvp", remote:true, units:d.pets, hp:Object.assign({}, d.hp), order:d.moves.order || [], turn:d.turn, turns:d.round || 0, maxTurns:d.moves.maxTurns || 8,
+    log:(d.log || []).slice(), state:d.state, winner:d.winner || "", ctrl:[me], foe:"vs-g4g6", card:null, missed:(BT && BT.id === d.moves.bid && BT.missed) || {}, asked:(BT && BT.id === d.moves.bid && BT.asked) || [], results:(BT && BT.id === d.moves.bid && BT.results) || null};
+}
+function onBattleDoc(d){
+  BTS.doc = d; const me = DEV.role;
+  // 離線時結束的對戰：補記結果（不重複）
+  if(d && d.state === "done" && d.pets && d.pets[me] && d.moves && (!BT || BT.id !== d.moves.bid)){ const prev = btRec(me).log[d.moves.bid]; if(prev && parseLog(d.moves.bid, prev).r === "p"){ recordResult(docToBt(d), me); persist(); } }
+  const mine = d && d.pets && d.pets[me] && d.moves && (d.state === "live" || d.state === "done");
+  if(mine && BTS.dismissed !== d.moves.bid && (d.state === "live" || (BT && BT.id === d.moves.bid))){
+    const wasNew = !BT || BT.id !== d.moves.bid;
+    if(wasNew && BT && !BT.remote) return; // 正在打單機的對戰
+    if(wasNew){ BTV = {shown:(d.log||[]).length, busy:false, hpShown:Object.assign({}, d.hp), queue:[], built:false}; }
+    BT = docToBt(d);
+    if(d.state === "live" && !btRec(me).log[BT.id]){ preRecord(BT, me); persist(); }
+    if(d.state === "done" && !BT.results){ const r = recordResult(BT, me); BT.results = r ? [r] : []; persist(); }
+    if(wasNew){ const t = document.querySelector('.tab[data-p="battle"]'); if(t && !t.classList.contains("on")) t.click(); }
+    renderArena();
+  }else if(d && d.state === "wait" && d.moves && d.moves.host === me && BT && BT.remote && BT.state === "wait"){ /* 等待中 */ }
+  const inv = d && d.state === "wait" && fresh(d, 600000) && d.moves && d.moves.host !== me && !(d.pets||{})[me];
+  const tab = document.querySelector('.tab[data-p="battle"]'); if(tab) tab.textContent = inv ? "⚔️ 對戰 🔔" : "⚔️ 對戰";
+  if(inv && BTS.toasted !== d.moves.bid){ BTS.toasted = d.moves.bid; toast(`📡 ${KIDLBL[d.moves.host]} 邀請你友誼賽！到「⚔️ 對戰」接受`); }
+  if(!BT) { const rb = $("remoteBox"); if(rb){ rb.innerHTML = remoteMenuHTML(); bindRemoteMenu(); } }
+}
+function remoteMenuHTML(){
+  if(!DEV.family) return `<p class="note">📡 跨平板友誼賽：兩台平板加入同一個家庭（存檔 → 家庭同步），各選「這台是誰的」，就能各拿各的平板對戰。</p>`;
+  if(!remoteOk()) return `<p class="note">📡 跨平板友誼賽：${cloudOn() ? "這台要設定成「小四」或「小六」的平板（存檔 → 家庭同步 → 這台是誰的）。" : "要先連上家庭同步（☁️ 已同步）。"}</p>`;
+  const me = DEV.role, d = BTS.doc, left = PVP_PER_DAY - pvpToday();
+  if(d && d.state === "wait" && fresh(d, 600000) && d.moves && d.moves.host !== me && !(d.pets||{})[me])
+    return `<div class="box invite">📡 <b>${KIDLBL[d.moves.host]}</b> 邀請你來一場跨平板友誼賽！<div class="row"><button class="btn b-red" id="rAccept" ${canBattle(me) && left > 0 ? "" : "disabled"}>⚔️ 接受挑戰</button><button class="btn ghost b-gray small" id="rDecline">之後再說</button></div>${left<=0?"<p class='note'>今天的友誼賽打完了。</p>":""}</div>`;
+  if(d && d.state === "wait" && fresh(d, 600000) && d.moves && d.moves.host === me)
+    return `<div class="box">📡 已送出邀請，等 ${KIDLBL[OTHER[me]]} 在另一台平板按「接受」…<div class="row"><button class="btn ghost b-gray small" id="rCancel">取消邀請</button></div></div>`;
+  return `<div class="row"><button class="btn b-pink" id="rInvite" ${canBattle(me) && left > 0 ? "" : "disabled"}>📡 邀請 ${KIDLBL[OTHER[me]]} 跨平板友誼賽</button></div>`;
+}
+function bindRemoteMenu(){
+  if($("rInvite")) $("rInvite").onclick = remoteInvite;
+  if($("rAccept")) $("rAccept").onclick = remoteAccept;
+  if($("rCancel")) $("rCancel").onclick = () => remoteEnd("cancel");
+  if($("rDecline")) $("rDecline").onclick = () => remoteEnd("cancel");
+}
+async function remoteInvite(){
+  if(!remoteOk() || pvpToday() >= PVP_PER_DAY) return; const {F, db} = SYNC.fb, me = DEV.role, now = Date.now();
+  try{
+    await F.runTransaction(db, async (tx) => {
+      const s = await tx.get(battleRef()); const d = s.exists() ? s.data() : null;
+      if(d && (d.state === "live" || d.state === "wait") && fresh(d, 180000)) throw new Error("busy");
+      tx.set(battleRef(), {state:"wait", createdBy:DEV.id, createdAt:now, updatedAt:now, pets:{[me]:unitOf(me)}, hp:{}, turn:"", round:0, log:[],
+        moves:{mode:"pvp", bid:twDate()+"-"+randCode(6), host:me, order:[], maxTurns:BT_MAX_TURNS.pvp}, winner:"", v:5});
+    });
+    toast("📡 邀請送出了！");
+  }catch(e){ toast(e && e.message === "busy" ? "另一場對戰還在進行中" : "邀請失敗，請確認網路"); }
+}
+async function remoteAccept(){
+  if(!remoteOk() || pvpToday() >= PVP_PER_DAY) return; const {F, db} = SYNC.fb, me = DEV.role;
+  try{
+    await F.runTransaction(db, async (tx) => {
+      const s = await tx.get(battleRef()); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "wait" || (d.pets||{})[me]) throw new Error("gone");
+      const pets = Object.assign({}, d.pets, {[me]:unitOf(me)});
+      const order = Object.keys(pets).sort((a,b) => pets[b].spd - pets[a].spd || (a === "g4" ? -1 : 1));
+      const hp = {}; for(const k in pets) hp[k] = pets[k].max;
+      tx.update(battleRef(), {pets, hp, moves:Object.assign({}, d.moves, {order}), turn:order[0], round:0, state:"live", updatedAt:Date.now()});
+    });
+  }catch(e){ toast("這個邀請已經不在了"); }
+}
+async function remoteMove(ev){
+  const {F, db} = SYNC.fb, me = DEV.role;
+  try{
+    await F.runTransaction(db, async (tx) => {
+      const s = await tx.get(battleRef()); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "live" || d.turn !== me || d.moves.bid !== BT.id) throw new Error("turn");
+      const bt = docToBt(d); applyEvent(bt, ev);
+      tx.update(battleRef(), {hp:bt.hp, turn:bt.turn, round:bt.turns, log:bt.log.slice(-30), state:bt.state, winner:bt.winner, updatedAt:Date.now()});
+    });
+  }catch(e){ toast("連線不穩，這一招沒送出，請再試一次"); renderAct(); }
+}
+async function remoteEnd(why){
+  if(!SYNC.fb) return; const {F, db} = SYNC.fb;
+  try{ await F.runTransaction(db, async (tx) => { const s = await tx.get(battleRef()); if(!s.exists()) return; const d = s.data(); if(d.state === "done") return;
+      tx.update(battleRef(), {state:"done", winner:why, updatedAt:Date.now()}); }); }catch(e){}
+}
+function remoteAbandon(){ const d = BTS.doc; if(d && d.state === "live" && d.turn !== DEV.role && fresh(d, 120000)){ toast("對方還在作答，等 2 分鐘沒動作才能結束"); return; } remoteEnd("x"); }
+function renderBattleIfVisible(){ const p = $("p-battle"); if(p && p.classList.contains("on") && !BT) renderBattle(); }
+
+function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); renderBattleIfVisible(); }
 recalcAll(); renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState(); renderFamily(); startSync();
 (function greet(){ const si=streakInfo(); const a=S.pets.g4, b=S.pets.g6;
   const need = ["g4","g6"].filter(g => !S.pets[g].species).map(g => KIDLBL[g]);
@@ -1802,7 +2437,7 @@ recalcAll(); renderStatic(); renderFilters(); renderMap(); renderCard(); renderE
 // 跨分頁同步：同一台裝置開兩個分頁時，以最新存檔為準
 addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ S = migrate(JSON.parse(e.newValue)); renderAll(true); }catch(err){} } });
 // 測試用（不影響遊戲）
-window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYNC.status; }, recalcAll,
+window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYNC.status; }, recalcAll, petStats, skillList, bag, pvpToday, badgeSet, get bt(){ return BT; }, typeMult,
   setXp(g, n){ const pt = S.pets[g]; pt.xpC[DEV.id] = (pt.xpC[DEV.id]||0) + (n - pt.xp); recalcAll(); },
   setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY };
 </script>
