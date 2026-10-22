@@ -120,6 +120,14 @@ h3{font-size:18px;margin:16px 0 8px}
 .species button{border:3px solid var(--line);background:#fff;border-radius:16px;padding:8px 4px;font:700 14px var(--font);cursor:pointer;color:var(--ink)}
 .species button b{display:block;font-size:26px}
 .species button.on{border-color:var(--ink);background:#FFF6D6}
+.tama.mini{flex:0 1 230px;opacity:.95}
+.tama.mini .egg{width:min(200px,62vw);pointer-events:none}
+.tama.mini .abc button{width:34px;height:34px;font-size:12px}
+.tama.mini .abc .lbl{display:none}
+.tama.mini .icons button{font-size:13px}
+.tama.mini .tpanel{font-size:13px;padding:8px 10px}
+.tama.mini .tpanel .foods,.tama.mini .tpanel .note,.tama.mini .tpanel .btn{display:none}
+.tamas.role-g6 .tama.g6{order:-1}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -265,6 +273,8 @@ a{color:var(--blue-d)}
       <p>✅ 每次按星星都會<b>自動存檔</b>在這台裝置的這個瀏覽器裡（同一個網址）。之後更新版本，進度會自動接續。</p>
       <p>🛟 換手機、換瀏覽器、清除瀏覽資料前，請先<b>匯出存檔</b>。建議每週下載一次檔案備份。</p>
     </div>
+    <h3>☁️ 家庭同步（兩台平板）</h3>
+    <div class="box" id="famBox"></div>
     <h3>📤 匯出存檔</h3>
     <div class="row"><button class="btn b-blue" id="exportCode">📋 產生並複製存檔碼</button><button class="btn b-mint" id="exportFile">⬇️ 下載存檔檔案</button></div>
     <textarea id="codeOut" readonly placeholder="按上面按鈕產生存檔碼"></textarea>
@@ -286,10 +296,38 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "3.0.0";
+const APP_VERSION = "4.0.0";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
-const SCHEMA_VERSION = 3;
+// 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
+const DEVICE_KEY = "shuangbao-device";
+function loadDevice(){
+  let d = {}; try{ d = JSON.parse(localStorage.getItem(DEVICE_KEY) || "{}") || {}; }catch(e){}
+  if(!d.id){ const a = new Uint8Array(10); crypto.getRandomValues(a); d.id = "d" + Array.from(a, x => (x % 36).toString(36)).join(""); }
+  if(!d.role) d.role = "both"; if(!("family" in d)) d.family = null;
+  try{ localStorage.setItem(DEVICE_KEY, JSON.stringify(d)); }catch(e){}
+  return d;
+}
+const DEV = loadDevice();
+function saveDevice(){ try{ localStorage.setItem(DEVICE_KEY, JSON.stringify(DEV)); }catch(e){} }
+function ownedKids(){ return DEV.role === "g4" ? ["g4"] : DEV.role === "g6" ? ["g6"] : ["g4","g6"]; }
+const PET_STATE_KEYS = ["species","name","adoptedOn","fullness","happiness","learn","poop","lightsOff","lastTickOn","play","stageSeen","inheritedXp","inboxApplied"];
+function petState(pt){ const o = {}; for(const k of PET_STATE_KEYS) o[k] = pt[k] === undefined ? null : pt[k]; return o; }
+window.__sbLastState = {};
+// 星星、成長值、錢包：每台裝置各記各的（G-counter），合併時取每台的最大值再加總，所以不會重複也不會遺失
+function sumC(c){ let n = 0; for(const k in (c||{})) n += Number(c[k]) || 0; return n; }
+function recalcAll(){
+  if(!S || !S.pets) return;
+  for(const g of ["g4","g6"]){ const pt = S.pets[g]; if(!pt) continue; const ib = pt.inbox || {}; pt.xp = sumC(pt.xpC) + (ib.xp||0); pt.wallet = Math.round((sumC(pt.earnC) - sumC(pt.spendC) + (ib.wallet||0))*2)/2; }
+  S.kidStars.team = sumC(S.teamC);
+  S.teamStars = (S.teamBase||0) + (S.kidStars.g4||0) + (S.kidStars.g6||0) + S.kidStars.team;
+}
+function bump(c, n){ c[DEV.id] = (c[DEV.id]||0) + n; }
+function addXp(g, n){ bump(S.pets[g].xpC, n); recalcAll(); }
+function earn(g, n){ bump(S.pets[g].earnC, n); recalcAll(); }
+function spend(g, n){ bump(S.pets[g].spendC, n); recalcAll(); }
+function addStars(who, n){ if(who === "team") bump(S.teamC, n); else S.kidStars[who] = (S.kidStars[who]||0) + n; recalcAll(); }
+const SCHEMA_VERSION = 4;
 
 const SUBJECTS = {
   "國語":{cls:"b-red",color:"#FF4B55",emoji:"📖"},
@@ -461,15 +499,17 @@ function defaultSave(){
     flips: {},          // { [flipId]: { drawn, good } }
     playDates: [],      // ["2026-10-22", ...] 台灣日期
     daily: {},          // { "2026-10-22": { g4:{stars,actions,misses}, g6:{...}, team:{stars,actions} } }
-    settings: { petName:"星寶", names:{g4:"小四", g6:"小六"}, parentPin:null },
+    settings: { petName:"星寶", names:{g4:"小四", g6:"小六"}, parentPin:null, pinT:0 },
     history: [],        // 版本升級紀錄
     pets: { g4: defaultPet(), g6: defaultPet() },   // v3：每個孩子自己的電子寵物
-    help: { count:0, gifts:0, teach:0 }              // v3：互助次數
+    help: { count:0, gifts:0, teach:0 },             // v3：互助次數
+    teamC: {}, teamBase: 0                           // v4：合體星星（每台裝置分開計）、舊版星星底數
   };
 }
 function defaultPet(){
   return { species:null, name:"", adoptedOn:null, xp:0, wallet:0, fullness:70, happiness:70, learn:40, poop:0, lightsOff:false,
-           lastTickOn:null, fedCount:0, play:{date:null,n:0}, giftsGiven:0, giftsReceived:0, subjectXP:{}, stageSeen:0 };
+           lastTickOn:null, fedCount:0, play:{date:null,n:0}, giftsGiven:0, giftsReceived:0, subjectXP:{}, stageSeen:0,
+           xpC:{}, earnC:{}, spendC:{}, stateT:0, inbox:{xp:0, happy:0, count:0}, inboxApplied:0 };
 }
 function defaultCardProgress(){
   return { cleared:false, firstClearedOn:null, lastPlayedOn:null, playedOn:[], stars:{g4:0,g6:0,team:0}, misses:{g4:0,g6:0}, opened:0, mc:{} };
@@ -521,6 +561,28 @@ const MIGRATIONS = {
     }
     if(!isObj(s.help)) s.help = {count:0, gifts:0, teach:0};
     return s;
+  },
+  // v3 → v4：雲端同步準備。成長值、錢包、合體星星改成「每台裝置的計數器」，舊數值放在 legacy，一顆都不少
+  4: function(s){
+    const ks = isObj(s.kidStars) ? s.kidStars : (s.kidStars = {g4:0, g6:0, team:0});
+    if(!isObj(s.teamC)) s.teamC = {};
+    const tsum = sumC(s.teamC); if((Number(ks.team)||0) > tsum) s.teamC.legacy = (s.teamC.legacy||0) + (Number(ks.team) - tsum);
+    const kidsum = (Number(ks.g4)||0) + (Number(ks.g6)||0) + sumC(s.teamC);
+    s.teamBase = Math.max(Number(s.teamBase)||0, (Number(s.teamStars)||0) - kidsum);
+    if(!isObj(s.pets)) s.pets = {};
+    for(const g of ["g4","g6"]){
+      if(!isObj(s.pets[g])) s.pets[g] = defaultPet();
+      const pt = s.pets[g];
+      for(const k of ["xpC","earnC","spendC"]) if(!isObj(pt[k])) pt[k] = {};
+      const sx = sumC(pt.xpC); if((Number(pt.xp)||0) > sx) pt.xpC.legacy = (pt.xpC.legacy||0) + (Number(pt.xp) - sx);
+      const sw = sumC(pt.earnC) - sumC(pt.spendC); if((Number(pt.wallet)||0) > sw) pt.earnC.legacy = (pt.earnC.legacy||0) + (Number(pt.wallet) - sw);
+      if(!isObj(pt.inbox)) pt.inbox = {xp:0, happy:0, count:0};
+      if(typeof pt.inboxApplied !== "number") pt.inboxApplied = 0;
+      if(typeof pt.stateT !== "number") pt.stateT = 0;
+    }
+    if(!isObj(s.settings)) s.settings = {};
+    if(typeof s.settings.pinT !== "number") s.settings.pinT = 0;
+    return s;
   }
 };
 
@@ -567,9 +629,13 @@ function loadSave(){
 let S = loadSave();
 function persist(){
   S.updatedAt = new Date().toISOString();
+  for(const g of ["g4","g6"]){ const pt = S.pets && S.pets[g]; if(!pt) continue; const js = JSON.stringify(petState(pt));
+    if(window.__sbLastState[g] !== undefined && js !== window.__sbLastState[g]) pt.stateT = Date.now(); window.__sbLastState[g] = js; }
+  recalcAll();
   try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); storageOK = true; }
   catch(e){ storageOK = false; }
   renderSaveState();
+  if(window.__sbSyncHook) window.__sbSyncHook();
 }
 persist();
 
@@ -744,7 +810,7 @@ function renderCard(){
   const n = CARDS.indexOf(c)+1;
   $("card").innerHTML = `<div class="panel on" style="display:block">
     <h2>${SUBJECTS[c.subject].emoji} 第 ${n} 關・${c.code}｜${esc(c.title)} ${reviewDue(c.id)?"⏰":""}</h2>
-    <div class="kids">${kidHTML(c,"g4")}${kidHTML(c,"g6")}
+    <div class="kids">${ownedKids().map(g => kidHTML(c,g)).join("")}
       <div class="kid team"><span class="badge">🤝 合體關・${esc(c.kind)}（開放題）</span>
         <p class="q">${esc(c.together)}</p>
         ${rev.at && c.togetherAns?`<div class="ans">✅ 參考答案：${esc(c.togetherAns)}</div>`:""}
@@ -822,8 +888,7 @@ function calib(conf, result){
 }
 function award(who, n, text, ev){
   const before = S.teamStars;
-  S.teamStars += n;
-  S.kidStars[who] = (S.kidStars[who]||0) + n;
+  addStars(who, n);
   const today = twDate(); const d = dayRec(today);
   d[who].stars += n; if(who === "team") d.team.actions += 1;
   const p = cardProg(curId);
@@ -831,15 +896,20 @@ function award(who, n, text, ev){
   markPlayed(curId);
   const card = CARDS.find(c => c.id === curId);
   if(who === "team"){
-    for(const g of ["g4","g6"]){ const pt = S.pets[g]; pt.xp += n; pt.happiness = Math.min(100, pt.happiness + 10); pt.learn = Math.min(100, pt.learn + 8); }
-    S.help.count += 1; S.help.teach += 1;
-    persist();
+    if(cloudOn()){
+      for(const g of ownedKids()){ const pt = S.pets[g]; pt.learn = Math.min(100, pt.learn + 8); }
+      persist(); cloudTeam(n);
+    }else{
+      for(const g of ["g4","g6"]){ const pt = S.pets[g]; addXp(g, n); pt.happiness = Math.min(100, pt.happiness + 10); pt.learn = Math.min(100, pt.learn + 8); }
+      S.help.count += 1; S.help.teach += 1;
+      persist();
+    }
     const m = `${text||"合體成功！"} 兩隻寵物都 +${fmt(n)} 成長值 🤝`;
     petFx("both","happy", "互助 +1！"); confetti(120, ev); setMsg(m);
     setTimeout(() => { checkEvolve("g4"); checkEvolve("g6"); }, 900);
   }else{
     const pt = S.pets[who];
-    pt.wallet += n; pt.happiness = Math.min(100, pt.happiness + 3); pt.learn = Math.min(100, pt.learn + (n >= 1 ? 12 : 6));
+    earn(who, n); pt.happiness = Math.min(100, pt.happiness + 3); pt.learn = Math.min(100, pt.learn + (n >= 1 ? 12 : 6));
     if(card) pt.subjectXP[card.subject] = (pt.subjectXP[card.subject]||0) + n;
     persist();
     const m = text || HAPPY[Math.floor(Math.random()*HAPPY.length)];
@@ -854,6 +924,9 @@ function award(who, n, text, ev){
 /* 家長確認：4 位數 PIN（第一次使用時設定），確認後 10 分鐘內不用再輸入 */
 let parentUntil = 0;
 function pinHash(pin){ let h = 2166136261; const t = "sb-parent:" + pin; for(let i=0;i<t.length;i++){ h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h.toString(16); }
+async function sha256hex(t){ const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)); return Array.from(new Uint8Array(buf), x => x.toString(16).padStart(2,"0")).join(""); }
+async function pinMake(pin){ const a = new Uint8Array(16); crypto.getRandomValues(a); const salt = Array.from(a, x => x.toString(16).padStart(2,"0")).join(""); return {alg:"sha256", salt, hash: await sha256hex(salt + ":" + pin)}; }
+async function pinCheck(rec, pin){ if(!rec) return false; if(typeof rec === "string") return rec === pinHash(pin); return (await sha256hex(rec.salt + ":" + pin)) === rec.hash; }
 function requireParent(what, ok){
   if(Date.now() < parentUntil){ ok(); return; }
   const setup = !S.settings.parentPin;
@@ -862,13 +935,16 @@ function requireParent(what, ok){
   $("pinWhat").textContent = what;
   $("pinIn").value = ""; $("pinIn2").value = ""; $("pinIn2").style.display = setup ? "" : "none"; $("pinErr").textContent = "";
   setTimeout(() => $("pinIn").focus(), 50);
-  $("pinOk").onclick = () => {
+  $("pinOk").onclick = async () => {
     const a = $("pinIn").value.trim(), b = $("pinIn2").value.trim();
     if(!/^\d{4}$/.test(a)){ $("pinErr").textContent = "請輸入 4 位數字"; return; }
     if(setup){
       if(a !== b){ $("pinErr").textContent = "兩次輸入不一樣，請再輸入一次"; return; }
-      S.settings.parentPin = pinHash(a); persist();
-    }else if(pinHash(a) !== S.settings.parentPin){ $("pinErr").textContent = "PIN 不對喔"; $("pinIn").value = ""; return; }
+      S.settings.parentPin = await pinMake(a); S.settings.pinT = Date.now(); persist();
+    }else{
+      if(!(await pinCheck(S.settings.parentPin, a))){ $("pinErr").textContent = "PIN 不對喔"; $("pinIn").value = ""; return; }
+      if(typeof S.settings.parentPin === "string"){ S.settings.parentPin = await pinMake(a); S.settings.pinT = Date.now(); persist(); } // 舊版 PIN 自動升級成加鹽雜湊
+    }
     parentUntil = Date.now() + 10*60*1000; m.style.display = "none"; ok();
   };
   $("pinCancel").onclick = () => { m.style.display = "none"; };
@@ -971,7 +1047,7 @@ function renderLog(){
 
 /* 家長 PIN 重設（長按 5 秒） */
 (function(){ const b = $("pinReset"); let t = null;
-  const start = (e) => { e.preventDefault(); b.textContent = "⏳ 繼續按住…"; t = setTimeout(() => { S.settings.parentPin = null; parentUntil = 0; persist(); b.textContent = "✅ 已清除，下次使用時重新設定"; t = null; }, 5000); };
+  const start = (e) => { e.preventDefault(); b.textContent = "⏳ 繼續按住…"; t = setTimeout(() => { S.settings.parentPin = null; S.settings.pinT = Date.now(); parentUntil = 0; persist(); b.textContent = "✅ 已清除，下次使用時重新設定"; t = null; }, 5000); };
   const stop = () => { if(t){ clearTimeout(t); t = null; b.textContent = "⏳ 長按 5 秒清除家長 PIN"; } };
   b.addEventListener("pointerdown", start); ["pointerup","pointerleave","pointercancel"].forEach(ev => b.addEventListener(ev, stop));
   b.addEventListener("contextmenu", e => e.preventDefault());
@@ -1063,7 +1139,7 @@ function petLabel(g){ const pt = S.pets[g]; return pt.name || `${KIDLBL[g]}的�
 // 每天沒照顧：飽足／開心／學習力慢慢下降（最低 10，不會死），可能出現便便
 function tickPets(){
   const today = twDate(); let ch = false;
-  for(const g of ["g4","g6"]){
+  for(const g of (DEV.family ? ownedKids() : ["g4","g6"])){
     const pt = S.pets[g];
     if(!pt.lastTickOn){ pt.lastTickOn = today; ch = true; continue; }
     const n = dayDiff(pt.lastTickOn, today);
@@ -1109,7 +1185,7 @@ function feed(g, i){
   if(pt.lightsOff){ tmsg(g, "💤 燈關著，牠在睡覺～按 💡 開燈"); return; }
   if(pt.wallet < f.cost){ tmsg(g, `⭐ 不夠（要 ${f.cost} 顆），去答題賺星星吧！`); return; }
   if(pt.fullness >= 95 && f.id !== "cake"){ tmsg(g, "😋 吃好飽了，等一下再吃～"); return; }
-  pt.wallet -= f.cost; pt.xp += f.xp; pt.fullness = Math.min(100, pt.fullness + f.full); pt.happiness = Math.min(100, pt.happiness + f.happy);
+  spend(g, f.cost); addXp(g, f.xp); pt.fullness = Math.min(100, pt.fullness + f.full); pt.happiness = Math.min(100, pt.happiness + f.happy);
   pt.fedCount += 1; if(pt.fedCount % 3 === 0) pt.poop = Math.min(3, pt.poop + 1);
   dayRec(twDate()).pets[g].fed += 1; markPlayed(null); persist();
   petFx(g, "eat", `${f.emoji} 好好吃！成長值 +${f.xp}`, {food:f.id}); hearts(g);
@@ -1142,10 +1218,14 @@ function toggleLight(g){
 function gift(g){
   const pt = S.pets[g], o = S.pets[OTHER[g]];
   if(pt.wallet < 1){ tmsg(g, "⭐ 不夠，先答題賺星星，再送給對方吧！"); return; }
-  pt.wallet -= 1; pt.giftsGiven += 1; o.xp += 1; o.happiness = Math.min(100, o.happiness + 15); o.giftsReceived += 1;
-  S.help.count += 1; S.help.gifts += 1; dayRec(twDate()).pets[g].gifts += 1; markPlayed(null); persist();
+  spend(g, 1); pt.giftsGiven += 1; dayRec(twDate()).pets[g].gifts += 1; markPlayed(null);
+  if(cloudOn()){ persist(); cloudGift(g, OTHER[g]); }
+  else {
+    addXp(OTHER[g], 1); o.happiness = Math.min(100, o.happiness + 15); o.giftsReceived += 1;
+    S.help.count += 1; S.help.gifts += 1; persist();
+    petFx(OTHER[g], "happy", `💌 收到 ${KIDLBL[g]} 的禮物！成長值 +1`); hearts(OTHER[g]);
+  }
   petFx(g, "happy", `🎁 送出 1 ⭐ 給 ${petLabel(OTHER[g])}！`);
-  petFx(OTHER[g], "happy", `💌 收到 ${KIDLBL[g]} 的禮物！成長值 +1`); hearts(OTHER[g]);
   setMsg(`🤝 互助 +1！${KIDLBL[g]}送了 1 ⭐ 給${KIDLBL[OTHER[g]]}的 ${petLabel(OTHER[g])}。`);
   setTimeout(() => checkEvolve(OTHER[g]), 1200);
   TAMA[g].sub = null; renderPets();
@@ -1219,7 +1299,7 @@ function deviceHTML(g){
 function meter(label, v, color){ return `<div class="meter"><span>${label}</span><div class="bar"><i style="width:${Math.max(4,Math.min(100,v))}%;--mc:${color}"></i></div><b>${Math.round(v)}</b></div>`; }
 function panelHTML(g){
   const pt = S.pets[g], T = TAMA[g], cls = g === "g4" ? "b-blue" : "b-red";
-  const wallet = `<p style="margin:6px 0;font-weight:700">👛 錢包 ⭐ <b data-wallet="${g}">${fmt(pt.wallet)}</b>　🎁 送出 ${pt.giftsGiven}・收到 ${pt.giftsReceived}</p>`;
+  const wallet = `<p style="margin:6px 0;font-weight:700">👛 錢包 ⭐ <b data-wallet="${g}">${fmt(pt.wallet)}</b>　🎁 送出 ${pt.giftsGiven}・收到 ${pt.giftsReceived + ((pt.inbox||{}).count||0)}</p>`;
   if(!pt.species) return `<h4>${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}還沒領養寵物</h4>${wallet}<p class="note">已經有成長值 ${fmt(pt.xp)}${pt.inheritedXp?`（繼承自原本的星寶）`:""}，領養後就會用上。</p><button class="btn ${cls}" data-adopt="${g}">🥚 領養我的寵物（B）</button>`;
   const sp = SPECIES[pt.species], st = stageOf(pt.xp);
   const lo = STAGES[st].min, hi = st < 3 ? STAGES[st+1].min : null;
@@ -1248,14 +1328,16 @@ function renderPets(){
       else if(b.dataset.dogift) gift(b.dataset.dogift);
     });
   }
+  box.className = "tamas role-" + DEV.role;
   for(const g of ["g4","g6"]){
     const pt = S.pets[g], T = TAMA[g];
+    $("tama-"+g).classList.toggle("mini", !ownedKids().includes(g));
     $("tag-"+g).textContent = `${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}・${pt.species ? pt.name : "等待領養"}`;
     document.querySelectorAll(`#tama-${g} [data-icon]`).forEach(b => b.classList.toggle("sel", Number(b.dataset.icon) === T.sel));
     $("tpanel-"+g).innerHTML = panelHTML(g);
   }
   const si = streakInfo();
-  $("hud").innerHTML = `<span class="chip"><span class="flame ${si.current?"":"off"}">🔥</span> 連續 ${si.current} 天・${si.playedToday?"今天已打卡 ✔":"今天還沒玩"}</span><span class="chip">🤝 互助 <b id="helpN">${S.help.count}</b> 次</span><span class="chip">⭐ 全隊 ${fmt(S.teamStars)}</span>`;
+  $("hud").innerHTML = `<span class="chip"><span class="flame ${si.current?"":"off"}">🔥</span> 連續 ${si.current} 天・${si.playedToday?"今天已打卡 ✔":"今天還沒玩"}</span><span class="chip">🤝 互助 <b id="helpN">${S.help.count}</b> 次</span><span class="chip">⭐ 全隊 ${fmt(S.teamStars)}</span><span class="chip" id="syncChip">${SYNC_TEXT[SYNC.status]||""}</span><span class="chip">📱 這台：${DEV.role==="g4"?"🔵 小四":DEV.role==="g6"?"🔴 小六":"👫 共用"}</span>`;
 }
 
 // ---- 像素液晶畫面
@@ -1427,8 +1509,292 @@ function drawCompound(){
   ctx.fillStyle="#C9303A"; ctx.fillText("每天退步 1% → 0.74 倍",X(16),Y(.79));
 }
 
+/* =========================================================
+   5. 家庭雲端同步（Firebase，可選；沒有家庭時完全單機）
+   ========================================================= */
+const FB_CONFIG = {
+  apiKey: "AIzaSyD77lL-1ASFc83G8WBaCsvzxaC98i70nR8",
+  authDomain: "shuangbao-family.firebaseapp.com",
+  projectId: "shuangbao-family",
+  storageBucket: "shuangbao-family.firebasestorage.app",
+  messagingSenderId: "839995253612",
+  appId: "1:839995253612:web:9d2122c7d6e4afcb834949"
+};
+const FB_VER = "12.6.0";
+const EMU = (() => { try{ return localStorage.getItem("shuangbao-emulator") || ""; }catch(e){ return ""; } })(); // 只給測試用
+const SYNC = { status: DEV.family ? "loading" : "local", fb:null, remote:{g4:undefined, g6:undefined, shared:undefined}, first:{g4:true, g6:true, shared:true},
+  pending:{}, timer:0, unsub:[], preferRemote:{}, meta:{}, creating:false, lastInbox:{g4:null, g6:null}, err:"" };
+const SYNC_TEXT = { local:"💻 單機模式", loading:"⏳ 連線中…", synced:"☁️ 已同步", pending:"⏳ 同步中…", offline:"📴 離線中，連線後自動同步",
+  denied:"🔒 同步尚未啟用", notfound:"❓ 找不到這個家庭", error:"⚠️ 同步暫停，先用單機" };
+let syncRetry = 0;
+function setSync(st, err){ if(st === "denied" || st === "error"){ clearTimeout(syncRetry); syncRetry = setTimeout(() => { if(DEV.family && !SYNC.unsub.length && navigator.onLine) startSync(); }, st === "denied" ? 60000 : 30000); }
+  SYNC.status = st; if(err !== undefined) SYNC.err = err; const el = $("syncChip"); if(el) el.textContent = SYNC_TEXT[st] || st; renderFamily(); }
+
+// ---- 合併規則：計數取最大、清單取聯集、時間取較新、每台裝置的計數器各自保存（G-counter）
+const maxN = (a,b) => Math.max(Number(a)||0, Number(b)||0);
+function mergeCounter(a,b){ const o = Object.assign({}, a||{}); for(const k in (b||{})) o[k] = maxN(o[k], b[k]); return o; }
+const later = (a,b) => !a ? (b||null) : !b ? a : (a > b ? a : b);
+const earlier = (a,b) => !a ? (b||null) : !b ? a : (a < b ? a : b);
+const union = (a,b) => Array.from(new Set([...(a||[]), ...(b||[])])).sort();
+function mergeNums(a,b){ const o = Object.assign({}, a||{}); for(const k in (b||{})){ if(typeof b[k] === "number") o[k] = maxN(o[k], b[k]); else if(!(k in o)) o[k] = b[k]; } return o; }
+function mergeMc(a,b){
+  if(!a) return b; if(!b) return a;
+  const L = (b.lastOn||"") > (a.lastOn||"") ? b : a;
+  return { right:maxN(a.right,b.right), retry:maxN(a.retry,b.retry), wrong:maxN(a.wrong,b.wrong), lastOn:later(a.lastOn,b.lastOn), lastResult:L.lastResult||null,
+    starOn:later(a.starOn,b.starOn), wrongPending:!!L.wrongPending, wrongOn:later(a.wrongOn,b.wrongOn), everRight:!!(a.everRight||b.everRight),
+    confLog:((a.confLog||[]).length >= (b.confLog||[]).length ? a.confLog : b.confLog) || [] };
+}
+function kidSection(g){
+  const pt = S.pets[g], cards = {}, daily = {};
+  for(const [id,c] of Object.entries(S.cards)){
+    const mc = {}; for(const [qid,r] of Object.entries(c.mc||{})) if(qid.includes("-"+g+"-")) mc[qid] = r;
+    cards[id] = {mc, playedOn:c.playedOn||[], cleared:!!c.cleared, firstClearedOn:c.firstClearedOn||null, stars:((c.stars||{})[g])||0};
+  }
+  for(const [d,r] of Object.entries(S.daily)){
+    const cs = {}; for(const [id,v] of Object.entries(r.cards||{})) if(v && v[g]) cs[id] = v[g];
+    daily[d] = {k:r[g]||{}, cards:cs, pets:(r.pets||{})[g]||{}};
+  }
+  return { pet:{xpC:pt.xpC||{}, earnC:pt.earnC||{}, spendC:pt.spendC||{}, state:petState(pt), stateT:pt.stateT||0, fedCount:pt.fedCount||0, giftsGiven:pt.giftsGiven||0, giftsReceived:pt.giftsReceived||0, subjectXP:pt.subjectXP||{}},
+           stars:S.kidStars[g]||0, cards, daily, playDates:S.playDates||[] };
+}
+function mergeKid(a, b){
+  if(!b) return a;
+  const pa = a.pet||{}, pb = b.pet||{};
+  const cards = Object.assign({}, a.cards||{});
+  for(const [id,c] of Object.entries(b.cards||{})){
+    const x = cards[id];
+    if(!x){ cards[id] = c; continue; }
+    const mc = Object.assign({}, x.mc||{}); for(const [q,r] of Object.entries(c.mc||{})) mc[q] = mergeMc(mc[q], r);
+    cards[id] = {mc, playedOn:union(x.playedOn,c.playedOn), cleared:!!(x.cleared||c.cleared), firstClearedOn:earlier(x.firstClearedOn,c.firstClearedOn), stars:maxN(x.stars,c.stars)};
+  }
+  const daily = Object.assign({}, a.daily||{});
+  for(const [d,r] of Object.entries(b.daily||{})){
+    const x = daily[d]; if(!x){ daily[d] = r; continue; }
+    const cs = Object.assign({}, x.cards||{}); for(const [id,v] of Object.entries(r.cards||{})) cs[id] = mergeNums(cs[id], v);
+    daily[d] = {k:mergeNums(x.k, r.k), cards:cs, pets:mergeNums(x.pets, r.pets)};
+  }
+  const newer = (pb.stateT||0) > (pa.stateT||0);
+  let state = newer ? pb.state : pa.state; const other = newer ? pa.state : pb.state;
+  if(state && other && !state.species && other.species){ state = Object.assign({}, state); for(const k of ["species","name","adoptedOn","stageSeen","inheritedXp"]) state[k] = other[k]; }
+  return { pet:{ xpC:mergeCounter(pa.xpC,pb.xpC), earnC:mergeCounter(pa.earnC,pb.earnC), spendC:mergeCounter(pa.spendC,pb.spendC),
+                 state, stateT: Math.max(pa.stateT||0, pb.stateT||0), fedCount:maxN(pa.fedCount,pb.fedCount),
+                 giftsGiven:maxN(pa.giftsGiven,pb.giftsGiven), giftsReceived:maxN(pa.giftsReceived,pb.giftsReceived), subjectXP:mergeCounter(pa.subjectXP,pb.subjectXP) },
+           stars:maxN(a.stars,b.stars), cards, daily, playDates:union(a.playDates,b.playDates) };
+}
+function importKid(g, sec){
+  const pt = S.pets[g], p = sec.pet;
+  pt.xpC = p.xpC; pt.earnC = p.earnC; pt.spendC = p.spendC; pt.fedCount = p.fedCount; pt.giftsGiven = p.giftsGiven; pt.giftsReceived = p.giftsReceived; pt.subjectXP = p.subjectXP;
+  if(p.state){ for(const k of PET_STATE_KEYS) if(p.state[k] !== null && p.state[k] !== undefined) pt[k] = p.state[k]; }
+  pt.stateT = p.stateT || 0;
+  S.kidStars[g] = sec.stars;
+  for(const [id,c] of Object.entries(sec.cards)){
+    const lc = cardProg(id); if(!isObj(lc.mc)) lc.mc = {};
+    for(const [q,r] of Object.entries(c.mc||{})) lc.mc[q] = r;
+    lc.playedOn = c.playedOn; lc.cleared = c.cleared; lc.firstClearedOn = c.firstClearedOn; lc.stars[g] = c.stars;
+    if(!lc.lastPlayedOn || (c.playedOn.length && c.playedOn[c.playedOn.length-1] > lc.lastPlayedOn)) lc.lastPlayedOn = c.playedOn[c.playedOn.length-1] || lc.lastPlayedOn;
+  }
+  for(const [d,r] of Object.entries(sec.daily)){
+    const day = dayRec(d); Object.assign(day[g], r.k||{}); day.pets[g] = Object.assign(day.pets[g]||{}, r.pets||{});
+    for(const [id,v] of Object.entries(r.cards||{})){ day.cards[id] = day.cards[id] || {}; day.cards[id][g] = v; }
+  }
+  S.playDates = sec.playDates;
+  window.__sbLastState[g] = JSON.stringify(petState(pt));
+}
+function sharedSection(){
+  const team = {}; for(const [d,r] of Object.entries(S.daily)) if(r.team && (r.team.stars || r.team.actions)) team[d] = r.team;
+  return { teamC:S.teamC||{}, teamBase:S.teamBase||0, redeemed:S.redeemed||0, parentPin:S.settings.parentPin||null, pinT:S.settings.pinT||0,
+           help:{count:S.help.count||0, gifts:S.help.gifts||0, teach:S.help.teach||0}, daily:team };
+}
+function mergeShared(a, b){
+  if(!b) return a;
+  const daily = Object.assign({}, a.daily||{}); for(const [d,r] of Object.entries(b.daily||{})) daily[d] = mergeNums(daily[d], r);
+  const pinNewer = (b.pinT||0) > (a.pinT||0);
+  return { teamC:mergeCounter(a.teamC,b.teamC), teamBase:maxN(a.teamBase,b.teamBase), redeemed:maxN(a.redeemed,b.redeemed),
+           parentPin: pinNewer ? (b.parentPin||null) : a.parentPin, pinT: Math.max(a.pinT||0, b.pinT||0),
+           help:{count:maxN(a.help&&a.help.count, b.help&&b.help.count), gifts:maxN(a.help&&a.help.gifts, b.help&&b.help.gifts), teach:maxN(a.help&&a.help.teach, b.help&&b.help.teach)}, daily };
+}
+function importShared(sec){
+  S.teamC = sec.teamC; S.teamBase = sec.teamBase; S.redeemed = sec.redeemed; S.settings.parentPin = sec.parentPin; S.settings.pinT = sec.pinT;
+  S.help = Object.assign(S.help||{}, sec.help);
+  for(const [d,r] of Object.entries(sec.daily||{})) Object.assign(dayRec(d).team, r);
+}
+const canon = (o) => JSON.stringify(o, (k,v) => (v && typeof v === "object" && !Array.isArray(v)) ? Object.keys(v).sort().reduce((m,x) => (m[x] = v[x], m), {}) : v);
+function remShared(d){ d = d || {}; return {teamC:d.teamC||{}, teamBase:d.teamBase||0, redeemed:d.redeemed||0, parentPin:d.parentPin||null, pinT:d.pinT||0, help:Object.assign({count:0,gifts:0,teach:0}, d.help||{}), daily:d.daily||{}}; }
+function stripRemoteKid(d){ if(!d) return null; const o = {pet:d.pet||{}, stars:d.stars||0, cards:d.cards||{}, daily:d.daily||{}, playDates:d.playDates||[]}; return o; }
+
+// ---- Firebase
+async function loadFirebase(){
+  const base = `https://www.gstatic.com/firebasejs/${FB_VER}/`;
+  const [A, AU, F] = await Promise.all([import(base+"firebase-app.js"), import(base+"firebase-auth.js"), import(base+"firebase-firestore.js")]);
+  const app = A.initializeApp(FB_CONFIG);
+  const auth = AU.getAuth(app);
+  let db; try{ db = F.initializeFirestore(app, {localCache: F.persistentLocalCache({tabManager: F.persistentMultipleTabManager()})}); }catch(e){ db = F.getFirestore(app); }
+  if(EMU){ AU.connectAuthEmulator(auth, `http://${EMU}:9099`, {disableWarnings:true}); F.connectFirestoreEmulator(db, EMU, 8080); }
+  return {app, auth, db, AU, F};
+}
+const famRef = () => SYNC.fb.F.doc(SYNC.fb.db, "families", DEV.family);
+const kidRef = (g) => SYNC.fb.F.doc(SYNC.fb.db, "families", DEV.family, "kids", g);
+const sharedRef = () => SYNC.fb.F.doc(SYNC.fb.db, "families", DEV.family, "shared", "main");
+function isDenied(e){ return e && (e.code === "permission-denied" || /permission/i.test(e.message||"")); }
+function onSyncError(e){ if(isDenied(e)) setSync("denied", ""); else if(!navigator.onLine) setSync("offline"); else setSync("error", String(e && (e.code||e.message) || e)); }
+let syncStarting = false;
+async function startSync(){
+  if(!DEV.family){ setSync("local"); return; }
+  if(syncStarting || SYNC.unsub.length) return; syncStarting = true;
+  setSync("loading");
+  try{
+    if(!SYNC.fb) SYNC.fb = await loadFirebase();
+    const {auth, AU, F} = SYNC.fb;
+    await auth.authStateReady();
+    if(!auth.currentUser) await AU.signInAnonymously(auth);
+    if(SYNC.creating){ SYNC.creating = false; DEV.famPending = "create"; saveDevice(); }
+    if(SYNC.joining){ SYNC.joining = false; DEV.famPending = "join"; saveDevice(); }
+    if(DEV.famPending === "join") SYNC.preferRemote = {g4:true, g6:true};
+    if(DEV.famPending === "create"){ // 建立家庭的那一筆寫入成功前，每次連線都再試一次
+      try{ await F.setDoc(famRef(), {v:4, createdAt:F.serverTimestamp(), createdBy:auth.currentUser.uid}); DEV.famPending = null; saveDevice(); }
+      catch(e){ if(isDenied(e)){ setSync("denied"); syncStarting = false; return; } }
+    }else if(DEV.famPending === "join"){ // 確認家庭存在（打錯碼不會開出空家庭）
+      try{ const snap = await F.getDoc(famRef()); if(!snap.exists()){ setSync("notfound"); DEV.family = null; DEV.famPending = null; saveDevice(); syncStarting = false; renderAll(true); return; } DEV.famPending = null; saveDevice(); }
+      catch(e){ if(isDenied(e)){ setSync("denied"); syncStarting = false; return; } }
+    }
+    SYNC.first = {g4:true, g6:true, shared:true}; SYNC.meta = {};
+    const opts = {includeMetadataChanges:true};
+    for(const g of ["g4","g6"]) SYNC.unsub.push(F.onSnapshot(kidRef(g), opts, (snap) => onKidSnap(g, snap), onSnapErr));
+    SYNC.unsub.push(F.onSnapshot(sharedRef(), opts, onSharedSnap, onSnapErr));
+  }catch(e){ onSyncError(e); }
+  syncStarting = false;
+}
+function onSnapErr(e){ onSyncError(e); stopSync(); }
+function stopSync(){ for(const u of SYNC.unsub) try{ u(); }catch(e){} SYNC.unsub = []; }
+function updateStatusFromMeta(key, snap){
+  if(snap) SYNC.meta[key] = {cache:snap.metadata.fromCache, pend:snap.metadata.hasPendingWrites};
+  if(["denied","notfound"].includes(SYNC.status) || !SYNC.unsub.length) return;
+  const ms = Object.values(SYNC.meta);
+  if(!navigator.onLine) setSync("offline");
+  else setSync(Object.keys(SYNC.pending).length || ms.some(m => m.cache || m.pend) ? "pending" : "synced");
+}
+function onKidSnap(g, snap){
+  const d = snap.exists() ? snap.data() : null;
+  SYNC.remote[g] = d;
+  const owned = ownedKids().includes(g);
+  const local = kidSection(g);
+  const merged = mergeKid(local, stripRemoteKid(d));
+  // 剛加入家庭的這台：寵物狀態以雲端為準（這台的預設狀態不會蓋掉另一台已養大的寵物）
+  if(SYNC.preferRemote[g] && !snap.metadata.fromCache){ SYNC.preferRemote[g] = false; if(d && d.pet && d.pet.state && d.pet.state.species) merged.pet.state = d.pet.state; }
+  importKid(g, merged);
+  // 收到的禮物／合體加成（只用 increment 寫入，不會被覆蓋或重複）
+  const inbox = (d && d.inbox) || {xp:0, happy:0, count:0};
+  const prev = SYNC.lastInbox[g];
+  S.pets[g].inbox = {xp:inbox.xp||0, happy:inbox.happy||0, count:inbox.count||0};
+  if(owned){ const delta = (inbox.happy||0) - (S.pets[g].inboxApplied||0); if(delta > 0){ S.pets[g].happiness = Math.min(100, S.pets[g].happiness + delta); S.pets[g].inboxApplied = inbox.happy; } }
+  if(prev && (inbox.count||0) > prev.count){ petFx(g, "happy", "💌 收到禮物！成長值 +" + ((inbox.xp||0) - prev.xp)); hearts(g); setTimeout(() => checkEvolve(g), 800); }
+  SYNC.lastInbox[g] = {count:inbox.count||0, xp:inbox.xp||0};
+  recalcAll();
+  saveLocalOnly();
+  const needPush = (!snap.metadata.fromCache || SYNC.first[g]) && (owned || SYNC.first[g]) && canon(merged) !== canon(stripRemoteKid(d) || {});
+  if(!snap.metadata.fromCache) SYNC.first[g] = false;
+  if(needPush) schedulePush(g);
+  updateStatusFromMeta(g, snap);
+  renderAll(true);
+}
+function onSharedSnap(snap){
+  const d = snap.exists() ? snap.data() : null;
+  SYNC.remote.shared = d;
+  const local = sharedSection();
+  const merged = mergeShared(local, d);
+  importShared(merged); recalcAll(); saveLocalOnly();
+  const rem = d ? remShared(d) : {};
+  const needPush = canon(merged) !== canon(rem);
+  if(!snap.metadata.fromCache) SYNC.first.shared = false;
+  if(needPush) schedulePush("shared");
+  updateStatusFromMeta("shared", snap);
+  renderAll(false);
+}
+function schedulePush(key){
+  if(!DEV.family) return;
+  SYNC.pending[key] = true;
+  clearTimeout(SYNC.timer); SYNC.timer = setTimeout(flushPush, 500);
+}
+function flushPush(){
+  if(!SYNC.fb || !SYNC.unsub.length){ return; }
+  const {F} = SYNC.fb; const keys = Object.keys(SYNC.pending); SYNC.pending = {}; let wrote = 0;
+  for(const k of keys){
+    const data = k === "shared" ? sharedSection() : kidSection(k);
+    // 雲端已經有這些內容就不寫（省流量，也不會互相觸發）
+    if(k === "shared"){ const r = remShared(SYNC.remote.shared); if(SYNC.remote.shared && canon(mergeShared(r, data)) === canon(r)) continue; }
+    else { const r = stripRemoteKid(SYNC.remote[k]); if(r && canon(mergeKid(r, data)) === canon(r)) continue; }
+    if(k === "shared"){ // 互助計數由 increment 維護；只有雲端比本機少（例如第一次上傳）才寫入
+      const rh = (SYNC.remote.shared && SYNC.remote.shared.help) || null;
+      if(rh && ["count","gifts","teach"].every(x => (rh[x]||0) >= (data.help[x]||0))) delete data.help;
+    }
+    data.updatedAt = F.serverTimestamp(); data.v = 4;
+    wrote++; F.setDoc(k === "shared" ? sharedRef() : kidRef(k), data, {merge:true}).catch(onSyncError);
+  }
+  if(wrote && SYNC.status === "synced") setSync("pending");
+}
+window.__sbSyncHook = function(){ if(DEV.family) for(const g of ownedKids()) schedulePush(g), schedulePush("shared"); };
+function saveLocalOnly(){ try{ localStorage.setItem(SAVE_KEY, JSON.stringify(S)); }catch(e){} }
+
+// 禮物、合體加成：一次 batch，對方用 increment 收，離線也只會送一次
+function cloudGift(from, to){
+  const {F, db} = SYNC.fb; const b = F.writeBatch(db); const inc = F.increment;
+  const pt = S.pets[from];
+  b.set(kidRef(from), {pet:{spendC:{[DEV.id]:pt.spendC[DEV.id]||0}, giftsGiven:pt.giftsGiven}}, {merge:true});
+  b.set(kidRef(to), {inbox:{xp:inc(1), happy:inc(15), count:inc(1)}}, {merge:true});
+  b.set(sharedRef(), {help:{count:inc(1), gifts:inc(1)}}, {merge:true});
+  return b.commit().catch(onSyncError);
+}
+function cloudTeam(n){
+  const {F, db} = SYNC.fb; const b = F.writeBatch(db); const inc = F.increment;
+  for(const g of ["g4","g6"]) b.set(kidRef(g), {inbox:{xp:inc(n), happy:inc(10)}}, {merge:true});
+  b.set(sharedRef(), {teamC:{[DEV.id]:S.teamC[DEV.id]||0}, help:{count:inc(1), teach:inc(1)}}, {merge:true});
+  return b.commit().catch(onSyncError);
+}
+const cloudOn = () => !!(DEV.family && SYNC.fb && SYNC.unsub.length && !["denied","notfound","error"].includes(SYNC.status));
+addEventListener("online", () => { if(!DEV.family) return; if(!SYNC.unsub.length){ startSync(); return; }
+  if(SYNC.status === "offline") setSync("pending");
+  SYNC.fb.F.waitForPendingWrites(SYNC.fb.db).then(() => setTimeout(() => updateStatusFromMeta(), 300)).catch(() => {}); });
+addEventListener("offline", () => { if(DEV.family) setSync("offline"); });
+setInterval(() => { if(DEV.family && ["pending","offline"].includes(SYNC.status)) updateStatusFromMeta(); }, 2000); // 狀態燈自我校正
+
+// ---- 家庭設定畫面
+const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+function randCode(n){ const a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, x => CODE_ABC[x % CODE_ABC.length]).join(""); }
+const groupCode = (c) => (c||"").match(/.{1,4}/g).join("-");
+const cleanCode = (t) => String(t||"").toUpperCase().replace(/[^A-Z0-9]/g, "");
+function joinLink(){ return location.origin + location.pathname + "#join=" + DEV.family; }
+function renderFamily(){
+  const box = $("famBox"); if(!box) return;
+  const roleBtns = [["g4","🔵 小四"],["g6","🔴 小六"],["both","👫 兩個人共用"]].map(([r,t]) => `<button class="btn ${DEV.role===r?"b-purple":"ghost b-purple"} small" data-role="${r}">${t}</button>`).join("");
+  const status = `<p><b>狀態：</b><span id="famStatus">${SYNC_TEXT[SYNC.status]||SYNC.status}</span>${SYNC.status==="denied"?"<br><small>家長還沒在 Firebase 發布安全規則。先照常玩，進度存在這台，規則發布後會自動同步。</small>":""}${SYNC.status==="error"&&SYNC.err?`<br><small>${esc(SYNC.err)}</small>`:""}</p>`;
+  if(!DEV.family){
+    box.innerHTML = `<p>現在是<b>單機模式</b>：進度只存在這台。想讓兩台平板同步，請家長在第一台按「建立家庭」，第二台輸入家庭碼加入。</p>
+      <p><b>這台是誰的？</b></p><div class="row">${roleBtns}</div>
+      <div class="row" style="margin-top:12px"><button class="btn b-mint" id="famCreate">🏠 建立家庭（家長）</button></div>
+      <p style="margin-top:12px"><b>加入家庭：</b>輸入另一台顯示的家庭碼（24 碼）</p>
+      <input id="famCodeIn" type="text" autocomplete="off" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" style="width:100%;font:700 18px ui-monospace,monospace;letter-spacing:1px;border:3px solid var(--line);border-radius:14px;padding:10px">
+      <div class="row" style="margin-top:8px"><button class="btn b-blue" id="famJoin">🔗 加入家庭</button></div>${SYNC.status==="notfound"?`<p style="color:var(--red-d);font-weight:700">找不到這個家庭，請確認家庭碼。</p>`:""}`;
+    $("famCreate").onclick = () => requireParent("建立家庭（兩台平板同步）", () => { DEV.family = randCode(24); saveDevice(); SYNC.creating = true; startSync(); renderAll(true); toast("🏠 家庭建立好了！把家庭碼給另一台輸入"); });
+    $("famJoin").onclick = () => { const c = cleanCode($("famCodeIn").value); if(c.length !== 24 || [...c].some(ch => !CODE_ABC.includes(ch))){ toast("家庭碼是 24 碼，請再檢查一次"); return; } DEV.family = c; saveDevice(); SYNC.joining = true; startSync(); renderAll(true); };
+    const pre = (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(pre && $("famCodeIn")) $("famCodeIn").value = groupCode(cleanCode(pre));
+  }else{
+    box.innerHTML = `<p><b>家庭碼</b>（另一台輸入這組，或打開加入連結）：</p>
+      <p id="famCode" style="font:800 20px ui-monospace,monospace;letter-spacing:1px;background:#F4F0FF;border-radius:14px;padding:10px;word-break:break-all">${groupCode(DEV.family)}</p>
+      <div class="row"><button class="btn b-blue small" id="famCopy">📋 複製加入連結</button>${navigator.share?`<button class="btn b-mint small" id="famShare">📤 分享</button>`:""}</div>
+      ${status}<p><b>這台是誰的？</b></p><div class="row">${roleBtns}</div>
+      <div class="row" style="margin-top:12px"><button class="btn ghost b-gray small" id="famLeave">🚪 這台離開家庭（改回單機，進度留在這台）</button></div>`;
+    $("famCopy").onclick = () => copyText(joinLink());
+    if($("famShare")) $("famShare").onclick = () => navigator.share({title:"雙寶複習冒險隊", text:"用這個連結加入我們家的冒險隊", url:joinLink()}).catch(()=>{});
+    $("famLeave").onclick = () => { if(!confirm("這台要離開家庭嗎？進度會留在這台，之後可以用家庭碼再加入。")) return; stopSync(); DEV.family = null; DEV.famPending = null; saveDevice(); setSync("local"); renderAll(true); };
+  }
+  box.querySelectorAll("[data-role]").forEach(b => b.onclick = () => { DEV.role = b.dataset.role; saveDevice(); qs = {}; renderAll(true); renderFamily(); });
+}
+// 打開加入連結時，自動帶到存檔頁
+function openJoinLink(){ if(/join=/.test(location.hash) && !DEV.family){ setTimeout(() => { const t = document.querySelector('.tab[data-p="save"]'); if(t) t.click(); renderFamily(); toast("🔗 確認家庭碼後按「加入家庭」"); }, 300); } }
+openJoinLink(); addEventListener("hashchange", openJoinLink);
+
 function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); }
-renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState();
+recalcAll(); renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState(); renderFamily(); startSync();
 (function greet(){ const si=streakInfo(); const a=S.pets.g4, b=S.pets.g6;
   const need = ["g4","g6"].filter(g => !S.pets[g].species).map(g => KIDLBL[g]);
   if(need.length) setMsg(`🥚 ${need.join("、")}還沒領養寵物！按寵物機上的 B 鍵領養。${S.teamStars>0?`原本星寶的成長值（${fmt(S.teamStars)}）兩隻寵物都會繼承喔！`:""}`);
@@ -1436,7 +1802,9 @@ renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderS
 // 跨分頁同步：同一台裝置開兩個分頁時，以最新存檔為準
 addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ S = migrate(JSON.parse(e.newValue)); renderAll(true); }catch(err){} } });
 // 測試用（不影響遊戲）
-window.__shuangbao = { get save(){ return S; }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY };
+window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYNC.status; }, recalcAll,
+  setXp(g, n){ const pt = S.pets[g]; pt.xpC[DEV.id] = (pt.xpC[DEV.id]||0) + (n - pt.xp); recalcAll(); },
+  setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY };
 </script>
 </body>
 </html>
