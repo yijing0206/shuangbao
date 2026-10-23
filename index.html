@@ -128,6 +128,66 @@ h3{font-size:18px;margin:16px 0 8px}
 .tama.mini .tpanel{font-size:13px;padding:8px 10px}
 .tama.mini .tpanel .foods,.tama.mini .tpanel .note,.tama.mini .tpanel .btn{display:none}
 .tamas.role-g6 .tama.g6{order:-1}
+/* v6 大遊戲機：題目在機器裡面作答 */
+.tama{flex:1 1 600px;max-width:780px;width:100%}
+.egg{width:100%;aspect-ratio:auto;border-radius:46px;padding:16px 18px 20px;border-left:16px solid var(--c);border-right:16px solid var(--c)}
+.bezel{width:100%;border-radius:28px;padding:6px 10px}
+.lcd{aspect-ratio:2/1;border-radius:16px}
+.icons button{font-size:22px;padding:4px 10px}
+.vtabs{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin:0 0 10px}
+.vtabs button{border:none;border-radius:999px;padding:8px 14px;font:800 15px var(--font);color:var(--ink);background:rgba(255,255,255,.85);box-shadow:0 3px 0 rgba(58,46,74,.18);cursor:pointer;touch-action:manipulation}
+.vtabs button.on{background:var(--c);color:#fff;box-shadow:0 3px 0 rgba(0,0,0,.25)}
+.egg .tmsg{margin:8px 4px 0;background:rgba(255,255,255,.75);border-radius:14px;padding:2px 10px;min-height:1.6em;width:100%}
+.dscreen{width:100%;background:#FFFDF6;border-radius:24px;margin-top:10px;padding:14px 16px;box-shadow:inset 0 0 0 4px rgba(58,46,74,.13);text-align:left;font-size:16px}
+.dscreen .tpanel{border:none;box-shadow:none;margin:0;padding:0;background:transparent}
+.dscreen .dq{border-width:3px;padding:12px;margin-top:10px}
+.dscreen .q{font-size:20px;font-weight:800;line-height:1.5}
+.dscreen .opt{font-size:18px;padding:14px}
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.dhead b{font-size:17px}
+.mline{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px;font-size:14px;font-weight:700;background:#F3EEFA;border-radius:14px;padding:6px 10px}
+.mline em{font-style:normal;border-radius:999px;padding:1px 8px}
+.mline .fast{background:#D8F7E6}.mline .slow{background:#FFF1C9}
+.ebar{display:flex;align-items:center;gap:8px;font-weight:800;margin:8px 0}
+.ebar .bar{flex:1;height:18px;background:#EDE6F5;border-radius:9px;overflow:hidden;box-shadow:inset 0 0 0 2px rgba(58,46,74,.12)}
+.ebar .bar i{display:block;height:100%;background:linear-gradient(90deg,#FFD23F,#FF9F43);border-radius:9px;transition:width .4s}
+.ebar.full .bar i{background:linear-gradient(90deg,#FFE36E,#FF6FA8,#B388FF);animation:glow 1s infinite alternate}
+@keyframes glow{to{filter:brightness(1.25)}}
+.dlast{font-weight:800;margin:4px 0;color:#5B4BC4}
+.dnote{font-size:14px;color:var(--ink2);margin:6px 0}
+.moves{background:#FFF6D6;border:3px dashed #FFC93C;border-radius:18px;padding:8px 10px;margin:8px 0}
+.moves p{margin:0 0 6px;font-weight:800}
+.win{background:#E7F8EF;border:3px solid #22C08A;border-radius:18px;padding:10px 12px;margin:8px 0}
+.win h4{margin:0 0 6px;font-size:19px}
+.drops{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0}
+.drop{background:#fff;border-radius:999px;padding:6px 12px;font-weight:800;box-shadow:0 3px 0 var(--line);animation:pop .4s}
+.balls{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+.ballbtn{display:flex;flex-direction:column;align-items:center;gap:2px;border:3px solid var(--c);background:#fff;border-radius:16px;padding:8px 12px;font:700 14px var(--font);color:var(--ink);cursor:pointer;min-width:120px;touch-action:manipulation}
+.ballbtn:disabled{opacity:.45;cursor:default}
+.pball{display:inline-block;width:26px;height:26px;border-radius:50%;border:3px solid #3A2E4A;background:linear-gradient(#FFD23F 0 44%,#3A2E4A 44% 56%,#fff 56%);vertical-align:middle;margin-right:4px;flex:none}
+.pball.ball2{background:linear-gradient(#4A7BFF 0 44%,#3A2E4A 44% 56%,#fff 56%)}
+.pball.ball3{background:linear-gradient(90deg,#FF6FA8,#FFD23F,#3DDC97,#4A7BFF) top/100% 44% no-repeat,linear-gradient(#0000 0 44%,#3A2E4A 44% 56%,#fff 56%)}
+.igrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:6px 0 10px}
+.icard{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;background:#fff;border:3px solid var(--line);border-radius:18px;padding:10px}
+.icard .ie{font-size:30px}.icard .pball{width:34px;height:34px}
+.icard small{color:var(--ink2);font-size:12px}
+.dscreen h5{margin:10px 0 4px;font-size:15px}
+.coins{font-weight:800;background:#FFF1A8;border-radius:999px;padding:4px 12px}
+.stats3{display:flex;flex-wrap:wrap;gap:8px}
+.stats3 span{background:#F3EEFA;border-radius:14px;padding:6px 10px;font-weight:700}
+.up{color:#14A06B;font-weight:800}
+.boost{font-weight:800;color:#E8475F;background:#FFE9EF;border-radius:12px;padding:6px 10px}
+.chipi{display:inline-flex;align-items:center;background:#fff;border-radius:999px;padding:4px 10px;font-weight:700;box-shadow:0 2px 0 var(--line)}
+.food.ck{border-color:#E0A458}
+.abc button{width:56px;height:56px}
+.tama.mini{flex:0 1 320px}
+.tama.mini .egg{width:100%;border-left-width:8px;border-right-width:8px}
+.tama.mini .vtabs{display:none}
+.tama.mini .dscreen{font-size:13px;padding:8px 10px}
+.tama.mini .dscreen .foods,.tama.mini .dscreen .note,.tama.mini .dscreen .btn{display:none}
+.bigdev{border-radius:44px;padding:16px;background:linear-gradient(165deg,#FFFFFF,#EDE3FF);border-left:18px solid var(--blue);border-right:18px solid var(--red);box-shadow:0 8px 0 var(--line);max-width:900px;margin:0 auto}
+.bigdev .dscreen{margin-top:12px}
+@media (max-width:600px){.egg{padding:12px 10px 16px;border-left-width:8px;border-right-width:8px;border-radius:32px}.bigdev{padding:10px;border-left-width:8px;border-right-width:8px}.dscreen{padding:10px}.dscreen .q{font-size:18px}}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -232,7 +292,7 @@ a{color:var(--blue-d)}
     <div class="console">
       <div class="hud" id="hud"></div>
       <div class="tamas" id="tamas"></div>
-      <div class="msg" id="msg">🥚 每個人都有自己的電子寵物！先領養，再答題賺 ⭐ 買食物餵牠。</div>
+      <div class="msg" id="msg">🥚 每個人都有自己的電子寵物！題目就在遊戲機裡：答對集能量，打倒搗蛋怪獸！</div>
       <div class="row center" id="consoleBtns">
         <button class="btn b-purple small" id="redeemBtn">🎁 兌換家庭特權</button>
         <button class="btn b-red small" id="toBattle" onclick="document.querySelector('.tab[data-p=battle]').click()">⚔️ 寵物對戰</button>
@@ -348,7 +408,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "5.1.0";
+const APP_VERSION = "6.0.0";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -379,7 +439,7 @@ function addXp(g, n){ bump(S.pets[g].xpC, n); recalcAll(); }
 function earn(g, n){ bump(S.pets[g].earnC, n); recalcAll(); }
 function spend(g, n){ bump(S.pets[g].spendC, n); recalcAll(); }
 function addStars(who, n){ if(who === "team") bump(S.teamC, n); else S.kidStars[who] = (S.kidStars[who]||0) + n; recalcAll(); }
-const SCHEMA_VERSION = 5;
+const SCHEMA_VERSION = 6;
 
 const SUBJECTS = {
   "國語":{cls:"b-red",color:"#FF4B55",emoji:"📖"},
@@ -513,7 +573,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -565,8 +625,13 @@ function defaultSave(){
 function defaultPet(){
   return { species:null, name:"", adoptedOn:null, xp:0, wallet:0, fullness:70, happiness:70, learn:40, poop:0, lightsOff:false,
            lastTickOn:null, fedCount:0, play:{date:null,n:0}, giftsGiven:0, giftsReceived:0, subjectXP:{}, stageSeen:0,
-           xpC:{}, earnC:{}, spendC:{}, stateT:0, inbox:{xp:0, happy:0, count:0}, inboxApplied:0 };
+           xpC:{}, earnC:{}, spendC:{}, stateT:0, inbox:{xp:0, happy:0, count:0, items:{}}, inboxApplied:0, adv:ADV0() };
 }
+// v6：冒險資料（背包、果實、每日餅乾、抓到的夥伴…）全部是「每台裝置分開計」的計數器，兩台平板同步不會重複
+// 見面禮用固定的 key「welcome」記：兩台平板都升級，也只算一次
+function ADV0(){ return {invG:{coin:{welcome:30}, ball1:{welcome:2}}, invU:{}, eatC:{}, freeCk:{}, caughtC:{}, defC:{}, lootC:{}, xpDayC:{}, itemC:{}, silverC:{}, equip:{id:null, t:0}}; }
+const ADV_KEYS = ["invG","invU","eatC","freeCk","caughtC","defC","lootC","xpDayC","itemC","silverC"];
+const ADV_NESTED = ["invG","invU","eatC","freeCk","caughtC","defC","lootC","xpDayC"];
 function defaultCardProgress(){
   return { cleared:false, firstClearedOn:null, lastPlayedOn:null, playedOn:[], stars:{g4:0,g6:0,team:0}, misses:{g4:0,g6:0}, opened:0, mc:{} };
 }
@@ -645,6 +710,15 @@ const MIGRATIONS = {
     if(!isObj(s.battle)) s.battle = {};
     for(const g of ["g4","g6"]){ if(!isObj(s.battle[g])) s.battle[g] = {}; const b = s.battle[g];
       if(!isObj(b.log)) b.log = {}; if(!isObj(b.cookieC)) b.cookieC = {}; if(!isObj(b.candyC)) b.candyC = {}; }
+    return s;
+  },
+  // v5 → v6：冒險機。加上空的背包（含見面禮 🪙30、⭐星星球 ×2）；原本的星星、成長值、能力值都不變
+  6: function(s){
+    if(!isObj(s.pets)) s.pets = {};
+    for(const g of ["g4","g6"]){ if(!isObj(s.pets[g])) continue; const pt = s.pets[g];
+      if(!isObj(pt.adv)) pt.adv = ADV0();
+      if(!isObj(pt.inbox)) pt.inbox = {xp:0, happy:0, count:0};
+      if(!isObj(pt.inbox.items)) pt.inbox.items = {}; }
     return s;
   }
 };
@@ -808,10 +882,11 @@ function renderMap(){
       ${due?'<span class="due">⏰ 該複習</span>':""}
       <div class="n">${done?"⭐":SUBJECTS[c.subject].emoji} 第${n}關</div><div class="c">${c.code}</div><div class="t">${done?"已過關":esc(c.title)}</div></button>`;
   }).join("");
-  $("map").querySelectorAll(".lvl").forEach(b => b.onclick = () => openCard(b.dataset.id));
+  $("map").querySelectorAll(".lvl").forEach(b => b.onclick = () => { openCard(b.dataset.id); scrollToDev(); });
 }
 function openCard(id){
   curId = id; rev = {at:false}; qs = {g4:newQ(id,"g4",0), g6:newQ(id,"g6",0)};
+  for(const g of ownedKids()) if(TAMA[g].view !== "quest"){ TAMA[g].view = "quest"; TAMA[g].sub = null; }
   const p = cardProg(id); p.opened++; persist();
   renderMap(); renderCard();
   const el = $("card"); el.classList.remove("panel"); void el.offsetWidth;
@@ -819,23 +894,22 @@ function openCard(id){
 function shuffle(n){ const a = Array.from({length:n}, (_,i) => i); for(let i=n-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 function newQ(cardId, g, idx){
   const list = cardQs(cardId, g); const q = list[idx];
-  return {idx, order: q ? shuffle(q.o.length) : [], picked:[], done:false, result:null, conf:0, practice:false, msg:""};
+  return {cid:cardId, idx, order: q ? shuffle(q.o.length) : [], picked:[], done:false, result:null, conf:0, practice:false, msg:""};
 }
 function mcRec(cardId, qid){
   const p = cardProg(cardId); if(!isObj(p.mc)) p.mc = {};
   if(!p.mc[qid]) p.mc[qid] = {right:0, retry:0, wrong:0, lastOn:null, lastResult:null, starOn:null, wrongPending:false, wrongOn:null, everRight:false, confLog:[]};
   return p.mc[qid];
 }
-function kidHTML(c, g){
+function qBlockHTML(cid, g, st, wild){
   const isG4 = g === "g4";
-  const team = isG4 ? "🔵 藍隊・小四關" : "🔴 紅隊・小六關";
+  const team = isG4 ? "🔵 小四" : "🔴 小六";
   const cls = isG4 ? "b-blue" : "b-red";
-  const list = cardQs(c.id, g); const st = qs[g] || (qs[g] = newQ(c.id, g, 0));
-  const q = list[st.idx];
-  if(!q) return `<div class="kid ${g}"><span class="badge">${team}</span><p class="q">這關沒有選擇題。</p></div>`;
-  const p = S.cards[c.id] || {}; const mc = (p.mc||{});
-  const dots = list.map((x,i) => { const r = mc[x.id]; const mark = r && r.lastResult==="right" ? "✔" : r && r.lastResult==="retry" ? "½" : r && r.lastResult==="wrong" ? "✘" : "•";
-    return `<button class="qdot ${i===st.idx?"on":""}" data-goto="${g}" data-n="${i}">第${i+1}題 ${mark}</button>`; }).join("");
+  const list = cardQs(cid, g); const q = list[st.idx]; const c = CARDS.find(x => x.id === cid);
+  if(!q) return `<div class="dq kid ${g}"><p class="q">這關沒有選擇題。</p></div>`;
+  const p = S.cards[cid] || {}; const mc = (p.mc||{});
+  const dots = wild ? `<span class="badge">${team}・${SUBJECTS[c.subject].emoji} ${esc(c.code)}</span>` : list.map((x,i) => { const r = mc[x.id]; const mark = r && r.lastResult==="right" ? "✔" : r && r.lastResult==="retry" ? "½" : r && r.lastResult==="wrong" ? "✘" : "•";
+    return `<button class="qdot ${i===st.idx?"on":""}" data-goto="${g}" data-n="${i}">${i+1} ${mark}</button>`; }).join("");
   const rec = mc[q.id]; const today = twDate();
   const sec = st.done || st.picked.length ? secret(q) : null;
   const opts = st.order.map(i => {
@@ -856,12 +930,11 @@ function kidHTML(c, g){
     const note = st.result==="wrong" && lastWrong!==undefined && sec.w ? sec.w[String(lastWrong)] : "";
     fb = `<div class="ans">${head}${st.msg?`<br>${esc(st.msg)}`:""}<br>✅ 正確答案：<b>${esc(q.o[sec.c])}</b><br>📝 為什麼：${esc(sec.e)}${note?`<br>🔍 你選的那個：${esc(note)}`:""}</div>`;
   }
-  const nextBtn = st.done ? (st.idx < list.length-1
+  const nextBtn = st.done ? (wild ? `<button class="btn ${cls}" data-goto="${g}" data-n="0">➡️ 下一題</button>` : st.idx < list.length-1
       ? `<button class="btn ${cls}" data-goto="${g}" data-n="${st.idx+1}">➡️ 下一題</button>`
       : `<button class="btn ${cls}" data-goto="${g}" data-n="0">🔁 從第 1 題再練（重新洗牌）</button>`) : "";
-  const practice = rec && (rec.starOn === today || rec.seenOn === today) && !st.done ? `<p class="note">📘 ${rec.starOn === today ? "這題今天已經拿過星星" : "這題今天在對戰裡看過答案"}，現在是練習模式（不加星）。</p>` : "";
-  return `<div class="kid ${g}">
-    <span class="badge">${team}</span>
+  const practice = rec && (rec.starOn === today || rec.seenOn === today) && !st.done ? `<p class="note">📘 ${rec.starOn === today ? "這題今天已經拿過星星" : "這題今天在對戰裡看過答案"}，現在是練習模式（不加星，能量 +0.5）。</p>` : "";
+  return `<div class="dq kid ${g}" data-qcard="${cid}">
     <div class="qdots">${dots}</div>
     <p class="q">${esc(q.q)}</p>
     <div class="conf" style="--c:${isG4?"var(--blue)":"var(--red)"}">${st.conf?"我的信心：":"👉 先選信心，才能作答："}${[1,2,3].map(n=>`<button data-conf="${g}" data-n="${n}" class="${st.conf===n?"on":""}" ${st.picked.length?"disabled":""}>${"⭐".repeat(n)}</button>`).join("")}</div>
@@ -873,11 +946,13 @@ function kidHTML(c, g){
 }
 function renderCard(){
   const c = CARDS.find(x => x.id === curId) || CARDS[0];
-  if(!qs.g4 || !qs.g6) qs = {g4:newQ(c.id,"g4",0), g6:newQ(c.id,"g6",0)};
+  if(!qs.g4 || qs.g4.cid !== c.id) qs.g4 = newQ(c.id,"g4",0);
+  if(!qs.g6 || qs.g6.cid !== c.id) qs.g6 = newQ(c.id,"g6",0);
   const n = CARDS.indexOf(c)+1;
   $("card").innerHTML = `<div class="panel on" style="display:block">
     <h2>${SUBJECTS[c.subject].emoji} 第 ${n} 關・${c.code}｜${esc(c.title)} ${reviewDue(c.id)?"⏰":""}</h2>
-    <div class="kids">${ownedKids().map(g => kidHTML(c,g)).join("")}
+    <p class="note">🎮 這一關的選擇題在上面的遊戲機裡作答：答對集能量，打倒搗蛋怪獸！<button class="btn ghost b-blue small" id="toDev">⬆️ 回到遊戲機</button></p>
+    <div class="kids">
       <div class="kid team"><span class="badge">🤝 合體關・${esc(c.kind)}（開放題）</span>
         <p class="q">${esc(c.together)}</p>
         ${rev.at && c.togetherAns?`<div class="ans">✅ 參考答案：${esc(c.togetherAns)}</div>`:""}
@@ -893,20 +968,20 @@ function renderCard(){
     </div></div>`;
   const root = $("card");
   root.querySelectorAll("[data-rev]").forEach(b => b.onclick = () => { rev[b.dataset.rev] = !rev[b.dataset.rev]; renderCard(); });
-  root.querySelectorAll("[data-conf]").forEach(b => b.onclick = () => { qs[b.dataset.conf].conf = Number(b.dataset.n); renderCard(); });
-  root.querySelectorAll("[data-goto]").forEach(b => b.onclick = () => { qs[b.dataset.goto] = newQ(curId, b.dataset.goto, Number(b.dataset.n)); renderCard(); });
-  root.querySelectorAll("[data-pick]").forEach(b => b.onclick = (e) => pick(b.dataset.pick, Number(b.dataset.i), e));
   root.querySelectorAll("[data-team]").forEach(b => b.onclick = (e) => {
     const n = Number(b.dataset.team), m = b.dataset.m, pt = {clientX:e.clientX, clientY:e.clientY};
     requireParent(`合體關 +${n} ⭐：${m}`, () => { markPlayed(curId); award("team", n, m, pt); });
   });
+  if($("toDev")) $("toDev").onclick = () => scrollToDev();
+  for(const g of ownedKids()) renderDev(g);
 }
+function scrollToDev(){ const el = $("tama-" + ownedKids()[0]); if(el && el.scrollIntoView) el.scrollIntoView({behavior:"smooth", block:"start"}); }
 function pick(g, i, ev){
-  const st = qs[g]; if(!st || st.done) return;
+  const st = devQ(g); if(!st || st.done) return; const cid = st.cid;
   if(!st.conf){ toast("👉 先選信心，再作答"); return; }
-  const q = cardQs(curId, g)[st.idx]; if(!q) return;
+  const q = cardQs(cid, g)[st.idx]; if(!q) return;
   const sec = secret(q), today = twDate();
-  const rec = mcRec(curId, q.id); const d = dayRec(today);
+  const rec = mcRec(cid, q.id); const d = dayRec(today);
   const practice = rec.starOn === today || rec.seenOn === today;
   const ok = i === sec.c;
   st.picked.push(i);
@@ -920,19 +995,19 @@ function pick(g, i, ev){
     if(ok) rec.everRight = true;
     if(!practice){
       d[g][st.result] += 1; d[g].actions += 1;
-      const dc = d.cards[curId] || (d.cards[curId] = {});
+      const dc = d.cards[cid] || (d.cards[cid] = {});
       const k = dc[g] || (dc[g] = {right:0, retry:0, wrong:0}); k[st.result] += 1;
     }
     // 過關：這張卡兩個年級的選擇題都至少答對過一次（或其中一個年級全部答對）
-    const p = cardProg(curId);
-    const allRight = (gg) => { const l = cardQs(curId, gg); return l.length && l.every(x => p.mc[x.id] && p.mc[x.id].everRight); };
+    const p = cardProg(cid);
+    const allRight = (gg) => { const l = cardQs(cid, gg); return l.length && l.every(x => p.mc[x.id] && p.mc[x.id].everRight); };
     if(!p.cleared && (allRight("g4") || allRight("g6"))){ p.cleared = true; p.firstClearedOn = today; }
-    markPlayed(curId);
+    markPlayed(cid);
     st.msg = calib(st.conf, st.result);
     if(ok && !practice){
       rec.starOn = today;
       const n = st.result === "right" ? 1 : 0.5;
-      award(g, n, st.result === "right" ? HAPPY[Math.floor(Math.random()*HAPPY.length)] : "第二次就答對，好厲害！👍", ev);
+      award(g, n, st.result === "right" ? HAPPY[Math.floor(Math.random()*HAPPY.length)] : "第二次就答對，好厲害！👍", ev, cid);
     }else{
       persist();
       if(ok){ petFx(g,"happy","答對了！（練習模式）"); confetti(40, ev); setMsg("答對了！今天這題已經拿過星星，明天再來複習會更牢 🧠"); }
@@ -940,11 +1015,12 @@ function pick(g, i, ev){
       renderAll(false);
     }
   }else{
-    markPlayed(curId); persist();
+    markPlayed(cid); persist();
     const m = CHEER[Math.floor(Math.random()*CHEER.length)];
     petFx(g,"cheer", m); hearts(g); setMsg(`${m} 看看提示，再選一次。`);
     renderAll(false);
   }
+  advAnswer(g, st, practice);
   renderCard();
 }
 function calib(conf, result){
@@ -953,15 +1029,16 @@ function calib(conf, result){
   if(conf === 3 && result === "right") return "🎯 信心和答案都對，真的會了！";
   return "";
 }
-function award(who, n, text, ev){
+function award(who, n, text, ev, cid){
+  cid = cid || curId;
   const before = S.teamStars;
   addStars(who, n);
   const today = twDate(); const d = dayRec(today);
   d[who].stars += n; if(who === "team") d.team.actions += 1;
-  const p = cardProg(curId);
+  const p = cardProg(cid);
   p.stars[who] = (p.stars[who]||0) + n;
-  markPlayed(curId);
-  const card = CARDS.find(c => c.id === curId);
+  markPlayed(cid);
+  const card = CARDS.find(c => c.id === cid);
   if(who === "team"){
     if(cloudOn()){
       for(const g of ownedKids()){ const pt = S.pets[g]; pt.learn = Math.min(100, pt.learn + 8); }
@@ -1042,7 +1119,7 @@ $("randBtn").onclick = () => {
   const due = list.filter(c => reviewDue(c.id));
   const from = due.length && Math.random() < 0.6 ? due : (list.length ? list : pool());
   openCard(from[Math.floor(Math.random()*from.length)].id);
-  $("card").scrollIntoView({behavior:"smooth",block:"start"});
+  scrollToDev();
 };
 $("flipBtn").onclick = () => {
   let n = Math.floor(Math.random()*FLIPS.length); if(n === flipIdx) n = (n+1)%FLIPS.length; flipIdx = n;
@@ -1194,7 +1271,7 @@ const ICONS = [{id:"feed",e:"🍙",t:"餵食"},{id:"play",e:"🎾",t:"玩耍"},{
 const OTHER = {g4:"g6", g6:"g4"};
 const KIDLBL = {g4:"小四", g6:"小六"};
 const PLAY_PER_DAY = 3;
-const TAMA = {g4:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0}, g6:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0}};
+const TAMA = {g4:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0, view:"quest"}, g6:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0, view:"quest"}};
 
 function branchOf(pt){
   const e = Object.entries(pt.subjectXP||{}).sort((a,b) => b[1]-a[1])[0];
@@ -1298,7 +1375,7 @@ function gift(g){
   TAMA[g].sub = null; renderPets();
 }
 function activate(g, i){
-  const id = ICONS[i].id, T = TAMA[g]; T.sel = i;
+  const id = ICONS[i].id, T = TAMA[g]; T.sel = i; T.view = "pet";
   if(!needPet(g) && id !== "gift" && id !== "status") return;
   if(id === "feed"){ T.sub = "feed"; T.subSel = Math.min(T.subSel, FOODS.length-1); }
   else if(id === "play") { T.sub = null; play(g); }
@@ -1310,6 +1387,8 @@ function activate(g, i){
 }
 function abc(g, key){
   const T = TAMA[g], pt = S.pets[g];
+  if(key === "C" && T.view === "pet" && !T.sub){ setView(g, "quest"); return; }
+  if(key !== "C" && T.view !== "pet"){ T.view = "pet"; }
   if(key === "A"){ if(T.sub === "feed") T.subSel = (T.subSel + 1) % FOODS.length; else { T.sub = null; T.sel = (T.sel + 1) % ICONS.length; } renderPets(); return; }
   if(key === "B"){
     if(!pt.species){ openAdopt(g); return; }
@@ -1352,15 +1431,16 @@ function deviceHTML(g){
     <div class="egg">
       <button class="knob" data-knob="${g}" aria-label="旋鈕：打招呼"></button>
       <div class="tag" id="tag-${g}"></div>
+      <div class="vtabs" id="vtabs-${g}">${VIEWS.map(([v,e,t]) => `<button data-view="${v}" data-g="${g}">${e} ${t}</button>`).join("")}</div>
       <div class="bezel">
         <div class="icons" id="iconsTop-${g}">${ic(0,3)}</div>
         <canvas class="lcd" id="lcd-${g}" aria-label="${KIDLBL[g]}的寵物"></canvas>
         <div class="icons" id="iconsBot-${g}">${ic(3,6)}</div>
       </div>
+      <div class="tmsg" id="tmsg-${g}"></div>
+      <div class="dscreen" id="dscr-${g}"></div>
       <div class="abc"><button data-abc="A" data-g="${g}">A<span class="lbl">選單</span></button><button data-abc="B" data-g="${g}">B<span class="lbl">確認</span></button><button data-abc="C" data-g="${g}">C<span class="lbl">取消</span></button></div>
     </div>
-    <div class="tmsg" id="tmsg-${g}"></div>
-    <div class="tpanel" id="tpanel-${g}"></div>
   </div>`;
 }
 function meter(label, v, color){ return `<div class="meter"><span>${label}</span><div class="bar"><i style="width:${Math.max(4,Math.min(100,v))}%;--mc:${color}"></i></div><b>${Math.round(v)}</b></div>`; }
@@ -1372,36 +1452,39 @@ function panelHTML(g){
   const lo = STAGES[st].min, hi = st < 3 ? STAGES[st+1].min : null;
   const grow = st < 3 ? (pt.xp - lo) / (hi - lo) * 100 : 100;
   let sub = "";
-  if(T.sub === "feed") sub = `<div class="foods">${FOODS.map((f,i) => `<button class="food ${T.subSel===i?"sel":""}" data-food="${i}" data-g="${g}" ${pt.wallet<f.cost?"disabled":""}>${f.emoji} ${f.name} ⭐${f.cost}</button>`).join("")}</div><p class="note">A 換食物・B 餵牠・C 返回。🍎＋1 成長、🍙＋2、🍰＋3 而且超開心</p>`;
+  const ckLeft = cookiesLeft(g);
+  if(T.sub === "feed") sub = `<div class="foods"><button class="food ck" data-ck="${g}" ${ckLeft ? "" : "disabled"}>🍪 每日餅乾 免費（今天剩 ${ckLeft}/${FREE_COOKIES}）</button>${FRUITS.filter(id => invN(g,id) > 0).map(id => `<button class="food" data-eatfruit="${id}" data-g="${g}">${ITEMS[id].e} ${ITEMS[id].n} ×${invN(g,id)}</button>`).join("")}</div><div class="foods">${FOODS.map((f,i) => `<button class="food ${T.subSel===i?"sel":""}" data-food="${i}" data-g="${g}" ${pt.wallet<f.cost?"disabled":""}>${f.emoji} ${f.name} ⭐${f.cost}</button>`).join("")}</div><p class="note">🍪 每天 3 片免費（不會累積）。果實會永久提升能力。A 換食物・B 餵牠・C 返回。🍎＋1 成長、🍙＋2、🍰＋3 而且超開心</p>`;
   else if(T.sub === "gift") sub = `<button class="btn b-pink" data-dogift="${g}" style="margin-top:6px">🎁 送 1 ⭐ 給 ${esc(petLabel(OTHER[g]))}（B）</button><p class="note">互助：對方的寵物成長值 +1、開心 +15。C 返回</p>`;
   else if(T.sub === "status") sub = `<p class="note">📊 狀態畫面，按 C 返回</p>`;
   return `<h4>${sp.emoji} ${esc(pt.name)}・${petStageName(pt)}</h4>
     ${meter("🌱 成長", grow, "linear-gradient(90deg,#FF8FC7,#FFD23F,#3DDC97)")}
     <p class="note" style="margin:0 0 4px">${st<3?`成長值 ${fmt(pt.xp)}，再 ${fmt(hi-pt.xp)} 就進化`:`成長值 ${fmt(pt.xp)}・最強科目分支：${branchOf(pt).title}`}</p>
     ${meter("🍙 飽足", pt.fullness, "#FF9F43")}${meter("💖 開心", pt.happiness, "#FF6FA8")}${meter("📚 學習力", pt.learn, "#6C8CFF")}
-    ${wallet}${pt.poop?`<p class="note">💩 ×${pt.poop}，按 🧽 清潔</p>`:""}${pt.lightsOff?`<p class="note">💤 睡覺中，按 💡 開燈</p>`:""}${sub}`;
+    ${wallet}<p class="note" style="margin:2px 0">🍪 今天免費餅乾 ${ckLeft}/${FREE_COOKIES}　🪙 ${coins(g)}　${(() => { const fb = fruitBoost(g); return ["atk","def","spd"].filter(k => fb[k]).map(k => `${STAT_LBL[k]} 果實 +${fb[k]}`).join("　"); })()}</p>${T.sub ? "" : `<div class="foods"><button class="food ck" data-ck="${g}" ${ckLeft ? "" : "disabled"}>🍪 餵每日餅乾（剩 ${ckLeft}/${FREE_COOKIES}）</button></div>`}${pt.poop?`<p class="note">💩 ×${pt.poop}，按 🧽 清潔</p>`:""}${pt.lightsOff?`<p class="note">💤 睡覺中，按 💡 開燈</p>`:""}${sub}`;
 }
 function renderPets(){
   const box = $("tamas"); if(!box) return;
   if(!$("lcd-g4")){
     box.innerHTML = deviceHTML("g4") + deviceHTML("g6"); setupLcds();
     box.addEventListener("click", (e) => {
-      const b = e.target.closest("button"); if(!b) return;
+      const b = e.target.closest("button"); if(!b || b.disabled) return;
       if(b.dataset.icon) activate(b.dataset.g, Number(b.dataset.icon));
       else if(b.dataset.abc) abc(b.dataset.g, b.dataset.abc);
       else if(b.dataset.knob){ const g = b.dataset.knob; if(S.pets[g].species && !S.pets[g].lightsOff){ petFx(g,"happy","👋 嗨嗨！"); } else if(!S.pets[g].species) openAdopt(g); }
       else if(b.dataset.adopt) openAdopt(b.dataset.adopt);
       else if(b.dataset.food){ TAMA[b.dataset.g].subSel = Number(b.dataset.food); feed(b.dataset.g, Number(b.dataset.food)); }
       else if(b.dataset.dogift) gift(b.dataset.dogift);
+      else devClick(b, e);
     });
   }
   box.className = "tamas role-" + DEV.role;
   for(const g of ["g4","g6"]){
     const pt = S.pets[g], T = TAMA[g];
     $("tama-"+g).classList.toggle("mini", !ownedKids().includes(g));
-    $("tag-"+g).textContent = `${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}・${pt.species ? pt.name : "等待領養"}`;
-    document.querySelectorAll(`#tama-${g} [data-icon]`).forEach(b => b.classList.toggle("sel", Number(b.dataset.icon) === T.sel));
-    $("tpanel-"+g).innerHTML = panelHTML(g);
+    const rcv = pt.giftsReceived + ((pt.inbox||{}).count||0);
+    $("tag-"+g).textContent = `${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}・${pt.species ? pt.name : "等待領養"}　⭐ ${fmt(pt.wallet)}　🪙 ${coins(g)}${rcv ? `　💌 收到 ${rcv}` : ""}`;
+    document.querySelectorAll(`#tama-${g} [data-icon]`).forEach(b => b.classList.toggle("sel", T.view === "pet" && Number(b.dataset.icon) === T.sel));
+    renderDev(g);
   }
   const si = streakInfo();
   $("hud").innerHTML = `<span class="chip"><span class="flame ${si.current?"":"off"}">🔥</span> 連續 ${si.current} 天・${si.playedToday?"今天已打卡 ✔":"今天還沒玩"}</span><span class="chip">🤝 互助 <b id="helpN">${S.help.count}</b> 次</span><span class="chip">⭐ 全隊 ${fmt(S.teamStars)}</span><span class="chip" id="syncChip">${SYNC_TEXT[SYNC.status]||""}</span><span class="chip">📱 這台：${DEV.role==="g4"?"🔵 小四":DEV.role==="g6"?"🔴 小六":"👫 共用"}</span>`;
@@ -1412,7 +1495,7 @@ const GRID = 32, CELLPX = 6, LCDW = GRID * CELLPX;
 const lcdCtx = {};
 function setupLcds(){
   const dpr = Math.min(window.devicePixelRatio||1, 2);
-  for(const g of ["g4","g6"]){ const c = $("lcd-"+g); c.width = LCDW*dpr; c.height = LCDW*dpr; const x = c.getContext("2d"); x.setTransform(dpr,0,0,dpr,0,0); x.imageSmoothingEnabled = false; lcdCtx[g] = x; }
+  for(const g of ["g4","g6"]){ const c = $("lcd-"+g); c.width = LCDW*2*dpr; c.height = LCDW*dpr; const x = c.getContext("2d"); x.setTransform(dpr,0,0,dpr,0,0); x.imageSmoothingEnabled = false; lcdCtx[g] = x; }
 }
 function px(ctx,x,y,c){ ctx.fillStyle = c; ctx.fillRect(Math.round(x)*CELLPX, Math.round(y)*CELLPX, CELLPX, CELLPX); }
 function pat(ctx, rows, x, y, colors, cut){
@@ -1469,7 +1552,11 @@ function drawSprite(ctx, spr, dx, dy, override){ for(const [x,y,c] of spr.cells)
 const FOOD_PAT = {
   apple:  {rows:["  G  "," RRR ","RRRRR","RRRRR"," RRR "], colors:{R:"#FF4B55",G:"#3DBE7A"}},
   onigiri:{rows:["  W  "," WWW ","WWWWW","WNNNW"," NNN "], colors:{W:"#FFFFFF",N:"#2F3A3A"}},
-  cake:   {rows:["  R  ","PPPPP","WWWWW","PPPPP","PPPPP"], colors:{R:"#FF4B55",P:"#FFB3D1",W:"#FFF6DC"}}
+  cake:   {rows:["  R  ","PPPPP","WWWWW","PPPPP","PPPPP"], colors:{R:"#FF4B55",P:"#FFB3D1",W:"#FFF6DC"}},
+  cookie: {rows:[" CCC ","CDCCC","CCCDC","CDCCC"," CCC "], colors:{C:"#E0A458",D:"#6B3E1F"}},
+  fAtk:   {rows:["  G  "," RRR ","RYRYR","RRRRR"," RRR "], colors:{R:"#FF4B55",Y:"#FFE36E",G:"#3DBE7A"}},
+  fDef:   {rows:[" BBB ","BBBBB","BWWWB","BBBBB"," BBB "], colors:{B:"#8D6E63",W:"#FFFFFF"}},
+  fSpd:   {rows:["  G  "," YYY ","YYYYY","YYYYY"," YYY "], colors:{Y:"#FFE14D",G:"#3DBE7A"}}
 };
 const POOP = {rows:["  B ", " BB ", "BBBB", "BBBB"], colors:{B:"#A0673A"}};
 const HEART = {rows:[" X X ","XXXXX"," XXX ","  X  "], colors:{X:"#FF6FA8"}};
@@ -1489,16 +1576,27 @@ function drawStatus(ctx, pt, dark){
   ctx.fillStyle = dark ? "#FFFFFF" : INK; ctx.font = "700 13px " + getComputedStyle(document.body).fontFamily;
   ctx.fillText(`⭐ ${fmt(pt.wallet)}　成長 ${fmt(pt.xp)}`, 10, 168);
 }
+function lcdBg(ctx, g, dark, t){
+  const bg = ctx.createLinearGradient(0,0,0,LCDW);
+  if(dark){ bg.addColorStop(0,"#1F2150"); bg.addColorStop(1,"#3A2E6A"); } else { bg.addColorStop(0, g==="g4" ? "#E3F3FF" : "#FBE8FF"); bg.addColorStop(1,"#F4FFF4"); }
+  ctx.fillStyle = bg; ctx.fillRect(0,0,LCDW*2,LCDW);
+  for(const ox of [0, 32]) LCD_STARS.forEach(([x,y],i) => { const on = still || ((Math.floor(t*2.2) + i + ox) % 3 !== 0); if(on){ const c = dark ? "#FFE36E" : (i%2 ? "#C9B6FF" : "#FFC7E0"); px(ctx,x+ox,y,c); if(dark && i%3===0){ px(ctx,x+ox-1,y,c); px(ctx,x+ox+1,y,c); px(ctx,x+ox,y-1,c); px(ctx,x+ox,y+1,c); } } });
+  for(let x=0; x<GRID*2; x++){ px(ctx, x, 28, dark ? "#4A4C8C" : "#BDEBC8"); for(let y=29; y<GRID; y++) px(ctx, x, y, dark ? "#35376E" : ((x+y)%2 ? "#D7F5DE" : "#CDEFD6")); }
+}
 function drawLcd(g, now){
   const ctx = lcdCtx[g]; if(!ctx) return;
   const pt = S.pets[g], T = TAMA[g], t = now/1000;
+  const Q = pt.species && isOwned(g) ? (T.view === "quest" ? QST[g] : T.view === "wild" ? WST[g] : null) : null;
+  if(Q){ lcdBg(ctx, g, false, t); drawFight(ctx, g, Q, now, t); }
+  else { lcdBg(ctx, g, pt.lightsOff, t); ctx.save(); ctx.translate(16*CELLPX, 0); drawHome(ctx, g, now); ctx.restore(); }
+  const P = T.statPop;
+  if(P && now - P.at < 2600){ const k = (now - P.at) / 2600; ctx.font = "900 18px " + lcdFont(); ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    const w = ctx.measureText(P.text).width + 24, y = 150 - k*30; lcdLabel(ctx, LCDW - w/2, y - 15, w, 30); ctx.fillStyle = "#E8475F"; ctx.fillText(P.text, LCDW, y); }
+}
+function drawHome(ctx, g, now){
+  const pt = S.pets[g], T = TAMA[g], t = now/1000;
   const sp = pt.species ? SPECIES[pt.species] : {ear:"none", body:"#CFC6E0", belly:"#FFFFFF"};
   const dark = pt.lightsOff;
-  const bg = ctx.createLinearGradient(0,0,0,LCDW);
-  if(dark){ bg.addColorStop(0,"#1F2150"); bg.addColorStop(1,"#3A2E6A"); } else { bg.addColorStop(0, g==="g4" ? "#E3F3FF" : "#FBE8FF"); bg.addColorStop(1,"#F4FFF4"); }
-  ctx.fillStyle = bg; ctx.fillRect(0,0,LCDW,LCDW);
-  LCD_STARS.forEach(([x,y],i) => { const on = still || ((Math.floor(t*2.2) + i) % 3 !== 0); if(on){ const c = dark ? "#FFE36E" : (i%2 ? "#C9B6FF" : "#FFC7E0"); px(ctx,x,y,c); if(dark && i%3===0){ px(ctx,x-1,y,c); px(ctx,x+1,y,c); px(ctx,x,y-1,c); px(ctx,x,y+1,c); } } });
-  for(let x=0; x<GRID; x++){ px(ctx, x, 28, dark ? "#4A4C8C" : "#BDEBC8"); for(let y=29; y<GRID; y++) px(ctx, x, y, dark ? "#35376E" : ((x+y)%2 ? "#D7F5DE" : "#CDEFD6")); }
   if(T.sub === "status"){ drawStatus(ctx, pt, dark); return; }
   const stage = pt.species ? stageOf(pt.xp) : 0;
   const fx = T.fx && now - T.fx.at < 1800 ? T.fx : null;
@@ -1518,16 +1616,16 @@ function drawLcd(g, now){
     if(A.kind === "hatch"){
       if(e < 1.3){ const egg = sprite(sp, 0, "idle", false, null); const w = Math.floor(e*14) % 2 ? 1 : -1; drawSprite(ctx, egg, w, 0);
         const crack = [[13,17],[14,16],[15,17],[16,16],[17,17],[18,16],[19,17]]; crack.slice(0, Math.ceil(e/1.3*crack.length)).forEach(([x,y]) => px(ctx, x+w, y, INK)); }
-      else if(e < 1.6){ ctx.fillStyle = "#FFFFFF"; ctx.fillRect(0,0,LCDW,LCDW); }
+      else if(e < 1.6){ ctx.fillStyle = "#FFFFFF"; ctx.fillRect(-16*CELLPX,0,LCDW*2,LCDW); }
       else { drawSprite(ctx, sprite(sp, A.to, "happy", false, A.to===3?acc:null), 0, -Math.round(Math.abs(Math.sin(e*8))*3)); if(Math.random() < .3) sparkle(g, 1); }
     }else{
-      if(e < 1.8){ ctx.fillStyle = Math.floor(e/.15) % 2 ? "#FFF6A8" : "#FFFFFF"; ctx.fillRect(0,0,LCDW,LCDW*0.93);
+      if(e < 1.8){ ctx.fillStyle = Math.floor(e/.15) % 2 ? "#FFF6A8" : "#FFFFFF"; ctx.fillRect(-16*CELLPX,0,LCDW*2,LCDW*0.93);
         const which = Math.floor(e/.15) % 2 ? A.to : A.from; drawSprite(ctx, sprite(sp, which, "idle", false, null), 0, 0, Math.floor(e/.3) % 2 ? INK : "#B39BFF"); }
       else { drawSprite(ctx, sprite(sp, A.to, "evolve", false, acc), 0, -Math.round(Math.abs(Math.sin(e*8))*3)); if(Math.random() < .3) sparkle(g, 1); }
     }
   }else{
     if(A) T.anim = null;
-    drawSprite(ctx, sprite(sp, stage, stage===0 ? "idle" : mood, blink, acc), dx, dy);
+    { const ps = sprite(sp, stage, stage===0 ? "idle" : mood, blink, acc); drawSprite(ctx, ps, dx, dy); if(stage > 0) drawEquip(ctx, g, ps.top, dx, dy); }
     if(!pt.species){ ctx.fillStyle = INK; ctx.font = "900 22px " + getComputedStyle(document.body).fontFamily; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("?", LCDW/2 + dx*CELLPX, 112);
       ctx.font = "800 13px " + getComputedStyle(document.body).fontFamily; ctx.fillText("按 B 領養", LCDW/2, 14); }
   }
@@ -1624,8 +1722,15 @@ function kidSection(g){
     const cs = {}; for(const [id,v] of Object.entries(r.cards||{})) if(v && v[g]) cs[id] = v[g];
     daily[d] = {k:r[g]||{}, cards:cs, pets:(r.pets||{})[g]||{}};
   }
-  return { pet:{xpC:pt.xpC||{}, earnC:pt.earnC||{}, spendC:pt.spendC||{}, state:petState(pt), stateT:pt.stateT||0, fedCount:pt.fedCount||0, giftsGiven:pt.giftsGiven||0, giftsReceived:pt.giftsReceived||0, subjectXP:pt.subjectXP||{}},
+  return { pet:{xpC:pt.xpC||{}, earnC:pt.earnC||{}, spendC:pt.spendC||{}, state:petState(pt), stateT:pt.stateT||0, fedCount:pt.fedCount||0, giftsGiven:pt.giftsGiven||0, giftsReceived:pt.giftsReceived||0, subjectXP:pt.subjectXP||{}, adv:advWire(pt.adv)},
            stars:S.kidStars[g]||0, cards, daily, playDates:S.playDates||[], battle:btRec(g) };
+}
+function advWire(a){ a = isObj(a) ? a : {}; const o = {}; for(const k of ADV_KEYS) o[k] = isObj(a[k]) ? a[k] : {}; o.equip = isObj(a.equip) ? {id:a.equip.id || null, t:Number(a.equip.t)||0} : {id:null, t:0}; return o; }
+function mergeNested(a, b){ const o = Object.assign({}, a||{}); for(const k in (b||{})) o[k] = mergeCounter(o[k], b[k]); return o; }
+function mergeAdv(a, b){
+  a = advWire(a); if(!isObj(b)) return a; b = advWire(b); const o = {};
+  for(const k of ADV_KEYS) o[k] = ADV_NESTED.includes(k) ? mergeNested(a[k], b[k]) : mergeCounter(a[k], b[k]);
+  o.equip = (b.equip.t || 0) > (a.equip.t || 0) ? b.equip : a.equip; return o;
 }
 function mergeKid(a, b){
   if(!b) return a;
@@ -1648,12 +1753,13 @@ function mergeKid(a, b){
   if(state && other && !state.species && other.species){ state = Object.assign({}, state); for(const k of ["species","name","adoptedOn","stageSeen","inheritedXp"]) state[k] = other[k]; }
   return { pet:{ xpC:mergeCounter(pa.xpC,pb.xpC), earnC:mergeCounter(pa.earnC,pb.earnC), spendC:mergeCounter(pa.spendC,pb.spendC),
                  state, stateT: Math.max(pa.stateT||0, pb.stateT||0), fedCount:maxN(pa.fedCount,pb.fedCount),
-                 giftsGiven:maxN(pa.giftsGiven,pb.giftsGiven), giftsReceived:maxN(pa.giftsReceived,pb.giftsReceived), subjectXP:mergeCounter(pa.subjectXP,pb.subjectXP) },
+                 giftsGiven:maxN(pa.giftsGiven,pb.giftsGiven), giftsReceived:maxN(pa.giftsReceived,pb.giftsReceived), subjectXP:mergeCounter(pa.subjectXP,pb.subjectXP), adv:mergeAdv(pa.adv, pb.adv) },
            stars:maxN(a.stars,b.stars), cards, daily, playDates:union(a.playDates,b.playDates), battle:mergeBattle(a.battle, b.battle) };
 }
 function importKid(g, sec){
   const pt = S.pets[g], p = sec.pet;
   pt.xpC = p.xpC; pt.earnC = p.earnC; pt.spendC = p.spendC; pt.fedCount = p.fedCount; pt.giftsGiven = p.giftsGiven; pt.giftsReceived = p.giftsReceived; pt.subjectXP = p.subjectXP;
+  if(p.adv) pt.adv = JSON.parse(JSON.stringify(p.adv));
   if(p.state){ for(const k of PET_STATE_KEYS) if(p.state[k] !== null && p.state[k] !== undefined) pt[k] = p.state[k]; }
   pt.stateT = p.stateT || 0;
   S.kidStars[g] = sec.stars;
@@ -1757,10 +1863,12 @@ function onKidSnap(g, snap){
   // 收到的禮物／合體加成（只用 increment 寫入，不會被覆蓋或重複）
   const inbox = (d && d.inbox) || {xp:0, happy:0, count:0};
   const prev = SYNC.lastInbox[g];
-  S.pets[g].inbox = {xp:inbox.xp||0, happy:inbox.happy||0, count:inbox.count||0};
+  const items = {}; for(const [k,v] of Object.entries(isObj(inbox.items) ? inbox.items : {})) if(ITEMS[k] && Number(v) > 0) items[k] = Number(v);
+  S.pets[g].inbox = {xp:inbox.xp||0, happy:inbox.happy||0, count:inbox.count||0, items};
   if(owned){ const delta = (inbox.happy||0) - (S.pets[g].inboxApplied||0); if(delta > 0){ S.pets[g].happiness = Math.min(100, S.pets[g].happiness + delta); S.pets[g].inboxApplied = inbox.happy; } }
-  if(prev && (inbox.count||0) > prev.count){ petFx(g, "happy", "💌 收到禮物！成長值 +" + ((inbox.xp||0) - prev.xp)); hearts(g); setTimeout(() => checkEvolve(g), 800); }
-  SYNC.lastInbox[g] = {count:inbox.count||0, xp:inbox.xp||0};
+  if(prev && (inbox.count||0) > prev.count){ const got = Object.keys(items).filter(k => items[k] > ((prev.items||{})[k]||0)).map(k => ITEMS[k].e).join("");
+    petFx(g, "happy", `💌 收到禮物！${got}${(inbox.xp||0) > prev.xp ? " 成長值 +" + ((inbox.xp||0) - prev.xp) : ""}`); hearts(g); setTimeout(() => checkEvolve(g), 800); }
+  SYNC.lastInbox[g] = {count:inbox.count||0, xp:inbox.xp||0, items};
   recalcAll();
   saveLocalOnly();
   const needPush = (!snap.metadata.fromCache || SYNC.first[g]) && (owned || SYNC.first[g]) && canon(merged) !== canon(stripRemoteKid(d) || {});
@@ -1952,9 +2060,12 @@ function petStats(g){
   const pt = S.pets[g], st = pt.species ? stageOf(pt.xp) : 0, L = learnStats(g), streak = Math.min(10, streakInfo().current);
   const care = Math.min(12, Math.floor((pt.fedCount||0)/2) + Math.floor((pt.happiness||0)/25) + Math.floor((pt.fullness||0)/50));
   const attr = primaryAttr(g), subj = subjOfAttr(attr), best = subj ? (L.sub[subj]||0) : 0;
-  return {g, stage:st, attr, total:L.total, ever:L.ever, streak, care,
+  const o = {g, stage:st, attr, total:L.total, ever:L.ever, streak, care,
     hp: 60 + st*20 + L.total*3, atk: 12 + st*4 + Math.round(L.total*0.6) + best*2,
     def: 10 + st*4 + care + L.ever, spd: 8 + st*3 + streak*2 + Math.round((pt.happiness||0)/20)};
+  const fb = fruitBoost(g), eq = equipOf(g), eqi = eq ? ITEMS[eq] : null;
+  for(const k of ["atk","def","spd"]) o[k] += fb[k] + (eqi && eqi.stat === k ? eqi.plus : 0);
+  o.fruit = fb; o.equip = eq; return o;
 }
 const canBattle = (g) => !!S.pets[g].species && stageOf(S.pets[g].xp) >= 2;
 function skillList(g){
@@ -2064,7 +2175,7 @@ function dexState(g, id){ const L = logList(g).filter(e => e.foe === id); return
 function fighterSprite(u, mood){
   if(u.sp && SPECIES[u.sp]) return {spr: sprite(SPECIES[u.sp], Math.max(1,u.stage), mood, false, u.acc), deco:null};
   const m = MON[u.mon] || {body:"#CFC6E0", belly:"#FFFFFF", attr:"normal"};
-  return {spr: sprite({ear:"none", body:m.body, belly:m.belly}, u.stage||2, mood, false, u.acc), deco: MON_DECO[u.mon === RAID_ID ? "normal" : m.attr], deco2: u.mon === RAID_ID ? MON_DECO[u.attr] : null};
+  return {spr: sprite({ear:m.ear||"none", body:m.body, belly:m.belly}, u.stage||2, mood, false, u.acc), deco: MON_DECO[u.mon === RAID_ID ? "normal" : m.attr], deco2: u.mon === RAID_ID ? MON_DECO[u.attr] : null};
 }
 function drawFighter(canvas, u, mood, mirror){
   const dpr = Math.min(window.devicePixelRatio||1, 2); if(canvas.width !== LCDW*dpr){ canvas.width = LCDW*dpr; canvas.height = LCDW*dpr; }
@@ -2074,7 +2185,7 @@ function drawFighter(canvas, u, mood, mirror){
   for(const d of [f.deco, f.deco2]) if(d){ const w = d.rows[0].length; pat(ctx, d.rows, 16 - Math.floor(w/2), Math.max(0, f.spr.top - d.rows.length - (u.acc ? 3 : 0) + (d === f.deco2 ? -3 : 0)), d.colors); }
 }
 function drawThumb(canvas, monId, hidden){
-  const m = MON[monId]; const u = {mon:monId, stage: m.kind === "wild" ? 2 : 3, acc: m.kind === "wild" ? null : "#FFD23F", attr:m.attr};
+  const m = MON[monId]; const plain = m.kind === "wild" || m.kind === "catch"; const u = {mon:monId, stage: plain ? 2 : 3, acc: plain ? null : "#FFD23F", attr:m.attr};
   drawFighter(canvas, u, "idle", false);
   if(hidden){ const ctx = canvas.getContext("2d"); ctx.globalCompositeOperation = "source-atop"; ctx.fillStyle = "#3A2E4A"; ctx.fillRect(0,0,LCDW,LCDW); ctx.globalCompositeOperation = "source-over"; }
 }
@@ -2094,7 +2205,7 @@ function kidBattleCard(g){
   const skills = sk.map(x => `<span class="skill ${x.unlocked?"":"off"}" title="${esc(x.need)}">${attrOf(x.attr).e} ${esc(x.name)}${x.unlocked?"":` <small>🔒${esc(x.need)}</small>`}</span>`).join("");
   return `<div class="kid ${cls}"><span class="badge">${g==="g4"?"🔵":"🔴"} ${KIDLBL[g]}・${esc(petLabel(g))}（${esc(petStageName(pt))}）${attrTag(s.attr)}</span>
     ${statRow("❤️ 體力", s.hp, 260, "#FF6FA8")}${statRow("⚔️ 攻擊", s.atk, 80, "#FF8A3D")}${statRow("🛡️ 防禦", s.def, 70, "#3DA5FF")}${statRow("💨 速度", s.spd, 60, "#3DDC97")}
-    <p class="note">能力值從學習來：答對 ${s.total} 題次（每題最多算 3 次）、會的題目 ${s.ever} 題、連續 ${s.streak} 天、照顧 ${s.care} 分。輸了不會扣任何能力值。</p>
+    <p class="note">能力值從學習來：答對 ${s.total} 題次（每題最多算 3 次）、會的題目 ${s.ever} 題、連續 ${s.streak} 天、照顧 ${s.care} 分。${["atk","def","spd"].some(k => s.fruit[k]) ? `果實加成：${["atk","def","spd"].filter(k => s.fruit[k]).map(k => `${STAT_LBL[k]} +${s.fruit[k]}`).join("、")}。` : ""}${s.equip ? `裝備 ${ITEMS[s.equip].e}${ITEMS[s.equip].n}。` : ""}輸了不會扣任何能力值。</p>
     <details><summary>🎯 技能（${sk.filter(x=>x.unlocked).length}/${sk.length}）</summary><div class="skills">${skills}</div></details>
     <p style="margin:8px 0;font-weight:700">🎒 背包：🍪 ${bg.cookie}　🍬 ${bg.candy}
       ${ownedKids().includes(g) && bg.cookie ? `<button class="btn b-yellow small" data-eat="cookie" data-g="${g}">餵 🍪</button>` : ""}
@@ -2108,6 +2219,7 @@ function dexHTML(g){
   const got = ids.filter(id => dexState(g,id) === "win").length;
   return `<div class="kid ${g}"><span class="badge">📖 ${KIDLBL[g]}的圖鑑 ${got}/${ids.length}</span><div class="dex">${ids.map(id => { const st = dexState(g,id), m = MON[id];
     return `<div class="dexi ${st}"><canvas data-thumb="${id}" data-hide="${st==="none"?1:0}"></canvas><small>${st==="none" ? "？？？" : esc(m.name)}</small>${st!=="none"?attrTag(m.attr):""}${st==="win"?"<b>✔</b>":""}</div>`; }).join("")}</div>
+    <h3>🌿 抓到的夥伴 ${CATCH.filter(m => caughtN(g, m.id) > 0).length}/${CATCH.length}</h3><div class="dex">${CATCH.filter(m => caughtN(g, m.id) > 0).map(m => `<div class="dexi win"><canvas data-thumb="${m.id}" data-hide="0"></canvas><small>${esc(m.name)}</small>${attrTag(m.attr)}</div>`).join("") || '<p class="note">還沒有。到遊戲機的「🌿 抓怪」用精靈球抓！</p>'}</div>
     <h3>🏅 徽章</h3><div class="badges">${(() => { const have = badgeSet(g); return BADGES.map(b => `<span class="bdg ${have.has(b.id)?"on":""}" title="${esc(b.t)}">${b.e} ${esc(b.n)}</span>`).join(""); })()}</div></div>`;
 }
 function renderBattle(){
@@ -2164,12 +2276,12 @@ function buildArena(){
       <div class="fname">${unitLabel(bt,k)} <span id="fattr-${k}">${attrTag(bt.units[k].attr)}</span></div>
       <div class="hpbar"><i id="hp-${k}"></i></div><div class="hpn" id="hpn-${k}"></div>
       <div class="fcv"><canvas id="cv-${k}" data-mirror="${mirror?1:0}"></canvas></div></div>`;
-  $("battleBox").innerHTML = `<div class="arena" id="arena">
+  $("battleBox").innerHTML = `<div class="bigdev"><div class="arena" id="arena">
       <div class="atop"><b>${bt.mode==="wild"?"🌲 野生怪獸":bt.mode==="boss"?"👑 關主挑戰":bt.mode==="pvp"?(bt.remote?"📡 跨平板友誼賽":"🤜 兄姊友誼賽"):"🛡️ 合體討伐"}</b><span id="turnInfo"></span></div>
       <div class="fighters"><div class="side">${left.map(k => fighter(k,false)).join("")}</div><div class="vs">VS</div><div class="side">${right.map(k => fighter(k,true)).join("")}</div></div>
       <div class="fxlayer" id="fxlayer"></div>
     </div>
-    <div id="btAct"></div>`;
+    <div id="btAct" class="dscreen"></div></div>`;
   BTV.built = bt.id;
   keys.forEach(k => drawUnit(k, "idle"));
 }
@@ -2434,6 +2546,426 @@ async function remoteEnd(why){
 function remoteAbandon(){ const d = BTS.doc; if(d && d.state === "live" && d.turn !== DEV.role && fresh(d, 120000)){ toast("對方還在作答，等 2 分鐘沒動作才能結束"); return; } remoteEnd("x"); }
 function renderBattleIfVisible(){ const p = $("p-battle"); if(p && p.classList.contains("on") && !BT) renderBattle(); }
 
+/* =========================================================
+   v6：題目在遊戲機裡 ＋ 搗蛋怪獸 ＋ 能量招式 ＋ 掉寶 ＋ 商店 ＋ 精靈球抓怪 ＋ 果實強化
+   ========================================================= */
+const ENERGY_MAX = 2;            // 答對 2 題（第一次就對）＝能量滿
+const FRUIT_CAP = 10;            // 每種能力最多被果實 +10
+const LOOT_PER_DAY = 6;          // 每天前 6 隻有金幣、寶物
+const MON_XP_PER_DAY = 8;        // 每天從怪獸拿到的經驗值上限
+const FREE_COOKIES = 3;          // 每天 3 片免費餅乾
+const STAT_LBL = {atk:"⚔️ 攻擊", def:"🛡️ 防禦", spd:"💨 速度", catch:"🍀 抓怪機率"};
+const ITEMS = {
+  coin:   {e:"🪙", n:"金幣", kind:"coin"},
+  ball1:  {e:"⭐", n:"星星球", kind:"ball", price:20, rate:.35, d:"基本款，削弱後再丟最划算"},
+  ball2:  {e:"🌙", n:"月亮球", kind:"ball", price:45, rate:.55, d:"比較容易抓到"},
+  ball3:  {e:"🌈", n:"彩虹球", kind:"ball", price:90, rate:.80, d:"最高級，稀有夥伴也抓得到"},
+  fAtk:   {e:"🍓", n:"力量果", kind:"fruit", stat:"atk", price:30, d:"吃了攻擊永久 +1"},
+  fDef:   {e:"🥥", n:"堅硬果", kind:"fruit", stat:"def", price:30, d:"吃了防禦永久 +1"},
+  fSpd:   {e:"🍋", n:"疾風果", kind:"fruit", stat:"spd", price:30, d:"吃了速度永久 +1（速度快的先出手）"},
+  gift:   {e:"🎁", n:"禮物盒", kind:"gift", d:"只能送給兄弟姊妹的寵物：成長值 +1、開心 +15、🪙5"},
+  eqSword:{e:"🗡️", n:"勇氣劍", kind:"equip", stat:"atk", plus:3, d:"裝備時攻擊 +3"},
+  eqHat:  {e:"🎩", n:"星星帽", kind:"equip", stat:"def", plus:3, d:"裝備時防禦 +3"},
+  eqScarf:{e:"🧣", n:"彩虹圍巾", kind:"equip", stat:"spd", plus:3, d:"裝備時速度 +3"},
+  eqBell: {e:"🔔", n:"幸運鈴", kind:"equip", stat:"catch", plus:10, d:"裝備時抓怪機率 +10%"}
+};
+const FRUITS = ["fAtk","fDef","fSpd"], BALLS = ["ball1","ball2","ball3"], EQUIPS = ["eqSword","eqHat","eqScarf","eqBell"];
+const CATCH = [
+  {id:"c-zap1",  name:"閃閃鼠",   attr:"thunder", rare:1, ear:"bear",  body:"#FFE36E", belly:"#FFF6C2"},
+  {id:"c-zap2",  name:"雷雲羊",   attr:"thunder", rare:2, ear:"cat",   body:"#FFF3A0", belly:"#FFFFFF"},
+  {id:"c-zap3",  name:"雷光龍",   attr:"thunder", rare:3, ear:"dino",  body:"#F7C948", belly:"#FFF1B8"},
+  {id:"c-leaf1", name:"芽芽兔",   attr:"grass",   rare:1, ear:"bunny", body:"#A8E6A1", belly:"#EFFBEA"},
+  {id:"c-leaf2", name:"花冠鹿",   attr:"grass",   rare:2, ear:"cat",   body:"#7FD49B", belly:"#E0F8E8"},
+  {id:"c-leaf3", name:"森林精靈", attr:"grass",   rare:3, ear:"bunny", body:"#3DBE7A", belly:"#DFF7E5"},
+  {id:"c-rock1", name:"石頭蟹",   attr:"earth",   rare:1, ear:"none",  body:"#C9B79C", belly:"#F3E6D6"},
+  {id:"c-rock2", name:"沙丘狐",   attr:"earth",   rare:2, ear:"cat",   body:"#E0B07A", belly:"#FFF0DC"},
+  {id:"c-rock3", name:"山岳熊",   attr:"earth",   rare:3, ear:"bear",  body:"#A47551", belly:"#E8D3BE"},
+  {id:"c-fire1", name:"小火雞",   attr:"fire",    rare:1, ear:"none",  body:"#FFB27A", belly:"#FFE9D6"},
+  {id:"c-fire2", name:"熔岩貓",   attr:"fire",    rare:2, ear:"cat",   body:"#FF7A59", belly:"#FFD9CC"},
+  {id:"c-fire3", name:"鳳凰雛",   attr:"fire",    rare:3, ear:"dino",  body:"#FF5A5F", belly:"#FFE36E"},
+  {id:"c-wave1", name:"泡泡蛙",   attr:"water",   rare:1, ear:"none",  body:"#9EE0FF", belly:"#E9F8FF"},
+  {id:"c-wave2", name:"浪花海豹", attr:"water",   rare:2, ear:"whale", body:"#7FB8FF", belly:"#E1F2FF"},
+  {id:"c-wave3", name:"星海鯨",   attr:"water",   rare:3, ear:"whale", body:"#5A8CFF", belly:"#D6E6FF"}
+];
+CATCH.forEach(m => MON[m.id] = Object.assign({kind:"catch"}, m));
+const VIEWS = [["quest","⚔️","冒險"],["pet","🏠","寵物"],["shop","🛒","商店"],["bag","🎒","背包"],["wild","🌿","抓怪"],["dex","📖","圖鑑"]];
+const TIER = {gold:{n:"🥇 金牌", xp:3, coin:15}, silver:{n:"🥈 銀牌", xp:2, coin:10}, bronze:{n:"🥉 銅牌", xp:1, coin:6}};
+const ROT = ["fruit","gift","fruit","equip","fruit","ball"];
+const QST = {g4:null, g6:null}, WST = {g4:null, g6:null}, qw = {g4:null, g6:null}, QSEQ = {g4:0, g6:0};
+
+// ---- 資料（都存在 pet.adv 裡，用每台裝置分開的計數器，兩台平板同步也不會算重複）
+function adv(g){ const pt = S.pets[g]; if(!isObj(pt.adv)) pt.adv = ADV0(); const a = pt.adv;
+  for(const k of ADV_KEYS) if(!isObj(a[k])) a[k] = {};
+  if(!isObj(a.equip)) a.equip = {id:null, t:0}; return a; }
+const cntK = (m, k) => sumC((m||{})[k]);
+const sumAll = (m) => { let n = 0; for(const k in (m||{})) n += sumC(m[k]); return n; };
+function bumpK(m, k, n){ if(!isObj(m[k])) m[k] = {}; m[k][DEV.id] = (Number(m[k][DEV.id])||0) + n; }
+function invN(g, id){ const a = adv(g), ib = ((S.pets[g].inbox||{}).items) || {}; return Math.max(0, cntK(a.invG, id) + (Number(ib[id])||0) - cntK(a.invU, id)); }
+function invAdd(g, id, n){ bumpK(adv(g).invG, id, n); }
+function invUse(g, id, n){ if(invN(g, id) < n) return false; bumpK(adv(g).invU, id, n); return true; }
+const coins = (g) => invN(g, "coin");
+function fruitBoost(g){ const a = adv(g), o = {atk:0, def:0, spd:0}; for(const id of FRUITS){ const it = ITEMS[id]; o[it.stat] = Math.min(FRUIT_CAP, o[it.stat] + cntK(a.eatC, id)); } return o; }
+function equipOf(g){ const id = adv(g).equip.id; return id && ITEMS[id] && ITEMS[id].kind === "equip" && invN(g, id) > 0 ? id : null; }
+function cookiesLeft(g){ return Math.max(0, FREE_COOKIES - cntK(adv(g).freeCk, twDate())); }
+function pruneDays(m){ const cut = addDays(twDate(), -21); for(const d of Object.keys(m||{})) if(d < cut) delete m[d]; }
+function caughtN(g, id){ return cntK(adv(g).caughtC, id); }
+const isOwned = (g) => ownedKids().includes(g);
+const curCard = () => CARDS.find(x => x.id === curId) || CARDS[0];
+
+// ---- 每日免費餅乾（不會累積，台灣日期換日就重新有 3 片）
+function eatCookie(g){
+  if(!needPet(g)) return;
+  const pt = S.pets[g];
+  if(pt.lightsOff){ tmsg(g, "💤 燈關著，牠在睡覺～按 💡 開燈"); return; }
+  if(!cookiesLeft(g)){ tmsg(g, "🍪 今天 3 片餅乾吃完了，明天還有！"); return; }
+  const a = adv(g); bumpK(a.freeCk, twDate(), 1); pruneDays(a.freeCk);
+  pt.fullness = Math.min(100, pt.fullness + 20); pt.happiness = Math.min(100, pt.happiness + 8);
+  pt.fedCount += 1; if(pt.fedCount % 3 === 0) pt.poop = Math.min(3, pt.poop + 1);
+  dayRec(twDate()).pets[g].fed += 1; markPlayed(null); persist();
+  petFx(g, "eat", `🍪 好香！飽足 +20、開心 +8（今天還有 ${cookiesLeft(g)}/${FREE_COOKIES} 片）`, {food:"cookie"}); hearts(g);
+  renderPets();
+}
+
+// ---- 搗蛋怪獸（冒險）與野生夥伴（抓怪）
+function newFight(mode, card, mon){ return {mode, card, mon, energy:0, pts:0, n:{right:0, retry:0, wrong:0, prac:0}, phase:"fight", throws:0, anim:null, hpShow:mon.max, last:"", drop:null}; }
+function spawnQuest(g){
+  const c = curCard(), own = ATTR[c.subject].k, n = ++QSEQ[g];
+  const others = ATTR_ORDER.filter(k => BEATS[k] !== own);       // 不出現「剋這個單元」的怪獸
+  const attr = n % 2 ? BEATS[own] : others[(n >> 1) % others.length];
+  const w = WILD.find(m => m.attr === attr), st = Math.max(1, Math.min(3, stageOf(S.pets[g].xp))), max = 50 + st*10;
+  return newFight("quest", c.id, {id:w.id, name:"搗蛋" + w.name, attr, max, hp:max, spd:10 + st*4 + (n % 3)*2, rare:1});
+}
+function questOf(g){
+  const c = curCard(); let Q = QST[g];
+  if(!Q || (Q.card !== c.id && (Q.phase !== "fight" || (Q.energy === 0 && Q.mon.hp === Q.mon.max)))) Q = QST[g] = spawnQuest(g);
+  Q.card = c.id; return Q;
+}
+function spawnWild(g){
+  const r = Math.random(), rare = r < .6 ? 1 : r < .9 ? 2 : 3, list = CATCH.filter(m => m.rare === rare);
+  const m = list[Math.floor(Math.random()*list.length)], max = 40 + rare*15;
+  return newFight("wild", null, {id:m.id, name:m.name, attr:m.attr, max, hp:max, spd:10 + rare*5, rare});
+}
+function wildOf(g){ if(!WST[g] || WST[g].phase === "gone") WST[g] = spawnWild(g); return WST[g]; }
+function activeAdv(g){ const v = TAMA[g].view; return v === "wild" ? WST[g] : v === "quest" ? QST[g] : null; }
+// 抓怪時出的題目：所有單元混在一起，6 成機率出「錯過還沒複習」的題目
+function wildQ(g){
+  let pool = CARDS.flatMap(c => cardQs(c.id, g).map((q, i) => [c.id, q, i]));
+  const due = pool.filter(([c, q]) => { const r = S.cards[c] && isObj(S.cards[c].mc) && S.cards[c].mc[q.id]; return r && r.wrongPending; });
+  const src = due.length && Math.random() < .6 ? due : pool; const [cid, , idx] = src[Math.floor(Math.random()*src.length)];
+  return newQ(cid, g, idx);
+}
+function devQ(g){ return TAMA[g].view === "wild" ? (qw[g] || (qw[g] = wildQ(g))) : (qs[g] && qs[g].cid === curId ? qs[g] : (qs[g] = newQ(curId, g, 0))); }
+
+// 答題後：答對集能量；答錯沒有懲罰，只是怪獸做鬼臉，並且看解說
+function advAnswer(g, st, practice){
+  if(!S.pets[g].species) return;
+  const Q = TAMA[g].view === "wild" ? WST[g] : QST[g]; if(!Q || Q.phase !== "fight") return;
+  const now = performance.now();
+  if(!st.done || st.result === "wrong"){ if(st.done) Q.n.wrong++; Q.anim = {kind:"taunt", at:now, dur:1200}; Q.last = `😝 ${Q.mon.name}做鬼臉！沒關係，看懂解說，下一題打回來！`; return; }
+  let e, p;
+  if(practice){ e = .5; p = .5; Q.n.prac++; } else if(st.result === "right"){ e = 1; p = 2; Q.n.right++; } else { e = .5; p = 1; Q.n.retry++; }
+  const before = Q.energy; Q.energy = Math.min(ENERGY_MAX, Q.energy + e); Q.pts += p;
+  Q.anim = {kind:"charge", at:now, dur:900}; Q.last = `⚡ 能量 +${fmt(e)}${practice ? "（練習模式）" : ""}`;
+  if(Q.energy >= ENERGY_MAX && before < ENERGY_MAX){ Q.last = "⚡ 能量滿了！選一招打出去！"; tmsg(g, Q.last); }
+}
+function advMoves(g, Q){
+  const st = stageOf(S.pets[g].xp), out = [];
+  for(const c of CARDS){ const names = SKILLS[c.id]; if(!names) continue; const p = S.cards[c.id];
+    const learned = c.id === Q.card || !!(p && isObj(p.mc) && Object.entries(p.mc).some(([qid, r]) => gradeOfQ(qid) === g && r && r.everRight));
+    if(!learned) continue; const a = ATTR[c.subject].k;
+    out.push({id:c.id+"-0", name:names[0], card:c.id, attr:a, pow:1});
+    if(st >= 3) out.push({id:c.id+"-1", name:names[1], card:c.id, attr:a, pow:1.35}); }
+  const score = (x) => typeMult(x.attr, Q.mon.attr) * x.pow;
+  const cur = out.filter(x => x.card === Q.card), rest = out.filter(x => x.card !== Q.card).sort((a, b) => score(b) - score(a));
+  return [...cur, ...rest.slice(0, 4), Object.assign({}, TACKLE)];
+}
+function advDamage(g, Q, mv){
+  const s = petStats(g), m = typeMult(mv.attr, Q.mon.attr), fast = s.spd >= Q.mon.spd, atkB = Math.min(1, Math.max(0, (s.atk - 12) / 40));
+  return {dmg: Math.max(4, Math.round(26 * mv.pow * m * (1 + atkB) * (fast ? 1.1 : 1))), m, fast};
+}
+function useMove(g, id, ev){
+  const Q = activeAdv(g); if(!Q || Q.phase !== "fight") return false;
+  if(Q.energy < ENERGY_MAX){ tmsg(g, "⚡ 能量還不夠，再答對一題！"); return false; }
+  const mv = advMoves(g, Q).find(x => x.id === id); if(!mv) return false;
+  const pt = S.pets[g]; if(pt.lightsOff){ pt.lightsOff = false; persist(); }
+  const r = advDamage(g, Q, mv); Q.energy = 0;
+  Q.mon.hp = Math.max(Q.mode === "wild" ? 1 : 0, Q.mon.hp - r.dmg);
+  Q.anim = {kind:"move", at:performance.now(), dur:1500, dmg:r.dmg, m:r.m, attr:mv.attr};
+  Q.last = `${attrOf(mv.attr).e} ${mv.name}！造成 ${r.dmg} 點傷害${r.m > 1 ? "・效果絕佳！" : r.m < 1 ? "・效果不太好…" : ""}${r.fast ? "・💨 你比較快 +10%" : ""}`;
+  if(Q.mode === "wild" && Q.mon.hp <= 1) Q.last += "・牠沒力氣了，快丟球！";
+  tmsg(g, Q.last);
+  if(Q.mode === "quest" && Q.mon.hp <= 0){ Q.phase = "ko"; setTimeout(() => questWin(g, Q, ev), still ? 50 : 1300); }
+  renderDev(g); return r;
+}
+// ---- 掉寶：不靠運氣，靠「第一次就答對」。下一個寶物是什麼，畫面上先告訴你
+function lootTier(Q){ if(Q.n.right >= 2 && !Q.n.retry && !Q.n.prac && !Q.n.wrong) return "gold"; return Q.pts >= 3 ? "silver" : "bronze"; }
+function nextItem(g){
+  const a = adv(g), k = sumC(a.itemC), kind = ROT[k % ROT.length];
+  if(kind === "fruit") return FRUITS[(Math.floor(k / 6) * 3 + (k % 6) / 2) % 3];
+  if(kind === "gift") return "gift";
+  if(kind === "ball") return "ball2";
+  return EQUIPS.find(id => invN(g, id) < 1) || "ball2";
+}
+function lootPreview(g){ const a = adv(g), t = twDate(), id = nextItem(g);
+  if(cntK(a.lootC, t) >= LOOT_PER_DAY) return {id:null, text:"今天的寶物都領完了（每天 6 次），明天再來！打怪一樣能練功。"};
+  const it = ITEMS[id]; return {id, text:`${it.e} ${it.n}（🥇 全部第一次就答對：一定掉；🥈：每 2 次掉 1 次）`}; }
+function questWin(g, Q, ev){
+  if(Q.phase !== "ko") return; const a = adv(g), today = twDate(), tier = lootTier(Q), T = TIER[tier], list = [];
+  let note = "";
+  const xpToday = cntK(a.xpDayC, today), xp = Math.max(0, Math.min(T.xp, MON_XP_PER_DAY - xpToday));
+  if(xp > 0){ addXp(g, xp); bumpK(a.xpDayC, today, xp); list.push(`✨ 經驗值 +${xp}`); }
+  else note = "今天從怪獸拿的經驗值滿了（每天 8 點），答題、餵食還是會長大。";
+  if(cntK(a.lootC, today) < LOOT_PER_DAY){
+    bumpK(a.lootC, today, 1); invAdd(g, "coin", T.coin); list.push(`🪙 金幣 +${T.coin}`);
+    let give = tier === "gold";
+    if(tier === "silver"){ give = sumC(a.silverC) % 2 === 1; bump(a.silverC, 1); }
+    if(give){ const id = nextItem(g), it = ITEMS[id]; invAdd(g, id, 1); bump(a.itemC, 1); list.push(`${it.e} ${it.n}`); }
+    else if(tier !== "gold") note = note || (tier === "silver" ? "🥈 下一次銀牌就會掉寶物！全部第一次就答對可以拿 🥇。" : "🥉 先看懂解說再答，第一次就答對會掉更多！");
+  }else note = note || "今天的金幣和寶物領完了（每天 6 次），明天再來！";
+  bumpK(a.defC, today, 1); pruneDays(a.defC); pruneDays(a.lootC); pruneDays(a.xpDayC);
+  Q.phase = "won"; Q.drop = {tier, list, note};
+  const pt = S.pets[g]; pt.happiness = Math.min(100, pt.happiness + 5);
+  persist(); confetti(tier === "gold" ? 160 : 90, ev);
+  tmsg(g, `🏆 打倒 ${Q.mon.name}！${T.n}`); setMsg(`🏆 ${KIDLBL[g]}打倒了${Q.mon.name}！掉下：${list.join("、")}`);
+  setTimeout(() => checkEvolve(g), 900);
+  renderDev(g);
+}
+
+// ---- 精靈球：機率在丟之前就顯示出來；怪獸越虛弱越好抓
+function catchChance(g, Q, ball){ const it = ITEMS[ball], lost = 1 - Q.mon.hp / Q.mon.max, bell = equipOf(g) === "eqBell" ? .10 : 0;
+  return Math.max(.05, Math.min(.95, it.rate * .6 + lost * .45 - (Q.mon.rare - 1) * .10 + bell)); }
+function throwBall(g, ball){
+  const Q = WST[g]; if(!Q || Q.phase !== "fight" || TAMA[g].view !== "wild") return null;
+  if(Q.anim && Q.anim.kind === "ball" && performance.now() - Q.anim.at < Q.anim.dur) return null;
+  const it = ITEMS[ball]; if(!it || it.kind !== "ball") return null;
+  if(!invUse(g, ball, 1)){ tmsg(g, `沒有${it.n}了，去 🛒 商店用金幣買`); return null; }
+  const p = catchChance(g, Q, ball), ok = Math.random() < p; Q.throws++;
+  Q.anim = {kind:"ball", at:performance.now(), dur:2600, ok, ball}; Q.phase = "throw";
+  persist(); renderDev(g);
+  setTimeout(() => {
+    if(ok){ bumpK(adv(g).caughtC, Q.mon.id, 1); Q.phase = "caught"; addXp(g, 1); persist(); confetti(140);
+      Q.last = `🎉 抓到 ${Q.mon.name} 了！成長值 +1，放進 📖 圖鑑`; setTimeout(() => checkEvolve(g), 800); }
+    else if(Q.throws >= 3){ Q.phase = "fled"; Q.last = `💨 ${Q.mon.name} 跑走了…沒關係，再找下一隻！`; }
+    else { Q.phase = "fight"; Q.last = `😮 ${Q.mon.name} 從球裡跳出來了！再削弱牠，或換更好的球（還能丟 ${3 - Q.throws} 次）`; }
+    tmsg(g, Q.last); renderDev(g);
+  }, still ? 30 : 2500);
+  return {p, ok};
+}
+// ---- 商店（只用遊戲金幣，沒有真錢）
+function buy(g, id){
+  const it = ITEMS[id]; if(!it || !it.price) return false;
+  if(coins(g) < it.price){ tmsg(g, `🪙 不夠（要 ${it.price}），去 ⚔️ 冒險打搗蛋怪獸！`); return false; }
+  invUse(g, "coin", it.price); invAdd(g, id, 1); persist();
+  tmsg(g, `🛒 買到 ${it.e} ${it.n}！`); renderDev(g); return true;
+}
+// ---- 果實：永久提升攻擊／防禦／速度（每種最多 +10）
+function eatFruit(g, id){
+  if(!needPet(g)) return null; const it = ITEMS[id]; if(!it || it.kind !== "fruit") return null;
+  const pt = S.pets[g];
+  if(pt.lightsOff){ tmsg(g, "💤 燈關著，牠在睡覺～按 💡 開燈"); return null; }
+  if(fruitBoost(g)[it.stat] >= FRUIT_CAP){ tmsg(g, `${STAT_LBL[it.stat]}已經 +${FRUIT_CAP}（上限），可以送給兄弟姊妹的寵物！`); return null; }
+  const before = petStats(g)[it.stat];
+  if(!invUse(g, id, 1)){ tmsg(g, `沒有${it.n}了`); return null; }
+  bumpK(adv(g).eatC, id, 1);
+  pt.fullness = Math.min(100, pt.fullness + 10); persist();   // 不加開心度：速度也會受開心度影響，這樣顯示的 +1 才準
+  const after = petStats(g)[it.stat], text = `${STAT_LBL[it.stat]} +${after - before}（${before}→${after}）`;
+  TAMA[g].statPop = {text:`${it.e} ${text}`, at:performance.now()}; TAMA[g].lastBoost = `${it.e} ${it.n}：${text}`;
+  petFx(g, "eat", `${it.e} ${text}`, {food:id}); sparkle(g, 8);
+  setMsg(`${KIDLBL[g]}的 ${pt.name} 吃了${it.n}：${text}，永久有效！`);
+  renderPets(); return {stat:it.stat, before, after};
+}
+function setEquip(g, id){
+  const a = adv(g); if(id && invN(g, id) < 1) return;
+  a.equip = {id: a.equip.id === id ? null : id, t: Date.now()}; persist();
+  const it = id && ITEMS[id]; tmsg(g, a.equip.id ? `${it.e} 裝備 ${it.n}：${STAT_LBL[it.stat]} +${it.plus}${it.stat === "catch" ? "%" : ""}` : "卸下裝備");
+  renderPets();
+}
+// ---- 送禮物盒／果實給兄弟姊妹（雲端用 increment 寫進對方 inbox，不會重複也不會被蓋掉）
+function giveItem(g, id){
+  const it = ITEMS[id], o = OTHER[g], op = S.pets[o], pt = S.pets[g];
+  if(!it || (it.kind !== "fruit" && it.kind !== "gift")) return false;
+  if(!invUse(g, id, 1)){ tmsg(g, `沒有${it.n}了`); return false; }
+  pt.giftsGiven += 1; dayRec(twDate()).pets[g].gifts += 1; markPlayed(null);
+  if(cloudOn()){ persist(); cloudItemGift(g, o, id); }
+  else {
+    if(id === "gift"){ addXp(o, 1); op.happiness = Math.min(100, op.happiness + 15); invAdd(o, "coin", 5); } else invAdd(o, id, 1);
+    op.giftsReceived += 1; S.help.count += 1; S.help.gifts += 1; persist();
+    petFx(o, "happy", `💌 收到 ${KIDLBL[g]} 送的 ${it.e}${it.n}！`); hearts(o);
+  }
+  petFx(g, "happy", `${it.e} 送給 ${petLabel(o)} 了！`);
+  setMsg(`🤝 互助 +1！${KIDLBL[g]}送了 ${it.e}${it.n} 給${KIDLBL[o]}的 ${petLabel(o)}。`);
+  setTimeout(() => checkEvolve(o), 1200); renderPets(); return true;
+}
+function cloudItemGift(from, to, id){
+  const {F, db} = SYNC.fb, b = F.writeBatch(db), inc = F.increment;
+  const ib = id === "gift" ? {xp:inc(1), happy:inc(15), count:inc(1), items:{coin:inc(5)}} : {count:inc(1), items:{[id]:inc(1)}};
+  b.set(kidRef(to), {inbox:ib}, {merge:true});
+  b.set(sharedRef(), {help:{count:inc(1), gifts:inc(1)}}, {merge:true});
+  return b.commit().catch(onSyncError);
+}
+
+// ---- 遊戲機螢幕（HTML）
+function setView(g, v){ const T = TAMA[g]; T.view = v; if(v !== "pet") T.sub = null;
+  if(v === "wild" && S.pets[g].species){ wildOf(g); devQ(g); } if(v === "quest" && S.pets[g].species) questOf(g); renderDev(g); }
+function energyHTML(Q){ const pct = Math.round(Q.energy / ENERGY_MAX * 100);
+  return `<div class="ebar ${Q.energy >= ENERGY_MAX ? "full" : ""}" data-energy="${Q.energy}"><span>⚡ 能量</span><div class="bar"><i style="width:${Math.max(3, pct)}%"></i></div><b>${fmt(Q.energy)} / ${ENERGY_MAX}</b></div>`; }
+function monLine(g, Q){ const s = petStats(g), m = Q.mon;
+  return `<div class="mline"><span>${Q.mode === "wild" ? `🌿 野生 ${"★".repeat(m.rare)}` : "👾"} <b>${esc(m.name)}</b> ${attrTag(m.attr)} ❤️ <b data-monhp="${g}">${m.hp}</b>/${m.max} 💨${m.spd}</span>
+    <span>你：⚔️${s.atk} 🛡️${s.def} 💨${s.spd}${s.spd >= m.spd ? ' <em class="fast">💨 你比較快</em>' : ' <em class="slow">🐢 對方比較快，吃 🍋 疾風果可以變快</em>'}</span></div>`; }
+function movesHTML(g, Q){
+  if(Q.energy < ENERGY_MAX) return "";
+  return `<div class="moves"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：</p><div class="skills">${advMoves(g, Q).map(x => { const k = typeMult(x.attr, Q.mon.attr);
+    return `<button class="btn ${k > 1 ? "b-yellow" : k < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-move="${x.id}" data-g="${g}">${attrOf(x.attr).e} ${esc(x.name)}${k > 1 ? " <small>效果絕佳</small>" : k < 1 ? " <small>效果不好</small>" : ""}${x.pow > 1 ? " <small>💪</small>" : ""}</button>`; }).join("")}</div></div>`;
+}
+function questHTML(g){
+  const pt = S.pets[g], c = curCard(), n = CARDS.indexOf(c) + 1;
+  const head = `<div class="dhead"><b>${SUBJECTS[c.subject].emoji} 第 ${n} 關・${esc(c.code)}｜${esc(c.title)}</b><button class="btn ghost b-gray small" data-tomap="${g}">🗺️ 換關卡</button></div>`;
+  if(!pt.species) return head + `<div class="dnote">🥚 先領養寵物，就能一起打搗蛋怪獸！<button class="btn small b-yellow" data-adopt="${g}">🥚 領養</button></div>` + qBlockHTML(c.id, g, devQ(g), false);
+  const Q = questOf(g);
+  if(Q.phase === "won"){ const d = Q.drop;
+    return head + monLine(g, Q) + `<div class="win"><h4>🏆 打倒 ${esc(Q.mon.name)}！ ${TIER[d.tier].n}</h4><div class="drops">${d.list.map(x => `<span class="drop">${x}</span>`).join("") || '<span class="drop">💪 練功 +1</span>'}</div>${d.note ? `<p class="note">${esc(d.note)}</p>` : ""}
+      <div class="row"><button class="btn b-mint" data-newmon="${g}">👾 下一隻搗蛋怪獸</button><button class="btn ghost b-purple" data-view="shop" data-g="${g}">🛒 去商店</button></div></div>`; }
+  const pv = lootPreview(g);
+  return head + monLine(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + movesHTML(g, Q)
+    + (Q.energy < ENERGY_MAX ? `<p class="dnote">答對題目幫寵物集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・🎁 掉寶預告：${esc(pv.text)}</p>` : "")
+    + qBlockHTML(c.id, g, devQ(g), false);
+}
+function wildHTML(g){
+  const pt = S.pets[g];
+  if(!pt.species) return `<div class="dnote">🥚 先領養寵物，才能去草叢抓野生夥伴！<button class="btn small b-yellow" data-adopt="${g}">🥚 領養</button></div>`;
+  const Q = wildOf(g), m = Q.mon;
+  if(Q.phase === "caught" || Q.phase === "fled") return monLine(g, Q) + `<div class="win"><h4>${Q.phase === "caught" ? `🎉 抓到 ${esc(m.name)}！` : `💨 ${esc(m.name)} 跑走了`}</h4><p>${esc(Q.last)}</p>
+      <div class="row"><button class="btn b-mint" data-newwild="${g}">🌿 再找一隻</button><button class="btn ghost b-purple" data-view="dex" data-g="${g}">📖 看圖鑑</button></div></div>`;
+  const balls = `<div class="balls">${BALLS.map(b => `<button class="ballbtn" data-throw="${b}" data-g="${g}" ${invN(g, b) < 1 || Q.phase !== "fight" ? "disabled" : ""}><span class="pball ${b}"></span><b>${ITEMS[b].n} ×${invN(g, b)}</b><small>抓到機率 <span data-chance="${b}">${Math.round(catchChance(g, Q, b) * 100)}</span>%</small></button>`).join("")}
+    <button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>`;
+  return `<div class="dhead"><b>🌿 草叢裡跳出野生夥伴！答對集能量削弱牠，再丟精靈球</b></div>` + monLine(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
+    + balls + `<p class="dnote">越虛弱越好抓（牠不會被打倒，最少剩 1 點）。丟失敗 3 次牠會跑走。${equipOf(g) === "eqBell" ? "🔔 幸運鈴 +10%" : ""}</p>` + movesHTML(g, Q) + qBlockHTML(qw[g].cid, g, devQ(g), true);
+}
+function itemCard(g, id, extra){ const it = ITEMS[id]; return `<div class="icard">${it.kind === "ball" ? `<span class="pball ${id}"></span>` : `<span class="ie">${it.e}</span>`}<b>${it.n}</b><small>${esc(it.d || "")}</small>${extra}</div>`; }
+function shopHTML(g){
+  const c = coins(g), fb = fruitBoost(g);
+  return `<div class="dhead"><b>🛒 商店</b><span class="coins">🪙 <b data-coins="${g}">${c}</b></span></div>
+    <p class="dnote">金幣是打倒搗蛋怪獸掉的遊戲幣（不是真的錢）。第一次就答對，掉得越多！</p>
+    <h5>精靈球</h5><div class="igrid">${BALLS.map(id => itemCard(g, id, `<small>基本抓到率 ${Math.round(ITEMS[id].rate * 100)}%・有 ${invN(g, id)} 顆</small><button class="btn small b-blue" data-buy="${id}" data-g="${g}" ${c < ITEMS[id].price ? "disabled" : ""}>🪙 ${ITEMS[id].price} 買</button>`)).join("")}</div>
+    <h5>果實（吃了能力永久提升，每種最多 +${FRUIT_CAP}）</h5><div class="igrid">${FRUITS.map(id => itemCard(g, id, `<small>已吃 ${fb[ITEMS[id].stat]}/${FRUIT_CAP}・有 ${invN(g, id)} 顆</small><button class="btn small b-mint" data-buy="${id}" data-g="${g}" ${c < ITEMS[id].price ? "disabled" : ""}>🪙 ${ITEMS[id].price} 買</button>`)).join("")}</div>`;
+}
+function bagHTML(g){
+  const s = petStats(g), fb = fruitBoost(g), eq = equipOf(g), have = (id) => invN(g, id) > 0;
+  const fruits = FRUITS.filter(have).map(id => itemCard(g, id, `<small>有 ${invN(g, id)} 顆・已吃 ${fb[ITEMS[id].stat]}/${FRUIT_CAP}</small><div class="row"><button class="btn small b-mint" data-eatfruit="${id}" data-g="${g}">😋 餵牠</button><button class="btn small b-pink" data-give="${id}" data-g="${g}">💌 送給${KIDLBL[OTHER[g]]}</button></div>`)).join("");
+  const gifts = have("gift") ? itemCard(g, "gift", `<small>有 ${invN(g, "gift")} 個</small><button class="btn small b-pink" data-give="gift" data-g="${g}">💌 送給${KIDLBL[OTHER[g]]}的 ${esc(petLabel(OTHER[g]))}</button>`) : "";
+  const eqs = EQUIPS.filter(have).map(id => itemCard(g, id, `<button class="btn small ${eq === id ? "b-yellow" : "b-purple"}" data-equip="${id}" data-g="${g}">${eq === id ? "✅ 裝備中（按一下卸下）" : "穿上"}</button>`)).join("");
+  const balls = BALLS.map(id => `<span class="chipi"><span class="pball ${id}"></span>${ITEMS[id].n} ×${invN(g, id)}</span>`).join("");
+  const eqi = eq ? ITEMS[eq] : null, plus = (k) => (fb[k] ? ` <small class="up">果實+${fb[k]}</small>` : "") + (eqi && eqi.stat === k ? ` <small class="up">${eqi.e}+${eqi.plus}</small>` : "");
+  return `<div class="dhead"><b>🎒 背包</b><span class="coins">🪙 <b data-coins="${g}">${coins(g)}</b></span></div>
+    <div class="stats3"><span>⚔️ 攻擊 <b data-stat="atk">${s.atk}</b>${plus("atk")}</span><span>🛡️ 防禦 <b data-stat="def">${s.def}</b>${plus("def")}</span><span>💨 速度 <b data-stat="spd">${s.spd}</b>${plus("spd")}</span></div>
+    ${TAMA[g].lastBoost ? `<p class="boost" data-lastboost="${g}">⬆️ 剛剛：${esc(TAMA[g].lastBoost)}</p>` : ""}
+    <div class="row">${balls}</div>
+    ${fruits || gifts ? `<h5>果實・禮物</h5><div class="igrid">${fruits}${gifts}</div>` : `<p class="dnote">還沒有果實。打倒搗蛋怪獸會掉，也可以到 🛒 商店買。</p>`}
+    ${eqs ? `<h5>裝備（一次穿一件，對戰也有效）</h5><div class="igrid">${eqs}</div>` : `<p class="dnote">裝備（勇氣劍、星星帽、彩虹圍巾、幸運鈴）要打倒搗蛋怪獸拿 🥇／🥈 才會掉。</p>`}`;
+}
+function caughtDexHTML(g){
+  const got = CATCH.filter(m => caughtN(g, m.id) > 0).length;
+  return `<div class="dhead"><b>📖 ${KIDLBL[g]}抓到的夥伴 ${got}/${CATCH.length}</b></div><div class="dex">${CATCH.map(m => { const n = caughtN(g, m.id);
+    return `<div class="dexi ${n ? "win" : "none"}" data-caught="${m.id}"><canvas data-thumb="${m.id}" data-hide="${n ? 0 : 1}"></canvas><small>${n ? esc(m.name) : "？？？"}</small>${n ? attrTag(m.attr) : ""}<small>${"★".repeat(m.rare)}${n > 1 ? ` ×${n}` : ""}</small></div>`; }).join("")}</div>
+    <p class="dnote">到 🌿 抓怪 找野生夥伴。★ 越多越稀有，用 🌈 彩虹球比較好抓。對戰圖鑑和徽章在「⚔️ 對戰」頁。</p>`;
+}
+function renderDev(g){
+  const el = $("dscr-" + g); if(!el) return;
+  const T = TAMA[g], v = isOwned(g) ? (T.view || "quest") : "pet";
+  document.querySelectorAll(`#vtabs-${g} [data-view]`).forEach(b => b.classList.toggle("on", b.dataset.view === v));
+  el.dataset.view = v;
+  el.innerHTML = v === "quest" ? questHTML(g) : v === "wild" ? wildHTML(g) : v === "shop" ? shopHTML(g) : v === "bag" ? bagHTML(g) : v === "dex" ? caughtDexHTML(g)
+    : `<div class="tpanel" id="tpanel-${g}">${panelHTML(g)}</div>`;
+  el.querySelectorAll("canvas[data-thumb]").forEach(c => drawThumb(c, c.dataset.thumb, c.dataset.hide === "1"));
+}
+function devClick(b, e){
+  const d = b.dataset, g = d.g || d.pick || d.conf || d.goto;
+  if(d.view){ setView(d.g, d.view); return true; }
+  if(d.pick){ pick(d.pick, Number(d.i), e); return true; }
+  if(d.conf){ devQ(d.conf).conf = Number(d.n); renderDev(d.conf); return true; }
+  if(d.goto){ const gg = d.goto; if(TAMA[gg].view === "wild") qw[gg] = wildQ(gg); else qs[gg] = newQ(curId, gg, Number(d.n)); renderDev(gg); return true; }
+  if(d.move){ useMove(d.g, d.move, e); return true; }
+  if(d.newmon){ QST[d.newmon] = spawnQuest(d.newmon); renderDev(d.newmon); return true; }
+  if(d.newwild){ WST[d.newwild] = spawnWild(d.newwild); qw[d.newwild] = wildQ(d.newwild); renderDev(d.newwild); return true; }
+  if(d.throw){ throwBall(d.g, d.throw); return true; }
+  if(d.buy){ buy(d.g, d.buy); return true; }
+  if(d.eatfruit){ eatFruit(d.g, d.eatfruit); return true; }
+  if(d.give){ giveItem(d.g, d.give); return true; }
+  if(d.equip){ setEquip(d.g, d.equip); return true; }
+  if(d.ck){ eatCookie(d.ck); return true; }
+  if(d.tomap){ const m = $("map"); if(m) m.scrollIntoView({behavior:"smooth", block:"start"}); return true; }
+  return false;
+}
+
+// ---- 液晶：打怪畫面（左邊寵物、右邊怪獸）
+const ANGER = {rows:["R R"," R ","R R"], colors:{R:"#FF4B55"}};
+const COIN = {rows:[" YY ","YWYY","YYYY"," YY "], colors:{Y:"#FFC93C", W:"#FFF6C2"}};
+const BALLPAT = {ball1:{rows:[" YY ","YYYY","KWWK"," WW "], colors:{Y:"#FFD23F", W:"#FFFFFF", K:"#3A2E4A"}},
+  ball2:{rows:[" BB ","BBBB","KWWK"," WW "], colors:{B:"#4A7BFF", W:"#FFFFFF", K:"#3A2E4A"}},
+  ball3:{rows:[" PY ","BPYG","KWWK"," WW "], colors:{P:"#FF6FA8", Y:"#FFD23F", B:"#4A7BFF", G:"#3DDC97", W:"#FFFFFF", K:"#3A2E4A"}}};
+let _lcdFont = null;
+function lcdFont(){ return _lcdFont || (_lcdFont = getComputedStyle(document.body).fontFamily); }
+function drawEquip(ctx, g, top, dx, dy){
+  const id = equipOf(g); if(!id) return; const y0 = top + dy, by = Math.round(27 - (27 - top) * .45) + dy;
+  if(id === "eqHat"){ for(let x = 12; x <= 19; x++) px(ctx, x + dx, y0 - 1, "#3A2E4A"); for(let x = 14; x <= 17; x++){ px(ctx, x + dx, y0 - 2, "#5B4BC4"); px(ctx, x + dx, y0 - 3, "#5B4BC4"); } px(ctx, 15 + dx, y0 - 3, "#FFD23F"); px(ctx, 16 + dx, y0 - 2, "#FFD23F"); }
+  if(id === "eqScarf"){ const cs = ["#FF5A5F","#FFD23F","#3DDC97","#3DA5FF","#B388FF"]; for(let x = 11; x <= 20; x++) px(ctx, x + dx, by, cs[x % 5]); px(ctx, 20 + dx, by + 1, "#FF5A5F"); px(ctx, 21 + dx, by + 2, "#FFD23F"); }
+  if(id === "eqSword"){ for(let y = by - 6; y <= by; y++) px(ctx, 25 + dx, y, "#CFD8E6"); px(ctx, 24 + dx, by + 1, "#FFC93C"); px(ctx, 25 + dx, by + 1, "#FFC93C"); px(ctx, 26 + dx, by + 1, "#FFC93C"); px(ctx, 25 + dx, by + 2, "#8D6E63"); }
+  if(id === "eqBell"){ px(ctx, 15 + dx, by, "#FFC93C"); px(ctx, 16 + dx, by, "#FFC93C"); px(ctx, 15 + dx, by + 1, "#F2B600"); px(ctx, 16 + dx, by + 1, "#F2B600"); }
+}
+function lcdLabel(ctx, x, y, w, h){ ctx.fillStyle = "rgba(255,255,255,.88)"; rr(ctx, x, y, w, h, 8); ctx.fill(); }
+function drawFight(ctx, g, Q, now, t){
+  const pt = S.pets[g], sp = SPECIES[pt.species], stage = stageOf(pt.xp), acc = stage === 3 ? branchOf(pt).color : null;
+  const A = Q.anim && now - Q.anim.at < Q.anim.dur ? Q.anim : null, e = A ? (now - A.at) / 1000 : 0, F = lcdFont();
+  // 寵物
+  let pdx = 0, pdy = still ? 0 : (Math.floor(t*2) % 2 ? -1 : 0), pm = Q.phase === "won" || Q.phase === "caught" ? "happy" : "idle";
+  if(A && A.kind === "move"){ pm = "happy"; pdx = e < .3 ? Math.round(e/.3*4) : e < .5 ? 4 - Math.round((e-.3)/.2*4) : 0; }
+  if(A && A.kind === "charge"){ pm = "happy"; pdy = -Math.round(Math.abs(Math.sin(e*10))*3); }
+  if(A && A.kind === "taunt") pm = "cheer";
+  if(!still && !A && pm === "happy") pdy = -Math.round(Math.abs(Math.sin(t*6))*2);
+  const ps = sprite(sp, stage, pm, !A && (t % 3.2) < .15, acc); drawSprite(ctx, ps, pdx, pdy); drawEquip(ctx, g, ps.top, pdx, pdy);
+  if(A && A.kind === "charge") for(let i = 0; i < 4; i++){ const a = e*6 + i*Math.PI/2; pat(ctx, SPARK.rows, 15 + Math.round(Math.cos(a)*10), 15 + Math.round(Math.sin(a)*7), SPARK.colors); }
+  // 怪獸（鏡像畫在右半邊）
+  const mon = Q.mon, ball = A && A.kind === "ball";
+  const hidden = Q.phase === "caught" || Q.phase === "fled" || (ball && e > .7 && !(A.ok === false && e > 2.3));
+  if(!hidden){
+    let mdx = 0, mdy = still ? 0 : (Math.floor(t*2 + 1) % 2 ? -1 : 0), flash = null, mm = Q.phase === "won" || Q.phase === "ko" ? "sleep" : mon.hp <= mon.max*.3 ? "sad" : "idle";
+    if(A && A.kind === "move" && e > .55 && e < 1.0){ mdx = Math.floor(e*30) % 2 ? 1 : -1; flash = Math.floor(e*20) % 2 ? "#FFFFFF" : null; }
+    if(A && A.kind === "taunt"){ mm = "happy"; mdy = -Math.round(Math.abs(Math.sin(e*10))*3); }
+    if(Q.phase === "won" || Q.phase === "ko"){ mdy = 2; }
+    const f = fighterSprite({mon:mon.id, stage:2}, mm);
+    for(const [x, y, c] of f.spr.cells) px(ctx, 63 - x + mdx, y + mdy, flash || c);
+    if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 48 - Math.ceil(w/2) + mdx, Math.max(0, f.spr.top - f.deco.rows.length) + mdy, f.deco.colors); }
+    if(Q.mode === "quest" && Q.phase === "fight") pat(ctx, ANGER.rows, 55 + mdx, f.spr.top + 1 + mdy, ANGER.colors);
+  }
+  // 招式飛過去
+  if(A && A.kind === "move" && e > .25 && e < .6){ const k = (e - .25) / .35, x = Math.round(19 + k*26), c = attrOf(A.attr).c;
+    for(let i = 0; i < 3; i++) for(let j = 0; j < 3; j++) px(ctx, x + i, 16 + j, (i + j) % 2 ? c : "#FFFFFF"); px(ctx, x - 2, 17, c); px(ctx, x - 4, 17, c); }
+  if(ball){ const P = BALLPAT[A.ball] || BALLPAT.ball1; let bx = 46, by = 22;
+    if(e < .7){ const k = e / .7; bx = Math.round(16 + k*30); by = Math.round(20 - Math.sin(Math.PI*k)*14); }
+    else if(e < 2.3){ bx = 46 + (Math.floor((e - .7) / .4) % 2 ? 1 : -1) * (e < 2.0 ? 1 : 0); }
+    if(!(A.ok === false && e > 2.3)) pat(ctx, P.rows, bx, by, P.colors);
+    if(e > .62 && e < .9){ ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.fillRect(40*CELLPX, 8*CELLPX, 18*CELLPX, 20*CELLPX); }
+    if(A.ok && e > 2.3) for(let i = 0; i < 3; i++) pat(ctx, SPARK.rows, 42 + i*4, 17 - (i % 2)*3, SPARK.colors); }
+  if(Q.phase === "caught"){ const P = BALLPAT.ball1; pat(ctx, P.rows, 46, 22, P.colors); if(Math.floor(t*3) % 2) pat(ctx, SPARK.rows, 51, 18, SPARK.colors); }
+  if(Q.phase === "won") for(let i = 0; i < 3; i++) pat(ctx, COIN.rows, 41 + i*6, 23 - (still ? 0 : Math.round(Math.abs(Math.sin(t*5 + i))*3)), COIN.colors);
+  // 上方資訊：寵物能量、怪獸血量
+  lcdLabel(ctx, 4, 4, 172, 34); lcdLabel(ctx, 208, 4, 172, 34);
+  ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillStyle = INK; ctx.font = "800 12px " + F;
+  ctx.fillText(`${pt.name}`, 12, 14); ctx.fillText(Q.mode === "wild" ? `${mon.name} ${"★".repeat(mon.rare)}` : mon.name, 216, 14);
+  const full = Q.energy >= ENERGY_MAX, ep = Q.energy / ENERGY_MAX;
+  ctx.fillStyle = "#EDE6F5"; ctx.fillRect(12, 24, 156, 8); ctx.fillStyle = full && Math.floor(t*4) % 2 ? "#FFF06A" : "#FFC93C"; ctx.fillRect(12, 24, 156*ep, 8);
+  ctx.fillStyle = INK; ctx.fillRect(12 + 78, 24, 2, 8); ctx.font = "800 11px " + F; ctx.textAlign = "right"; ctx.fillText(full ? "⚡ 滿！" : `⚡ ${fmt(Q.energy)}/${ENERGY_MAX}`, 168, 14);
+  if(!(A && A.kind === "move" && e < .55)) Q.hpShow += (mon.hp - Q.hpShow) * .12; const hp = Math.max(0, Q.hpShow) / mon.max;
+  ctx.fillStyle = "#EDE6F5"; ctx.fillRect(216, 24, 156, 8); ctx.fillStyle = hp < .3 ? "#FF4B55" : hp < .6 ? "#FFD23F" : "#3DDC97"; ctx.fillRect(216, 24, 156*hp, 8);
+  ctx.fillStyle = INK; ctx.fillText(`❤️ ${mon.hp}/${mon.max}`, 372, 14);
+  if(A && A.kind === "move" && e > .55){ const k = Math.min(1, (e - .55) / .9); ctx.textAlign = "center"; ctx.font = "900 24px " + F; ctx.lineWidth = 4; ctx.strokeStyle = "#FFFFFF";
+    const y = 80 - k*26; ctx.strokeText(`-${A.dmg}`, 288, y); ctx.fillStyle = "#FF4B55"; ctx.fillText(`-${A.dmg}`, 288, y);
+    if(A.m > 1){ ctx.font = "900 14px " + F; ctx.strokeText("效果絕佳！", 288, y + 22); ctx.fillStyle = "#F28C00"; ctx.fillText("效果絕佳！", 288, y + 22); } }
+  if(A && A.kind === "taunt"){ ctx.textAlign = "center"; ctx.font = "16px sans-serif"; ctx.fillText("😝", 300, 60 - Math.round(e*10)); }
+  if(Q.phase === "won" || Q.phase === "caught" || Q.phase === "fled"){ ctx.textAlign = "center"; ctx.font = "900 20px " + F; ctx.lineWidth = 4; ctx.strokeStyle = "#FFFFFF";
+    const tx = Q.phase === "won" ? "打倒了！" : Q.phase === "caught" ? "抓到了！" : "跑走了…"; ctx.strokeText(tx, 288, 62); ctx.fillStyle = INK; ctx.fillText(tx, 288, 62); }
+}
+
 function renderAll(full){ renderEvo(); renderMap(); if(full) renderCard(); renderBattleIfVisible(); }
 recalcAll(); renderStatic(); renderFilters(); renderMap(); renderCard(); renderEvo(); renderSaveState(); renderFamily(); startSync();
 (function greet(){ const si=streakInfo(); const a=S.pets.g4, b=S.pets.g6;
@@ -2445,7 +2977,8 @@ addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ 
 // 測試用（不影響遊戲）
 window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYNC.status; }, recalcAll, petStats, skillList, bag, pvpToday, badgeSet, get bt(){ return BT; }, typeMult,
   setXp(g, n){ const pt = S.pets[g]; pt.xpC[DEV.id] = (pt.xpC[DEV.id]||0) + (n - pt.xp); recalcAll(); },
-  setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY };
+  setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY,
+  v6: { adv, invN, invAdd, coins, cookiesLeft, fruitBoost, equipOf, catchChance, questOf, spawnWild, wildOf, useMove, throwBall, buy, eatFruit, eatCookie, giveItem, setEquip, setView, lootPreview, nextItem, lootTier, advMoves, ITEMS, CATCH, ENERGY_MAX, FRUIT_CAP, LOOT_PER_DAY, MON_XP_PER_DAY, FREE_COOKIES, get QST(){ return QST; }, get WST(){ return WST; }, TAMA, mergeAdv, kidSection, mergeKid } };
 </script>
 </body>
 </html>
