@@ -267,6 +267,64 @@ em.holi{font-style:normal;background:#FFE3C2;color:#A34700;border-radius:8px;pad
 .pnote{background:#FFF8FB;border-radius:10px;padding:6px 8px;margin:4px 0;font-size:13px}
 .summon{margin:6px 0}
 @media (orientation:landscape) and (min-width:1100px){.trgrid{grid-template-columns:repeat(5,1fr)}.team{grid-template-columns:repeat(4,1fr)}}
+/* ===== v7.1 大螢幕：液晶填滿、題目貼在螢幕下方、資訊精簡 ===== */
+.bezel{position:relative}
+.lcdwrap{position:relative;width:100%}
+.lcdwrap .tmsg{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);margin:0;width:auto;max-width:92%;min-height:0;background:rgba(255,255,255,.9);border-radius:14px;padding:3px 12px;font-size:15px;box-shadow:0 2px 8px rgba(58,46,74,.18);pointer-events:none;z-index:2;white-space:normal}
+.lcdwrap .tmsg:empty{display:none}
+.tama[data-view="quest"] .icons,.tama[data-view="wild"] .icons{display:none}
+.tama[data-view="quest"] .bezel,.tama[data-view="wild"] .bezel{padding:6px}
+.dscreen[data-view="quest"],.dscreen[data-view="wild"]{display:contents}
+.dscreen[data-view="quest"]>*,.dscreen[data-view="wild"]>*{width:100%;box-sizing:border-box;background:#FFFDF6;border-radius:22px;padding:10px 14px;box-shadow:inset 0 0 0 4px rgba(58,46,74,.13);text-align:left;font-size:16px;margin-top:8px}
+.dscreen[data-view="quest"]>.dq,.dscreen[data-view="wild"]>.dq{order:1;border:4px solid var(--c);box-shadow:0 4px 0 rgba(58,46,74,.12);padding:10px 16px}
+.dscreen[data-view="quest"]>.finfo,.dscreen[data-view="wild"]>.finfo{order:2}
+.egg>.abc{order:3}
+.finfo .dhead{margin-bottom:4px}.finfo .dhead b{font-size:15px}
+.chips2{display:flex;flex-wrap:wrap;gap:5px;margin:2px 0 4px}.chips2:empty{display:none}
+.chip2{display:inline-block;font-size:12.5px;font-weight:700;background:#F3EEFA;border-radius:999px;padding:2px 10px;color:var(--ink)}
+.chip2.holi{background:linear-gradient(90deg,#3B2A5A,#FF8C1A);color:#fff}
+.mline.mc{font-size:13px;padding:5px 8px;gap:2px 10px;align-items:center}
+.ibtn{border:none;background:#fff;border-radius:999px;padding:2px 10px;font:800 12px var(--font);color:var(--ink2);box-shadow:0 2px 0 rgba(58,46,74,.15);cursor:pointer;margin-left:auto}
+.infobox{background:#FAF7FF;border-radius:14px;padding:6px 8px;margin:6px 0}
+.finfo .ebar{margin:5px 0;font-size:14px}.finfo .ebar .bar{height:12px}
+.finfo .dlast{font-size:14.5px;margin:3px 0}
+.finfo .dnote.tip{font-size:12.5px;margin:4px 0}
+.dscreen .dq:not(.dotsopen) .qdots{display:none}
+.dotsbtn{border:2px solid var(--c,#9C93A8);background:#fff;border-radius:999px;padding:2px 12px;font:800 13px var(--font);color:var(--ink);cursor:pointer;margin:0 8px 2px 0}
+.dscreen .dq .q{margin:6px 0;font-size:19px}
+.dscreen .dq .conf{margin:4px 0 6px}
+.dscreen .dq .opts{grid-template-columns:1fr 1fr;gap:8px;margin:6px 0}
+.dscreen .dq .opt{padding:10px 12px}
+.dscreen .dq .row[style]{margin-top:6px!important}
+.skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.skbtn{position:relative;font-size:14px;padding:8px 10px}
+.skbtn.ult{animation:glow 1s infinite alternate}
+.newmv{position:absolute;top:-8px;right:-4px;font-style:normal;font-size:13px}
+.critrdy{color:#F28C00}
+.egg .abc{margin-top:8px;gap:22px}
+.egg .abc button{width:40px;height:40px;font-size:13px}
+.egg .abc button:nth-child(2){transform:none}
+.egg .abc button .lbl{font-size:9px;margin-top:0}
+@media (orientation:landscape) and (min-width:1000px){
+  .egg{grid-template-columns:minmax(0,57%) minmax(0,1fr);grid-template-areas:"tag tag" "tabs tabs" "bezel scr" "q scr" "abc scr";grid-template-rows:auto auto auto auto 1fr;row-gap:0}
+  .egg .vtabs{margin-bottom:6px}
+  .tama[data-view="quest"] .egg .bezel,.tama[data-view="wild"] .egg .bezel{position:relative;top:auto}
+  .dscreen[data-view="quest"]>.finfo,.dscreen[data-view="wild"]>.finfo{grid-area:scr;align-self:start;margin-top:0;max-height:calc(100vh - 120px);overflow:auto}
+  .dscreen[data-view="quest"]>.dq,.dscreen[data-view="wild"]>.dq{grid-area:q}
+  .dscreen[data-view="quest"]>:not(.finfo):not(.dq),.dscreen[data-view="wild"]>:not(.finfo):not(.dq){grid-area:scr;align-self:start;margin-top:0}
+  .egg .abc{grid-area:abc;align-self:start}
+  .skills{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+}
+@media (max-width:600px){
+  .dscreen[data-view="quest"]>*,.dscreen[data-view="wild"]>*{padding:8px 10px}
+  .dscreen .dq .q{font-size:17px}
+  .dscreen .dq .opts{grid-template-columns:1fr}
+  .skills{grid-template-columns:1fr 1fr}
+  .mline.mc{font-size:12px}
+}
+.dscreen .dq .row:empty{display:none}
+@media (orientation:portrait) and (min-width:700px){.tama{max-width:1000px}}
+@media (orientation:landscape) and (min-width:1000px){.egg{grid-template-columns:minmax(0,60%) minmax(0,1fr)}}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -488,7 +546,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.0.0";
+const APP_VERSION = "7.1.0";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -653,7 +711,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -1534,10 +1592,9 @@ function deviceHTML(g){
       <div class="vtabs" id="vtabs-${g}">${VIEWS.map(([v,e,t]) => `<button data-view="${v}" data-g="${g}">${e} ${t}</button>`).join("")}</div>
       <div class="bezel">
         <div class="icons" id="iconsTop-${g}">${ic(0,3)}</div>
-        <canvas class="lcd" id="lcd-${g}" aria-label="${KIDLBL[g]}的寵物"></canvas>
+        <div class="lcdwrap"><canvas class="lcd" id="lcd-${g}" aria-label="${KIDLBL[g]}的寵物"></canvas><div class="tmsg" id="tmsg-${g}"></div></div>
         <div class="icons" id="iconsBot-${g}">${ic(3,6)}</div>
       </div>
-      <div class="tmsg" id="tmsg-${g}"></div>
       <div class="dscreen" id="dscr-${g}"></div>
       <div class="abc"><button data-abc="A" data-g="${g}">A<span class="lbl">選單</span></button><button data-abc="B" data-g="${g}">B<span class="lbl">確認</span></button><button data-abc="C" data-g="${g}">C<span class="lbl">取消</span></button></div>
     </div>
@@ -3099,8 +3156,9 @@ function careAdd(g){
   traitAdd(g, "resp", 1, "care", 1, "今天有好好照顧寵物！");
   const l1 = lvInfo(g).lv; if(l1 > l0) lvUpFx(g, "main", l1); persist();
 }
-function lvUpFx(g, id, lv){ const nm = id === "main" ? S.pets[g].name : MON[id].name;
-  setTimeout(() => { trPop(g, `⬆️ ${nm} 升到 Lv${lv}！體力、攻擊、防禦都變強了`, true); sparkle(g, 10); legendCheck(g); }, 400); }
+function lvUpFx(g, id, lv){ const nm = id === "main" ? S.pets[g].name : MON[id].name, nw = movesLearnedAt(g, id, lv);
+  setTimeout(() => { trPop(g, `⬆️ ${nm} 升到 Lv${lv}！體力、攻擊、防禦都變強了`, true); sparkle(g, 10); legendCheck(g); }, 400);
+  if(nw.length) setTimeout(() => { trPop(g, `✨ ${nm} 學會新招式「${nw.join("」「")}」！`, true); tmsg(g, `✨ 學會新招式「${nw.join("」「")}」！`); }, 2600); }
 function lvBarHTML(g, id){ const L = lvInfo(g, id), main = !id || id === "main";
   return `<div class="lvbar" data-lv="${id || "main"}" data-lvn="${L.lv}"><b>Lv ${L.lv}</b><div class="bar"><i style="width:${Math.max(3, Math.round(L.pT * 100))}%"></i></div><small>${L.max ? "等級最高了！" : `練兵 ${L.train}/${L.nT}${main ? `・照顧 ${L.care}/${L.nC}` : ""}`}</small>${L.needCare ? '<em class="needcare">🍪 練兵夠了！再餵食／清潔／陪玩就能升級</em>' : ""}</div>`; }
 // 傳說型態：成體之後的下一個目標（Lv15 ＋ 十大能力有 5 項到 Lv2）
@@ -3219,7 +3277,8 @@ function monAttack(g, Q, opts){
   if(!window.__sbNoDodge && dodgeP && Math.random() < dodgeP){ Q.anim = {kind:"dodge", at:now, dur:1300}; Q.last = `💨 ${unitName(g, id)} 比較快，閃開了 ${m.name} 的攻擊！`; return {dodged:true}; }
   const tm = typeMult(m.attr, s.attr), dmg = Math.max(2, Math.round((6 + m.atk) * tm * (50 / (50 + s.def)) * (opts.big ? 1.5 : 1)));
   setFHp(g, Q, fHp(g, Q, id) - dmg, id);
-  Q.anim = {kind:"hit", at:now, dur:1400, dmg, m:tm, big:!!opts.big};
+  const mf = MON_FX[m.attr] || MON_FX.normal, fx = opts.big ? mf[1] : mf[Q.turn % mf.length], D = FXDEF[fx];
+  Q.anim = {kind:"hit", at:now, dur:(D.dur + .5) * 1000, dmg, m:tm, big:!!opts.big, fx, attr:m.attr, hits:[D.hits[0]], parts:[dmg], h0:D.hits[0]};
   Q.last = `${opts.big ? "💢 蓄力攻擊！" : "👊"} ${m.name} 反擊！${unitName(g, id)} -${dmg}${tm > 1 ? "（屬性剋你，比較痛）" : tm < 1 ? "（你的屬性擋住一些）" : ""}`;
   if(fHp(g, Q, id) <= 0){ Q.phase = "faint"; Q.fainted++; Q.charge = false; Q.last = `😵 ${unitName(g, id)} 累倒了…沒關係！不會失去任何東西。休息一下、吃 🫐 回復莓，或換隊友上場再挑戰！`; tmsg(g, "😵 累倒了…休息一下再挑戰！"); }
   return {dmg};
@@ -3239,8 +3298,10 @@ function advAnswer(g, st, practice){
   let e, p;
   if(practice){ e = .5; p = .5; Q.n.prac++; } else if(st.result === "right"){ e = 1; p = 2; Q.n.right++; } else { e = .5; p = 1; Q.n.retry++; }
   const before = Q.energy; Q.energy = Math.min(ENERGY_MAX, Q.energy + e); Q.pts += p;
+  if(st.result === "right" && st.conf === 3 && !practice){ Q.critReady = true; }
   if(Q.charge && st.result === "right"){ Q.charge = false; Q.anim = {kind:"block", at:now, dur:1300}; Q.last = `🛡️ 第一次就答對，擋住了 ${Q.mon.name} 的蓄力攻擊！⚡ +${fmt(e)}`; }
   else { Q.charge = false; Q.anim = {kind:"charge", at:now, dur:900}; Q.last = `⚡ 能量 +${fmt(e)}${practice ? "（練習模式）" : ""}`; }
+  if(Q.critReady && st.result === "right" && st.conf === 3 && !practice) Q.last += "・⭐⭐⭐ 有把握又答對：下一招會心一擊！";
   if(Q.energy >= ENERGY_MAX && before < ENERGY_MAX){ Q.last += "・能量滿了！選一招打出去！"; tmsg(g, "⚡ 能量滿了！選一招打出去！"); }
   afterTurn(g, Q);
 }
@@ -3264,12 +3325,16 @@ function advMoves(g, Q){
   for(const c of CARDS){ const names = SKILLS[c.id]; if(!names) continue; const p = S.cards[c.id];
     const learned = c.id === Q.card || !!(p && isObj(p.mc) && Object.entries(p.mc).some(([qid, r]) => gradeOfQ(qid) === g && r && r.everRight));
     if(!learned) continue; const a = ATTR[c.subject].k;
-    out.push({id:c.id+"-0", name:names[0], card:c.id, attr:a, pow:1});
-    if(st >= 3) out.push({id:c.id+"-1", name:names[1], card:c.id, attr:a, pow:1.35}); }
+    out.push({id:c.id+"-0", name:names[0], card:c.id, attr:a, pow:1, fx:cardFx(c.id, 0)});
+    if(st >= 3) out.push({id:c.id+"-1", name:names[1], card:c.id, attr:a, pow:1.35, fx:cardFx(c.id, 1)}); }
   const score = (x) => typeMult(x.attr, Q.mon.attr) * x.pow;
   const cur = out.filter(x => x.card === Q.card), rest = out.filter(x => x.card !== Q.card).sort((a, b) => score(b) - score(a));
-  const id = activeId(g), sig = id !== "main" ? [{id:"sig-" + id, name:`${MON[id].name}・${attrOf(MON[id].attr).n}之力`, attr:MON[id].attr, pow:1.15}] : [];
-  return [...sig, ...cur, ...rest.slice(0, 4), Object.assign({}, TACKLE)];
+  const id = activeId(g), m = id !== "main" ? MON[id] : null, sig = [];
+  if(m){ sig.push({id:"sig-" + id, name:`${m.name}・${attrOf(m.attr).n}之力`, attr:m.attr, pow:1.15, fx:SIG_FX[fxHash(id) % SIG_FX.length], col:m.body, sig:true});
+    if(m.spirit) sig.push({id:"ult-" + id, name:`💗 ${m.name}・必殺技`, attr:m.attr, pow:1.6, fx:"ultimate", col:m.body, ult:true, used:!!Q.ultUsed}); }
+  const lvm = lvMoves(g, id, Q).filter(x => x.learned).reverse();
+  const tail = (id === "main" ? lvInfo(g).lv : lvInfo(g, id).lv) >= STAR_MOVE.lv ? [Object.assign({}, STAR_MOVE)] : [];
+  return [...sig.filter(x => !x.used), ...cur, ...lvm, ...rest.slice(0, 2), ...tail, Object.assign({fx:"tackle"}, TACKLE)];
 }
 function advDamage(g, Q, mv){
   const s = fStats(g), m = typeMult(mv.attr, Q.mon.attr), fast = s.spd >= Q.mon.spd, atkB = Math.min(1, Math.max(0, (s.atk - 12) / 40));
@@ -3282,9 +3347,13 @@ function useMove(g, id, ev){
   const mv = advMoves(g, Q).find(x => x.id === id); if(!mv) return false;
   const pt = S.pets[g]; if(pt.lightsOff){ pt.lightsOff = false; persist(); }
   const r = advDamage(g, Q, mv); Q.energy = 0;
+  const crit = !!Q.critReady; Q.critReady = false; if(crit) r.dmg = Math.round(r.dmg * 1.5); if(mv.ult) Q.ultUsed = true;
   Q.mon.hp = Math.max(Q.mode === "wild" ? 1 : 0, Q.mon.hp - r.dmg);
-  Q.anim = {kind:"move", at:performance.now(), dur:1500, dmg:r.dmg, m:r.m, attr:mv.attr};
-  Q.last = `${attrOf(mv.attr).e} ${mv.name}！造成 ${r.dmg} 點傷害${r.m > 1 ? "・效果絕佳！" : r.m < 1 ? "・效果不太好…" : ""}${r.fast ? "・💨 你比較快 +10%" : ""}${r.ep ? `・${attrOf(mv.attr).e}果實 +${pct(r.ep)}%` : ""}`;
+  const fx = mv.fx || "shot", D = FXDEF[fx] || FXDEF.shot, n = D.hits.length, parts = [];
+  for(let i = 0; i < n; i++) parts.push(Math.floor(r.dmg / n) + (i < r.dmg % n ? 1 : 0));
+  Q.anim = {kind:"move", at:performance.now(), dur:(D.dur + .5) * 1000, dmg:r.dmg, m:r.m, attr:mv.attr, fx, hits:D.hits, parts, crit, col:mv.col, name:mv.name, ult:!!mv.ult};
+  mvMark(g, [mv.id]);
+  Q.last = `${attrOf(mv.attr).e} ${mv.name}！${n > 1 ? `${n} 連擊！` : ""}造成 ${r.dmg} 點傷害${crit ? "・💥 會心一擊 ×1.5！" : ""}${r.m > 1 ? "・效果絕佳！" : r.m < 1 ? "・效果不太好…" : ""}${r.fast ? "・💨 你比較快 +10%" : ""}${r.ep ? `・${attrOf(mv.attr).e}果實 +${pct(r.ep)}%` : ""}`;
   if(Q.mode === "wild" && Q.mon.hp <= 1) Q.last += "・牠沒力氣了，快丟球！";
   tmsg(g, Q.last);
   if(Q.mode === "quest" && Q.mon.hp <= 0){ Q.phase = "ko"; setTimeout(() => questWin(g, Q, ev), still ? 50 : 1300); }
@@ -3434,14 +3503,22 @@ function fruitQuick(g, Q){
 }
 function movesHTML(g, Q){
   if(Q.energy < ENERGY_MAX || Q.phase !== "fight") return fruitQuick(g, Q);
-  return fruitQuick(g, Q) + `<div class="moves"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：</p><div class="skills">${advMoves(g, Q).map(x => { const k = typeMult(x.attr, Q.mon.attr);
-    return `<button class="btn ${k > 1 ? "b-yellow" : k < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-move="${x.id}" data-g="${g}">${attrOf(x.attr).e} ${esc(x.name)}${k > 1 ? " <small>效果絕佳</small>" : k < 1 ? " <small>效果不好</small>" : ""}${x.pow > 1 ? " <small>💪</small>" : ""}</button>`; }).join("")}</div></div>`;
+  const mv = advMoves(g, Q), ids = mv.map(x => x.id);
+  return fruitQuick(g, Q) + `<div class="moves"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：${Q.critReady ? ' <b class="critrdy">💥 會心一擊準備好了！</b>' : ""}</p><div class="skills">${mv.map(x => { const k = typeMult(x.attr, Q.mon.attr), n = (FXDEF[x.fx] || FXDEF.shot).hits.length, nw = mvIsNew(g, x.id, ids);
+    return `<button class="btn ${x.ult ? "b-pink ult" : k > 1 ? "b-yellow" : k < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-move="${x.id}" data-g="${g}">${nw ? '<i class="newmv">🆕</i>' : ""}${attrOf(x.attr).e} ${esc(x.name)}${k > 1 ? " <small>效果絕佳</small>" : k < 1 ? " <small>效果不好</small>" : ""}${n > 1 ? ` <small>×${n}</small>` : ""}${x.pow > 1 ? " <small>💪</small>" : ""}</button>`; }).join("")}</div></div>`;
 }
 function faintHTML(g, Q){ const others = ["main", ...teamOf(g)].filter(id => id !== activeId(g) && fHp(g, Q, id) > 0);
   return `<div class="faint" data-faint="${g}"><h4>😵 ${esc(unitName(g, activeId(g)))} 累倒了…</h4><p>沒關係！什麼都不會少。休息一下，${esc(Q.mon.name)}（還剩 ❤️${Q.mon.hp}）還在等你，再挑戰一次！</p>
     <div class="row"><button class="btn b-mint" data-rest="${g}">💤 休息一下，體力回滿再挑戰</button>${invN(g, "fHeal") > 0 ? `<button class="btn b-blue" data-eatfruit="fHeal" data-g="${g}">🫐 吃回復莓站起來（×${invN(g, "fHeal")}）</button>` : ""}
     ${others.map(id => `<button class="btn ghost b-purple" data-sendout="${id}" data-g="${g}">🔁 換 ${esc(unitName(g, id))} 上場</button>`).join("")}</div>
     <p class="note">🌱 累倒後再站起來打贏，會增加「逆境復原力」！</p></div>`; }
+// v7.1：精簡的一行資訊（詳細的能力值收在「ℹ️ 詳細」裡）
+function monLineC(g, Q){ const id = activeId(g), s = fStats(g, id), m = Q.mon, h = m.holi ? HOLI[m.holi] : null, ph = fHp(g, Q, id);
+  return `<div class="mline mc"><span>${Q.mode === "wild" ? (m.spirit ? "💗" : "🌿" + "★".repeat(Math.min(3, m.rare))) : "👾"} <b class="mlv" data-monlv="${m.lv}">Lv${m.lv}</b> <b>${esc(m.name)}</b> ${attrTag(m.attr)} ❤️<b data-monhp="${g}">${m.hp}</b>/${m.max}${m.elite ? ' <em class="elite">👑 菁英・★★★</em>' : ""}${Q.brave ? ' <em class="elite">🧐 勇氣挑戰・★★★</em>' : ""}${h ? ` <em class="holi">${h.e}${h.n}限定</em>` : ""}</span>
+    <span>${id === "main" ? "🐣" : "🐾"} <b class="mlv">Lv${s.lv}</b> <b>${esc(unitName(g, id))}</b> ❤️<b data-pethp="${g}">${ph}</b>/${s.hp} ${hpBar(ph, s.hp)}${s.spd > m.spd ? ' <em class="fast">💨 你比較快</em>' : ""}${Q.guard ? ' <em class="fast">🍐 守護中</em>' : ""}${Q.charge ? ' <em class="charge">💢 蓄力中！第一次就答對能擋住</em>' : ""}${Q.critReady ? ' <em class="fast">💥 會心準備</em>' : ""}</span>
+    <button class="ibtn" data-info="${g}">${TAMA[g].info ? "ℹ️ 收起" : "ℹ️ 詳細"}</button></div>`; }
+function infoHTML(g, Q, extra){ if(!TAMA[g].info) return ""; return `<div class="infobox">${holiBanner()}${monLine(g, Q)}${extra || ""}</div>`; }
+function holiChip(){ const h = holidayOf(); return h ? `<span class="chip2 holi" data-holi="${h.id}">${h.e} ${h.n}限定活動</span>` : ""; }
 function holiBanner(){ const h = holidayOf(); return h ? `<div class="holiban" data-holi="${h.id}">${h.e} ${h.n}限定活動中！怪獸穿上節慶裝扮，打倒會掉 🍡 節慶點心；🌿 抓怪 有機會遇到節慶夥伴</div>` : ""; }
 function questHTML(g){
   const pt = S.pets[g], c = curCard(), n = CARDS.indexOf(c) + 1;
@@ -3451,9 +3528,9 @@ function questHTML(g){
   if(Q.phase === "won"){ const d = Q.drop;
     return head + monLine(g, Q) + `<div class="win"><h4>🏆 打倒 Lv${Q.mon.lv} ${esc(Q.mon.name)}！ ${TIER[d.tier].n}</h4><div class="drops">${d.list.map(x => `<span class="drop">${x}</span>`).join("") || '<span class="drop">💪 練功 +1</span>'}</div>${d.note ? `<p class="note">${esc(d.note)}</p>` : ""}
       <div class="row"><button class="btn b-mint" data-newmon="${g}">👾 下一隻搗蛋怪獸</button><button class="btn ghost b-red" data-brave="${g}">🧐 挑戰剋我的怪獸</button><button class="btn ghost b-purple" data-diary="${g}">📖 寫冒險日記</button><button class="btn ghost b-purple" data-view="shop" data-g="${g}">🛒 去商店</button></div></div>`; }
-  const pv = lootPreview(g);
-  return head + holiBanner() + monLine(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + (Q.phase === "faint" ? faintHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q))
-    + (Q.energy < ENERGY_MAX && Q.phase === "fight" ? `<p class="dnote" data-preview="${pv.id || ""}">答對題目集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・答錯怪獸會反擊 👊・🎁 掉寶預告：${esc(pv.text)}${Q.brave ? "・🧐 勇氣挑戰中" : ""}</p>` : "")
+  const pv = lootPreview(g), left = LOOT_PER_DAY - cntK(adv(g).lootC, twDate());
+  const chips = `<div class="chips2">${holiChip()}<span class="chip2" data-preview="${pv.id || ""}">🎁 掉寶預告：${pv.id ? `${ITEMS[pv.id].e} ${esc(ITEMS[pv.id].n)}（今天還有 ${left}/${LOOT_PER_DAY} 次寶物）` : esc(pv.text)}</span></div>`;
+  return `<div class="finfo">` + head + chips + monLineC(g, Q) + infoHTML(g, Q, `<p class="dnote">答對題目集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・答錯怪獸會反擊 👊・選 ⭐⭐⭐ 又答對，下一招會心一擊 💥・🎁 ${esc(pv.text)}${Q.brave ? "・🧐 勇氣挑戰中" : ""}</p>`) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + (Q.phase === "faint" ? faintHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q)) + `</div>`
     + (Q.phase === "faint" ? "" : qBlockHTML(c.id, g, devQ(g), false));
 }
 function wildHTML(g){
@@ -3468,8 +3545,8 @@ function wildHTML(g){
   const balls = `<div class="balls">${own.map(([b, ci], i) => `<button class="ballbtn ${i === 0 ? "best" : ""}" style="--ec:${ITEMS[b].col === "rainbow" ? "#FF6FA8" : ITEMS[b].col}" data-throw="${b}" data-g="${g}" ${Q.phase !== "fight" ? "disabled" : ""}>${i === 0 ? '<span class="besttag">最好抓</span>' : ""}${ballIcon(b)}<b>${ITEMS[b].n} ×${invN(g, b)}</b><small>抓到機率 <b data-chance="${b}">${pct(ci.p)}</b>%</small>${ci.tags.length ? `<em>${esc(ci.tags.join("・"))}</em>` : ""}</button>`).join("") || '<p class="dnote">沒有精靈球了！到 🛒 商店用金幣買。</p>'}
     <button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>`;
   const tip = m.spirit ? "💗 心之精靈：用 💗 心之球 最好抓！" : m.holi ? `${HOLI[m.holi].e} 節慶限定夥伴：用 🎉 節慶球 最好抓！` : `${attrOf(m.attr).e} 這隻是${attrOf(m.attr).n}屬性：用 ${ITEMS[ELEM_BALL[m.attr]].n} 最好抓！${MON[m.id].land ? `🌍 來自 ${MON[m.id].land}，🌍 環遊球 也很好抓！` : ""}`;
-  return `<div class="dhead"><b>🌿 草叢裡跳出野生夥伴！答對集能量削弱牠，再丟精靈球</b></div>` + holiBanner() + sumHTML + monLine(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
-    + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote">越虛弱越好抓（牠不會被打倒，最少剩 1 點）。丟失敗 3 次牠會跑走。答錯牠會反擊 👊。${tip}</p>` + switchHTML(g, Q) + movesHTML(g, Q) + qBlockHTML(qw[g].cid, g, devQ(g), true);
+  return `<div class="finfo"><div class="dhead"><b>🌿 野生夥伴！答對集能量削弱牠，再丟精靈球</b></div><div class="chips2">${holiChip()}</div>` + sumHTML + monLineC(g, Q) + infoHTML(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
+    + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote tip">${tip}・越虛弱越好抓，丟失敗 3 次牠會跑走，答錯牠會反擊 👊</p>` + switchHTML(g, Q) + movesHTML(g, Q) + `</div>` + qBlockHTML(qw[g].cid, g, devQ(g), true);
 }
 // ---- 夥伴／隊伍／圖鑑
 function caughtDexHTML(g){
@@ -3521,11 +3598,14 @@ function renderDev(g){
   const keep = {}; el.querySelectorAll("[data-keep]").forEach(x => keep[x.dataset.keep] = x.value);
   const fk = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.keep : null;
   document.querySelectorAll(`#vtabs-${g} [data-view]`).forEach(b => b.classList.toggle("on", b.dataset.view === v));
-  el.dataset.view = v;
+  el.dataset.view = v; const tm = $("tama-" + g); if(tm) tm.dataset.view = v;
   el.innerHTML = v === "quest" ? questHTML(g) : v === "wild" ? wildHTML(g) : v === "shop" ? shopHTML(g) : v === "bag" ? bagHTML(g) : v === "dex" ? caughtDexHTML(g) : v === "heart" ? heartHTML(g)
     : `<div class="tpanel" id="tpanel-${g}">${panelHTML(g)}</div>`;
   el.querySelectorAll("[data-keep]").forEach(x => { if(keep[x.dataset.keep] !== undefined) x.value = keep[x.dataset.keep]; if(fk && x.dataset.keep === fk) x.focus(); });
   el.querySelectorAll("canvas[data-thumb]").forEach(c => drawThumb(c, c.dataset.thumb, c.dataset.hide === "1"));
+  const dq = (v === "quest" || v === "wild") ? el.querySelector(".dq") : null, qd = dq && dq.querySelector(".qdots");
+  if(qd && qd.querySelector(".qdot")){ const n = qd.querySelectorAll(".qdot").length, cur = [...qd.children].findIndex(x => x.classList.contains("on")) + 1, b = document.createElement("button");
+    b.className = "dotsbtn"; b.dataset.dots = g; b.textContent = TAMA[g].dotsOpen ? "🔢 收起題號 ▴" : `🔢 第 ${cur || 1}/${n} 題 ▾`; qd.before(b); dq.classList.toggle("dotsopen", !!TAMA[g].dotsOpen); }
   const st = (v === "quest" || v === "wild") && S.pets[g].species ? devQ(g) : null, qr = el.querySelector(".dq .row");
   if(qr && st && st.done){ const d = document.createElement("div"); d.className = "qnwrap"; d.innerHTML = qNoteHTML(g, st.cid); qr.after(d);
     const ta = d.querySelector("[data-keep]"); if(ta && keep[ta.dataset.keep] !== undefined){ ta.value = keep[ta.dataset.keep]; if(fk === ta.dataset.keep) ta.focus(); } }
@@ -3562,17 +3642,26 @@ function devClick(b, e){
   if(d.savediary){ const gg = d.savediary; saveDiary(gg, kv("da-" + gg), kv("db-" + gg), kv("dc-" + gg)); return true; }
   if(d.qnote){ TAMA[d.qnote].qnote = true; renderDev(d.qnote); return true; }
   if(d.saveq){ saveQNote(d.saveq, d.cid, kv("qn-" + d.saveq)); return true; }
+  if(d.info){ TAMA[d.info].info = !TAMA[d.info].info; renderDev(d.info); return true; }
+  if(d.dots){ TAMA[d.dots].dotsOpen = !TAMA[d.dots].dotsOpen; renderDev(d.dots); return true; }
   if(d.tomap){ const m = $("map"); if(m) m.scrollIntoView({behavior:"smooth", block:"start"}); return true; }
   return false;
 }
-// ---- 液晶：打怪畫面（左：上場的寵物／夥伴；右：怪獸）
+// ---- 液晶：打怪畫面（左：上場的寵物／夥伴；右：怪獸）＋ v7.1 招式特效
 function drawFight(ctx, g, Q, now, t){
   const pt = S.pets[g], sp = SPECIES[pt.species], stage = stageOf(pt.xp), acc = stage === 3 ? branchOf(pt).color : null, id = activeId(g);
-  const A = Q.anim && now - Q.anim.at < Q.anim.dur ? Q.anim : null, e = A ? (now - A.at) / 1000 : 0, F = lcdFont();
+  const A = Q.anim && now - Q.anim.at < Q.anim.dur ? Q.anim : null, e0 = A ? (now - A.at) / 1000 : 0, F = lcdFont();
+  const fxA = A && (A.kind === "move" || A.kind === "hit") && A.fx ? A : null, e = fxA ? fxTime(fxA, e0) : e0;
+  const PS = {x:16, y:17}, MS = {x:47, y:17};
+  const sh = fxA ? fxShake(fxA, e0) : [0, 0]; ctx.save(); ctx.translate(sh[0], sh[1]);
+  const hitOn = (H, w) => (H || []).some(h => e > h && e < h + (w || .2));
   let pdx = 0, pdy = still ? 0 : (Math.floor(t*2) % 2 ? -1 : 0), pm = Q.phase === "won" || Q.phase === "caught" ? "happy" : Q.phase === "faint" ? "sleep" : "idle", pflash = null;
-  if(A && A.kind === "move"){ pm = "happy"; pdx = e < .3 ? Math.round(e/.3*4) : e < .5 ? 4 - Math.round((e-.3)/.2*4) : 0; }
+  if(A && A.kind === "move"){ pm = "happy";
+    if(A.fx === "tackle") pdx = e < .3 ? Math.round(e / .3 * 22) : e < .6 ? 22 - Math.round((e - .3) / .3 * 22) : 0;
+    else pdx = e < .15 ? Math.round(e / .15 * 3) : e < .3 ? 3 - Math.round((e - .15) / .15 * 3) : 0;
+    if(A.ult && e < 1) pdy = -Math.round(Math.abs(Math.sin(e * 12)) * 2); }
   if(A && A.kind === "charge"){ pm = "happy"; pdy = -Math.round(Math.abs(Math.sin(e*10))*3); }
-  if(A && A.kind === "hit" && e > .35 && e < .9){ pdx = Math.floor(e*30) % 2 ? -1 : 1; pflash = Math.floor(e*20) % 2 ? "#FFFFFF" : null; pm = "sad"; }
+  if(A && A.kind === "hit"){ const h = A.h0 || .35; if(e > h && e < h + .55){ pdx = Math.floor(e*30) % 2 ? -1 : 1; pflash = Math.floor(e*20) % 2 ? "#FFFFFF" : null; pm = "sad"; } }
   if(A && A.kind === "dodge" && e > .25 && e < .9){ pdy = -6; pdx = -3; }
   if(Q.phase === "faint") pdy = 3;
   if(!still && !A && pm === "happy") pdy = -Math.round(Math.abs(Math.sin(t*6))*2);
@@ -3587,8 +3676,10 @@ function drawFight(ctx, g, Q, now, t){
   const hidden = Q.phase === "caught" || Q.phase === "fled" || (ball && e > .7 && !(A.ok === false && e > 2.3));
   if(!hidden){
     let mdx = 0, mdy = still ? 0 : (Math.floor(t*2 + 1) % 2 ? -1 : 0), flash = null, mm = Q.phase === "won" || Q.phase === "ko" ? "sleep" : mon.hp <= mon.max*.3 ? "sad" : "idle";
-    if(A && A.kind === "move" && e > .55 && e < 1.0){ mdx = Math.floor(e*30) % 2 ? 1 : -1; flash = Math.floor(e*20) % 2 ? "#FFFFFF" : null; }
-    if(A && (A.kind === "hit" || A.kind === "dodge" || A.kind === "block")){ mm = "happy"; mdx = e < .35 ? -Math.round(e/.35*14) : e < .7 ? -14 + Math.round((e-.35)/.35*14) : 0; }
+    if(A && A.kind === "move" && hitOn(A.hits, .2)){ mdx = Math.floor(e*30) % 2 ? 1 : -1; flash = Math.floor(e*24) % 2 ? "#FFFFFF" : null; mm = "sad"; }
+    if(A && A.kind === "move" && A.fx === "quake" && e > .45 && e < 1.2) mdy = -Math.round(Math.abs(Math.sin(e * 14)) * 2);
+    if(A && A.kind === "hit"){ mm = "happy"; if(A.fx === "tackle") mdx = e < .3 ? -Math.round(e/.3*22) : e < .6 ? -22 + Math.round((e-.3)/.3*22) : 0; else mdx = e < .15 ? -Math.round(e/.15*3) : e < .3 ? -3 + Math.round((e-.15)/.15*3) : 0; }
+    if(A && (A.kind === "dodge" || A.kind === "block")){ mm = "happy"; mdx = e < .35 ? -Math.round(e/.35*14) : e < .7 ? -14 + Math.round((e-.35)/.35*14) : 0; }
     if(Q.charge && Q.phase === "fight" && !A && !still) mdy = Math.floor(t*8) % 2 ? -1 : 0;
     if(Q.phase === "won" || Q.phase === "ko") mdy = 2;
     const f = fighterSprite({mon:mon.id, stage:2, acc:mon.spirit ? "#FFD23F" : null}, mm);
@@ -3598,10 +3689,9 @@ function drawFight(ctx, g, Q, now, t){
     if(Q.mode === "quest" && Q.phase === "fight") pat(ctx, ANGER.rows, 55 + mdx, f.spr.top + 1 + mdy, ANGER.colors);
     if(Q.charge && Q.phase === "fight") for(let i = 0; i < 3; i++) px(ctx, 40 + i*4 + mdx, 9 + (Math.floor(t*6 + i) % 2), "#FF4B55");
   }
-  if(A && A.kind === "move" && e > .25 && e < .6){ const k = (e - .25) / .35, x = Math.round(19 + k*26), c = attrOf(A.attr).c;
-    for(let i = 0; i < 3; i++) for(let j = 0; j < 3; j++) px(ctx, x + i, 16 + j, (i + j) % 2 ? c : "#FFFFFF"); px(ctx, x - 2, 17, c); px(ctx, x - 4, 17, c); }
-  if(A && A.kind === "hit" && e > .2 && e < .45){ const k = (e - .2) / .25, x = Math.round(44 - k*24), c = attrOf(mon.attr).c;
-    for(let i = 0; i < 3; i++) for(let j = 0; j < 3; j++) px(ctx, x + i, 17 + j, (i + j) % 2 ? c : "#3A2E4A"); }
+  // 招式特效
+  if(fxA && FXDRAW[fxA.fx] && !still){ const atk = fxA.kind === "move", Sx = atk ? PS : MS, Tx = atk ? MS : PS; try { FXDRAW[fxA.fx](ctx, fxA, e, Sx, Tx); } catch(err){} }
+  else if(fxA && still && fxA.hits && e > fxA.hits[0]) burst(ctx, fxA.kind === "move" ? MS.x : PS.x, 17, .5, FXC[fxA.attr] || FXC.normal, 8, 6);
   if(ball){ const P = ballPat(A.ball); let bx = 46, by = 22;
     if(e < .7){ const k = e / .7; bx = Math.round(16 + k*30); by = Math.round(20 - Math.sin(Math.PI*k)*14); }
     else if(e < 2.3){ bx = 46 + (Math.floor((e - .7) / .4) % 2 ? 1 : -1) * (e < 2.0 ? 1 : 0); }
@@ -3610,6 +3700,8 @@ function drawFight(ctx, g, Q, now, t){
     if(A.ok && e > 2.3) for(let i = 0; i < 3; i++) pat(ctx, SPARK.rows, 42 + i*4, 17 - (i % 2)*3, SPARK.colors); }
   if(Q.phase === "caught"){ const P = ballPat(Q.anim && Q.anim.ball); pat(ctx, P.rows, 46, 22, P.colors); if(Math.floor(t*3) % 2) pat(ctx, SPARK.rows, 51, 18, SPARK.colors); }
   if(Q.phase === "won") for(let i = 0; i < 3; i++) pat(ctx, COIN.rows, 41 + i*6, 23 - (still ? 0 : Math.round(Math.abs(Math.sin(t*5 + i))*3)), COIN.colors);
+  if(fxA) fxFlash(ctx, fxA, e0);
+  ctx.restore();
   // 上方資訊
   lcdLabel(ctx, 4, 4, 180, 46); lcdLabel(ctx, 200, 4, 180, 46);
   ctx.textAlign = "left"; ctx.textBaseline = "middle"; ctx.fillStyle = INK; ctx.font = "800 12px " + F;
@@ -3617,18 +3709,208 @@ function drawFight(ctx, g, Q, now, t){
   const full = Q.energy >= ENERGY_MAX, ep = Q.energy / ENERGY_MAX;
   ctx.fillStyle = "#EDE6F5"; ctx.fillRect(12, 24, 164, 7); ctx.fillStyle = full && Math.floor(t*4) % 2 ? "#FFF06A" : "#FFC93C"; ctx.fillRect(12, 24, 164*ep, 7);
   const php = fHp(g, Q, id) / fs.hp; ctx.fillStyle = "#EDE6F5"; ctx.fillRect(12, 36, 164, 7); ctx.fillStyle = php < .3 ? "#FF4B55" : php < .6 ? "#FFD23F" : "#3DDC97"; ctx.fillRect(12, 36, 164*php, 7);
-  ctx.font = "800 10px " + F; ctx.textAlign = "right"; ctx.fillStyle = INK; ctx.fillText(full ? "⚡ 滿！" : `⚡ ${fmt(Q.energy)}/${ENERGY_MAX}`, 176, 14);
-  if(!(A && A.kind === "move" && e < .55)) Q.hpShow += (mon.hp - Q.hpShow) * .12; const hp = Math.max(0, Q.hpShow) / mon.max;
+  ctx.font = "800 10px " + F; ctx.textAlign = "right"; ctx.fillStyle = INK; ctx.fillText(full ? (Q.critReady ? "💥 會心！" : "⚡ 滿！") : `⚡ ${fmt(Q.energy)}/${ENERGY_MAX}`, 176, 14);
+  const lastHit = fxA && fxA.hits ? fxA.hits[fxA.hits.length - 1] : .55;
+  if(!(A && A.kind === "move" && e < lastHit)) Q.hpShow += (mon.hp - Q.hpShow) * .12; const hp = Math.max(0, Q.hpShow) / mon.max;
   ctx.fillStyle = "#EDE6F5"; ctx.fillRect(208, 30, 164, 9); ctx.fillStyle = hp < .3 ? "#FF4B55" : hp < .6 ? "#FFD23F" : "#3DDC97"; ctx.fillRect(208, 30, 164*hp, 9);
   ctx.fillStyle = INK; ctx.fillText(`❤️ ${mon.hp}/${mon.max}`, 372, 14);
-  const pop = (txt, x, y, col, size) => { ctx.textAlign = "center"; ctx.font = `900 ${size || 24}px ` + F; ctx.lineWidth = 4; ctx.strokeStyle = "#FFFFFF"; ctx.strokeText(txt, x, y); ctx.fillStyle = col; ctx.fillText(txt, x, y); };
-  if(A && A.kind === "move" && e > .55){ const k = Math.min(1, (e - .55) / .9), y = 92 - k*26; pop(`-${A.dmg}`, 288, y, "#FF4B55"); if(A.m > 1) pop("效果絕佳！", 288, y + 22, "#F28C00", 14); }
-  if(A && A.kind === "hit" && e > .35){ const k = Math.min(1, (e - .35) / .9), y = 92 - k*26; pop(`-${A.dmg}`, 96, y, "#E8475F"); if(A.big) pop("蓄力攻擊！", 96, y + 22, "#F28C00", 14); }
+  const pop = (txt, x, y, col, size, bg) => { ctx.textAlign = "center"; ctx.font = `900 ${size || 24}px ` + F;
+    if(bg){ const w = ctx.measureText(txt).width + 18; ctx.fillStyle = bg; rr(ctx, x - w/2, y - size*.7, w, size*1.4, 8); ctx.fill(); }
+    ctx.lineWidth = 4; ctx.strokeStyle = "#FFFFFF"; ctx.strokeText(txt, x, y); ctx.fillStyle = col; ctx.fillText(txt, x, y); };
+  if(fxA){ const atk = fxA.kind === "move", cx = atk ? 288 : 96, H = fxA.hits || [.55], P = fxA.parts || [fxA.dmg];
+    H.forEach((h, i) => { if(e > h){ const k = Math.min(1, (e - h) / .9), big = fxA.crit && i === H.length - 1, sz = (big ? 34 : 26) + (P.length > 1 ? 0 : 2);
+      const sc = e - h < .1 ? 1.35 - (e - h) * 3.5 : 1; pop(`-${P[i]}`, cx + (P.length > 1 ? (i - (P.length - 1) / 2) * 34 : 0), 96 - k * 28 - i * 6, big ? "#F28C00" : atk ? "#FF4B55" : "#E8475F", Math.round(sz * sc)); } });
+    const done = e > lastHit;
+    if(atk && done && fxA.crit) pop("💥 會心一擊！", cx, 132, "#F28C00", 18, "rgba(255,240,170,.9)");
+    else if(atk && done && fxA.m > 1) pop("效果絕佳！", cx, 132, "#F28C00", 17, "rgba(255,255,255,.85)");
+    else if(atk && done && fxA.m < 1) pop("效果不太好…", cx, 132, "#7A6F8A", 14);
+    if(!atk && done && fxA.big) pop("蓄力攻擊！", cx, 132, "#F28C00", 16, "rgba(255,255,255,.85)");
+    if(atk && e < .9 && (fxA.ult || (FXDEF[fxA.fx] && FXDEF[fxA.fx].hits.length > 1) || ["field","quake","tidal","pillar","meteor","leafstorm"].includes(fxA.fx))){ const k = Math.min(1, e / .15);
+      pop(fxA.ult ? `💗 ${fxA.name}` : fxA.name, 192, 64, fxA.ult ? "#C2185B" : INK, Math.round((fxA.ult ? 22 : 17) * k), "rgba(255,255,255,.85)"); } }
   if(A && A.kind === "dodge" && e > .3) pop("閃開了！", 96, 84 - Math.min(1, e) * 16, "#2F9BFF", 18);
   if(A && A.kind === "block" && e > .3) pop("擋住了！", 96, 84 - Math.min(1, e) * 16, "#22C08A", 18);
   if(Q.phase === "won" || Q.phase === "caught" || Q.phase === "fled" || Q.phase === "faint"){
     const tx = Q.phase === "won" ? "打倒了！" : Q.phase === "caught" ? "抓到了！" : Q.phase === "faint" ? "累倒了…休息一下" : "跑走了…"; pop(tx, Q.phase === "faint" ? 192 : 288, 74, INK, 20); }
 }
+// ===== v7.1：更多招式＋不同的特效動畫 =====
+// 每個屬性 4 招（寵物 Lv1／3／6／10 學會），加上無屬性招式、夥伴專屬招式、心之精靈必殺技
+const FXL = {
+  thunder:[{fx:"shot",  n:"電光衝擊"}, {fx:"bolt", n:"落雷"},     {fx:"chain", n:"連鎖閃電"}, {fx:"field", n:"雷霆領域"}],
+  grass:  [{fx:"shot",  n:"飛葉快刀"}, {fx:"vine", n:"藤鞭纏繞"}, {fx:"seeds", n:"種子炸彈"}, {fx:"leafstorm", n:"飛葉風暴"}],
+  earth:  [{fx:"shot",  n:"岩石砲"},   {fx:"rockfall", n:"落石"}, {fx:"sandtornado", n:"沙塵龍捲"}, {fx:"quake", n:"大地震"}],
+  fire:   [{fx:"shot",  n:"火花彈"},   {fx:"fireballs", n:"火球連發"}, {fx:"ring", n:"火焰圈"}, {fx:"pillar", n:"火柱"}],
+  water:  [{fx:"shot",  n:"水槍"},     {fx:"bubbles", n:"泡泡爆破"}, {fx:"waterspout", n:"水龍捲"}, {fx:"tidal", n:"大海嘯"}]
+};
+const MOVE_LV = [1, 3, 6, 10], MOVE_POW = [0.95, 1.05, 1.2, 1.4];
+const STAR_MOVE = {id:"stars", name:"星星雨", card:null, attr:"normal", pow:0.9, fx:"stars", lv:4};
+// 特效設定：dur 秒、hits 命中時間（多段攻擊）、shake 震動、flash 閃光
+const FXDEF = {
+  shot:{dur:1.2, hits:[.55]}, tackle:{dur:1.1, hits:[.35]}, stars:{dur:1.4, hits:[.6,.8,1.0]},
+  bolt:{dur:1.4, hits:[.55], shake:[.55,.95,2.5], flash:[.55,.68,"#FFFFFF"]},
+  chain:{dur:1.5, hits:[.45,.72,.99], shake:[.45,1.1,1]},
+  field:{dur:1.7, hits:[.7], shake:[.6,1.3,3], flash:[.68,.8,"#FFF59A"]},
+  vine:{dur:1.4, hits:[.62], shake:[.62,.8,1]},
+  seeds:{dur:1.5, hits:[.55,.78,1.01], shake:[.55,1.1,1.2]},
+  leafstorm:{dur:1.6, hits:[.75], shake:[.75,1.0,1.5]},
+  rockfall:{dur:1.4, hits:[.5,.66,.82], shake:[.5,1.0,2]},
+  sandtornado:{dur:1.6, hits:[.7], shake:[.7,.95,1.5]},
+  quake:{dur:1.6, hits:[.45], shake:[.3,1.25,4]},
+  fireballs:{dur:1.4, hits:[.45,.65,.85], shake:[.45,1.0,1.2]},
+  ring:{dur:1.5, hits:[.85], shake:[.85,1.05,2], flash:[.85,.95,"#FFB347"]},
+  pillar:{dur:1.5, hits:[.55], shake:[.5,1.1,2.5], flash:[.5,.6,"#FFD23F"]},
+  bubbles:{dur:1.4, hits:[.62]},
+  waterspout:{dur:1.6, hits:[.7], shake:[.7,.95,1.5]},
+  tidal:{dur:1.6, hits:[.85], shake:[.8,1.15,2.5]},
+  beam:{dur:1.4, hits:[.5], shake:[.5,.95,2], flash:[.48,.56,"#FFFFFF"]},
+  orbit:{dur:1.5, hits:[.75,.85,.95]},
+  meteor:{dur:1.5, hits:[.7], shake:[.7,1.1,3.5], flash:[.7,.8,"#FFFFFF"]},
+  spiral:{dur:1.4, hits:[.7]},
+  ultimate:{dur:2.1, hits:[1.05], shake:[1.0,1.6,4], flash:[1.02,1.18,"#FFFFFF"]}
+};
+const FXC = {thunder:["#FFE36E","#FFFFFF","#FFB800"], grass:["#3DDC97","#B6F5C8","#1E9E5A"], earth:["#C8A165","#EBD9AE","#7A5A33"],
+  fire:["#FF7A2F","#FFE066","#E8323C"], water:["#4FB6FF","#DDF2FF","#2F6BFF"], normal:["#FFD23F","#FFFFFF","#FF8FC7"]};
+const SIG_FX = ["beam","orbit","meteor","spiral"];
+const fxHash = (s) => { let h = 7; for(const ch of String(s)) h = (h * 31 + ch.charCodeAt(0)) >>> 0; return h; };
+const cardFx = (cid, k) => { const a = ATTR[CARDS.find(c => c.id === cid).subject].k, i = Math.max(0, CARDS.findIndex(c => c.id === cid));
+  return k === 0 ? FXL[a][1 + (i % 2)].fx : FXL[a][3 - (i % 2)].fx; };
+// 這隻上場的（主寵物或夥伴）用什麼屬性學等級招式
+function fighterAttr(g, id, Q){ if(id && id !== "main") return MON[id].attr; const a = petStats(g).attr; if(a && FXL[a]) return a; const c = Q && Q.card ? CARDS.find(x => x.id === Q.card) : curCard(); return ATTR[c.subject].k; }
+function lvMoves(g, id, Q){ const a = fighterAttr(g, id, Q), lv = lvInfo(g, id || "main").lv;
+  return FXL[a].map((m, i) => ({id:`lv-${a}-${i}`, name:m.n, attr:a, pow:MOVE_POW[i], fx:m.fx, lv:MOVE_LV[i], learned: lv >= MOVE_LV[i]})); }
+function movesLearnedAt(g, id, lv){ const out = lvMoves(g, id).filter(m => m.lv === lv).map(m => m.name); if((!id || id === "main") && lv === STAR_MOVE.lv) out.push(STAR_MOVE.name); return out; }
+// 每台平板記得哪些招式看過（🆕 標記；不放進存檔）
+const MVSEEN_KEY = "shuangbao-mvseen";
+function mvSeen(){ try { return JSON.parse(localStorage.getItem(MVSEEN_KEY) || "{}") || {}; } catch(e){ return {}; } }
+function mvMark(g, ids){ const s = mvSeen(); for(const id of ids) s[`${g}|${id}`] = 1; try { localStorage.setItem(MVSEEN_KEY, JSON.stringify(s)); } catch(e){} }
+function mvIsNew(g, id, all){ const s = mvSeen(); if(!s[`${g}|__init`]){ mvMark(g, ["__init", ...all]); return false; } return !s[`${g}|${id}`]; }
+
+// ---- 畫特效用的小工具（格子座標；半格精度，畫面放大也很銳利）
+const fr = (i, s) => { const x = Math.sin(i * 127.1 + (s || 0) * 311.7) * 43758.5453; return x - Math.floor(x); };
+function blk(ctx, x, y, c, w, h){ ctx.fillStyle = c; ctx.fillRect(Math.round(x * 2) / 2 * CELLPX, Math.round(y * 2) / 2 * CELLPX, (w || 1) * CELLPX, (h || w || 1) * CELLPX); }
+function burst(ctx, x, y, k, cols, n, r){ n = n || 10; r = r || 8; if(k < 0 || k > 1) return;
+  for(let i = 0; i < n; i++){ const a = i / n * Math.PI * 2 + fr(i, 3) * .5, d = k * r * (.6 + fr(i, 9) * .6); blk(ctx, x + Math.cos(a) * d, y + Math.sin(a) * d * .8, cols[i % cols.length], k < .6 ? 1 : .5); } }
+function jag(ctx, x0, y0, x1, y1, seed, c1, c2){ const n = Math.max(3, Math.round(Math.hypot(x1 - x0, y1 - y0) / 2)); let px0 = x0, py0 = y0;
+  for(let i = 1; i <= n; i++){ const k = i / n, j = i < n ? (fr(i, seed) - .5) * 3 : 0, x = x0 + (x1 - x0) * k + (y1 - y0 ? j : 0), y = y0 + (y1 - y0) * k + (y1 - y0 ? 0 : j);
+    const st = Math.max(Math.abs(x - px0), Math.abs(y - py0)) * 2; for(let s = 0; s <= st; s++){ const q = s / Math.max(1, st); blk(ctx, px0 + (x - px0) * q, py0 + (y - py0) * q, c1, 1); if(c2) blk(ctx, px0 + (x - px0) * q + .5, py0 + (y - py0) * q - .5, c2, .5); }
+    px0 = x; py0 = y; } }
+function shotShape(ctx, a, x, y, e){ const C = FXC[a];
+  if(a === "thunder"){ blk(ctx, x, y, C[1]); blk(ctx, x - .5, y + .5, C[0]); blk(ctx, x + .5, y - .5, C[0]); }
+  else if(a === "grass"){ blk(ctx, x, y, C[0], 1.5, 1); blk(ctx, x + .5, y - .5, C[1], 1, .5); blk(ctx, x - 1, y + .5, C[2], 1, .5); }
+  else if(a === "earth"){ blk(ctx, x - .5, y - .5, C[2], 2); blk(ctx, x - .5, y - .5, C[0], 1.5); blk(ctx, x, y - .5, C[1], .5); }
+  else if(a === "fire"){ blk(ctx, x - .5, y - .5, C[2], 2); blk(ctx, x, y, C[1]); blk(ctx, x - 1.5, y + (Math.floor(e * 20) % 2 ? 0 : .5), C[0], 1); }
+  else if(a === "water"){ blk(ctx, x - .5, y - .5, C[0], 2); blk(ctx, x - .5, y - .5, C[1], .5); blk(ctx, x - 1.5, y, C[0], 1, .5); }
+  else { pat(ctx, SPARK.rows, Math.round(x) - 1, Math.round(y) - 1, SPARK.colors); } }
+function lerp(a, b, k){ return a + (b - a) * Math.max(0, Math.min(1, k)); }
+// ---- 每個特效怎麼畫：S＝攻擊的一方、T＝被打的一方（格子座標），e＝秒
+const FXDRAW = {
+  shot(ctx, A, e, S, T){ const a = A.attr, C = FXC[a] || FXC.normal;
+    if(e > .15 && e < .55){ const k = (e - .15) / .4; for(let j = 3; j >= 0; j--){ const kk = k - j * .06; if(kk < 0) continue;
+      const x = lerp(S.x, T.x, kk), y = lerp(S.y, T.y, kk) - Math.sin(Math.PI * kk) * 3 + (a === "thunder" ? Math.sin(kk * 30) * 1.2 : 0); if(j) blk(ctx, x, y, C[j % 3], .5); else shotShape(ctx, a, x, y, e); } }
+    burst(ctx, T.x, T.y, (e - .55) / .45, C, 10, 7); },
+  tackle(ctx, A, e, S, T){ burst(ctx, T.x - Math.sign(T.x - S.x) * 4, T.y, (e - .35) / .4, ["#FFD23F","#FFFFFF","#FF8FC7"], 8, 6); },
+  stars(ctx, A, e, S, T){ for(let i = 0; i < 9; i++){ const t0 = .15 + i * .07, k = (e - t0) / .4; if(k < 0) continue;
+      if(k < 1) pat(ctx, SPARK.rows, Math.round(lerp(T.x - 14 + fr(i, 2) * 8, T.x - 2 + fr(i, 5) * 6, k)), Math.round(lerp(-3, T.y - 2 + fr(i, 7) * 5, k)), {Y: i % 2 ? "#FFD23F" : "#FF8FC7"});
+      else burst(ctx, T.x - 2 + fr(i, 5) * 6, T.y + fr(i, 7) * 4, k - 1, ["#FFFFFF","#FFD23F"], 6, 4); } },
+  bolt(ctx, A, e, S, T){ const C = FXC.thunder;
+    if(e > .2 && e < .55){ const k = (e - .2) / .35; blk(ctx, T.x - 4, 0, "rgba(60,60,90,.35)", 9, 3); if(Math.floor(e * 18) % 2) jag(ctx, T.x + 2, 0, T.x + 2, 3 * k, 4, C[0]); }
+    if(e > .5 && e < .95){ jag(ctx, T.x, -1, T.x, T.y, Math.floor(e * 25), C[1], C[0]); jag(ctx, T.x + 1, -1, T.x - 2, T.y - 3, Math.floor(e * 25) + 9, C[0]); }
+    burst(ctx, T.x, T.y + 3, (e - .55) / .5, C, 14, 10); },
+  chain(ctx, A, e, S, T){ const C = FXC.thunder, off = [[-3,-3],[3,0],[-1,3]], H = FXDEF.chain.hits;
+    H.forEach((h, i) => { const px1 = T.x + off[i][0], py1 = T.y + off[i][1];
+      if(e > h - .14 && e < h + .1){ const prev = i ? [T.x + off[i-1][0], T.y + off[i-1][1]] : [S.x + 3, S.y]; jag(ctx, prev[0], prev[1], px1, py1, Math.floor(e * 30) + i, C[1], C[0]); }
+      burst(ctx, px1, py1, (e - h) / .3, C, 8, 5); }); },
+  field(ctx, A, e, S, T){ const C = FXC.thunder; if(e < .2 || e > 1.4) return;
+    ctx.fillStyle = `rgba(255,236,110,${.12 + .12 * (Math.floor(e * 14) % 2)})`; ctx.fillRect(32 * CELLPX, 0, 32 * CELLPX, 32 * CELLPX);
+    for(let i = 0; i < 7; i++){ const t0 = .25 + i * .12; if(e > t0 && e < t0 + .14){ const x = 35 + fr(i, 4) * 26; jag(ctx, x, -1, x + (fr(i, 8) - .5) * 4, 20 + fr(i, 6) * 8, i * 7 + Math.floor(e * 20), C[1], C[0]); } }
+    for(let x = 33; x < 64; x += 3) blk(ctx, x, 28 + (Math.floor(e * 10 + x) % 2) * .5, C[(x >> 1) % 3], 1, .5);
+    burst(ctx, T.x, T.y, (e - .7) / .5, C, 16, 12); },
+  vine(ctx, A, e, S, T){ const C = FXC.grass, k = Math.min(1, Math.max(0, (e - .12) / .45)), dir = Math.sign(T.x - S.x) || 1;
+    if(e > .12 && e < 1.25){ const n = Math.round(Math.abs(T.x - S.x) * 2 * k); for(let i = 0; i <= n; i++){ const x = S.x + dir * i / 2, q = i / (Math.abs(T.x - S.x) * 2); blk(ctx, x, lerp(S.y + 2, T.y, q) + Math.sin(i * .7 + e * 6) * 1.3, i % 6 === 0 ? C[1] : C[2], 1, .5); if(i % 8 === 4) blk(ctx, x, lerp(S.y + 2, T.y, q) - 1, C[0], 1, .5); } }
+    if(e > .55 && e < 1.3){ const r = lerp(7, 4, (e - .55) / .3); for(let i = 0; i < 14; i++){ const a = i / 14 * Math.PI * 2 + e * 3; blk(ctx, T.x + Math.cos(a) * r, T.y + Math.sin(a) * r * .8, i % 3 ? C[2] : C[0], 1, .5); } } },
+  seeds(ctx, A, e, S, T){ const C = FXC.grass, off = [[-3,1],[2,-2],[1,3]];
+    FXDEF.seeds.hits.forEach((h, i) => { const t0 = h - .35, k = (e - t0) / .35, tx = T.x + off[i][0], ty = T.y + off[i][1];
+      if(k > 0 && k < 1){ blk(ctx, lerp(S.x, tx, k), lerp(S.y, ty, k) - Math.sin(Math.PI * k) * 9, "#8A5A2B", 1.5); blk(ctx, lerp(S.x, tx, k) + .5, lerp(S.y, ty, k) - Math.sin(Math.PI * k) * 9, C[0], .5); }
+      burst(ctx, tx, ty, (e - h) / .35, [C[0], "#8A5A2B", C[1]], 10, 6); }); },
+  leafstorm(ctx, A, e, S, T){ const C = FXC.grass; if(e < .08 || e > 1.4) return;
+    for(let i = 0; i < 20; i++){ const ph = e * 7 + i * .9, base = lerp(16, 3, (e - .08) / .8) + (i % 3), cx = lerp(S.x, T.x, Math.min(1, (e - .08) / .35)), cy = T.y;
+      const x = cx + Math.cos(ph) * base, y = cy + Math.sin(ph) * base * .6; blk(ctx, x, y, i % 2 ? C[0] : C[2], 1, .5); blk(ctx, x + .5, y - .5, C[1], .5); }
+    burst(ctx, T.x, T.y, (e - .75) / .5, C, 14, 10); },
+  rockfall(ctx, A, e, S, T){ const C = FXC.earth, off = [-4, 1, 5];
+    FXDEF.rockfall.hits.forEach((h, i) => { const k = (e - (h - .3)) / .3, x = T.x + off[i];
+      if(k > 0 && k < 1){ const y = lerp(-4, T.y - 2, k * k); blk(ctx, x - 1, y - 1, C[2], 3); blk(ctx, x - .5, y - .5, C[0], 2); blk(ctx, x, y - .5, C[1], .5); }
+      if(e > h){ const d = (e - h) / .5; if(d < 1) for(let j = 0; j < 6; j++) blk(ctx, x + (j - 2.5) * d * 2, T.y + 4 - Math.sin(Math.PI * d) * (2 + j % 3), j % 2 ? C[1] : C[0], .5); } }); },
+  sandtornado(ctx, A, e, S, T){ const C = FXC.earth; if(e < .08 || e > 1.45) return; const cx = lerp(S.x, T.x, (e - .08) / .35);
+    for(let j = 0; j < 12; j++){ const y = T.y + 8 - j * 1.4, r = 1 + j * .55; for(let i = 0; i < 3; i++){ const a = e * 12 + j * .7 + i * 2.09; blk(ctx, cx + Math.cos(a) * r, y + Math.sin(a) * .5, C[(i + j) % 3], .5); } }
+    burst(ctx, T.x, T.y, (e - .7) / .5, C, 10, 8); },
+  quake(ctx, A, e, S, T){ const C = FXC.earth; if(e < .25 || e > 1.4) return; const k = Math.min(1, (e - .25) / .35), dir = Math.sign(T.x - S.x) || 1;
+    for(let i = 0; i < 26 * k; i++){ const x = S.x + dir * (4 + i); blk(ctx, x, 28.5 + (fr(i, 2) > .5 ? .5 : 0), "#5A4128", 1, .5); if(i % 5 === 2) blk(ctx, x, 29.5, "#5A4128", .5, 1); }
+    for(let i = 0; i < 10; i++){ const d = ((e - .45) * 2 + fr(i, 4)) % 1; if(e > .45) blk(ctx, T.x - 6 + fr(i, 1) * 12, 28 - d * 6, i % 2 ? C[0] : C[1], .5); } },
+  fireballs(ctx, A, e, S, T){ const C = FXC.fire, off = [[0,-2],[1,1],[-1,2]];
+    FXDEF.fireballs.hits.forEach((h, i) => { const k = (e - (h - .25)) / .25, tx = T.x + off[i][0], ty = T.y + off[i][1];
+      if(k > 0 && k < 1){ for(let j = 3; j >= 0; j--){ const kk = k - j * .08; if(kk < 0) continue; const x = lerp(S.x, tx, kk), y = lerp(S.y, ty, kk); if(j) blk(ctx, x, y, C[j % 3], .5 + (3 - j) * .2); else shotShape(ctx, "fire", x, y, e); } }
+      burst(ctx, tx, ty, (e - h) / .3, C, 9, 6); }); },
+  ring(ctx, A, e, S, T){ const C = FXC.fire; if(e < .1) return;
+    if(e < .9){ const r = lerp(11, 3.5, (e - .1) / .75); for(let i = 0; i < 14; i++){ const a = i / 14 * Math.PI * 2 + e * 5, fl = Math.floor(e * 16 + i) % 2;
+      const x = T.x + Math.cos(a) * r, y = T.y + Math.sin(a) * r * .75; blk(ctx, x, y, C[2], 1); blk(ctx, x, y - .5 - fl * .5, C[0], .5); blk(ctx, x + .5, y - 1 - fl * .5, C[1], .5); } }
+    burst(ctx, T.x, T.y, (e - .85) / .5, C, 18, 11); },
+  pillar(ctx, A, e, S, T){ const C = FXC.fire; if(e < .2 || e > 1.3) return;
+    if(e < .5){ for(let i = 0; i < 5; i++) blk(ctx, T.x - 2 + i, 28, Math.floor(e * 20 + i) % 2 ? C[0] : C[2], 1, .5); return; }
+    const h = Math.min(30, (e - .5) / .15 * 30), fade = e > 1.0 ? (1.3 - e) / .3 : 1;
+    for(let y = 28; y > 28 - h; y -= .5){ const w = 2.5 + Math.sin(y * .8 + e * 20) * .8 * fade; for(let x = -w; x <= w; x += .5){ const c = Math.abs(x) < w * .4 ? C[1] : Math.abs(x) < w * .75 ? C[0] : C[2]; if(fr(x * 7 + y, Math.floor(e * 15)) < .82 * fade + .1) blk(ctx, T.x + x, y, c, .5); } } },
+  bubbles(ctx, A, e, S, T){ const C = FXC.water;
+    for(let i = 0; i < 8; i++){ const t0 = .1 + i * .05, k = (e - t0) / .45, ty = T.y - 3 + fr(i, 3) * 6, tx = T.x - 3 + fr(i, 6) * 6;
+      if(k > 0 && k < 1){ const x = lerp(S.x + 2, tx, k), y = lerp(S.y, ty, k) + Math.sin(k * 9 + i) * 1.5, r = .5 + (i % 3) * .5;
+        blk(ctx, x - r, y - r, C[0], r * 2 + .5, .5); blk(ctx, x - r, y + r, C[0], r * 2 + .5, .5); blk(ctx, x - r, y - r, C[0], .5, r * 2 + .5); blk(ctx, x + r, y - r, C[0], .5, r * 2 + .5); blk(ctx, x - r + .5, y - r + .5, C[1], .5); }
+      else if(k >= 1) burst(ctx, tx, ty, (k - 1) * 2.2, [C[1], C[0]], 6, 3); } },
+  waterspout(ctx, A, e, S, T){ const C = FXC.water; if(e < .15 || e > 1.45) return; const hk = Math.min(1, (e - .15) / .4);
+    for(let j = 0; j < 22 * hk; j++){ const y = 28 - j, r = 1.5 + j * .18 + Math.sin(e * 8 + j) * .4; for(let i = 0; i < 4; i++){ const a = e * 14 + j * .6 + i * 1.57; blk(ctx, T.x + Math.cos(a) * r, y, (i + j) % 3 === 0 ? C[1] : C[(i % 2) * 2], .5); } }
+    burst(ctx, T.x, 6, (e - .7) / .5, [C[1], C[0]], 12, 7); },
+  tidal(ctx, A, e, S, T){ const C = FXC.water; if(e < .1 || e > 1.5) return; const dir = Math.sign(T.x - S.x) || 1, front = lerp(0, 72, (e - .1) / 1.1), fade = e > 1.25 ? (1.5 - e) / .25 : 1;
+    for(let i = 0; i < front; i += .5){ const x = dir > 0 ? i : 63.5 - i, back = front - i, h = Math.max(0, Math.min(14, back * 1.5)) * fade + Math.sin(i * .6 + e * 10) * 1.2;
+      if(h <= 0) continue; blk(ctx, x, 30 - h, C[1], .5, .5); blk(ctx, x, 30.5 - h, back < 3 ? C[1] : C[0], .5, Math.max(.5, h - .5)); if(back > 6 && fr(i, Math.floor(e * 8)) > .85) blk(ctx, x, 31 - h * .5, C[2], .5); } },
+  beam(ctx, A, e, S, T){ const col = A.col || "#FFD23F"; if(e < .2 || e > 1.0) return;
+    if(e < .45){ burst(ctx, S.x + 3, S.y, 1 - (e - .2) / .25, [col, "#FFFFFF"], 10, 6); return; }
+    const k = Math.min(1, (e - .45) / .08), w = e > .85 ? (1 - e) / .15 * 1.5 : 1.5;
+    for(let x = S.x + 3; x < lerp(S.x + 3, T.x, k); x += .5){ blk(ctx, x, S.y - w, col, .5, w * 2); if(Math.floor(e * 30 + x) % 3) blk(ctx, x, S.y - .25, "#FFFFFF", .5, .5); }
+    burst(ctx, T.x, T.y, (e - .5) / .45, [col, "#FFFFFF"], 14, 9); },
+  orbit(ctx, A, e, S, T){ const col = A.col || "#FFD23F";
+    for(let i = 0; i < 6; i++){ const a = i / 6 * Math.PI * 2 + e * 8, t0 = .55 + i * .05;
+      if(e < t0){ blk(ctx, S.x + Math.cos(a) * 6, S.y + Math.sin(a) * 4, i % 2 ? col : "#FFFFFF", 1); }
+      else { const k = (e - t0) / .2; if(k < 1) blk(ctx, lerp(S.x + Math.cos(a) * 6, T.x, k), lerp(S.y + Math.sin(a) * 4, T.y, k), col, 1); else burst(ctx, T.x, T.y, (k - 1) * 1.3, [col, "#FFFFFF"], 5, 5); } } },
+  meteor(ctx, A, e, S, T){ const col = A.col || "#FF7A2F"; if(e < .2) return; const k = (e - .2) / .5;
+    if(k < 1){ const x = lerp(T.x - 22, T.x, k), y = lerp(-6, T.y, k); for(let j = 1; j < 6; j++) blk(ctx, x - j * 1.6, y - j * 1.2, j % 2 ? "#FFE066" : col, 2 - j * .25); blk(ctx, x - 1.5, y - 1.5, col, 3.5); blk(ctx, x - .5, y - 1, "#FFFFFF", 1); }
+    burst(ctx, T.x, T.y, (e - .7) / .6, [col, "#FFE066", "#FFFFFF"], 20, 14); },
+  spiral(ctx, A, e, S, T){ const col = A.col || "#B98CFF"; if(e < .1) return;
+    for(let i = 0; i < 16; i++){ const k = (e - .1 - i * .02) / .55; if(k < 0 || k > 1) continue; const a = k * 14 + i, r = 3 * (1 - k) + .5;
+      blk(ctx, lerp(S.x, T.x, k) + Math.cos(a) * r, lerp(S.y, T.y, k) + Math.sin(a) * r, i % 3 ? col : "#FFFFFF", .5 + (i % 2) * .5); }
+    burst(ctx, T.x, T.y, (e - .7) / .45, [col, "#FFFFFF"], 12, 8); },
+  ultimate(ctx, A, e, S, T){ const col = A.col || "#FFD23F", RB = ["#FF4B55","#FF9F43","#FFD23F","#3DDC97","#4FB6FF","#B98CFF"];
+    if(e < 1.5){ ctx.fillStyle = `rgba(30,20,60,${Math.min(.45, e * 1.2) * (e > 1.2 ? (1.5 - e) / .3 : 1)})`; ctx.fillRect(0, 0, 64 * CELLPX, 32 * CELLPX); }
+    if(e < .95) for(let r = 0; r < 3; r++){ const rr = ((e * 1.6 + r / 3) % 1) * 10; for(let i = 0; i < 16; i++){ const a = i / 16 * Math.PI * 2; blk(ctx, S.x + Math.cos(a) * rr, S.y + Math.sin(a) * rr * .7, r % 2 ? col : "#FFE066", .5); } }
+    if(e > .85 && e < 1.45){ const k = Math.min(1, (e - .85) / .15); for(let s = 0; s < 6; s++) for(let x = S.x + 3; x < lerp(S.x + 3, T.x + 2, k); x += .5) blk(ctx, x, S.y - 1.5 + s * .5 + Math.sin(x + e * 20) * .25, RB[s], .5, .5); }
+    burst(ctx, T.x, T.y, (e - 1.05) / .7, RB, 24, 16);
+    if(e > 1.05 && e < 1.9) for(let i = 0; i < 5; i++){ const k = (e - 1.05) / .85; pat(ctx, SPARK.rows, Math.round(T.x - 8 + i * 4), Math.round(T.y - 6 - k * 6 + (i % 2) * 3), {Y:RB[i]}); } }
+};
+// 命中時「停頓一下」（hit-stop）讓打擊感更重
+function fxTime(A, e){ const H = A.hits || []; let sh = 0; for(const h of H){ if(e > h && e < h + .07) return h - sh; if(e >= h + .07) sh += .07; } return e - sh; }
+function fxShake(A, e){ const d = FXDEF[A.fx]; let amp = 0; if(d && d.shake && e > d.shake[0] && e < d.shake[1]) amp = d.shake[2] * (1 - (e - d.shake[0]) / (d.shake[1] - d.shake[0]));
+  for(const h of A.hits || []) if(e > h && e < h + .12) amp = Math.max(amp, 1); if(A.crit && A.hits && e > A.hits[A.hits.length - 1] && e < A.hits[A.hits.length - 1] + .3) amp = Math.max(amp, 2.5);
+  if(!amp || still) return [0, 0]; const f = Math.floor(e * 40); return [((f % 2) ? 1 : -1) * amp * CELLPX * .5, ((f >> 1) % 2 ? 1 : -1) * amp * CELLPX * .3]; }
+function fxFlash(ctx, A, e){ const d = FXDEF[A.fx]; let c = null, k = 0;
+  if(d && d.flash && e > d.flash[0] && e < d.flash[1]){ c = d.flash[2]; k = 1 - (e - d.flash[0]) / (d.flash[1] - d.flash[0]); }
+  if(A.crit && A.hits){ const h = A.hits[A.hits.length - 1]; if(e > h && e < h + .18){ c = "#FFE066"; k = Math.max(k, 1 - (e - h) / .18); } }
+  if(c && !still){ ctx.globalAlpha = .55 * k; ctx.fillStyle = c; ctx.fillRect(0, 0, 64 * CELLPX, 32 * CELLPX); ctx.globalAlpha = 1; } }
+// 怪獸反擊也有不同動畫（依怪獸屬性輪流）
+const MON_FX = {thunder:["shot","bolt"], grass:["shot","vine"], earth:["shot","rockfall"], fire:["fireballs","pillar"], water:["bubbles","tidal"], normal:["tackle","stars"]};
+// ---- v7.1 液晶跟著螢幕變大：用整數倍的解析度畫，像素點保持銳利
+function sizeLcds(){ const dpr = Math.min(window.devicePixelRatio || 1, 3);
+  for(const g of ["g4","g6"]){ const c = $("lcd-" + g); if(!c) continue; const cw = c.clientWidth || LCDW * 2, k = Math.max(1, Math.round(cw * dpr / (LCDW * 2)));
+    if(c.width !== LCDW * 2 * k){ c.width = LCDW * 2 * k; c.height = LCDW * k; const x = c.getContext("2d"); x.setTransform(k, 0, 0, k, 0, 0); x.imageSmoothingEnabled = false; lcdCtx[g] = x; }
+    const ir = LCDW * 2 * k > cw * dpr * 1.04 ? "auto" : "pixelated"; if(c.style.imageRendering !== ir) c.style.imageRendering = ir; } }
+const LCD_RO = typeof ResizeObserver !== "undefined" ? new ResizeObserver(() => sizeLcds()) : null;
+const _setupLcds70 = setupLcds;
+setupLcds = function(){ _setupLcds70(); sizeLcds(); for(const g of ["g4","g6"]){ const c = $("lcd-" + g); if(c && LCD_RO) LCD_RO.observe(c); } };
+addEventListener("orientationchange", () => setTimeout(sizeLcds, 300));
 // ---- 題目難度：菁英怪獸、勇氣挑戰、Lv8 以上的怪獸，出 ★★★ 挑戰題
 const isHardQ = (g, st) => { const q = st && cardQs(st.cid, g)[st.idx]; return !!(q && q.d === 3); };
 function wantHard(g){ const Q = QST[g]; return !!(Q && Q.phase === "fight" && (Q.elite || Q.brave || (Q.mon.lv || 1) >= 8)); }
@@ -3663,7 +3945,7 @@ window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYN
   setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY,
   v6: { adv, invN, invAdd, coins, cookiesLeft, fruitBoost, equipOf, catchChance, catchInfo, elemPow, dealOf, priceOf, fruitBlock, luckPending, BALLS, FRUITS, advDamage, questOf, spawnWild, wildOf, useMove, throwBall, buy, eatFruit, eatCookie, giveItem, setEquip, setView, lootPreview, nextItem, lootTier, advMoves, ITEMS, CATCH, ENERGY_MAX, FRUIT_CAP, LOOT_PER_DAY, MON_XP_PER_DAY, FREE_COOKIES, get QST(){ return QST; }, get WST(){ return WST; }, TAMA, mergeAdv, kidSection, mergeKid,
     traitAdd, trPts, trLv, TRAITS, lvInfo, careAdd, trainAdd, fStats, partnerStats, activeId, teamOf, setTeam, sendOut, teamToggle, feedPartner, fHp, monAttack, restUp, holidayOf, HOLIS, HOLI_MON, SPIRITS,
-    summonables, summon, setPlan, planProg, saveDiary, saveQNote, saveMotto, approveNote, isLegend, growHTML, wildFight, spawnQuest, devQ, wantHard, actN, PRICE70, TIER, seed70, evoGuard, renderTraitParent } };
+    summonables, summon, setPlan, planProg, saveDiary, saveQNote, saveMotto, approveNote, isLegend, growHTML, wildFight, spawnQuest, devQ, wantHard, actN, PRICE70, TIER, seed70, evoGuard, renderTraitParent, FXL, FXDEF, FXDRAW, lvMoves, movesLearnedAt, sizeLcds, mvIsNew } };
 </script>
 </body>
 </html>
