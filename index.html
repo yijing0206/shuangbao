@@ -3647,6 +3647,8 @@ function devClick(b, e){
   if(d.tomap){ const m = $("map"); if(m) m.scrollIntoView({behavior:"smooth", block:"start"}); return true; }
   return false;
 }
+// 被打到時閃白光，但保留深色外框，看得出是誰
+const FLC = {}; function flashC(c){ if(typeof c !== "string" || c[0] !== "#" || c.length < 7) return "#FFFFFF"; if(FLC[c]) return FLC[c]; const r = parseInt(c.slice(1,3),16), g = parseInt(c.slice(3,5),16), b = parseInt(c.slice(5,7),16); return FLC[c] = (r*.3 + g*.59 + b*.11) < 70 ? c : "#FFFFFF"; }
 // ---- 液晶：打怪畫面（左：上場的寵物／夥伴；右：怪獸）＋ v7.1 招式特效
 function drawFight(ctx, g, Q, now, t){
   const pt = S.pets[g], sp = SPECIES[pt.species], stage = stageOf(pt.xp), acc = stage === 3 ? branchOf(pt).color : null, id = activeId(g);
@@ -3669,7 +3671,7 @@ function drawFight(ctx, g, Q, now, t){
     if(pflash) for(const [x, y] of ps.cells) px(ctx, x + pdx, y + pdy, pflash); else { drawSprite(ctx, ps, pdx, pdy); drawEquip(ctx, g, ps.top, pdx, pdy); }
     if(isLegend(g)) for(let i = 0; i < 3; i++) pat(ctx, SPARK.rows, 6 + i*9, 9 + (Math.floor(t*3 + i) % 2), SPARK.colors); }
   else { const f = fighterSprite({mon:id, stage:2, acc:MON[id].spirit ? "#FFD23F" : null}, pm);
-    for(const [x, y, c] of f.spr.cells) px(ctx, x + pdx, y + pdy, pflash || c);
+    for(const [x, y, c] of f.spr.cells) px(ctx, x + pdx, y + pdy, pflash ? flashC(c) : c);
     if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 16 - Math.ceil(w/2) + pdx, Math.max(0, f.spr.top - f.deco.rows.length) + pdy, f.deco.colors); } }
   if(A && A.kind === "charge") for(let i = 0; i < 4; i++){ const a = e*6 + i*Math.PI/2; pat(ctx, SPARK.rows, 15 + Math.round(Math.cos(a)*10), 15 + Math.round(Math.sin(a)*7), SPARK.colors); }
   const mon = Q.mon, ball = A && A.kind === "ball";
@@ -3683,7 +3685,7 @@ function drawFight(ctx, g, Q, now, t){
     if(Q.charge && Q.phase === "fight" && !A && !still) mdy = Math.floor(t*8) % 2 ? -1 : 0;
     if(Q.phase === "won" || Q.phase === "ko") mdy = 2;
     const f = fighterSprite({mon:mon.id, stage:2, acc:mon.spirit ? "#FFD23F" : null}, mm);
-    for(const [x, y, c] of f.spr.cells) px(ctx, 63 - x + mdx, y + mdy, flash || c);
+    for(const [x, y, c] of f.spr.cells) px(ctx, 63 - x + mdx, y + mdy, flash ? flashC(c) : c);
     if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 48 - Math.ceil(w/2) + mdx, Math.max(0, f.spr.top - f.deco.rows.length) + mdy, f.deco.colors); }
     if(mon.holi && HOLI[mon.holi]){ const H = HOLI[mon.holi].hat, w = H.rows[0].length; pat(ctx, H.rows, 47 - Math.floor(w/2) + mdx, Math.max(0, f.spr.top - H.rows.length - 2) + mdy, H.colors); }
     if(Q.mode === "quest" && Q.phase === "fight") pat(ctx, ANGER.rows, 55 + mdx, f.spr.top + 1 + mdy, ANGER.colors);
