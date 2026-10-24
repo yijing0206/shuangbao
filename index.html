@@ -353,6 +353,17 @@ em.holi{font-style:normal;background:#FFE3C2;color:#A34700;border-radius:8px;pad
 .evoline .on{color:#6C63FF;font-weight:800}
 .evoline .cur{background:#6C63FF;color:#fff;border-radius:8px;padding:1px 6px}
 .dscreen[data-view=hw]{padding:8px}
+
+/* 抓怪：圖鑑式選球 */
+.balldex{margin:8px 0;padding:10px;background:linear-gradient(#FFF9F0,#F3FFF6);border-radius:16px;border:2px dashed #B7C9E0}
+.balldex .dhead{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.ballgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.ballcell{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 8px;border-radius:14px;border:2px solid #B7C9E0;background:#fff;cursor:pointer;font:inherit}
+.ballcell.best{border-color:#FF4B55;box-shadow:0 0 0 2px #FFD0D3}
+.ballcell .ballshow{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:28px;background:radial-gradient(circle at 35% 30%,#fff 0%,var(--ec,#FFD23F) 55%,#333 100%);border:3px solid #fff;box-shadow:0 4px 0 #0002}
+.ballcell .besttag{position:absolute;top:4px;right:6px;color:#FF4B55;font-size:11px;font-weight:900}
+.ballcell:disabled{opacity:.45}
+/* 商店：台座 ◀▶ 瀏覽球（若有） */
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -574,7 +585,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.2.0";
+const APP_VERSION = "7.2.1";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -739,7 +750,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.2.1 寵物／夥伴畫面上來了（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -2778,8 +2789,8 @@ const ITEMS = {
   bFest:  {e:"🎉", n:"節慶球", kind:"ball", cat:"heart", price:40, rate:.35, col:"#E8475F", d:"節慶限定夥伴 +30%；節慶期間抓什麼都 +10%"},
   bHeart: {e:"💗", n:"心之球", kind:"ball", cat:"heart", drop:true, rate:.35, col:"#FF4FA3", d:"心之精靈 +40%、其他夥伴 +15%。十大能力升級才會拿到"},
   // v7.2：進化道具
-  evoStone:{e:"💎", n:"超級進化石", kind:"evo", cat:"evo", price:180, col:"#B388FF", d:"打怪時答對 3 題後可超級進化：攻擊大增、外型變強、專屬大招（本場有效）"},
-  zBand:   {e:"⌚", n:"極具腕帶", kind:"evo", cat:"evo", price:150, col:"#FF6A3D", d:"解鎖本場一次「極具必殺」大招；用學習與功課也能慢慢賺到"},
+  evoStone:{e:"💎", n:"超級進化石", kind:"evo", cat:"evo", price:180, col:"#B388FF", d:"用掉 1 顆就永久解鎖超級進化：之後每場答對 3 題即可變身（攻擊大增、專屬大招），不用再消耗"},
+  zBand:   {e:"⌚", n:"極具腕帶", kind:"evo", cat:"evo", price:150, col:"#FF6A3D", d:"用掉 1 條就永久解鎖「極具必殺」：之後每場能量滿都能用一次，不用再消耗"},
 
   // 能力果實（永久）
   fAtk:   {e:"🍓", n:"力量果", kind:"fruit", cat:"stat", stat:"atk", per:1, cap:10, price:25, col:"#FF4B55", d:"攻擊永久 +1（最多 +10）"},
@@ -3582,18 +3593,10 @@ function wildHTML(g){
   if(TAMA[g].ballSel == null || TAMA[g].ballSel >= own.length) TAMA[g].ballSel = 0;
   if(own.length && TAMA[g].ballSel > own.length - 1) TAMA[g].ballSel = 0;
   const bi = own.length ? TAMA[g].ballSel : 0, curB = own[bi], bestI = 0;
-  const balls = own.length ? `<div class="ballstand" data-g="${g}">
-    <button class="ballarr" data-ballarr="-1" data-g="${g}" ${own.length<2?"disabled":""} aria-label="上一顆">◀</button>
-    <div class="pedestal">
-      <div class="ballshow" style="--ec:${ITEMS[curB[0]].col==="rainbow"?"#FF6FA8":ITEMS[curB[0]].col}">${ballIcon(curB[0])}</div>
-      <div class="stand"></div>
-      <b class="ballname">${ITEMS[curB[0]].n} ×${invN(g, curB[0])}${bi===bestI?' <em class="besttag">最好抓</em>':""}</b>
-      <small>抓到機率 <b data-chance="${curB[0]}">${pct(curB[1].p)}</b>%${curB[1].tags.length?"・"+esc(curB[1].tags.join("・")):""}</small>
-      <button class="btn b-yellow throwbtn" data-throw="${curB[0]}" data-g="${g}" ${Q.phase!=="fight"?"disabled":""}>🎯 丟這一顆！</button>
-      <small class="ballhint">◀ ▶ 換球（或按 A）・共 ${own.length} 種</small>
-    </div>
-    <button class="ballarr" data-ballarr="1" data-g="${g}" ${own.length<2?"disabled":""} aria-label="下一顆">▶</button>
-    <button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>` : `<div class="balls"><p class="dnote">沒有精靈球了！到 🛒 商店用金幣買。</p><button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>`;
+  const balls = own.length ? `<div class="balldex" data-g="${g}">
+    <div class="dhead"><b>📕 精靈球圖鑑</b><small>點要丟的那一顆</small><button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>
+    <div class="ballgrid">${own.map(([b, ci], i) => `<button class="ballcell ${i===bestI?"best":""}" style="--ec:${ITEMS[b].col==="rainbow"?"#FF6FA8":ITEMS[b].col}" data-throw="${b}" data-g="${g}" ${Q.phase!=="fight"?"disabled":""}>${i===bestI?'<em class="besttag">最好抓</em>':""}<span class="ballshow">${ballIcon(b)}</span><b>${ITEMS[b].n} ×${invN(g, b)}</b><small>抓到 <b data-chance="${b}">${pct(ci.p)}</b>%${ci.tags.length?"・"+esc(ci.tags.join("・")):""}</small></button>`).join("")}</div>
+    <p class="dnote tip">圖鑑攤開選球・機率最高的已標「最好抓」</p></div>` : `<div class="balls"><p class="dnote">沒有精靈球了！到 🛒 商店用金幣買。</p><button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>`;
   const tip = m.spirit ? "💗 心之精靈：用 💗 心之球 最好抓！" : m.holi ? `${HOLI[m.holi].e} 節慶限定夥伴：用 🎉 節慶球 最好抓！` : `${attrOf(m.attr).e} 這隻是${attrOf(m.attr).n}屬性：用 ${ITEMS[ELEM_BALL[m.attr]].n} 最好抓！${MON[m.id].land ? `🌍 來自 ${MON[m.id].land}，🌍 環遊球 也很好抓！` : ""}`;
   return `<div class="finfo"><div class="dhead"><b>🌿 野生夥伴！答對集能量削弱牠，再丟精靈球</b></div><div class="chips2">${holiChip()}</div>` + sumHTML + monLineC(g, Q) + infoHTML(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
     + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote tip">${tip}・越虛弱越好抓，丟失敗 3 次牠會跑走，答錯牠會反擊 👊</p>` + switchHTML(g, Q) + movesHTML(g, Q) + `</div>` + qBlockHTML(qw[g].cid, g, devQ(g), true);
@@ -3721,11 +3724,12 @@ function drawFight(ctx, g, Q, now, t){
   if(Q.phase === "faint") pdy = 3;
   if(!still && !A && pm === "happy") pdy = -Math.round(Math.abs(Math.sin(t*6))*2);
   if(id === "main"){ const ps = sprite(sp, stage, pm, !A && (t % 3.2) < .15, acc);
-    if(pflash) for(const [x, y] of ps.cells) px(ctx, x + pdx, y + pdy, pflash); else { drawSprite(ctx, ps, pdx, pdy); drawEquip(ctx, g, ps.top, pdx, pdy); }
+    if(pflash) drawSprite(ctx, ps, pdx, pdy, pflash); else { drawSprite(ctx, ps, pdx, pdy); drawEquip(ctx, g, ps.top, pdx, pdy); }
     if(isLegend(g)) for(let i = 0; i < 3; i++) pat(ctx, SPARK.rows, 6 + i*9, 9 + (Math.floor(t*3 + i) % 2), SPARK.colors); }
-  else { const f = fighterSprite({mon:id, stage:2, acc:MON[id].spirit ? "#FFD23F" : null}, pm);
-    for(const [x, y, c] of f.spr.cells) px(ctx, x + pdx, y + pdy, pflash ? flashC(c) : c);
-    if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 16 - Math.ceil(w/2) + pdx, Math.max(0, f.spr.top - f.deco.rows.length) + pdy, f.deco.colors); } }
+  else { const f = fighterSprite({mon:id, stage:2, acc:MON[id].spirit ? "#FFD23F" : null, partner:true, soft:true}, pm);
+    if(f.spr && f.spr.soft) drawSprite(ctx, f.spr, pdx, pdy, pflash || undefined);
+    else { for(const [x, y, c] of f.spr.cells) px(ctx, x + pdx, y + pdy, pflash ? flashC(c) : c);
+      if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 16 - Math.ceil(w/2) + pdx, Math.max(0, f.spr.top - f.deco.rows.length) + pdy, f.deco.colors); } } }
   if(A && A.kind === "charge") for(let i = 0; i < 4; i++){ const a = e*6 + i*Math.PI/2; pat(ctx, SPARK.rows, 15 + Math.round(Math.cos(a)*10), 15 + Math.round(Math.sin(a)*7), SPARK.colors); }
   const mon = Q.mon, ball = A && A.kind === "ball";
   const hidden = Q.phase === "caught" || Q.phase === "fled" || (ball && e > .7 && !(A.ok === false && e > 2.3));
@@ -4509,14 +4513,21 @@ function paintShape(ctx, st, mood, blink, body, belly, acc, legend, ov, shape){
   if(legend){ for(let i=0;i<3;i++) sEll(ctx, 10+i*5, 9, 1.1, 1.1, "#FFD23F", .7); }
 }
 
-// Replace sprite / drawSprite
+// Replace sprite / drawSprite — soft for 主寵＋夥伴；野生／關主／搗蛋怪維持像素
+const __spritePixel = sprite;
+const __drawSpritePixel = drawSprite;
+const __drawFighter0 = typeof drawFighter === "function" ? drawFighter : null;
+const __drawThumb0 = typeof drawThumb === "function" ? drawThumb : null;
+const __fighterSprite0 = typeof fighterSprite === "function" ? fighterSprite : null;
+
 sprite = function(sp, stage, mood, blink, acc){
+  const ear = sp && sp.ear, wantSoft = sp && !sp._pixel && (sp._soft || (ear && ear !== "none"));
+  if(!wantSoft) return __spritePixel(sp, stage, mood, blink, acc);
   const legend = !!(sp && sp._legend); const st = Math.max(0, Math.min(3, stage|0));
-  const key = ["soft", sp.ear||"none", sp.body, sp.belly, st, mood, !!blink, acc||"", legend, sp._shape||""].join("|");
+  const key = ["soft", ear||"none", sp.body, sp.belly, st, mood, !!blink, acc||"", legend, sp._shape||""].join("|");
   if(_sprSoft.has(key)) return _sprSoft.get(key);
-  const ear = sp.ear || "none";
   const top = st === 0 ? 11 : ear === "bunny" ? 6 : ear === "dino" ? 8 : ear === "whale" ? 14 : 10;
-  const res = {soft:true, top, cells:[[16,16,sp.body]], // dummy cell for flash loops
+  const res = {soft:true, top, cells:[[16,16,sp.body]],
     paint:(ctx, dx, dy, ov) => softPaint(ctx, dx, dy, ov, (c, override) => {
       if(ear && ear !== "none") paintByEar(ear, c, st, mood, blink, sp.body, sp.belly, acc, legend, override);
       else paintShape(c, st, mood, blink, sp.body, sp.belly, acc, legend, override, sp._shape || "blob");
@@ -4525,21 +4536,51 @@ sprite = function(sp, stage, mood, blink, acc){
 };
 drawSprite = function(ctx, spr, dx, dy, override){
   if(spr && spr.soft && spr.paint){ spr.paint(ctx, dx, dy, override); return; }
-  for(const [x,y,c] of (spr && spr.cells) || []) px(ctx, x+(dx||0), y+(dy||0), override || c);
+  __drawSpritePixel(ctx, spr, dx||0, dy||0, override);
 };
 
-// tag legend onto main pet sprite calls via wrap in drawFight / drawLcd — set species._legend temporarily
-// fighterSprite: give monsters varied shapes
-const __fighterSprite = typeof fighterSprite === "function" ? fighterSprite : null;
-if(__fighterSprite){ fighterSprite = function(u, mood){
-  if(u && u.mon && MON[u.mon]){ const m = MON[u.mon]; const sh = shapeOfMon(u.mon);
-    const sp = {ear:"none", body:m.body, belly:m.belly||hexL(m.body,.4), _shape:sh, _legend:!!m.spirit};
-    return {spr: sprite(sp, Math.max(1, u.stage||2), mood, false, u.acc), deco: null};
-  }
-  return __fighterSprite(u, mood);
-}; }
+function softPartnerSp(m, spirit){
+  return {ear:"none", body:m.body, belly:m.belly || hexL(m.body, .4), _shape:shapeOfMon(m.id || ""), _soft:true, _legend:!!spirit};
+}
 
-// When drawing main pet in fight/home, mark legend
+fighterSprite = function(u, mood){
+  if(u && u.sp && SPECIES[u.sp]) return {spr: sprite(SPECIES[u.sp], Math.max(1, u.stage||2), mood, false, u.acc), deco:null};
+  if(u && u.mon && MON[u.mon]){
+    const m = MON[u.mon];
+    if(u.partner || u.soft){
+      return {spr: sprite(softPartnerSp(Object.assign({id:u.mon}, m), m.spirit), Math.max(1, u.stage||2), mood, false, u.acc), deco:null};
+    }
+    // 野生／關主／搗蛋怪：原本像素
+    return {spr: __spritePixel({ear:m.ear||"none", body:m.body, belly:m.belly}, u.stage||2, mood, false, u.acc),
+      deco: MON_DECO[u.mon === RAID_ID ? "normal" : m.attr], deco2: u.mon === RAID_ID ? MON_DECO[u.attr] : null};
+  }
+  return __fighterSprite0 ? __fighterSprite0(u, mood) : {spr: __spritePixel({ear:"none", body:"#CFC6E0", belly:"#fff"}, 2, mood, false, null), deco:null};
+};
+
+drawFighter = function(canvas, u, mood, mirror){
+  const dpr = Math.min(window.devicePixelRatio||1, 2); if(canvas.width !== LCDW*dpr){ canvas.width = LCDW*dpr; canvas.height = LCDW*dpr; }
+  const ctx = canvas.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.imageSmoothingEnabled = !!(u && (u.soft || u.partner)); ctx.clearRect(0,0,LCDW,LCDW);
+  const f = fighterSprite(u, mood);
+  if(f.spr && f.spr.soft && f.spr.paint){
+    ctx.save();
+    if(mirror){ ctx.translate(LCDW, 0); ctx.scale(-1, 1); }
+    drawSprite(ctx, f.spr, 0, 0);
+    ctx.restore();
+  } else {
+    for(const [x,y,c] of (f.spr && f.spr.cells) || []) px(ctx, mirror ? GRID-1-x : x, y, c);
+    for(const d of [f.deco, f.deco2]) if(d){ const w = d.rows[0].length; pat(ctx, d.rows, 16 - Math.floor(w/2), Math.max(0, f.spr.top - d.rows.length - (u.acc ? 3 : 0) + (d === f.deco2 ? -3 : 0)), d.colors); }
+  }
+};
+
+drawThumb = function(canvas, monId, hidden){
+  const m = MON[monId]; if(!m) return;
+  const plain = m.kind === "wild" || m.kind === "catch";
+  const u = {mon:monId, stage: plain ? 2 : 3, acc: plain ? null : "#FFD23F", attr:m.attr, partner:true, soft:true};
+  drawFighter(canvas, u, "idle", false);
+  if(hidden){ const ctx = canvas.getContext("2d"); ctx.globalCompositeOperation = "source-atop"; ctx.fillStyle = "#3A2E4A"; ctx.fillRect(0,0,LCDW,LCDW); ctx.globalCompositeOperation = "source-over"; }
+};
+
+// 主寵 LCD／傳說標記
 const __drawLcd = drawLcd;
 drawLcd = function(g, now){
   const pt = S.pets[g]; if(pt && pt.species && SPECIES[pt.species]) SPECIES[pt.species]._legend = isLegend(g);
@@ -4569,23 +4610,36 @@ legendCheck = function(g){
 // 功課挑戰大獎勵也可能送
 function grantEvoToy(g, which){ invAdd(g, which, 1); tmsg(g, `🎁 得到 ${ITEMS[which].e}${ITEMS[which].n}！`); }
 
-// ---- 戰鬥：超級進化／極具必殺
-function canMega(g, Q){ return invN(g, "evoStone") > 0 && !Q.mega && (Q.n && Q.n.right || 0) >= MEGA_NEED && Q.phase === "fight" && activeId(g) === "main"; }
-function canZ(g, Q){ return invN(g, "zBand") > 0 && !Q.zUsed && Q.phase === "fight" && Q.energy >= ENERGY_MAX; }
+// ---- 戰鬥：超級進化／極具必殺（永久解鎖，同步用 trDay 計數）
+const megaUnlocked = (g) => cntK(adv(g).trDay, "ever|mega") > 0;
+const zUnlocked = (g) => cntK(adv(g).trDay, "ever|zband") > 0;
+function unlockMega(g){ if(megaUnlocked(g)) return true; if(invN(g, "evoStone") < 1) return false;
+  invUse(g, "evoStone", 1); bumpK(adv(g).trDay, "ever|mega", 1); persist();
+  confetti(160); trPop(g, "💎 永久解鎖超級進化！之後每場都能變身", true); tmsg(g, "💎 永久超級進化已解鎖！"); return true; }
+function unlockZ(g){ if(zUnlocked(g)) return true; if(invN(g, "zBand") < 1) return false;
+  invUse(g, "zBand", 1); bumpK(adv(g).trDay, "ever|zband", 1); persist();
+  confetti(160); trPop(g, "⌚ 永久解鎖極具必殺！每場都能用一次", true); tmsg(g, "⌚ 永久極具腕帶已解鎖！"); return true; }
+function canMega(g, Q){ return (megaUnlocked(g) || invN(g, "evoStone") > 0) && !Q.mega && (Q.n && Q.n.right || 0) >= MEGA_NEED && Q.phase === "fight" && activeId(g) === "main"; }
+function canZ(g, Q){ return (zUnlocked(g) || invN(g, "zBand") > 0) && !Q.zUsed && Q.phase === "fight" && Q.energy >= ENERGY_MAX; }
 function doMega(g){ const Q = QST[g] || WST[g]; if(!Q || !canMega(g, Q)) return false;
-  invAdd(g, "evoStone", -1); Q.mega = true; Q.anim = {kind:"mega", at:performance.now(), dur:2200}; Q.last = `💎 超級進化！${unitName(g, "main")} 變強了，攻擊大增！`;
-  tmsg(g, "💎 超級進化！"); confetti(100); persist(); renderDev(g); return true; }
-function zMoveOf(g){ const pt = S.pets[g], sp = SPECIES[pt.species] || {}, attr = (ATTR[Object.entries(pt.subjectXP||{}).sort((a,b)=>b[1]-a[1])[0]?.[0]]||{}).k || "normal";
+  if(!megaUnlocked(g) && !unlockMega(g)) return false;
+  Q.mega = true; Q.anim = {kind:"mega", at:performance.now(), dur:2200}; Q.last = `💎 超級進化！${unitName(g, "main")} 變強了，攻擊大增！`;
+  tmsg(g, megaUnlocked(g) ? "💎 超級進化！" : "💎 超級進化！"); confetti(100); persist(); renderDev(g); return true; }
+function applyMegaIfUnlocked(g, Q){ if(!Q || Q.mega || activeId(g) !== "main" || !megaUnlocked(g) || Q.phase === "won" || Q.phase === "faint") return;
+  if(Q.phase === "fight") Q.mega = true; }
+function zMoveOf(g){ const pt = S.pets[g], attr = (ATTR[Object.entries(pt.subjectXP||{}).sort((a,b)=>b[1]-a[1])[0]?.[0]]||{}).k || "normal";
   return {id:"z-ult", name:`⚡ 極具・${pt.name||"星寶"}必殺`, attr, pow:2.0, fx:"ultimate", col:"#FFD23F", ult:true, z:true}; }
 
 const __fStats = fStats;
-fStats = function(g, id){ const s = __fStats(g, id); const Q = QST[g] || WST[g]; if(Q && Q.mega && (id === "main" || !id) && activeId(g) === "main"){ s.atk = Math.round(s.atk * 1.55); s.hp = Math.round(s.hp * 1.15); s.mega = true; } return s; };
+fStats = function(g, id){ const s = __fStats(g, id); const Q = QST[g] || WST[g]; applyMegaIfUnlocked(g, Q);
+  if(Q && Q.mega && (id === "main" || !id) && activeId(g) === "main"){ s.atk = Math.round(s.atk * 1.55); s.hp = Math.round(s.hp * 1.15); s.mega = true; } return s; };
 
 const __advMoves = advMoves;
-advMoves = function(g, Q){ const mv = __advMoves(g, Q); if(Q && canZ(g, Q)) mv.unshift(zMoveOf(g)); if(Q && Q.mega){ const m = {id:"mega-sig", name:`💎 超進・強襲`, attr:(typeof fighterAttr==='function'?fighterAttr(g,activeId(g),Q):(ATTR[(CARDS.find(c=>c.id===Q.card)||{}).subject]||{}).k||'normal'), pow:1.45, fx:"meteor", col:"#B388FF", mega:true}; mv.unshift(m); } return mv; };
+advMoves = function(g, Q){ applyMegaIfUnlocked(g, Q); const mv = __advMoves(g, Q); if(Q && canZ(g, Q)) mv.unshift(zMoveOf(g)); if(Q && Q.mega){ const m = {id:"mega-sig", name:`💎 超進・強襲`, attr:(typeof fighterAttr==='function'?fighterAttr(g,activeId(g),Q):(ATTR[(CARDS.find(c=>c.id===Q.card)||{}).subject]||{}).k||'normal'), pow:1.45, fx:"meteor", col:"#B388FF", mega:true}; mv.unshift(m); } return mv; };
 
 const __useMove = useMove;
-useMove = function(g, mid){ const Q = QST[g] || WST[g]; if(mid === "z-ult"){ if(!Q || !canZ(g, Q)) return null; invAdd(g, "zBand", -1); Q.zUsed = true; Q.ultUsed = true; }
+useMove = function(g, mid){ const Q = QST[g] || WST[g]; if(mid === "z-ult"){ if(!Q || !canZ(g, Q)) return null;
+    if(!zUnlocked(g) && !unlockZ(g)) return null; Q.zUsed = true; Q.ultUsed = true; }
   const r = __useMove(g, mid); return r; };
 
 // 商店多一個「進化」分頁
@@ -4599,11 +4653,20 @@ shopHTML = function(g){
     return `<div class="dhead"><b>🛒 商店</b><span class="coins">🪙 <b data-coins="${g}">${c}</b></span></div>
       <div class="deal" data-deal="${deal}" style="--ec:${dIt.col==="rainbow"?"#FF6FA8":dIt.col}">${itemIcon(deal)}<div><b>🔥 今日特價：${dIt.n}</b><small>${esc(dIt.d||"")}</small></div>${buyBtn(deal)}</div>
       <div class="stabs">${tabs}</div>
-      <p class="dnote">像寶可夢那樣一路進化！石頭＝本場超級進化；腕帶＝一次極具必殺。答題、打怪、功課挑戰也有機會拿到。</p>
-      <div class="igrid">${EVO_ITEMS.map(id => itemCard(g, id, `<small>有 ${invN(g, id)} 個</small>${buyBtn(id)}`)).join("")}</div>`;
+      <p class="dnote">💎 進化石／⌚ 腕帶：用掉 1 個就<strong>永久解鎖</strong>（同步到兩台平板）。解鎖後每場都能超級進化／用一次極具必殺，不用再消耗。</p>
+      <div class="igrid">${EVO_ITEMS.map(id => { const unlocked = id==="evoStone" ? megaUnlocked(g) : zUnlocked(g);
+        return itemCard(g, id, `<small>${unlocked ? "✅ 已永久解鎖" : `背包 ${invN(g, id)} 個・用 1 個解鎖`}</small>${unlocked ? "" : buyBtn(id)}${!unlocked && invN(g,id)>0 ? `<button class="btn small b-purple" data-evounlock="${id}" data-g="${g}">✨ 永久解鎖</button>` : ""}`); }).join("")}</div>`;
   }
   let html = __shopHTML0(g);
   if(!html.includes('data-stab="evo"')) html = html.replace(/(data-stab="fruit"[^>]*>🍓 果實<\/button>)/, `$1<button class="" data-stab="evo" data-g="${g}">💎 進化</button>`);
+  // 商店球頁：◀▶ 台座瀏覽（丟球改走圖鑑格）
+  if((TAMA[g].shopTab || "ball") === "ball" && !html.includes("ballstand")){
+    const own = BALLS.filter(b => true);
+    if(TAMA[g].ballSel == null || TAMA[g].ballSel >= own.length) TAMA[g].ballSel = 0;
+    const bi = TAMA[g].ballSel % own.length, b = own[bi], it = ITEMS[b];
+    const stand = `<div class="ballstand shopstand" data-g="${g}"><button class="ballarr" data-ballarr="-1" data-g="${g}">◀</button><div class="pedestal"><div class="ballshow" style="--ec:${it.col==="rainbow"?"#FF6FA8":it.col}">${ballIcon(b)}</div><div class="stand"></div><b class="ballname">${it.n}</b><small>${esc(it.d||"")}</small><small class="ballhint">◀ ▶ 逛球圖鑑・下方直接購買</small></div><button class="ballarr" data-ballarr="1" data-g="${g}">▶</button></div>`;
+    html = html.replace('<h5>等級球</h5>', stand + '<h5>等級球</h5>');
+  }
   return html;
 };
 
@@ -4611,7 +4674,7 @@ shopHTML = function(g){
 const __movesHTML = movesHTML;
 movesHTML = function(g, Q){
   let h = __movesHTML(g, Q);
-  if(canMega(g, Q)) h = `<div class="row quick"><button class="btn small b-purple" data-mega="${g}">💎 超級進化！（消耗 1 顆進化石）</button></div>` + h;
+  if(canMega(g, Q)) h = `<div class="row quick"><button class="btn small b-purple" data-mega="${g}">💎 超級進化！${megaUnlocked(g) ? "（已永久解鎖）" : "（用 1 顆進化石永久解鎖）"}</button></div>` + h;
   return h;
 };
 
@@ -4743,6 +4806,7 @@ const __devClickHW = devClick;
 devClick = function(b, e){
   const d = b.dataset;
   if(d.mega){ doMega(d.mega); return true; }
+  if(d.evounlock){ (d.evounlock==="evoStone"?unlockMega:unlockZ)(d.g); renderDev(d.g); return true; }
   if(d.hwsave){ hwSaveDraft(d.hwsave, d.hid); return true; }
   if(d.hwsubmit){ hwSubmit(d.hwsubmit, d.hid); return true; }
   if(d.haward){ hwAward(d.haward, d.hid); return true; }
@@ -4805,7 +4869,7 @@ window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYN
   setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY,
   v6: { adv, invN, invAdd, coins, cookiesLeft, fruitBoost, equipOf, catchChance, catchInfo, elemPow, dealOf, priceOf, fruitBlock, luckPending, BALLS, FRUITS, advDamage, questOf, spawnWild, wildOf, useMove, throwBall, buy, eatFruit, eatCookie, giveItem, setEquip, setView, lootPreview, nextItem, lootTier, advMoves, ITEMS, CATCH, ENERGY_MAX, FRUIT_CAP, LOOT_PER_DAY, MON_XP_PER_DAY, FREE_COOKIES, get QST(){ return QST; }, get WST(){ return WST; }, TAMA, mergeAdv, kidSection, mergeKid,
     traitAdd, trPts, trLv, TRAITS, lvInfo, careAdd, trainAdd, fStats, partnerStats, activeId, teamOf, setTeam, sendOut, teamToggle, feedPartner, fHp, monAttack, restUp, holidayOf, HOLIS, HOLI_MON, SPIRITS,
-    summonables, summon, setPlan, planProg, saveDiary, saveQNote, saveMotto, approveNote, isLegend, growHTML, wildFight, spawnQuest, devQ, wantHard, actN, PRICE70, TIER, seed70, evoGuard, renderTraitParent, FXL, FXDEF, FXDRAW, lvMoves, movesLearnedAt, sizeLcds, mvIsNew, GENS, smartPick, materializeGen, qOfG, gensFor, newQ, qs, qw, curId, secret, cardQs, HOMEWORK, hwHTML, doMega, canMega, evoStageOf, evoLineHTML, hwState, hwAward, hwSubmit, SPECIES, sprite, buy } };
+    summonables, summon, setPlan, planProg, saveDiary, saveQNote, saveMotto, approveNote, isLegend, growHTML, wildFight, spawnQuest, devQ, wantHard, actN, PRICE70, TIER, seed70, evoGuard, renderTraitParent, FXL, FXDEF, FXDRAW, lvMoves, movesLearnedAt, sizeLcds, mvIsNew, GENS, smartPick, materializeGen, qOfG, gensFor, newQ, qs, qw, curId, secret, cardQs, HOMEWORK, hwHTML, doMega, canMega, megaUnlocked, zUnlocked, unlockMega, unlockZ, evoStageOf, evoLineHTML, hwState, hwAward, hwSubmit, SPECIES, sprite, buy } };
 </script>
 </body>
 </html>
