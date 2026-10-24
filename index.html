@@ -368,6 +368,22 @@ em.holi{font-style:normal;background:#FFE3C2;color:#A34700;border-radius:8px;pad
 /* 點題不被液晶擋住 */
 .lcdwrap canvas,.bezel canvas,#lcd-g4,#lcd-g6{pointer-events:none!important}
 .dq,.opts,.opt,[data-conf],[data-pick]{position:relative;z-index:5}
+
+/* 能量滿：招式區塊醒目、可點 */
+.moves.on{margin:8px 0;padding:10px;border:3px solid #FFD23F;border-radius:16px;background:linear-gradient(#FFFBEA,#FFF);box-shadow:0 4px 0 #E6C20055}
+.moves.on .skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.moves.on .skbtn{min-height:44px;font-size:15px;touch-action:manipulation;position:relative;z-index:6}
+.finfo .moves.on{order:-1}
+
+/* 商店球頁：格子排滿、末端不被裁切 */
+.dscreen .igrid.shopballs{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:4px 0 14px}
+.dscreen .shopend{margin:4px 0 18px;padding-bottom:8px}
+.dscreen[data-view=shop]{padding-bottom:20px}
+@media (max-width:600px){
+  .dscreen .igrid.shopballs{grid-template-columns:repeat(auto-fill,minmax(130px,1fr))}
+  .ballstand.shopstand{margin-bottom:4px;padding:8px}
+  .ballstand .ballshow{width:64px;height:64px;font-size:34px}
+}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -589,7 +605,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.2.2";
+const APP_VERSION = "7.2.3";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -754,7 +770,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.2.3 全部生物改回像素貼圖；能量滿招式置頂可點；商店 ◀▶ 繞回、等級／屬性／特殊／心之球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -3555,8 +3571,10 @@ function fruitQuick(g, Q){
 }
 function movesHTML(g, Q){
   if(Q.energy < ENERGY_MAX || Q.phase !== "fight") return fruitQuick(g, Q);
-  const mv = advMoves(g, Q), ids = mv.map(x => x.id);
-  return fruitQuick(g, Q) + `<div class="moves"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：${Q.critReady ? ' <b class="critrdy">💥 會心一擊準備好了！</b>' : ""}</p><div class="skills">${mv.map(x => { const k = typeMult(x.attr, Q.mon.attr), n = (FXDEF[x.fx] || FXDEF.shot).hits.length, nw = mvIsNew(g, x.id, ids);
+  let mv = []; try { mv = advMoves(g, Q) || []; } catch(e){ mv = [{id:"tackle", name:"星星撞擊", attr:"normal", pow:1, fx:"tackle", col:"#FFD23F"}]; }
+  if(!mv.length) mv = [{id:"tackle", name:"星星撞擊", attr:"normal", pow:1, fx:"tackle", col:"#FFD23F"}];
+  const ids = mv.map(x => x.id);
+  return fruitQuick(g, Q) + `<div class="moves on" data-moves="${g}"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：${Q.critReady ? ' <b class="critrdy">💥 會心一擊準備好了！</b>' : ""}</p><div class="skills">${mv.map(x => { const k = typeMult(x.attr, Q.mon.attr), n = ((FXDEF[x.fx] || FXDEF.shot).hits || [1]).length, nw = typeof mvIsNew==="function" && mvIsNew(g, x.id, ids);
     return `<button class="btn ${x.ult ? "b-pink ult" : k > 1 ? "b-yellow" : k < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-move="${x.id}" data-g="${g}">${nw ? '<i class="newmv">🆕</i>' : ""}${attrOf(x.attr).e} ${esc(x.name)}${k > 1 ? " <small>效果絕佳</small>" : k < 1 ? " <small>效果不好</small>" : ""}${n > 1 ? ` <small>×${n}</small>` : ""}${x.pow > 1 ? " <small>💪</small>" : ""}</button>`; }).join("")}</div></div>`;
 }
 function faintHTML(g, Q){ const others = ["main", ...teamOf(g)].filter(id => id !== activeId(g) && fHp(g, Q, id) > 0);
@@ -3582,7 +3600,7 @@ function questHTML(g){
       <div class="row"><button class="btn b-mint" data-newmon="${g}">👾 下一隻搗蛋怪獸</button><button class="btn ghost b-red" data-brave="${g}">🧐 挑戰剋我的怪獸</button><button class="btn ghost b-purple" data-diary="${g}">📖 寫冒險日記</button><button class="btn ghost b-purple" data-view="shop" data-g="${g}">🛒 去商店</button></div></div>`; }
   const pv = lootPreview(g), left = LOOT_PER_DAY - cntK(adv(g).lootC, twDate());
   const chips = `<div class="chips2">${holiChip()}<span class="chip2" data-preview="${pv.id || ""}">🎁 掉寶預告：${pv.id ? `${ITEMS[pv.id].e} ${esc(ITEMS[pv.id].n)}（今天還有 ${left}/${LOOT_PER_DAY} 次寶物）` : esc(pv.text)}</span></div>`;
-  return `<div class="finfo">` + head + chips + monLineC(g, Q) + infoHTML(g, Q, `<p class="dnote">答對題目集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・答錯怪獸會反擊 👊・選 ⭐⭐⭐ 又答對，下一招會心一擊 💥・🎁 ${esc(pv.text)}${Q.brave ? "・🧐 勇氣挑戰中" : ""}</p>`) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + (Q.phase === "faint" ? faintHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q)) + `</div>`
+  return `<div class="finfo">` + head + chips + monLineC(g, Q) + infoHTML(g, Q, `<p class="dnote">答對題目集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・答錯怪獸會反擊 👊・選 ⭐⭐⭐ 又答對，下一招會心一擊 💥・🎁 ${esc(pv.text)}${Q.brave ? "・🧐 勇氣挑戰中" : ""}</p>`) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + (Q.phase === "faint" ? faintHTML(g, Q) : (Q.energy >= ENERGY_MAX ? movesHTML(g, Q) + switchHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q))) + `</div>`
     + (Q.phase === "faint" ? "" : qBlockHTML(c.id, g, devQ(g), false));
 }
 function wildHTML(g){
@@ -3603,8 +3621,10 @@ function wildHTML(g){
     <p class="dnote tip">圖鑑攤開選球・機率最高的已標「最好抓」</p></div>` : `<div class="balls"><p class="dnote">沒有精靈球了！到 🛒 商店用金幣買。</p><button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>`;
   const tip = m.spirit ? "💗 心之精靈：用 💗 心之球 最好抓！" : m.holi ? `${HOLI[m.holi].e} 節慶限定夥伴：用 🎉 節慶球 最好抓！` : `${attrOf(m.attr).e} 這隻是${attrOf(m.attr).n}屬性：用 ${ITEMS[ELEM_BALL[m.attr]].n} 最好抓！${MON[m.id].land ? `🌍 來自 ${MON[m.id].land}，🌍 環遊球 也很好抓！` : ""}`;
   return `<div class="finfo"><div class="dhead"><b>🌿 野生夥伴！答對集能量削弱牠，再丟精靈球</b></div><div class="chips2">${holiChip()}</div>` + sumHTML + monLineC(g, Q) + infoHTML(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
-    + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote tip">${tip}・越虛弱越好抓，丟失敗 3 次牠會跑走，答錯牠會反擊 👊</p>` + switchHTML(g, Q) + movesHTML(g, Q) + `</div>` + qBlockHTML(qw[g].cid, g, devQ(g), true);
+    + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote tip">${tip}・越虛弱越好抓，丟失敗 3 次牠會跑走，答錯牠會反擊 👊</p>` + (Q.energy >= ENERGY_MAX ? movesHTML(g, Q) + switchHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q)) + `</div>` + qBlockHTML(qw[g].cid, g, devQ(g), true);
 }
+// 商店球順序：等級 → 屬性 → 特殊 → 心之（跟下方格子一致，◀▶ 可繞回開頭）
+function shopBalls(){ return ["tier","elem","special","heart"].flatMap(c => BALLS.filter(id => ITEMS[id].cat === c)); }
 // ---- 夥伴／隊伍／圖鑑
 function caughtDexHTML(g){
   const all = CATCH, got = all.filter(m => caughtN(g, m.id) > 0).length, team = teamOf(g), act = activeId(g);
@@ -3703,7 +3723,14 @@ function devClick(b, e){
   if(d.saveq){ saveQNote(d.saveq, d.cid, kv("qn-" + d.saveq)); return true; }
   if(d.info){ TAMA[d.info].info = !TAMA[d.info].info; renderDev(d.info); return true; }
   if(d.dots){ TAMA[d.dots].dotsOpen = !TAMA[d.dots].dotsOpen; renderDev(d.dots); return true; }
-  if(d.ballarr != null){ const g=d.g, n=BALLS.filter(b=>invN(g,b)>0).length; if(!n) return true; TAMA[g].ballSel=((TAMA[g].ballSel||0)+Number(d.ballarr)+n*10)%n; renderDev(g); return true; }
+  if(d.ballarr != null){ const g=d.g;
+    const shopBrowse = TAMA[g].view === "shop" && (TAMA[g].shopTab || "ball") === "ball";
+    const list = shopBrowse ? shopBalls() : BALLS.filter(b=>invN(g,b)>0);
+    const n = list.length;
+    if(!n) return true;
+    const dir = Number(d.ballarr) || 0;
+    TAMA[g].ballSel = (((Number(TAMA[g].ballSel)||0) + dir) % n + n) % n;
+    renderDev(g); return true; }
   if(d.tomap){ const m = $("map"); if(m) m.scrollIntoView({behavior:"smooth", block:"start"}); return true; }
   return false;
 }
@@ -3728,12 +3755,11 @@ function drawFight(ctx, g, Q, now, t){
   if(Q.phase === "faint") pdy = 3;
   if(!still && !A && pm === "happy") pdy = -Math.round(Math.abs(Math.sin(t*6))*2);
   if(id === "main"){ const ps = sprite(sp, stage, pm, !A && (t % 3.2) < .15, acc);
-    if(pflash) drawSprite(ctx, ps, pdx, pdy, pflash); else { drawSprite(ctx, ps, pdx, pdy); drawEquip(ctx, g, ps.top, pdx, pdy); }
+    if(pflash) for(const [x, y] of ps.cells) px(ctx, x + pdx, y + pdy, pflash); else { drawSprite(ctx, ps, pdx, pdy); drawEquip(ctx, g, ps.top, pdx, pdy); }
     if(isLegend(g)) for(let i = 0; i < 3; i++) pat(ctx, SPARK.rows, 6 + i*9, 9 + (Math.floor(t*3 + i) % 2), SPARK.colors); }
-  else { const f = fighterSprite({mon:id, stage:2, acc:MON[id].spirit ? "#FFD23F" : null, partner:true, soft:true}, pm);
-    if(f.spr && f.spr.soft) drawSprite(ctx, f.spr, pdx, pdy, pflash || undefined);
-    else { for(const [x, y, c] of f.spr.cells) px(ctx, x + pdx, y + pdy, pflash ? flashC(c) : c);
-      if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 16 - Math.ceil(w/2) + pdx, Math.max(0, f.spr.top - f.deco.rows.length) + pdy, f.deco.colors); } } }
+  else { const f = fighterSprite({mon:id, stage:2, acc:MON[id].spirit ? "#FFD23F" : null}, pm);
+    for(const [x, y, c] of f.spr.cells) px(ctx, x + pdx, y + pdy, pflash ? flashC(c) : c);
+    if(f.deco){ const w = f.deco.rows[0].length; pat(ctx, f.deco.rows, 16 - Math.ceil(w/2) + pdx, Math.max(0, f.spr.top - f.deco.rows.length) + pdy, f.deco.colors); } }
   if(A && A.kind === "charge") for(let i = 0; i < 4; i++){ const a = e*6 + i*Math.PI/2; pat(ctx, SPARK.rows, 15 + Math.round(Math.cos(a)*10), 15 + Math.round(Math.sin(a)*7), SPARK.colors); }
   const mon = Q.mon, ball = A && A.kind === "ball";
   const hidden = Q.phase === "caught" || Q.phase === "fled" || (ball && e > .7 && !(A.ok === false && e > 2.3));
@@ -4414,229 +4440,14 @@ pick = function(g, i, ev){
   if(typeof advAnswer==="function") advAnswer(g, st, practice);
   renderCard();
 };
-// ---- v7.2：寵物／夥伴長相大升級（多樣輪廓、進化差很多、比較不像素）
-const _sprSoft = new Map();
-function hexL(c, k){ if(!c || c[0] !== "#") return c; const n = c.length === 4 ? c.replace(/#(.)(.)(.)/, "#$1$1$2$2$3$3") : c; const r = parseInt(n.slice(1,3),16), g = parseInt(n.slice(3,5),16), b = parseInt(n.slice(5,7),16); const m = (x) => Math.max(0, Math.min(255, Math.round(x + (255 - x) * k))); return "#" + [m(r),m(g),m(b)].map(x => x.toString(16).padStart(2,"0")).join(""); }
-function hexD(c, k){ if(!c || c[0] !== "#") return c; const n = c.length === 4 ? c.replace(/#(.)(.)(.)/, "#$1$1$2$2$3$3") : c; const r = parseInt(n.slice(1,3),16), g = parseInt(n.slice(3,5),16), b = parseInt(n.slice(5,7),16); const m = (x) => Math.max(0, Math.min(255, Math.round(x * (1 - k)))); return "#" + [m(r),m(g),m(b)].map(x => x.toString(16).padStart(2,"0")).join(""); }
+// ---- v7.2.3：全部改回原本像素貼圖（主寵／夥伴／心之精靈／進化／mega 光環用像素）
+// 不再覆寫 sprite / drawSprite / fighterSprite / drawFighter / drawThumb
 
-// shape families for partners/monsters by id hash
-const SHAPES = ["blob","tall","long","wing","tail","bip","serp","flat"];
-function shapeOfMon(id){ let h = 0; for(let i = 0; i < (id||"").length; i++) h = (h * 33 + id.charCodeAt(i)) >>> 0; return SHAPES[h % SHAPES.length]; }
-
-function softPaint(ctx, dx, dy, override, paint){
-  ctx.save(); ctx.translate((dx || 0) * CELLPX, (dy || 0) * CELLPX);
-  ctx.imageSmoothingEnabled = true;
-  paint(ctx, override);
-  ctx.restore();
-}
-function sEll(ctx, cx, cy, rx, ry, c, a){ ctx.globalAlpha = a == null ? 1 : a; ctx.fillStyle = c; ctx.beginPath(); ctx.ellipse(cx * CELLPX, cy * CELLPX, Math.max(.2, rx) * CELLPX, Math.max(.2, ry) * CELLPX, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
-function sEye(ctx, x, y, mood, blink, big){ const s = big ? 1.15 : 1;
-  if(mood === "sleep" || blink){ ctx.strokeStyle = INK; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.moveTo((x - 1.1*s)*CELLPX, y*CELLPX); ctx.lineTo((x + 1.1*s)*CELLPX, y*CELLPX); ctx.stroke(); return; }
-  sEll(ctx, x, y, 1.15*s, 1.35*s, "#FFFFFF"); sEll(ctx, x + .15, y + .1, .7*s, .85*s, INK); sEll(ctx, x + .35, y - .25, .28*s, .28*s, "#FFFFFF");
-  if(mood === "happy" || mood === "evolve" || mood === "play"){ ctx.strokeStyle = INK; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x*CELLPX, (y+.2)*CELLPX, 1.2*s*CELLPX, Math.PI*.15, Math.PI*.85); ctx.stroke(); }
-}
-function sMouth(ctx, x, y, mood){
-  ctx.strokeStyle = INK; ctx.lineWidth = 1.5; ctx.beginPath();
-  if(mood === "happy" || mood === "evolve" || mood === "play" || mood === "clean"){ ctx.arc(x*CELLPX, y*CELLPX, 1.4*CELLPX, 0.15*Math.PI, 0.85*Math.PI); sEll(ctx, x, y+1.1, 1.1, .7, "#E8475F", .9); }
-  else if(mood === "eat"){ sEll(ctx, x, y+.3, 1.2, 1.0, "#E8475F"); }
-  else if(mood === "sad" || mood === "hungry"){ ctx.arc(x*CELLPX, (y+1.2)*CELLPX, 1.3*CELLPX, 1.15*Math.PI, 1.85*Math.PI); }
-  else { ctx.moveTo((x-1.2)*CELLPX, (y+.3)*CELLPX); ctx.quadraticCurveTo(x*CELLPX, (y+1.2)*CELLPX, (x+1.2)*CELLPX, (y+.3)*CELLPX); }
-  ctx.stroke();
-}
-function sShade(ctx, cx, cy, rx, ry, body){ sEll(ctx, cx - rx*.25, cy - ry*.3, rx*.55, ry*.45, hexL(body, .35), .55); }
-
-// species body plans — NOT all round
-function paintCat(ctx, st, mood, blink, body, belly, acc, legend, ov){ const B = ov || body, L = hexL(B,.25), D = hexD(B,.22);
-  // crouched long body
-  const cy = [0,22,20,18][st] || 18, rx = [0,5.2,7.2,8.8][st], ry = [0,3.6,4.2,4.8][st];
-  if(st === 0){ sEll(ctx, 16, 19, 5.5, 7.2, "#FFF6DC"); sEll(ctx, 14, 16, .6, .6, B); sEll(ctx, 18, 18, .6, .6, B); sEll(ctx, 15, 22, .6, .6, B); return; }
-  // tail
-  ctx.strokeStyle = D; ctx.lineWidth = 2.4*CELLPX/6; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo((16+rx)*CELLPX, cy*CELLPX); ctx.quadraticCurveTo((22+st)*CELLPX, (cy-4-st)*CELLPX, (24+st)*CELLPX, (cy-1)*CELLPX); ctx.stroke();
-  sEll(ctx, 16, cy, rx, ry, B); sShade(ctx, 16, cy, rx, ry, B); sEll(ctx, 16, cy+ry*.25, rx*.55, ry*.4, belly);
-  // head slightly forward
-  sEll(ctx, 11, cy - ry*.7, 3.2+st*.3, 2.8+st*.2, B);
-  // ears pointed
-  ctx.fillStyle = B; for(const side of [-1,1]){ ctx.beginPath(); ctx.moveTo((11+side*1.6)*CELLPX, (cy-ry*.7-2.2)*CELLPX); ctx.lineTo((11+side*2.8)*CELLPX, (cy-ry*.7-4.5-st*.3)*CELLPX); ctx.lineTo((11+side*.4)*CELLPX, (cy-ry*.7-2)*CELLPX); ctx.fill(); }
-  sEye(ctx, 10, cy-ry*.75, mood, blink, st>=2); sEye(ctx, 12.3, cy-ry*.75, mood, blink, st>=2);
-  sEll(ctx, 9.3, cy-ry*.4, .7, .45, "#FF9FC0", .85); sEll(ctx, 12.8, cy-ry*.4, .7, .45, "#FF9FC0", .85);
-  sMouth(ctx, 11.2, cy-ry*.35, mood);
-  // legs
-  sEll(ctx, 12, 27, 1.3, 1.5, D); sEll(ctx, 15, 27, 1.3, 1.5, D); sEll(ctx, 18, 27, 1.2, 1.4, D); sEll(ctx, 20.5, 27, 1.2, 1.4, D);
-  if(st >= 2){ sEll(ctx, 11, cy-ry-1.2, 2.2, .7, acc || L); } // collar
-  if(st >= 3 && acc){ sEll(ctx, 11, cy-ry-2.2, 1.8, 1.2, acc); sEll(ctx, 11, cy-ry-2.6, .5, .5, "#FFE36E"); }
-  if(legend){ for(let i=0;i<4;i++) sEll(ctx, 8+i*5, 10+((i%2)*2), 1.2, 1.2, "#FFD23F", .7); }
-}
-function paintBunny(ctx, st, mood, blink, body, belly, acc, legend, ov){ const B = ov || body, D = hexD(B,.2);
-  if(st === 0){ sEll(ctx, 16, 19, 5.2, 7.5, "#FFF6DC"); sEll(ctx, 14, 15, .5, 1.8, B); sEll(ctx, 18, 15, .5, 1.8, B); return; }
-  // tall upright
-  const cy = [0,21,19,17][st], rx = [0,4.2,5,5.6][st], ry = [0,5.5,7.2,8.8][st];
-  // long ears
-  for(const side of [-1,1]){ sEll(ctx, 16+side*2.2, cy-ry-3.5-st, 1.1, 3.6+st*.6, B); sEll(ctx, 16+side*2.2, cy-ry-3.2-st, .55, 2.6+st*.4, "#FFD3E6"); }
-  sEll(ctx, 16, cy, rx, ry, B); sShade(ctx, 16, cy, rx, ry, B); sEll(ctx, 16, cy+ry*.2, rx*.65, ry*.45, belly);
-  // head
-  sEll(ctx, 16, cy-ry*.55, 3.4+st*.2, 3.0, B);
-  sEye(ctx, 14.5, cy-ry*.6, mood, blink, true); sEye(ctx, 17.5, cy-ry*.6, mood, blink, true);
-  sEll(ctx, 13.6, cy-ry*.25, .8, .5, "#FF9FC0", .9); sEll(ctx, 18.4, cy-ry*.25, .8, .5, "#FF9FC0", .9);
-  sMouth(ctx, 16, cy-ry*.2, mood);
-  // bipedal feet
-  sEll(ctx, 13.5, 27.2, 2.2, 1.1, D); sEll(ctx, 18.5, 27.2, 2.2, 1.1, D);
-  if(st >= 2){ // scarf
-    ctx.fillStyle = acc || "#FF8FC7"; ctx.fillRect(12*CELLPX, (cy-1)*CELLPX, 8*CELLPX, 1.4*CELLPX); sEll(ctx, 20, cy+1, 1.5, 2.5, acc || "#FF8FC7");
-  }
-  if(st >= 3 && acc){ sEll(ctx, 16, cy-ry-1.5, 3.5, 1.2, acc); }
-  if(legend){ sEll(ctx, 16, cy-ry-4, 2, .6, "#FFD23F"); sEll(ctx, 16, cy-ry-5, .8, .8, "#FFE36E"); }
-}
-function paintBear(ctx, st, mood, blink, body, belly, acc, legend, ov){ const B = ov || body, D = hexD(B,.18);
-  if(st === 0){ sEll(ctx, 16, 19, 6, 7.2, "#FFF6DC"); sEll(ctx, 12, 17, 1.2, 1.2, B); sEll(ctx, 20, 17, 1.2, 1.2, B); return; }
-  // wide stocky
-  const cy = [0,21,20,19][st], rx = [0,6.5,8.2,9.5][st], ry = [0,5.2,6.2,7][st];
-  sEll(ctx, 16, cy, rx, ry, B); sShade(ctx, 16, cy, rx, ry, B); sEll(ctx, 16, cy+ry*.2, rx*.6, ry*.42, belly);
-  sEll(ctx, 16, cy-ry*.5, 4.2, 3.6, B);
-  sEll(ctx, 12.2, cy-ry*.9, 1.8, 1.8, B); sEll(ctx, 19.8, cy-ry*.9, 1.8, 1.8, B); // round ears
-  sEye(ctx, 14.2, cy-ry*.55, mood, blink, st>=2); sEye(ctx, 17.8, cy-ry*.55, mood, blink, st>=2);
-  sEll(ctx, 16, cy-ry*.15, 1.3, 1.0, "#5A3A22"); sMouth(ctx, 16, cy+.2, mood);
-  sEll(ctx, 11, 27, 2.2, 1.5, D); sEll(ctx, 21, 27, 2.2, 1.5, D);
-  if(st >= 2){ sEll(ctx, 8, cy, 1.8, 2.5, B); sEll(ctx, 24, cy, 1.8, 2.5, B); } // arms
-  if(st >= 3 && acc){ ctx.fillStyle = acc; ctx.fillRect(11*CELLPX, (cy-ry-1)*CELLPX, 10*CELLPX, 1.6*CELLPX); sEll(ctx, 12, cy-ry-2, 1, 1.4, acc); sEll(ctx, 20, cy-ry-2, 1, 1.4, acc); }
-  if(legend){ sEll(ctx, 16, cy-ry-3.5, 3, 1.2, "#FFD23F", .8); }
-}
-function paintDino(ctx, st, mood, blink, body, belly, acc, legend, ov){ const B = ov || body, D = hexD(B,.2), C = "#3DBE7A";
-  if(st === 0){ sEll(ctx, 16, 19, 5.5, 7.4, "#FFF6DC"); for(const x of [13,16,19]) sEll(ctx, x, 14, .7, .9, C); return; }
-  // bipedal with neck + tail + crest
-  const cy = [0,22,20,18][st], bodyR = [0,4,5,5.8][st];
-  // tail long
-  ctx.strokeStyle = D; ctx.lineWidth = 3.2; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo((16+bodyR)*CELLPX, (cy+1)*CELLPX); ctx.quadraticCurveTo(26*CELLPX, (cy+2)*CELLPX, (28+st)*CELLPX, (cy-2-st)*CELLPX); ctx.stroke();
-  sEll(ctx, 16, cy, bodyR, bodyR*1.1, B); sShade(ctx, 16, cy, bodyR, bodyR, B); sEll(ctx, 16, cy+1, bodyR*.55, bodyR*.5, belly);
-  // neck + head upright
-  sEll(ctx, 12, cy-bodyR*.9, 1.6, 2.4+st*.4, B);
-  sEll(ctx, 10.5, cy-bodyR*1.5-st*.3, 2.8, 2.2, B);
-  // crest spikes
-  for(let i = 0; i < 2+st; i++){ sEll(ctx, 10+i*1.2, cy-bodyR*1.9-st*.4-i*.3, .7, 1.2+i*.2, C); }
-  sEye(ctx, 9.5, cy-bodyR*1.55-st*.2, mood, blink, true); sMouth(ctx, 10.5, cy-bodyR*1.2, mood);
-  // legs bipedal
-  sEll(ctx, 14, 26.5, 1.5, 2.2, D); sEll(ctx, 18.5, 26.5, 1.5, 2.2, D); sEll(ctx, 13.2, 28, 2.2, .9, D); sEll(ctx, 19.2, 28, 2.2, .9, D);
-  if(st >= 2){ sEll(ctx, 19, cy-1, 1.5, 2.2, B); } // little arm
-  if(st >= 3 && acc){ // cape
-    ctx.fillStyle = acc; ctx.globalAlpha = .85; ctx.beginPath(); ctx.moveTo(18*CELLPX, (cy-2)*CELLPX); ctx.lineTo(24*CELLPX, (cy+6)*CELLPX); ctx.lineTo(16*CELLPX, (cy+5)*CELLPX); ctx.fill(); ctx.globalAlpha = 1;
-  }
-  if(legend){ // small wings
-    ctx.fillStyle = hexL(B,.2); ctx.globalAlpha = .9; ctx.beginPath(); ctx.moveTo(14*CELLPX, cy*CELLPX); ctx.quadraticCurveTo(6*CELLPX, (cy-6)*CELLPX, 8*CELLPX, (cy+2)*CELLPX); ctx.fill(); ctx.beginPath(); ctx.moveTo(18*CELLPX, cy*CELLPX); ctx.quadraticCurveTo(26*CELLPX, (cy-6)*CELLPX, 24*CELLPX, (cy+2)*CELLPX); ctx.fill(); ctx.globalAlpha = 1;
-  }
-}
-function paintWhale(ctx, st, mood, blink, body, belly, acc, legend, ov){ const B = ov || body, D = hexD(B,.18);
-  if(st === 0){ sEll(ctx, 16, 19, 6.2, 6.5, "#FFF6DC"); sEll(ctx, 12, 18, 1.5, .8, B); sEll(ctx, 21, 18, 1.5, .8, B); return; }
-  // long horizontal
-  const cy = [0,20,19,18][st], rx = [0,7.5,9.5,11][st], ry = [0,3.8,4.4,5][st];
-  sEll(ctx, 15, cy, rx, ry, B); sShade(ctx, 15, cy, rx, ry, B); sEll(ctx, 14, cy+ry*.25, rx*.6, ry*.4, belly);
-  // flukes
-  ctx.fillStyle = D; ctx.beginPath(); ctx.moveTo((15+rx)*CELLPX, cy*CELLPX); ctx.lineTo((18+rx)*CELLPX, (cy-3-st)*CELLPX); ctx.lineTo((15+rx-1)*CELLPX, cy*CELLPX); ctx.lineTo((18+rx)*CELLPX, (cy+3+st)*CELLPX); ctx.fill();
-  sEye(ctx, 10, cy-.3, mood, blink, true); sMouth(ctx, 9, cy+1.2, mood);
-  // fins
-  sEll(ctx, 15, cy+ry*.6, 2.2, 1.1, D); sEll(ctx, 18, cy, 1.5, 2.2, D);
-  if(st >= 2){ // spout
-    for(let i=0;i<3;i++) sEll(ctx, 12, cy-ry-1-i*1.2, .7+i*.2, .7, "#A8D8FF", .7);
-  }
-  if(st >= 3 && acc){ sEll(ctx, 12, cy-ry-1.5, 2.5, 1, acc); }
-  if(legend){ for(let i=0;i<5;i++) sEll(ctx, 8+i*4, 8, 1, 1, "#7FD3FF", .65); }
-}
-
-function paintByEar(ear, ctx, st, mood, blink, body, belly, acc, legend, ov){
-  if(ear === "cat") return paintCat(ctx, st, mood, blink, body, belly, acc, legend, ov);
-  if(ear === "bunny") return paintBunny(ctx, st, mood, blink, body, belly, acc, legend, ov);
-  if(ear === "bear") return paintBear(ctx, st, mood, blink, body, belly, acc, legend, ov);
-  if(ear === "dino") return paintDino(ctx, st, mood, blink, body, belly, acc, legend, ov);
-  if(ear === "whale") return paintWhale(ctx, st, mood, blink, body, belly, acc, legend, ov);
-  // generic partner/monster with varied silhouette
-  paintShape(ctx, st, mood, blink, body, belly, acc, legend, ov, "blob");
-}
-
-function paintShape(ctx, st, mood, blink, body, belly, acc, legend, ov, shape){
-  const B = ov || body, D = hexD(B,.2); const cy = [0,21,20,18][st] || 20;
-  if(st === 0){ sEll(ctx, 16, 19, 5.5, 7, "#FFF6DC"); sEll(ctx, 16, 18, 2, 2, B, .5); return; }
-  if(shape === "tall"){ sEll(ctx, 16, cy, 3.5+st*.3, 6+st, B); sShade(ctx,16,cy,3.5,6,B); sEll(ctx,16,cy+2,2.2,2.5,belly); sEll(ctx,16,cy-5-st*.3,3,2.6,B); sEye(ctx,14.5,cy-5.2,mood,blink,true); sEye(ctx,17.5,cy-5.2,mood,blink,true); sMouth(ctx,16,cy-3.8,mood); sEll(ctx,14,27.5,1.5,1.2,D); sEll(ctx,18,27.5,1.5,1.2,D); }
-  else if(shape === "long"){ sEll(ctx, 16, cy, 8+st, 3.2+st*.3, B); sShade(ctx,16,cy,8,3.2,B); sEll(ctx,14,cy+.8,4,1.8,belly); sEye(ctx,10,cy-.4,mood,blink,true); sMouth(ctx,9,cy+.8,mood); sEll(ctx,24,cy-2,2,1.2,D); sEll(ctx,24,cy+2,2,1.2,D); }
-  else if(shape === "wing"){ sEll(ctx, 16, cy, 5, 4.5+st*.4, B); sShade(ctx,16,cy,5,4.5,B); ctx.fillStyle = hexL(B,.15); ctx.beginPath(); ctx.moveTo(11*CELLPX,cy*CELLPX); ctx.quadraticCurveTo(4*CELLPX,(cy-7)*CELLPX,7*CELLPX,(cy+3)*CELLPX); ctx.fill(); ctx.beginPath(); ctx.moveTo(21*CELLPX,cy*CELLPX); ctx.quadraticCurveTo(28*CELLPX,(cy-7)*CELLPX,25*CELLPX,(cy+3)*CELLPX); ctx.fill(); sEye(ctx,14,cy-1,mood,blink,true); sEye(ctx,18,cy-1,mood,blink,true); sMouth(ctx,16,cy+1.2,mood); }
-  else if(shape === "tail"){ sEll(ctx, 14, cy, 5, 4.5, B); ctx.strokeStyle = D; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(19*CELLPX,cy*CELLPX); ctx.quadraticCurveTo(28*CELLPX,(cy-6)*CELLPX,27*CELLPX,(cy+2)*CELLPX); ctx.stroke(); sShade(ctx,14,cy,5,4.5,B); sEye(ctx,12,cy-1,mood,blink,true); sEye(ctx,15.5,cy-1,mood,blink,true); sMouth(ctx,13.5,cy+1,mood); }
-  else if(shape === "bip"){ sEll(ctx, 16, cy-1, 4.5, 4.2, B); sEll(ctx, 16, cy-5, 3.2, 2.8, B); sEll(ctx,14,26.5,1.4,2.2,D); sEll(ctx,18,26.5,1.4,2.2,D); sEye(ctx,14.5,cy-5.2,mood,blink,true); sEye(ctx,17.5,cy-5.2,mood,blink,true); sMouth(ctx,16,cy-3.8,mood); sEll(ctx,16,cy+.5,2.5,2,belly); }
-  else if(shape === "serp"){ ctx.strokeStyle = B; ctx.lineWidth = 4.5*CELLPX/6; ctx.lineCap = "round"; ctx.beginPath(); ctx.moveTo(8*CELLPX,24*CELLPX); ctx.bezierCurveTo(12*CELLPX,10*CELLPX,20*CELLPX,28*CELLPX,26*CELLPX,14*CELLPX); ctx.stroke(); sEll(ctx, 26, 13, 2.8, 2.4, B); sEye(ctx,25.2,12.5,mood,blink,false); sEye(ctx,27,12.5,mood,blink,false); }
-  else if(shape === "flat"){ sEll(ctx, 16, 24, 9, 2.8, B); sEll(ctx, 16, 22, 6, 3.5, B); sEye(ctx,12,21,mood,blink,true); sEye(ctx,16,21,mood,blink,true); sMouth(ctx,14,23,mood); sEll(ctx,20,20,2,1.2,D); }
-  else { sEll(ctx, 16, cy, 5+st*.6, 5+st*.5, B); sShade(ctx,16,cy,5,5,B); sEll(ctx,16,cy+1.5,3,2.5,belly); sEye(ctx,14,cy-1.2,mood,blink,st>=2); sEye(ctx,18,cy-1.2,mood,blink,st>=2); sMouth(ctx,16,cy+.8,mood); sEll(ctx,13,27,1.5,1.2,D); sEll(ctx,19,27,1.5,1.2,D); }
-  if(acc && st >= 3){ sEll(ctx, 16, cy - 6 - (shape==="tall"?2:0), 3, 1.1, acc); }
-  if(legend){ for(let i=0;i<3;i++) sEll(ctx, 10+i*5, 9, 1.1, 1.1, "#FFD23F", .7); }
-}
-
-// Replace sprite / drawSprite — soft for 主寵＋夥伴；野生／關主／搗蛋怪維持像素
-const __spritePixel = sprite;
-const __drawSpritePixel = drawSprite;
-const __drawFighter0 = typeof drawFighter === "function" ? drawFighter : null;
-const __drawThumb0 = typeof drawThumb === "function" ? drawThumb : null;
-const __fighterSprite0 = typeof fighterSprite === "function" ? fighterSprite : null;
-
-sprite = function(sp, stage, mood, blink, acc){
-  const ear = sp && sp.ear, wantSoft = sp && !sp._pixel && (sp._soft || (ear && ear !== "none"));
-  if(!wantSoft) return __spritePixel(sp, stage, mood, blink, acc);
-  const legend = !!(sp && sp._legend); const st = Math.max(0, Math.min(3, stage|0));
-  const key = ["soft", ear||"none", sp.body, sp.belly, st, mood, !!blink, acc||"", legend, sp._shape||""].join("|");
-  if(_sprSoft.has(key)) return _sprSoft.get(key);
-  const top = st === 0 ? 11 : ear === "bunny" ? 6 : ear === "dino" ? 8 : ear === "whale" ? 14 : 10;
-  const res = {soft:true, top, cells:[[16,16,sp.body]],
-    paint:(ctx, dx, dy, ov) => softPaint(ctx, dx, dy, ov, (c, override) => {
-      if(ear && ear !== "none") paintByEar(ear, c, st, mood, blink, sp.body, sp.belly, acc, legend, override);
-      else paintShape(c, st, mood, blink, sp.body, sp.belly, acc, legend, override, sp._shape || "blob");
-    })};
-  _sprSoft.set(key, res); return res;
-};
-drawSprite = function(ctx, spr, dx, dy, override){
-  if(spr && spr.soft && spr.paint){ spr.paint(ctx, dx, dy, override); return; }
-  __drawSpritePixel(ctx, spr, dx||0, dy||0, override);
-};
-
-function softPartnerSp(m, spirit){
-  return {ear:"none", body:m.body, belly:m.belly || hexL(m.body, .4), _shape:shapeOfMon(m.id || ""), _soft:true, _legend:!!spirit};
-}
-
-fighterSprite = function(u, mood){
-  if(u && u.sp && SPECIES[u.sp]) return {spr: sprite(SPECIES[u.sp], Math.max(1, u.stage||2), mood, false, u.acc), deco:null};
-  if(u && u.mon && MON[u.mon]){
-    const m = MON[u.mon];
-    if(u.partner || u.soft){
-      return {spr: sprite(softPartnerSp(Object.assign({id:u.mon}, m), m.spirit), Math.max(1, u.stage||2), mood, false, u.acc), deco:null};
-    }
-    // 野生／關主／搗蛋怪：原本像素
-    return {spr: __spritePixel({ear:m.ear||"none", body:m.body, belly:m.belly}, u.stage||2, mood, false, u.acc),
-      deco: MON_DECO[u.mon === RAID_ID ? "normal" : m.attr], deco2: u.mon === RAID_ID ? MON_DECO[u.attr] : null};
-  }
-  return __fighterSprite0 ? __fighterSprite0(u, mood) : {spr: __spritePixel({ear:"none", body:"#CFC6E0", belly:"#fff"}, 2, mood, false, null), deco:null};
-};
-
-drawFighter = function(canvas, u, mood, mirror){
-  const dpr = Math.min(window.devicePixelRatio||1, 2); if(canvas.width !== LCDW*dpr){ canvas.width = LCDW*dpr; canvas.height = LCDW*dpr; }
-  const ctx = canvas.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.imageSmoothingEnabled = !!(u && (u.soft || u.partner)); ctx.clearRect(0,0,LCDW,LCDW);
-  const f = fighterSprite(u, mood);
-  if(f.spr && f.spr.soft && f.spr.paint){
-    ctx.save();
-    if(mirror){ ctx.translate(LCDW, 0); ctx.scale(-1, 1); }
-    drawSprite(ctx, f.spr, 0, 0);
-    ctx.restore();
-  } else {
-    for(const [x,y,c] of (f.spr && f.spr.cells) || []) px(ctx, mirror ? GRID-1-x : x, y, c);
-    for(const d of [f.deco, f.deco2]) if(d){ const w = d.rows[0].length; pat(ctx, d.rows, 16 - Math.floor(w/2), Math.max(0, f.spr.top - d.rows.length - (u.acc ? 3 : 0) + (d === f.deco2 ? -3 : 0)), d.colors); }
-  }
-};
-
-drawThumb = function(canvas, monId, hidden){
-  const m = MON[monId]; if(!m) return;
-  const plain = m.kind === "wild" || m.kind === "catch";
-  const u = {mon:monId, stage: plain ? 2 : 3, acc: plain ? null : "#FFD23F", attr:m.attr, partner:true, soft:true};
-  drawFighter(canvas, u, "idle", false);
-  if(hidden){ const ctx = canvas.getContext("2d"); ctx.globalCompositeOperation = "source-atop"; ctx.fillStyle = "#3A2E4A"; ctx.fillRect(0,0,LCDW,LCDW); ctx.globalCompositeOperation = "source-over"; }
-};
-
-// 主寵 LCD／傳說標記
-const __drawLcd = drawLcd;
+// 傳說標記：畫主寵時暫時掛 _legend（像素精靈若沒用到也無害）
+const __drawLcdPix = drawLcd;
 drawLcd = function(g, now){
-  const pt = S.pets[g]; if(pt && pt.species && SPECIES[pt.species]) SPECIES[pt.species]._legend = isLegend(g);
-  const r = __drawLcd(g, now);
+  const pt = S.pets[g]; if(pt && pt.species && SPECIES[pt.species]) SPECIES[pt.species]._legend = typeof isLegend === "function" && isLegend(g);
+  const r = __drawLcdPix(g, now);
   if(pt && pt.species && SPECIES[pt.species]) SPECIES[pt.species]._legend = false;
   return r;
 };
@@ -4711,13 +4522,46 @@ shopHTML = function(g){
   }
   let html = __shopHTML0(g);
   if(!html.includes('data-stab="evo"')) html = html.replace(/(data-stab="fruit"[^>]*>🍓 果實<\/button>)/, `$1<button class="" data-stab="evo" data-g="${g}">💎 進化</button>`);
-  // 商店球頁：◀▶ 台座瀏覽（丟球改走圖鑑格）
-  if((TAMA[g].shopTab || "ball") === "ball" && !html.includes("ballstand")){
-    const own = BALLS.filter(b => true);
-    if(TAMA[g].ballSel == null || TAMA[g].ballSel >= own.length) TAMA[g].ballSel = 0;
-    const bi = TAMA[g].ballSel % own.length, b = own[bi], it = ITEMS[b];
-    const stand = `<div class="ballstand shopstand" data-g="${g}"><button class="ballarr" data-ballarr="-1" data-g="${g}">◀</button><div class="pedestal"><div class="ballshow" style="--ec:${it.col==="rainbow"?"#FF6FA8":it.col}">${ballIcon(b)}</div><div class="stand"></div><b class="ballname">${it.n}</b><small>${esc(it.d||"")}</small><small class="ballhint">◀ ▶ 逛球圖鑑・下方直接購買</small></div><button class="ballarr" data-ballarr="1" data-g="${g}">▶</button></div>`;
-    html = html.replace('<h5>等級球</h5>', stand + '<h5>等級球</h5>');
+  // 商店球頁：◀▶ 台座＋完整格子（等級／屬性／特殊／心之），繞回開頭
+  if((TAMA[g].shopTab || "ball") === "ball"){
+    const c = coins(g);
+    const buyBtn = (id) => { const p = priceOf(id), base = ITEMS[id].price; return `<button class="btn small b-blue" data-buy="${id}" data-g="${g}" ${c < p ? "disabled" : ""}>🪙 ${p}${p < base ? ` <s>${base}</s>` : ""} 買</button>`; };
+    const ballCard = (id) => {
+      const it = ITEMS[id];
+      if(it.cat === "elem") return itemCard(g, id, `<small>擅長抓：${CATCH.filter(m => m.attr === it.attr).map(m => esc(m.name)).join("、")}</small><small>基本抓到率 ${pct(it.rate)}%・有 ${invN(g, id)} 顆</small>${buyBtn(id)}`, "elem");
+      if(it.cat === "heart") return itemCard(g, id, `<small>${it.trait ? `${TRAIT[it.trait].e} ${TRAIT[it.trait].n}` : it.drop ? "💗 十大能力升級獎勵" : "🎉 節慶"}</small><small>基本抓到率 ${pct(it.rate)}%・有 ${invN(g, id)} 顆</small>${it.drop ? '<small class="droponly">不賣，十大能力升級會送</small>' : buyBtn(id)}`);
+      return itemCard(g, id, `<small>基本抓到率 ${pct(it.rate)}%・有 ${invN(g, id)} 顆</small>${buyBtn(id)}`);
+    };
+    const sec = (title, cat) => {
+      const ids = BALLS.filter(id => ITEMS[id].cat === cat);
+      if(!ids.length) return "";
+      return `<h5>${title}</h5><div class="igrid shopballs">${ids.map(ballCard).join("")}</div>`;
+    };
+    const fullBody = sec("等級球", "tier") + sec("屬性球（同屬性 +25%、剋屬性 +10%）", "elem")
+      + sec("特殊球（在對的時機丟，超好抓）", "special") + sec("心之球（十大能力／節慶）", "heart")
+      + `<p class="dnote shopend">👆 上面格子可以直購；台座 ◀▶ 依序逛完 ${shopBalls().length} 顆球後會回到第一顆。</p>`;
+    // 換成完整分類（原本只有等級＋特殊會看起來像被截斷）
+    html = html.replace(/<h5>等級球<\/h5>[\s\S]*?(?=<p class="dnote">金幣是)/, fullBody);
+    if(!html.includes("ballstand")){
+      const own = shopBalls();
+      let bi = Number(TAMA[g].ballSel) || 0;
+      if(bi < 0 || bi >= own.length || !Number.isFinite(bi)) bi = 0;
+      TAMA[g].ballSel = bi;
+      const b = own[bi], it = ITEMS[b], p = priceOf(b);
+      const canBuy = it.price && !it.drop;
+      const stand = `<div class="ballstand shopstand" data-g="${g}">
+      <button class="ballarr" data-ballarr="-1" data-g="${g}" aria-label="上一顆">◀</button>
+      <div class="pedestal">
+        <div class="ballshow" style="--ec:${it.col==="rainbow"?"#FF6FA8":it.col}">${ballIcon(b)}</div>
+        <div class="stand"></div>
+        <b class="ballname">${it.n}</b>
+        <small>${esc(it.d||"")}</small>
+        <small class="ballhint">◀ ▶ ${bi+1}/${own.length}・有 ${invN(g,b)} 顆・${({tier:"等級",elem:"屬性",special:"特殊",heart:"心之"}[it.cat]||it.cat)}</small>
+        ${canBuy ? `<button class="btn small b-blue" data-buy="${b}" data-g="${g}" ${c < p ? "disabled" : ""}>🪙 ${p} 買這顆</button>` : `<small class="droponly">不賣・任務／升級才會拿到</small>`}
+      </div>
+      <button class="ballarr" data-ballarr="1" data-g="${g}" aria-label="下一顆">▶</button></div>`;
+      html = html.replace('<h5>等級球</h5>', stand + '<h5>等級球</h5>');
+    }
   }
   return html;
 };
@@ -4889,6 +4733,20 @@ if(__renderTraitParentHW){ renderTraitParent = function(){ __renderTraitParentHW
   if(!$("hwParentGuide")) el.appendChild(box); else $("hwParentGuide").replaceWith(box);
   el.querySelectorAll("[data-haward]").forEach(b => b.onclick = () => hwAward(b.dataset.haward, b.dataset.hid));
 }; }
+
+// 能量滿時把招式捲進視野
+const __renderDevMoves = renderDev;
+renderDev = function(g){
+  __renderDevMoves(g);
+  try {
+    const Q = QST[g] || WST[g];
+    if(Q && Q.energy >= ENERGY_MAX && Q.phase === "fight"){
+      const fin = document.querySelector(`#tama-${g} .finfo`);
+      const mv = document.querySelector(`#tama-${g} .moves.on, #dscr-${g} .moves.on, #tama-${g} .moves`);
+      if(fin && mv){ const top = mv.offsetTop - 8; if(fin.scrollHeight > fin.clientHeight) fin.scrollTop = Math.max(0, top - 4); mv.scrollIntoView({block:"nearest", inline:"nearest"}); }
+    }
+  } catch(e){}
+};
 // ---- 題目難度：菁英怪獸、勇氣挑戰、Lv8 以上的怪獸，出 ★★★ 挑戰題
 const isHardQ = (g, st) => { const q = st && (typeof qOfG === "function" ? qOfG(st, g) : cardQs(st.cid, g)[st.idx]); return !!(q && q.d === 3); };
 function wantHard(g){ const Q = QST[g]; return !!(Q && Q.phase === "fight" && (Q.elite || Q.brave || (Q.mon.lv || 1) >= 8)); }
