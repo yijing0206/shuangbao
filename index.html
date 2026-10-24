@@ -364,6 +364,10 @@ em.holi{font-style:normal;background:#FFE3C2;color:#A34700;border-radius:8px;pad
 .ballcell .besttag{position:absolute;top:4px;right:6px;color:#FF4B55;font-size:11px;font-weight:900}
 .ballcell:disabled{opacity:.45}
 /* 商店：台座 ◀▶ 瀏覽球（若有） */
+
+/* 點題不被液晶擋住 */
+.lcdwrap canvas,.bezel canvas,#lcd-g4,#lcd-g6{pointer-events:none!important}
+.dq,.opts,.opt,[data-conf],[data-pick]{position:relative;z-index:5}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -585,7 +589,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.2.1";
+const APP_VERSION = "7.2.2";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -750,7 +754,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7.2.1 寵物／夥伴畫面上來了（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -1181,7 +1185,7 @@ function scrollToDev(){ const el = $("tama-" + ownedKids()[0]); if(el && el.scro
 function pick(g, i, ev){
   const st = devQ(g); if(!st || st.done) return; const cid = st.cid;
   if(!st.conf){ toast("👉 先選信心，再作答"); return; }
-  const q = cardQs(cid, g)[st.idx]; if(!q) return;
+  const q = (typeof qOfG==="function"?qOfG(st,g):null)||cardQs(cid, g)[st.idx]; if(!q) return;
   const sec = secret(q), today = twDate();
   const rec = mcRec(cid, q.id); const d = dayRec(today);
   const practice = rec.starOn === today || rec.seenOn === today;
@@ -4362,6 +4366,54 @@ abc = function(g, key){
   if(key === "A" && TAMA[g] && TAMA[g].view === "wild"){ const n = BALLS.filter(b => invN(g, b) > 0).length; if(n){ TAMA[g].ballSel = ((TAMA[g].ballSel || 0) + 1) % n; renderDev(g); return; } }
   return __abc(g, key);
 };
+
+// v7.2.1 hotfix：產生題 pick
+pick = function(g, i, ev){
+  const st = devQ(g); if(!st || st.done) return; const cid = st.cid;
+  if(!st.conf){ toast("👉 先選信心，再作答"); return; }
+  const q = (typeof qOfG==="function"?qOfG(st,g):null)||cardQs(cid, g)[st.idx]; if(!q){ toast("這題載入失敗，按「下一題」再試"); return; }
+  const sec = secret(q), today = twDate();
+  const rec = mcRec(cid, q.id); const d = dayRec(today);
+  const practice = rec.starOn === today || rec.seenOn === today;
+  const ok = i === sec.c;
+  st.picked.push(i);
+  if(!ok){ rec.wrongPending = true; rec.wrongOn = today; d[g].misses += 1; }
+  if(ok || st.picked.length >= 2){
+    st.done = true;
+    st.result = ok ? (st.picked.length === 1 ? "right" : "retry") : "wrong";
+    rec[st.result] += 1; rec.lastResult = st.result; rec.lastOn = today;
+    rec.confLog.push([today, st.conf, st.result]); if(rec.confLog.length > 30) rec.confLog.shift();
+    if(st.result === "right" && rec.wrongOn && dayDiff(rec.wrongOn, today) >= 1){ if(rec.wrongPending) st.fixed = true; rec.wrongPending = false; }
+    if(ok) rec.everRight = true;
+    if(!practice){
+      d[g][st.result] += 1; d[g].actions += 1;
+      const dc = d.cards[cid] || (d.cards[cid] = {});
+      const k = dc[g] || (dc[g] = {right:0, retry:0, wrong:0}); k[st.result] += 1;
+    }
+    const p = cardProg(cid);
+    const allRight = (gg) => { const l = cardQs(cid, gg); return l.length && l.every(x => p.mc[x.id] && p.mc[x.id].everRight); };
+    if(!p.cleared && (allRight("g4") || allRight("g6"))){ p.cleared = true; p.firstClearedOn = today; }
+    markPlayed(cid);
+    st.msg = calib(st.conf, st.result);
+    if(ok && !practice){
+      rec.starOn = today;
+      const n = st.result === "right" ? 1 : 0.5;
+      award(g, n, st.result === "right" ? HAPPY[Math.floor(Math.random()*HAPPY.length)] : "第二次就答對，好厲害！👍", ev, cid);
+    }else{
+      persist();
+      if(ok){ petFx(g,"happy","答對了！（練習模式）"); confetti(40, ev); setMsg("答對了！今天這題已經拿過星星，明天再來複習會更牢 🧠"); }
+      else { petFx(g,"cheer", CHEER[Math.floor(Math.random()*CHEER.length)]); hearts(g); setMsg("沒關係！看看為什麼，這張卡明天會出現「⏰ 該複習」。"); }
+      renderAll(false);
+    }
+  }else{
+    markPlayed(cid); persist();
+    const m = CHEER[Math.floor(Math.random()*CHEER.length)];
+    petFx(g,"cheer", m); hearts(g); setMsg(`${m} 看看提示，再選一次。`);
+    renderAll(false);
+  }
+  if(typeof advAnswer==="function") advAnswer(g, st, practice);
+  renderCard();
+};
 // ---- v7.2：寵物／夥伴長相大升級（多樣輪廓、進化差很多、比較不像素）
 const _sprSoft = new Map();
 function hexL(c, k){ if(!c || c[0] !== "#") return c; const n = c.length === 4 ? c.replace(/#(.)(.)(.)/, "#$1$1$2$2$3$3") : c; const r = parseInt(n.slice(1,3),16), g = parseInt(n.slice(3,5),16), b = parseInt(n.slice(5,7),16); const m = (x) => Math.max(0, Math.min(255, Math.round(x + (255 - x) * k))); return "#" + [m(r),m(g),m(b)].map(x => x.toString(16).padStart(2,"0")).join(""); }
@@ -4704,34 +4756,34 @@ const HW_KEY = "hw"; // adv(g).hw = {done:{}, week:''}
 const HOMEWORK = [
   {id:"moon-night", g:"g4", subj:"自然", card:"sci-a", e:"🌙", n:"一夜觀月小報告",
    q:"選一個晴朗的晚上，在同一個地點觀察月亮 3 次（剛天黑、睡前、隔天早上如果還看得到）。記下時間、方位（東南西北）、大約高度（幾個拳頭）、形狀。寫下你發現了什麼，並猜猜為什麼會這樣。",
-   tip:"可以請家人一起看，用照片或畫圖輔助。", traits:["rebel","story","grit"], reward:{coin:80, xp:4, items:["eThunder","fWise"], trait:2}},
+   tip:"可以請家人一起看，用照片或畫圖輔助。", rubric:'參考重點：①至少 3 次觀察（時間／方位／高度／形狀）②發現月亮會東升西落或位置變 ③合理推測（地球自轉／公轉／反射太陽光）④有和家人討論或圖／照片。字數約 80 字以上、有具體數據就算過關。', traits:["rebel","story","grit"], reward:{coin:80, xp:4, items:["eThunder","fWise"], trait:2}},
   {id:"angle-home", g:"g4", subj:"數學", card:"math-c", e:"📐", n:"家裡角度偵探",
    q:"在家裡找出至少 5 個角：門縫、書本打開、時鐘某時刻、桌子角落、剪刀打開。估計每個是銳角／直角／鈍角，再用三角板或自製量角器量一量（或對照 90 度）。寫成表格：物品｜我猜｜實測｜差多少。",
-   tip:"和家人討論哪個角最難估、為什麼。", traits:["rebel","grit","focus"], reward:{coin:70, xp:3, items:["fAtk"], trait:2}},
+   tip:"和家人討論哪個角最難估、為什麼。", rubric:'參考重點：表格含 ≥5 個物品；各有「我猜／實測／差多少」；能分辨銳／直／鈍；討論哪一個最難估。差多少可用約略（例如差一點／差很多）。有量測過程就算過關。', traits:["rebel","grit","focus"], reward:{coin:70, xp:3, items:["fAtk"], trait:2}},
   {id:"tri-photo", g:"g4", subj:"數學", card:"math-a", e:"📐", n:"生活中的三角形",
    q:"拍或畫 4 個生活中的三角形（屋頂、路標、食物切法、玩具…）。標出哪個像正三角／等腰／直角三角，並寫一句：你怎麼判斷的？",
-   tip:"可以問家人：還有哪裡看過三角形？", traits:["rebel","cross","story"], reward:{coin:60, xp:3, items:["ball2"], trait:2}},
+   tip:"可以問家人：還有哪裡看過三角形？", rubric:'參考重點：4 個生活三角形＋分類（正／等腰／直角等）＋一句判斷理由（邊或角）。照片或手繪皆可。能說「為什麼這樣分」即可。', traits:["rebel","cross","story"], reward:{coin:60, xp:3, items:["ball2"], trait:2}},
   {id:"money-talk", g:"g6", subj:"社會", card:"soc-b", e:"💰", n:"家庭理財小訪問",
    q:"訪問一位家人：每月有哪些「需要」和「想要」？有沒有存錢方法？如果多 500 元會怎麼分配？整理成訪綱＋你的感想（至少 8 句），並做一份簡單預算表（收入假設、必要支出、想要、儲蓄）。",
-   tip:"尊重家人不想說的部分；數字可用假設。", traits:["story","cross","resp"], reward:{coin:100, xp:5, items:["zBand","fStar"], trait:3}},
+   tip:"尊重家人不想說的部分；數字可用假設。", rubric:'參考重點：訪綱有需要／想要／存錢／多 500 怎麼分；感想 ≥8 句；預算表含必要支出＋想要＋儲蓄。尊重隱私、可用假設數字。重點是「分辨需要與想要」。', traits:["story","cross","resp"], reward:{coin:100, xp:5, items:["zBand","fStar"], trait:3}},
   {id:"typhoon-plan", g:"g6", subj:"自然", card:"sci-b", e:"🌀", n:"颱風家庭應變計畫",
    q:"查中央氣象署（或課本）說明海上／陸上颱風警報差別。和家人一起寫「我家颱風清單」：出門前、待在家、風雨中、風雨後各 3 件事。說明為什麼颱風眼經過時仍不能大意。",
-   tip:"可附一張手繪避難／備糧圖。", traits:["rebel","lead","grit"], reward:{coin:90, xp:4, items:["evoStone"], trait:3}},
+   tip:"可附一張手繪避難／備糧圖。", rubric:'參考重點：能說海上／陸上颱風警報差別；家庭清單含出門前／待在家／風雨中／風雨後各 ≥2–3 事；提到颱風眼仍危險。有查資料或問家人即可。', traits:["rebel","lead","grit"], reward:{coin:90, xp:4, items:["evoStone"], trait:3}},
   {id:"postwar-reflect", g:"g6", subj:"社會", card:"soc-a", e:"🏛️", n:"戰後故事探究",
    q:"選一件戰後臺灣經濟發展相關主題（加工出口區、某個產業、阿公阿嬤的工作變化…）。查資料或訪問長輩，寫 1 頁：以前→後來發生什麼→人口或生活有什麼改變→你還想再問的一個問題。",
-   tip:"問題要比答案多一點也沒關係。", traits:["rebel","story","cross"], reward:{coin:100, xp:5, items:["bCross","fWise"], trait:3}},
+   tip:"問題要比答案多一點也沒關係。", rubric:'參考重點：選定主題；有「以前→後來→生活／人口改變→還想問的問題」結構；資料來源（長輩／書／網路）寫一下。不必很長，約 1 頁、有因果即可。', traits:["rebel","story","cross"], reward:{coin:100, xp:5, items:["bCross","fWise"], trait:3}},
   {id:"idiom-story", g:"both", subj:"國語", card:"chi-a", e:"📖", n:"成語小故事創作",
    q:"選 3 個本學期成語，寫一段 150 字以上的小故事，三個成語都要用對。寫完讀給家人聽，請他指出哪裡用得好、哪裡可改，並記下修改版。",
-   tip:"小四小六可各寫一篇，或合寫一冊。", traits:["story","rebel","focus"], reward:{coin:80, xp:4, items:["fHappy","ball2"], trait:2}},
+   tip:"小四小六可各寫一篇，或合寫一冊。", rubric:'參考重點：短文自然用到指定／自選成語 ≥3 個；情節通順；文末有成語意思。錯別字無妨，重點是用對意思。', traits:["story","rebel","focus"], reward:{coin:80, xp:4, items:["fHappy","ball2"], trait:2}},
   {id:"heat-experiment", g:"g6", subj:"自然", card:"sci-a", e:"🔬", n:"熱傳播小實驗",
    q:"設計一個安全的小實驗，分辨傳導／對流／輻射（例如：金屬湯匙與塑膠湯匙、熱水上方的手、陽光下與陰影）。寫步驟、觀察、結論，並回答：保溫便當可以怎麼做？",
-   tip:"一定要大人陪同，不要用明火。", traits:["rebel","grit","focus"], reward:{coin:90, xp:4, items:["eFire","fEnergy"], trait:3}},
+   tip:"一定要大人陪同，不要用明火。", rubric:'參考重點：有假設、步驟、觀察紀錄、結論；提到熱傳方式（傳導／對流／輻射之一）；注意安全。簡單實驗（陽光下鐵／木）也可。', traits:["rebel","grit","focus"], reward:{coin:90, xp:4, items:["eFire","fEnergy"], trait:3}},
   {id:"pond-guide", g:"g4", subj:"自然", card:"sci-b", e:"🪴", n:"池塘導覽員",
    q:"去公園池塘或看課本圖，找出挺水／浮葉／漂浮／沉水植物各一種（或照片）。做一張「導覽卡」：名字、特徵、為什麼適合水生。講給家人聽 1 分鐘。",
-   tip:"不能採集保育植物；以觀察為主。", traits:["lead","story","cross"], reward:{coin:70, xp:3, items:["eGrass"], trait:2}},
+   tip:"不能採集保育植物；以觀察為主。", rubric:'參考重點：導覽含位置／生物或水質／人為影響／保護建議；可用圖或條列。有實際觀察或訪談更佳。', traits:["lead","story","cross"], reward:{coin:70, xp:3, items:["eGrass"], trait:2}},
   {id:"measure-run", g:"both", subj:"數學", card:"math-d", e:"🏃", n:"操場／走廊測量隊",
    q:"用步伐或捲尺估／量一段距離，設計除法問題：若每人間隔 x 公尺排隊，可排幾人？餘幾公尺？小六改成小數除法再算一題。寫下算式、驗算與討論「餘數為什麼要比除數小」。",
-   tip:"兩人一起量更準。", traits:["cross","focus","grit"], reward:{coin:75, xp:3, items:["fSpd"], trait:2}}
+   tip:"兩人一起量更準。", rubric:'參考重點：有實測距離；自編「每隔 X 公尺站一人，可站幾人、剩多少」的除法應用題＋算式＋驗算；能說餘數必須小於除數。數字合理即可。', traits:["cross","focus","grit"], reward:{coin:75, xp:3, items:["fSpd"], trait:2}}
 ];
 function hwWeek(){ const d = new Date(Date.now() + 8 * 3600000); const t = new Date(d); t.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return t.toISOString().slice(0, 10); }
 function hwState(g){ const a = adv(g); if(!isObj(a.hw)) a.hw = {done:{}, week:""}; if(a.hw.week !== hwWeek()){ a.hw.week = hwWeek(); a.hw.picked = null; } return a.hw; }
@@ -4772,7 +4824,7 @@ function hwAward(g, hid){ const h = HOMEWORK.find(x => x.id === hid); if(!h) ret
   const st = hwState(g); if(st.done[hid]){ tmsg(g, "這題已經領過獎囉"); return; }
   const text = (st.pending && st.pending[hid] && st.pending[hid].t) || (st.draft && st.draft[hid]) || "";
   if(text.trim().length < 20){ tmsg(g, "還沒有內容可審核，請先寫再送出"); return; }
-  requireParent(`功課挑戰大獎：${h.n}`, () => {
+  requireParent(`功課挑戰大獎：${h.n}\n\n📋 家長參考（孩子看不到）：\n${h.rubric || "看孩子是否真的做了觀察／討論，有具體內容即可給獎。"}`, () => {
     st.done[hid] = {on:twDate(), n:h.n}; if(st.pending) delete st.pending[hid];
     invAdd(g, "coin", h.reward.coin); addXp(g, h.reward.xp);
     for(const id of (h.reward.items || [])) invAdd(g, id, 1);
@@ -4821,6 +4873,22 @@ const __questWin = typeof questWin === "function" ? questWin : null;
 if(__questWin){ questWin = function(g, Q){ const r = __questWin(g, Q);
   if(Q && Q.n && Q.n.right >= 2 && Math.random() < .12){ const which = Math.random() < .5 ? "evoStone" : "zBand"; if(invN(g, which) < 3){ invAdd(g, which, 1); if(Q.drop && Q.drop.list) Q.drop.list.push(`${ITEMS[which].e} ${ITEMS[which].n}`); } }
   return r; }; }
+
+const __renderTraitParentHW = typeof renderTraitParent === "function" ? renderTraitParent : null;
+if(__renderTraitParentHW){ renderTraitParent = function(){ __renderTraitParentHW();
+  const el = $("traitParent"); if(!el) return;
+  const box = document.createElement("div"); box.className = "box"; box.id = "hwParentGuide";
+  const rows = HOMEWORK.map(h => {
+    const pend = ["g4","g6"].map(g => { const st = hwState(g), p = st.pending && st.pending[h.id]; return p ? `<div class="pnote"><b>${KIDLBL[g]}待審</b><p>${esc((p.t||"").slice(0,180))}</p><button class="btn small b-mint" data-haward="${g}" data-hid="${h.id}">🔒 確認給獎</button></div>` : ""; }).join("");
+    return `<details class="hwguide" data-hwg="${h.id}"><summary>${h.e} ${esc(h.n)}（${esc(h.subj)}・${h.g==="both"?"兩人":h.g==="g4"?"小四":"小六"}）</summary>
+      <p><b>題目：</b>${esc(h.q)}</p>
+      <p class="ans"><b>📋 家長參考答案／評分重點：</b><br>${esc(h.rubric||"有具體觀察與思考即可。")}</p>
+      ${pend || "<small>目前沒有待審稿</small>"}</details>`;
+  }).join("");
+  box.innerHTML = `<h3>📚 功課挑戰・家長參考</h3><p class="note">以下只有家長頁看得到，孩子在遊戲機裡看不到。審核時可對照孩子的回答。</p>${rows}`;
+  if(!$("hwParentGuide")) el.appendChild(box); else $("hwParentGuide").replaceWith(box);
+  el.querySelectorAll("[data-haward]").forEach(b => b.onclick = () => hwAward(b.dataset.haward, b.dataset.hid));
+}; }
 // ---- 題目難度：菁英怪獸、勇氣挑戰、Lv8 以上的怪獸，出 ★★★ 挑戰題
 const isHardQ = (g, st) => { const q = st && (typeof qOfG === "function" ? qOfG(st, g) : cardQs(st.cid, g)[st.idx]); return !!(q && q.d === 3); };
 function wantHard(g){ const Q = QST[g]; return !!(Q && Q.phase === "fight" && (Q.elite || Q.brave || (Q.mon.lv || 1) >= 8)); }
