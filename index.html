@@ -369,11 +369,45 @@ em.holi{font-style:normal;background:#FFE3C2;color:#A34700;border-radius:8px;pad
 .lcdwrap canvas,.bezel canvas,#lcd-g4,#lcd-g6{pointer-events:none!important}
 .dq,.opts,.opt,[data-conf],[data-pick]{position:relative;z-index:5}
 
-/* 能量滿：招式區塊醒目、可點 */
-.moves.on{margin:8px 0;padding:10px;border:3px solid #FFD23F;border-radius:16px;background:linear-gradient(#FFFBEA,#FFF);box-shadow:0 4px 0 #E6C20055}
-.moves.on .skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
-.moves.on .skbtn{min-height:44px;font-size:15px;touch-action:manipulation;position:relative;z-index:6}
-.finfo .moves.on{order:-1}
+/* 能量滿：招式區塊醒目、可點、置頂 */
+.finfo{display:flex;flex-direction:column}
+.moves.on,.moves-dock{margin:8px 0;padding:10px;border:3px solid #FFD23F;border-radius:16px;background:linear-gradient(#FFFBEA,#FFF);box-shadow:0 4px 0 #E6C20055}
+.moves.on .skills,.moves-dock .skills{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px}
+.moves.on .skbtn,.moves-dock .skbtn{min-height:48px;font-size:16px;font-weight:800;touch-action:manipulation;position:relative;z-index:8;pointer-events:auto!important}
+.finfo .moves.on{order:-20}
+.moves-dock{order:-1;position:sticky;top:0;z-index:9}
+.tama.egyfull .dscreen[data-view="quest"]>.moves-dock,
+.tama.egyfull .dscreen[data-view="wild"]>.moves-dock{order:0}
+.tama.egyfull .dscreen[data-view="quest"]>.finfo,
+.tama.egyfull .dscreen[data-view="wild"]>.finfo{order:1}
+.tama.egyfull .dscreen[data-view="quest"]>.dq,
+.tama.egyfull .dscreen[data-view="wild"]>.dq{order:5}
+.dq.egywait{border:3px dashed #FFD23F!important;background:#FFFBEA!important;text-align:center;padding:14px!important}
+.dq.egywait .q{font-size:18px;margin:0}
+/* v7.2.5 portrait：招式在液晶正下方（不蓋過橫向 grid） */
+@media (orientation:portrait), (max-width:999px){
+  .tama.egyfull .egg{display:flex;flex-direction:column}
+  .tama.egyfull .bezel{order:0}
+  .tama.egyfull .moves-dock{order:1}
+  .tama.egyfull .finfo{order:2}
+  .tama.egyfull .dq.egywait{order:3}
+  .tama.egyfull .abc{order:4}
+  .tama.egyfull .tag{order:-2}
+  .tama.egyfull .vtabs{order:-1}
+}
+
+/* 能量滿時 mini 規則也別藏招式鈕 */
+.tama.mini .dscreen .moves.on .btn,
+.tama.mini .dscreen .moves-dock .btn{display:revert!important}
+@media (orientation:landscape) and (min-width:1000px){
+  .tama.egyfull .egg{grid-template-areas:"tag tag" "tabs tabs" "bezel scr" "moves scr" "abc scr"!important;grid-template-rows:auto auto auto auto 1fr}
+  .tama.egyfull .dscreen[data-view="quest"]>.moves-dock,
+  .tama.egyfull .dscreen[data-view="wild"]>.moves-dock{grid-area:moves;align-self:start;margin-top:4px;order:0;max-height:none}
+  .tama.egyfull .dscreen[data-view="quest"]>.dq.egywait,
+  .tama.egyfull .dscreen[data-view="wild"]>.dq.egywait{display:none}
+  .tama.egyfull .dscreen[data-view="quest"]>.finfo,
+  .tama.egyfull .dscreen[data-view="wild"]>.finfo{grid-area:scr}
+}
 
 /* 商店球頁：格子排滿、末端不被裁切 */
 .dscreen .igrid.shopballs{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px;margin:4px 0 14px}
@@ -614,7 +648,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.2.4";
+const APP_VERSION = "7.2.5";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -779,7 +813,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7.2.4 餵食可選主寵＋所有夥伴（餅乾／食物／果實）。✅ v7.2.3 像素貼圖；招式置頂；商店球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.2.5 能量滿時招式固定在液晶正下方（題目先讓路），必看得到、點得到。✅ v7.2.4 餵食可選主寵＋所有夥伴（餅乾／食物／果實）。✅ v7.2.3 像素貼圖；招式置頂；商店球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -3583,8 +3617,17 @@ function movesHTML(g, Q){
   let mv = []; try { mv = advMoves(g, Q) || []; } catch(e){ mv = [{id:"tackle", name:"星星撞擊", attr:"normal", pow:1, fx:"tackle", col:"#FFD23F"}]; }
   if(!mv.length) mv = [{id:"tackle", name:"星星撞擊", attr:"normal", pow:1, fx:"tackle", col:"#FFD23F"}];
   const ids = mv.map(x => x.id);
-  return fruitQuick(g, Q) + `<div class="moves on" data-moves="${g}"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：${Q.critReady ? ' <b class="critrdy">💥 會心一擊準備好了！</b>' : ""}</p><div class="skills">${mv.map(x => { const k = typeMult(x.attr, Q.mon.attr), n = ((FXDEF[x.fx] || FXDEF.shot).hits || [1]).length, nw = typeof mvIsNew==="function" && mvIsNew(g, x.id, ids);
-    return `<button class="btn ${x.ult ? "b-pink ult" : k > 1 ? "b-yellow" : k < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-move="${x.id}" data-g="${g}">${nw ? '<i class="newmv">🆕</i>' : ""}${attrOf(x.attr).e} ${esc(x.name)}${k > 1 ? " <small>效果絕佳</small>" : k < 1 ? " <small>效果不好</small>" : ""}${n > 1 ? ` <small>×${n}</small>` : ""}${x.pow > 1 ? " <small>💪</small>" : ""}</button>`; }).join("")}</div></div>`;
+  let skills = "";
+  try {
+    skills = mv.map(x => {
+      try {
+        const k = typeMult(x.attr, Q.mon.attr), n = ((FXDEF[x.fx] || FXDEF.shot).hits || [1]).length;
+        const nw = typeof mvIsNew==="function" && mvIsNew(g, x.id, ids);
+        return `<button type="button" class="btn ${x.ult ? "b-pink ult" : k > 1 ? "b-yellow" : k < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-move="${x.id}" data-g="${g}">${nw ? '<i class="newmv">🆕</i>' : ""}${attrOf(x.attr||"normal").e} ${esc(x.name)}${k > 1 ? " <small>效果絕佳</small>" : k < 1 ? " <small>效果不好</small>" : ""}${n > 1 ? ` <small>×${n}</small>` : ""}${x.pow > 1 ? " <small>💪</small>" : ""}</button>`;
+      } catch(e){ return `<button type="button" class="btn b-purple skbtn" data-move="${x.id}" data-g="${g}">⭐ ${esc(x.name||"星星撞擊")}</button>`; }
+    }).join("");
+  } catch(e){ skills = `<button type="button" class="btn b-purple skbtn" data-move="tackle" data-g="${g}">⭐ 星星撞擊</button>`; }
+  return fruitQuick(g, Q) + `<div class="moves on moves-dock" data-moves="${g}"><p>⚡ 能量滿了！選一招打 ${esc(Q.mon.name)}：${Q.critReady ? ' <b class="critrdy">💥 會心一擊準備好了！</b>' : ""}</p><div class="skills">${skills}</div></div>`;
 }
 function faintHTML(g, Q){ const others = ["main", ...teamOf(g)].filter(id => id !== activeId(g) && fHp(g, Q, id) > 0);
   return `<div class="faint" data-faint="${g}"><h4>😵 ${esc(unitName(g, activeId(g)))} 累倒了…</h4><p>沒關係！什麼都不會少。休息一下，${esc(Q.mon.name)}（還剩 ❤️${Q.mon.hp}）還在等你，再挑戰一次！</p>
@@ -3609,8 +3652,14 @@ function questHTML(g){
       <div class="row"><button class="btn b-mint" data-newmon="${g}">👾 下一隻搗蛋怪獸</button><button class="btn ghost b-red" data-brave="${g}">🧐 挑戰剋我的怪獸</button><button class="btn ghost b-purple" data-diary="${g}">📖 寫冒險日記</button><button class="btn ghost b-purple" data-view="shop" data-g="${g}">🛒 去商店</button></div></div>`; }
   const pv = lootPreview(g), left = LOOT_PER_DAY - cntK(adv(g).lootC, twDate());
   const chips = `<div class="chips2">${holiChip()}<span class="chip2" data-preview="${pv.id || ""}">🎁 掉寶預告：${pv.id ? `${ITEMS[pv.id].e} ${esc(ITEMS[pv.id].n)}（今天還有 ${left}/${LOOT_PER_DAY} 次寶物）` : esc(pv.text)}</span></div>`;
-  return `<div class="finfo">` + head + chips + monLineC(g, Q) + infoHTML(g, Q, `<p class="dnote">答對題目集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・答錯怪獸會反擊 👊・選 ⭐⭐⭐ 又答對，下一招會心一擊 💥・🎁 ${esc(pv.text)}${Q.brave ? "・🧐 勇氣挑戰中" : ""}</p>`) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + (Q.phase === "faint" ? faintHTML(g, Q) : (Q.energy >= ENERGY_MAX ? movesHTML(g, Q) + switchHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q))) + `</div>`
-    + (Q.phase === "faint" ? "" : qBlockHTML(c.id, g, devQ(g), false));
+  const full = Q.phase === "fight" && Q.energy >= ENERGY_MAX;
+  const moveBlock = Q.phase === "faint" ? faintHTML(g, Q) : (full ? switchHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q));
+  const dock = full ? movesHTML(g, Q) : "";
+  const qPart = Q.phase === "faint" ? "" : (full
+    ? `<div class="dq egywait" data-egywait="${g}"><p class="q">⚡ 能量滿了！先選<strong>上面的招式</strong>打 ${esc(Q.mon.name)}，打完再繼續答題</p></div>`
+    : qBlockHTML(c.id, g, devQ(g), false));
+  return dock + `<div class="finfo">` + head + chips + monLineC(g, Q) + infoHTML(g, Q, `<p class="dnote">答對題目集能量 ⚡（第一次就對 +1、第二次才對 +0.5）・答錯怪獸會反擊 👊・選 ⭐⭐⭐ 又答對，下一招會心一擊 💥・🎁 ${esc(pv.text)}${Q.brave ? "・🧐 勇氣挑戰中" : ""}</p>`) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "") + moveBlock + `</div>`
+    + qPart;
 }
 function wildHTML(g){
   const pt = S.pets[g];
@@ -3629,8 +3678,16 @@ function wildHTML(g){
     <div class="ballgrid">${own.map(([b, ci], i) => `<button class="ballcell ${i===bestI?"best":""}" style="--ec:${ITEMS[b].col==="rainbow"?"#FF6FA8":ITEMS[b].col}" data-throw="${b}" data-g="${g}" ${Q.phase!=="fight"?"disabled":""}>${i===bestI?'<em class="besttag">最好抓</em>':""}<span class="ballshow">${ballIcon(b)}</span><b>${ITEMS[b].n} ×${invN(g, b)}</b><small>抓到 <b data-chance="${b}">${pct(ci.p)}</b>%${ci.tags.length?"・"+esc(ci.tags.join("・")):""}</small></button>`).join("")}</div>
     <p class="dnote tip">圖鑑攤開選球・機率最高的已標「最好抓」</p></div>` : `<div class="balls"><p class="dnote">沒有精靈球了！到 🛒 商店用金幣買。</p><button class="btn ghost b-gray small" data-newwild="${g}">🏃 換一隻</button></div>`;
   const tip = m.spirit ? "💗 心之精靈：用 💗 心之球 最好抓！" : m.holi ? `${HOLI[m.holi].e} 節慶限定夥伴：用 🎉 節慶球 最好抓！` : `${attrOf(m.attr).e} 這隻是${attrOf(m.attr).n}屬性：用 ${ITEMS[ELEM_BALL[m.attr]].n} 最好抓！${MON[m.id].land ? `🌍 來自 ${MON[m.id].land}，🌍 環遊球 也很好抓！` : ""}`;
-  return `<div class="finfo"><div class="dhead"><b>🌿 野生夥伴！答對集能量削弱牠，再丟精靈球</b></div><div class="chips2">${holiChip()}</div>` + sumHTML + monLineC(g, Q) + infoHTML(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
-    + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote tip">${tip}・越虛弱越好抓，丟失敗 3 次牠會跑走，答錯牠會反擊 👊</p>` + (Q.energy >= ENERGY_MAX ? movesHTML(g, Q) + switchHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q)) + `</div>` + qBlockHTML(qw[g].cid, g, devQ(g), true);
+  return (()=>{
+  const full = Q.phase === "fight" && Q.energy >= ENERGY_MAX;
+  const dock = full ? movesHTML(g, Q) : "";
+  const moveBlock = full ? switchHTML(g, Q) : switchHTML(g, Q) + movesHTML(g, Q);
+  const qPart = full
+    ? `<div class="dq egywait" data-egywait="${g}"><p class="q">⚡ 能量滿了！先選<strong>上面的招式</strong>削弱 ${esc(Q.mon.name)}，再丟球</p></div>`
+    : qBlockHTML(qw[g].cid, g, devQ(g), true);
+  return dock + `<div class="finfo"><div class="dhead"><b>🌿 野生夥伴！答對集能量削弱牠，再丟精靈球</b></div><div class="chips2">${holiChip()}</div>` + sumHTML + monLineC(g, Q) + infoHTML(g, Q) + energyHTML(Q) + (Q.last ? `<p class="dlast">${esc(Q.last)}</p>` : "")
+    + (invN(g, "fLuck") > 0 && !luckPending(g) && Q.phase === "fight" ? `<div class="row quick"><button class="btn small b-pink" data-eatfruit="fLuck" data-g="${g}">🍒 先吃幸運櫻桃，下一球 +15%（×${invN(g, "fLuck")}）</button></div>` : "") + balls + `<p class="dnote tip">${tip}・越虛弱越好抓，丟失敗 3 次牠會跑走，答錯牠會反擊 👊</p>` + moveBlock + `</div>` + qPart;
+})();
 }
 // 商店球順序：等級 → 屬性 → 特殊 → 心之（跟下方格子一致，◀▶ 可繞回開頭）
 function shopBalls(){ return ["tier","elem","special","heart"].flatMap(c => BALLS.filter(id => ITEMS[id].cat === c)); }
@@ -3685,6 +3742,10 @@ function renderDev(g){
   const fk = document.activeElement && document.activeElement.dataset ? document.activeElement.dataset.keep : null;
   document.querySelectorAll(`#vtabs-${g} [data-view]`).forEach(b => b.classList.toggle("on", b.dataset.view === v));
   el.dataset.view = v; const tm = $("tama-" + g); if(tm) tm.dataset.view = v;
+  try {
+    const QQ = (v === "quest" ? QST[g] : v === "wild" ? WST[g] : null);
+    if(tm) tm.classList.toggle("egyfull", !!(QQ && QQ.phase === "fight" && QQ.energy >= ENERGY_MAX));
+  } catch(e){}
   el.innerHTML = v === "quest" ? questHTML(g) : v === "wild" ? wildHTML(g) : v === "shop" ? shopHTML(g) : v === "bag" ? bagHTML(g) : v === "dex" ? caughtDexHTML(g) : v === "heart" ? heartHTML(g)
     : `<div class="tpanel" id="tpanel-${g}">${panelHTML(g)}</div>`;
   el.querySelectorAll("[data-keep]").forEach(x => { if(keep[x.dataset.keep] !== undefined) x.value = keep[x.dataset.keep]; if(fk && x.dataset.keep === fk) x.focus(); });
@@ -4587,20 +4648,20 @@ movesHTML = function(g, Q){
 
 // 畫畫：mega 光環
 const __drawFight = drawFight;
-drawFight = function(g, ctx, now){
-  __drawFight(g, ctx, now);
-  const Q = QST[g] || WST[g]; if(!Q || !Q.mega || activeId(g) !== "main") return;
-  const t = now / 1000;
-  for(let i = 0; i < 6; i++){ const a = t * 3 + i * Math.PI / 3; softEllAura(ctx, 16 + Math.cos(a) * 9, 14 + Math.sin(a) * 6, .9, "#B388FF"); }
+drawFight = function(ctx, g, Q, now, t){
+  __drawFight(ctx, g, Q, now, t);
+  if(!Q || !Q.mega || activeId(g) !== "main") return;
+  const tt = (now || 0) / 1000;
+  for(let i = 0; i < 6; i++){ const a = tt * 3 + i * Math.PI / 3; softEllAura(ctx, 16 + Math.cos(a) * 9, 14 + Math.sin(a) * 6, .9, "#B388FF"); }
   if(Q.anim && Q.anim.kind === "mega"){ const e = (now - Q.anim.at) / 1000; ctx.fillStyle = `rgba(179,136,255,${Math.max(0, .45 - e * .2)})`; ctx.fillRect(0, 0, 64 * CELLPX, 32 * CELLPX); }
 };
 function softEllAura(ctx, cx, cy, r, c){ if(typeof sEll === "function") sEll(ctx, cx, cy, r, r, c, .55); else { ctx.fillStyle = c; ctx.globalAlpha = .55; ctx.beginPath(); ctx.arc(cx * CELLPX, cy * CELLPX, r * CELLPX, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; } }
 
 // p12 legend stage 4: pass stage 4 into sprite when legend
 const __drawFight2 = drawFight;
-drawFight = function(g, ctx, now){
+drawFight = function(ctx, g, Q, now, t){
   const pt = S.pets[g]; const leg = pt && isLegend(g); if(leg && SPECIES[pt.species]) SPECIES[pt.species]._legend = true;
-  __drawFight2(g, ctx, now);
+  __drawFight2(ctx, g, Q, now, t);
   if(leg && SPECIES[pt.species]) SPECIES[pt.species]._legend = false;
 };
 
@@ -4745,16 +4806,21 @@ if(__renderTraitParentHW){ renderTraitParent = function(){ __renderTraitParentHW
   el.querySelectorAll("[data-haward]").forEach(b => b.onclick = () => hwAward(b.dataset.haward, b.dataset.hid));
 }; }
 
-// 能量滿時把招式捲進視野
+// 能量滿時把招式捲進視野（優先 moves-dock）
 const __renderDevMoves = renderDev;
 renderDev = function(g){
   __renderDevMoves(g);
   try {
     const Q = QST[g] || WST[g];
     if(Q && Q.energy >= ENERGY_MAX && Q.phase === "fight"){
+      const mv = document.querySelector(`#tama-${g} .moves-dock, #tama-${g} .moves.on, #dscr-${g} .moves.on`);
+      const egg = document.querySelector(`#tama-${g} .egg`);
       const fin = document.querySelector(`#tama-${g} .finfo`);
-      const mv = document.querySelector(`#tama-${g} .moves.on, #dscr-${g} .moves.on, #tama-${g} .moves`);
-      if(fin && mv){ const top = mv.offsetTop - 8; if(fin.scrollHeight > fin.clientHeight) fin.scrollTop = Math.max(0, top - 4); mv.scrollIntoView({block:"nearest", inline:"nearest"}); }
+      if(mv){
+        if(fin && fin.scrollHeight > fin.clientHeight) fin.scrollTop = 0;
+        if(egg && egg.scrollHeight > egg.clientHeight) egg.scrollTop = Math.max(0, mv.offsetTop - 8);
+        mv.scrollIntoView({block:"nearest", inline:"nearest"});
+      }
     }
   } catch(e){}
 };
