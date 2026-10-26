@@ -384,6 +384,15 @@ em.holi{font-style:normal;background:#FFE3C2;color:#A34700;border-radius:8px;pad
   .ballstand.shopstand{margin-bottom:4px;padding:8px}
   .ballstand .ballshow{width:64px;height:64px;font-size:34px}
 }
+
+/* 餵食：選主寵／夥伴 */
+.feedwho{margin:6px 0 10px;padding:10px;background:linear-gradient(#FFF9F0,#F3FFF6);border-radius:14px;border:2px dashed #B7C9E0}
+.feedwho b{display:block;margin-bottom:6px;font-size:15px}
+.feedchips{display:flex;flex-wrap:wrap;gap:6px}
+.feedchip{border:2px solid #B7C9E0;background:#fff;border-radius:999px;padding:8px 12px;font:800 13px var(--font);color:var(--ink);cursor:pointer;touch-action:manipulation}
+.feedchip.on{background:#2F9BFF;color:#fff;border-color:#1A7AD9;box-shadow:0 3px 0 #1A7AD955}
+.feedmeters{display:block;margin-top:8px;color:var(--ink2);font-size:12px}
+.feedwho-hint,.feedbag{margin:6px 0}
 .box{background:#fff;border-radius:22px;padding:14px 16px;box-shadow:0 5px 0 var(--line);margin:12px 0}
 table{border-collapse:collapse;width:100%;font-size:15px}
 th,td{text-align:left;padding:8px 10px;border-bottom:2px solid var(--line);vertical-align:top}
@@ -605,7 +614,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.2.3";
+const APP_VERSION = "7.2.4";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -770,7 +779,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7.2.3 全部生物改回像素貼圖；能量滿招式置頂可點；商店 ◀▶ 繞回、等級／屬性／特殊／心之球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.2.4 餵食可選主寵＋所有夥伴（餅乾／食物／果實）。✅ v7.2.3 像素貼圖；招式置頂；商店球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -3632,14 +3641,14 @@ function caughtDexHTML(g){
   const card = (id) => { const main = id === "main", s = fStats(g, id), nm = unitName(g, id);
     return `<div class="tmem ${act === id ? "act" : ""}" data-tmem="${id}">${main ? `<span class="ie">${S.pets[g].species ? SPECIES[S.pets[g].species].emoji : "🥚"}</span>` : `<canvas data-thumb="${id}" data-hide="0"></canvas>`}
       <b>${esc(nm)}</b>${attrTag(s.attr)}${lvBarHTML(g, id)}<small>❤️${s.hp} ⚔️${s.atk} 🛡️${s.def} 💨${s.spd}</small>
-      <div class="row">${act === id ? '<span class="onfield">⭐ 上場中</span>' : `<button class="btn small b-yellow" data-sendout="${id}" data-g="${g}">⬆️ 上場</button>`}${main ? "" : `<button class="btn small ghost b-gray" data-team="${id}" data-g="${g}">移出</button>`}</div>
+      <div class="row">${act === id ? '<span class="onfield">⭐ 上場中</span>' : `<button class="btn small b-yellow" data-sendout="${id}" data-g="${g}">⬆️ 上場</button>`}${main ? "" : `<button class="btn small ghost b-gray" data-team="${id}" data-g="${g}">移出</button>`}<button class="btn small b-mint" data-openfeed="${id}" data-g="${g}">🍙 餵食</button></div>
       ${main || !sfr.length ? "" : `<div class="row">${sfr.map(f => `<button class="btn small ghost b-mint" data-pfeed="${f}" data-pid="${id}" data-g="${g}" title="${esc(ITEMS[f].n)}">${ITEMS[f].e}</button>`).join("")}<small>餵果實</small></div>`}</div>`; };
   const groups = [["⚡🌿⛰️🔥💧 一般夥伴", all.filter(m => !m.spirit && !m.holi)], ["🎉 節慶限定夥伴", all.filter(m => m.holi)], [`💗 心之精靈（十大能力 Lv${SPIRIT_LV} 解鎖）`, all.filter(m => m.spirit)]];
   return `<div class="dhead"><b>🐾 ${KIDLBL[g]}的隊伍與夥伴 ${got}/${all.length}</b></div>
     <h5>🐾 我的隊伍（主寵物＋最多 ${TEAM_MAX} 隻夥伴；上場的那隻答題會練兵升級）</h5><div class="team">${["main", ...team].map(card).join("")}</div>
     ${groups.map(([t, L]) => `<h5>${t} ${L.filter(m => caughtN(g, m.id) > 0).length}/${L.length}</h5><div class="dex">${L.map(m => { const n = caughtN(g, m.id), inT = team.includes(m.id);
-      return `<div class="dexi ${n ? "win" : "none"}" data-caught="${m.id}"><canvas data-thumb="${m.id}" data-hide="${n ? 0 : 1}"></canvas><small>${n ? esc(m.name) : "？？？"}</small>${n ? attrTag(m.attr) : ""}<small>${m.spirit ? `${TRAIT[m.trait].e}${TRAIT[m.trait].n}` : m.holi ? `${HOLI[m.holi].e}${HOLI[m.holi].n}` : "★".repeat(m.rare)}${m.land ? `・${m.land}` : ""}${n ? ` Lv${lvInfo(g, m.id).lv}` : ""}</small>${n && !inT ? `<button class="btn small ghost b-purple" data-team="${m.id}" data-g="${g}">➕ 隊伍</button>` : n ? "<small>✅ 隊伍中</small>" : ""}</div>`; }).join("")}</div>`).join("")}
-    <p class="dnote">到 🌿 抓怪 找野生夥伴。上場的夥伴打怪會用自己的屬性招式，答題就會練兵升級。累倒了可以換隊友上場。</p>`;
+      return `<div class="dexi ${n ? "win" : "none"}" data-caught="${m.id}"><canvas data-thumb="${m.id}" data-hide="${n ? 0 : 1}"></canvas><small>${n ? esc(m.name) : "？？？"}</small>${n ? attrTag(m.attr) : ""}<small>${m.spirit ? `${TRAIT[m.trait].e}${TRAIT[m.trait].n}` : m.holi ? `${HOLI[m.holi].e}${HOLI[m.holi].n}` : "★".repeat(m.rare)}${m.land ? `・${m.land}` : ""}${n ? ` Lv${lvInfo(g, m.id).lv}` : ""}</small>${n ? `<button class="btn small b-mint" data-openfeed="${m.id}" data-g="${g}">🍙 餵食</button>` : ""}${n && !inT ? `<button class="btn small ghost b-purple" data-team="${m.id}" data-g="${g}">➕ 隊伍</button>` : n ? "<small>✅ 隊伍中</small>" : ""}</div>`; }).join("")}</div>`).join("")}
+    <p class="dnote">到 🌿 抓怪 找野生夥伴。每隻夥伴都能 🍙 餵食（餅乾／食物／果實）。上場的夥伴打怪會用自己的屬性招式，答題就會練兵升級。</p>`;
 }
 // ---- 心之力（十大能力）
 function heartHTML(g){
@@ -3713,6 +3722,8 @@ function devClick(b, e){
   if(d.sendout){ sendOut(d.g, d.sendout); return true; }
   if(d.team && d.g){ teamToggle(d.g, d.team); return true; }
   if(d.pfeed){ feedPartner(d.g, d.pid, d.pfeed); return true; }
+  if(d.feedid != null){ TAMA[d.g].feedId = d.feedid; renderPets(); return true; }
+  if(d.openfeed != null){ TAMA[d.g].feedId = d.openfeed; TAMA[d.g].view = "pet"; TAMA[d.g].sub = "feed"; TAMA[d.g].sel = 0; renderPets(); return true; }
   if(d.plan && d.g){ setPlan(d.g, d.plan); return true; }
   if(d.motto){ saveMotto(d.motto, kv("goal-" + d.motto), kv("why-" + d.motto)); return true; }
   if(d.mottoedit){ TAMA[d.mottoedit].mottoOpen = true; renderDev(d.mottoedit); return true; }
@@ -4747,6 +4758,178 @@ renderDev = function(g){
     }
   } catch(e){}
 };
+// ---- v7.2.4：餵食可選主寵＋所有已抓夥伴
+ADV_LWW.pMeter = () => ({ map:{}, t:0 });
+
+function feedables(g){
+  const out = [], seen = new Set();
+  const add = (id) => {
+    if(seen.has(id)) return;
+    if(id === "main"){ if(S.pets[g] && S.pets[g].species){ out.push("main"); seen.add("main"); } return; }
+    if(MON[id] && caughtN(g, id) > 0){ out.push(id); seen.add(id); }
+  };
+  add("main");
+  for(const id of teamOf(g)) add(id);
+  for(const m of CATCH) add(m.id);
+  return out;
+}
+function feedIdOf(g){
+  const id = TAMA[g].feedId || "main";
+  return feedables(g).includes(id) ? id : (feedables(g)[0] || "main");
+}
+function pMeterOf(g, id){
+  const a = adv(g);
+  if(!isObj(a.pMeter)) a.pMeter = { map:{}, t:0 };
+  if(!isObj(a.pMeter.map)) a.pMeter.map = {};
+  if(!isObj(a.pMeter.map[id])) a.pMeter.map[id] = { full:70, happy:70, fed:0 };
+  return a.pMeter.map[id];
+}
+function touchPMeter(g){ const a = adv(g); if(!isObj(a.pMeter)) a.pMeter = { map:{}, t:0 }; a.pMeter.t = Date.now(); }
+
+function feedWhoHTML(g){
+  const cur = feedIdOf(g), list = feedables(g);
+  if(list.length <= 1) return `<p class="note feedwho-hint">去 🌿 抓怪抓到夥伴後，就能選牠餵食！</p>`;
+  const chips = list.map(id => {
+    const on = id === cur ? "on" : "";
+    const label = id === "main"
+      ? `${(SPECIES[S.pets[g].species] || {}).emoji || "🐾"} ${esc(S.pets[g].name)}（主寵）`
+      : `${attrOf(MON[id].attr).e} ${esc(MON[id].name)}${teamOf(g).includes(id) ? "・隊伍" : ""}`;
+    return `<button type="button" class="feedchip ${on}" data-feedid="${id}" data-g="${g}">${label}</button>`;
+  }).join("");
+  const who = unitName(g, cur);
+  let meters = "";
+  if(cur === "main"){
+    const pt = S.pets[g];
+    meters = `<small class="feedmeters">正在餵 <b>${esc(who)}</b>・飽足 ${Math.round(pt.fullness)}・開心 ${Math.round(pt.happiness)}</small>`;
+  } else {
+    const pm = pMeterOf(g, cur), L = lvInfo(g, cur);
+    meters = `<small class="feedmeters">正在餵 <b>${esc(who)}</b> Lv${L.lv}・飽足 ${Math.round(pm.full)}・開心 ${Math.round(pm.happy)}・練兵 ${L.train}/${L.nT}</small>`;
+  }
+  return `<div class="feedwho"><b>餵誰？</b><div class="feedchips">${chips}</div>${meters}</div>`;
+}
+
+function feedPartnerMeal(g, id, kind, f){
+  if(!needPet(g) || !id || id === "main" || caughtN(g, id) < 1) return false;
+  const pt = S.pets[g], nm = MON[id].name;
+  if(pt.lightsOff){ tmsg(g, "💤 燈關著，夥伴也在休息～按 💡 開燈"); return false; }
+  const pm = pMeterOf(g, id);
+  if(kind === "cookie"){
+    if(!cookiesLeft(g)){ tmsg(g, "🍪 今天 3 片餅乾吃完了，明天還有！"); return false; }
+    const a = adv(g); bumpK(a.freeCk, twDate(), 1); pruneDays(a.freeCk);
+    pm.full = Math.min(100, pm.full + 20); pm.happy = Math.min(100, pm.happy + 8); pm.fed = (pm.fed || 0) + 1;
+    touchPMeter(g); trainAdd(g, id, 1);
+    dayRec(twDate()).pets[g].fed += 1; careAdd(g); markPlayed(null); persist();
+    petFx(g, "eat", `🍪 ${nm} 吃得好開心！飽足 +20、開心 +8、練兵 +1（今天還有 ${cookiesLeft(g)}/${FREE_COOKIES} 片）`, {food:"cookie"});
+    hearts(g); renderPets(); return true;
+  }
+  if(pm.full >= 95 && f.id !== "cake"){ tmsg(g, `😋 ${nm} 吃好飽了，等一下再吃～`); return false; }
+  if(pt.wallet < f.cost){ tmsg(g, `⭐ 不夠（要 ${f.cost} 顆），去答題賺星星吧！`); return false; }
+  spend(g, f.cost);
+  pm.full = Math.min(100, pm.full + f.full); pm.happy = Math.min(100, pm.happy + f.happy); pm.fed = (pm.fed || 0) + 1;
+  touchPMeter(g); trainAdd(g, id, f.xp);
+  dayRec(twDate()).pets[g].fed += 1; careAdd(g); markPlayed(null); persist();
+  petFx(g, "eat", `${f.emoji} ${nm}：好好吃！練兵 +${f.xp}`, {food:f.id});
+  hearts(g); renderPets(); return true;
+}
+
+function eatFruitPartner(g, pid, fid){
+  if(!needPet(g) || caughtN(g, pid) < 1) return null;
+  const it = ITEMS[fid]; if(!it || it.kind !== "fruit") return null;
+  const pt = S.pets[g], nm = MON[pid].name, a = adv(g), t = twDate();
+  if(pt.lightsOff){ tmsg(g, "💤 燈關著，夥伴也在休息～按 💡 開燈"); return null; }
+  if(fid === "fEnergy" || fid === "fLuck" || fid === "fHeal" || fid === "fGuard") return null; // 戰鬥用：走主路徑
+  if(it.cat === "stat"){
+    if(fid === "fStar"){
+      if(cntK(a.eatC, fid) >= it.cap){ tmsg(g, `${it.n}已經吃滿 ${it.cap} 顆了`); return null; }
+      let any = false;
+      for(const sf of STAT_FRUITS){ if(pFruitBoost(g, pid)[ITEMS[sf].stat] < ITEMS[sf].cap){ any = true; break; } }
+      if(!any){ tmsg(g, `${nm} 的能力已經吃滿了`); return null; }
+      if(!invUse(g, fid, 1)){ tmsg(g, `沒有${it.n}了`); return null; }
+      bumpK(a.eatC, fid, 1);
+      for(const sf of STAT_FRUITS){ const sit = ITEMS[sf]; if(pFruitBoost(g, pid)[sit.stat] < sit.cap) bumpK(a.pEat, `${pid}|${sf}`, 1); }
+      const pm = pMeterOf(g, pid); pm.full = Math.min(100, pm.full + 10); touchPMeter(g); persist();
+      petFx(g, "eat", `${it.e} ${nm}：全能力各 +1！`, {food:fid});
+      tmsg(g, `${it.e} ${nm} 全能力 +1！`); renderPets(); return {text:"star"};
+    }
+    const r = feedPartner(g, pid, fid);
+    if(r){ const pm = pMeterOf(g, pid); pm.full = Math.min(100, pm.full + 10); touchPMeter(g); persist(); petFx(g, "eat", `${it.e} ${nm} 變強了`, {food:fid}); }
+    return r || null;
+  }
+  if(it.cat === "elem"){
+    const why = fruitBlock(g, fid); if(why){ tmsg(g, why); return null; }
+    if(!invUse(g, fid, 1)){ tmsg(g, `沒有${it.n}了`); return null; }
+    bumpK(a.eatC, fid, 1);
+    const pm = pMeterOf(g, pid); pm.full = Math.min(100, pm.full + 10); touchPMeter(g); persist();
+    const at = attrOf(it.attr);
+    petFx(g, "eat", `${it.e} ${nm}：${at.n}招式全隊更痛`, {food:fid});
+    tmsg(g, `${it.e} ${nm} 吃了！（${at.e}${at.n}屬性招式 +3%）`); renderPets(); return {text:"elem"};
+  }
+  if(fid === "fHappy"){
+    const pm = pMeterOf(g, pid);
+    if(pm.happy >= 100){ tmsg(g, `💖 ${nm} 已經超開心了`); return null; }
+    if(!invUse(g, fid, 1)){ tmsg(g, `沒有${it.n}了`); return null; }
+    bumpK(a.eatC, fid, 1);
+    const h0 = pm.happy; pm.happy = Math.min(100, pm.happy + 30); pm.full = Math.min(100, pm.full + 10); touchPMeter(g); persist();
+    petFx(g, "eat", `${it.e} ${nm} 超開心！`, {food:fid});
+    tmsg(g, `${it.e} ${nm}：開心 ${Math.round(h0)}→${Math.round(pm.happy)}`); hearts(g); renderPets(); return {text:"happy"};
+  }
+  if(fid === "fWise"){
+    if(cntK(a.wiseDay, t) >= 1){ tmsg(g, "🍏 今天已經吃過智慧蘋果了，明天再吃"); return null; }
+    if(!invUse(g, fid, 1)){ tmsg(g, `沒有${it.n}了`); return null; }
+    bumpK(a.eatC, fid, 1); bumpK(a.wiseDay, t, 1); pruneDays(a.wiseDay);
+    trainAdd(g, pid, 2);
+    const pm = pMeterOf(g, pid); pm.full = Math.min(100, pm.full + 8); touchPMeter(g); persist();
+    petFx(g, "eat", `${it.e} ${nm} 變聰明了・練兵 +2`, {food:fid});
+    tmsg(g, `${it.e} ${nm}：練兵 +2！`); renderPets(); return {text:"wise"};
+  }
+  return null;
+}
+
+const __feed724 = feed;
+feed = function(g, i){
+  const id = feedIdOf(g);
+  if(id === "main") return __feed724(g, i);
+  return feedPartnerMeal(g, id, "food", FOODS[i]);
+};
+const __eatCookie724 = eatCookie;
+eatCookie = function(g){
+  const id = feedIdOf(g);
+  if(id === "main") return __eatCookie724(g);
+  return feedPartnerMeal(g, id, "cookie");
+};
+const __eatFruit724 = eatFruit;
+eatFruit = function(g, fid){
+  const id = feedIdOf(g);
+  if(id === "main") return __eatFruit724(g, fid);
+  const r = eatFruitPartner(g, id, fid);
+  if(r !== null) return r;
+  return __eatFruit724(g, fid);
+};
+
+const __panelHTML724 = panelHTML;
+panelHTML = function(g){
+  let h = __panelHTML724(g);
+  if((TAMA[g].sub || "") === "feed"){
+    const who = feedWhoHTML(g);
+    if(h.includes('class="foods"')) h = h.replace('<div class="foods">', who + '<div class="foods">');
+    h = h.replace("A 換食物・B 餵牠・C 返回。", "先選上面「餵誰」，再點食物。A 換食物・B 餵牠・C 返回。");
+  }
+  return h;
+};
+
+// 背包「餵牠」提示目前餵的對象
+const __bagHTML724 = typeof bagHTML === "function" ? bagHTML : null;
+if(__bagHTML724){
+  bagHTML = function(g){
+    let h = __bagHTML724(g);
+    const id = feedIdOf(g), n = feedables(g).length;
+    if(n > 1){
+      const tip = `<p class="dnote feedbag">🍙 目前餵 <b>${esc(unitName(g, id))}</b>（到 🏠 寵物→餵食 或 🐾 夥伴 可改選，共 ${n} 隻可餵）</p>`;
+      if(h.includes("</div>")) h = h.replace('<div class="dhead">', tip + '<div class="dhead">');
+    }
+    return h;
+  };
+}
 // ---- 題目難度：菁英怪獸、勇氣挑戰、Lv8 以上的怪獸，出 ★★★ 挑戰題
 const isHardQ = (g, st) => { const q = st && (typeof qOfG === "function" ? qOfG(st, g) : cardQs(st.cid, g)[st.idx]); return !!(q && q.d === 3); };
 function wantHard(g){ const Q = QST[g]; return !!(Q && Q.phase === "fight" && (Q.elite || Q.brave || (Q.mon.lv || 1) >= 8)); }
