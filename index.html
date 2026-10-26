@@ -648,7 +648,7 @@ a{color:var(--blue-d)}
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "7.2.5";
+const APP_VERSION = "7.2.6";
 const SAVE_KEY = "shuangbao-save";
 const PREV_KEY = "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
@@ -813,7 +813,7 @@ const SESSION = ["0～2 分 🔥 暖身：每人說一件昨天學到的事（�
 const STAR_RULES = [["選擇題第一次就答對","+1"],["選錯後看提示，第二次答對","+0.5"],["同一題一天只拿一次星星（之後是練習模式）","—"],["講解到對方能用自己的話說回來（家長確認 🔒）","+2"],["問出「如果……會怎樣」等第 4 階以上的好問題（家長確認 🔒）","+2"],["出一題對方覺得「好題目」的題（家長確認 🔒）","+2"],["一起解開合體關（家長確認 🔒）","+1"],["答對的 ⭐ 存進自己的寵物錢包，用來買食物（🍎1・🍙2・🍰3）","🍙"],["送 1 ⭐ 給對方的寵物（互助 +1）","🎁"],["合體關教學：兩隻寵物都加成長值（互助 +1）","🤝"],["每存滿 15 顆，換一個家庭特權（選週末活動、決定晚餐、多一個睡前故事）","🎁"]];
 const MINDSET = [["你好聰明","你剛剛換了一個方法，很有用"],["怎麼又錯了","錯在哪一步？我們把它變成一張錯題卡"],["這很簡單啊","這題要動腦，你願意再試一次嗎？"],["你看哥哥／姊姊都會","你比上週多會了一件事"],["快點寫完","先想 1 分鐘，真的想不到再看提示"],["我不會","我還不會，所以我要問一個好問題"]];
 const PLAN = [["10/23（五）","數學A（三角形／公因數公倍數）","—","15 分"],["10/24（六）","自然A（月亮／熱）、社會A（人口／戰後）","數學A","20 分"],["10/25（日）","數學B（乘法／分數的除法）、國語A","自然A","20 分"],["10/26（一）","自然B（水生／天氣颱風）","數學A、社會A、數學B","20 分"],["10/27（二）","社會B（地形／理財）、國語B","自然A、國語A","20 分"],["10/28（三）","數學C（角度／圓）","數學B、自然B","20 分"],["10/29（四）","數學D（除法／小數的除法）","社會B、國語B、數學A（第 7 天）","20 分"],["10/30（五）","出題對決（全科）＋關主挑戰","數學C、數學D","20 分"],["10/31（六）","小老師日：小六講一個單元、小四講一個單元","所有錯題卡","30 分"],["11/1（日）","不加新卡","只抽錯過的卡，早點睡","15 分"]];
-const NEXT = ["✅ v7.2.5 能量滿時招式固定在液晶正下方（題目先讓路），必看得到、點得到。✅ v7.2.4 餵食可選主寵＋所有夥伴（餅乾／食物／果實）。✅ v7.2.3 像素貼圖；招式置頂；商店球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
+const NEXT = ["✅ v7.2.6 進化石／腕帶全部寵物共用；超級進化變成更大更帥的超進化像素造型（主寵＋夥伴，兩台平板同步）。✅ v7.2.5 能量滿時招式固定在液晶正下方（題目先讓路），必看得到、點得到。✅ v7.2.4 餵食可選主寵＋所有夥伴（餅乾／食物／果實）。✅ v7.2.3 像素貼圖；招式置頂；商店球格子排到尾。✅ v7.2.2 修復點題沒反應（產生題）；家長功課參考答案。✅ v7.2.1（產生題）；夥伴空白；永久進化解鎖；抓球圖鑑；功課挑戰家長參考答案（柔和主寵＋夥伴；野生怪獸維持像素）；進化石／腕帶改永久解鎖；抓怪用圖鑑攤開選球、商店才用 ◀▶。","✅ v7.2 題目變豐富＋功課挑戰＋超級進化石／極具腕帶：隨機產生幾乎用不完的新題、對錯／找不同／看圖／找錯／好問題等多種題型；精靈球放台子上用 ◀▶ 選；寵物進化差很多、輪廓各不同、比較不那麼像素。","✅ v7.1 大螢幕：液晶填滿遊戲機、題目貼在螢幕下方、資訊精簡；每個屬性 4 招＋夥伴專屬招＋心之精靈必殺技，各有不同特效（閃電、藤鞭、落石、火柱、海嘯…），寵物升級會學新招。","✅ v7 心之力：十大能力從遊戲行為長大、怪獸反擊和等級、節慶怪獸、寵物等級（餵養＋練兵）、夥伴隊伍、傳說型態、更多夥伴和球、★★★ 挑戰題。","✅ v6.1 商店更豐富：5 種屬性球、4 種特殊球、15 種果實（能力／屬性／功能）、每日特價。","✅ v6 冒險機：題目放進遊戲機、搗蛋怪獸＋能量招式、掉寶（經驗值／金幣／果實／裝備／禮物）、商店精靈球、抓野生夥伴、每日 3 片免費餅乾。下一步：依孩子回饋調整掉寶與難度。","✅ 已完成：換成學校正式考試範圍，每個單元每個年級至少 12 題。下一步：考完試後，依錯題最多的觀念再加題。","錯題記憶庫已上線（答錯隔天複習）；下一步：顯示每個孩子最常選錯的觀念。","把題庫和星星紀錄放進 Notion，每週整理一次「本週卡關點」給媽媽看。","寫一份 AI 家教的系統提示詞：只給提示、依年級調整難度、記得每個孩子的弱點。","小六的國中銜接：代數思維、英文自學、康乃爾筆記法、自己排讀書計畫。","每月一次家庭小論壇：孩子選題目、查資料、上台講 5 分鐘。","加入拍照錯題：家長把關後，讓 AI 出一題「同觀念、不同數字」的練習題。"];
 const HAPPY = ["太棒了！星寶好開心！🎉","你自己想出來了！💪","講解好清楚！👏","好問題！寵物又長大了！🌱"];
 const CHEER = ["沒關係，錯誤是線索！🔍","還不會＝快要會了！🌈","再試一次，星寶陪你！🤗","找到錯在哪，就是進步！✨"];
 
@@ -2852,8 +2852,8 @@ const ITEMS = {
   bFest:  {e:"🎉", n:"節慶球", kind:"ball", cat:"heart", price:40, rate:.35, col:"#E8475F", d:"節慶限定夥伴 +30%；節慶期間抓什麼都 +10%"},
   bHeart: {e:"💗", n:"心之球", kind:"ball", cat:"heart", drop:true, rate:.35, col:"#FF4FA3", d:"心之精靈 +40%、其他夥伴 +15%。十大能力升級才會拿到"},
   // v7.2：進化道具
-  evoStone:{e:"💎", n:"超級進化石", kind:"evo", cat:"evo", price:180, col:"#B388FF", d:"用掉 1 顆就永久解鎖超級進化：之後每場答對 3 題即可變身（攻擊大增、專屬大招），不用再消耗"},
-  zBand:   {e:"⌚", n:"極具腕帶", kind:"evo", cat:"evo", price:150, col:"#FF6A3D", d:"用掉 1 條就永久解鎖「極具必殺」：之後每場能量滿都能用一次，不用再消耗"},
+  evoStone:{e:"💎", n:"超級進化石", kind:"evo", cat:"evo", price:180, col:"#B388FF", d:"用掉 1 顆就永久解鎖・全部寵物共用：之後每場、每隻答對 3 題就變成更大更帥的超進化型態（攻擊大增、專屬大招），不用再消耗、不用再綁單隻"},
+  zBand:   {e:"⌚", n:"極具腕帶", kind:"evo", cat:"evo", price:150, col:"#FF6A3D", d:"用掉 1 條就永久解鎖・全部寵物共用「極具必殺」：之後每場、每隻能量滿都能用一次，不用再消耗、不用再綁單隻"},
 
   // 能力果實（永久）
   fAtk:   {e:"🍓", n:"力量果", kind:"fruit", cat:"stat", stat:"atk", per:1, cap:10, price:25, col:"#FF4B55", d:"攻擊永久 +1（最多 +10）"},
@@ -4550,24 +4550,31 @@ const megaUnlocked = (g) => cntK(adv(g).trDay, "ever|mega") > 0;
 const zUnlocked = (g) => cntK(adv(g).trDay, "ever|zband") > 0;
 function unlockMega(g){ if(megaUnlocked(g)) return true; if(invN(g, "evoStone") < 1) return false;
   invUse(g, "evoStone", 1); bumpK(adv(g).trDay, "ever|mega", 1); persist();
-  confetti(160); trPop(g, "💎 永久解鎖超級進化！之後每場都能變身", true); tmsg(g, "💎 永久超級進化已解鎖！"); return true; }
+  confetti(160); trPop(g, "💎 永久解鎖超級進化！全部寵物／夥伴每場都能變身（兩台平板同步）", true); tmsg(g, "💎 永久超級進化已解鎖（全部寵物共用）！"); return true; }
 function unlockZ(g){ if(zUnlocked(g)) return true; if(invN(g, "zBand") < 1) return false;
   invUse(g, "zBand", 1); bumpK(adv(g).trDay, "ever|zband", 1); persist();
-  confetti(160); trPop(g, "⌚ 永久解鎖極具必殺！每場都能用一次", true); tmsg(g, "⌚ 永久極具腕帶已解鎖！"); return true; }
-function canMega(g, Q){ return (megaUnlocked(g) || invN(g, "evoStone") > 0) && !Q.mega && (Q.n && Q.n.right || 0) >= MEGA_NEED && Q.phase === "fight" && activeId(g) === "main"; }
+  confetti(160); trPop(g, "⌚ 永久解鎖極具必殺！全部寵物／夥伴每場都能用一次（兩台平板同步）", true); tmsg(g, "⌚ 永久極具腕帶已解鎖（全部寵物共用）！"); return true; }
+// 帳號級永久解鎖（ever|mega / ever|zband）：任一寵物／夥伴上場都可用，不綁單隻
+function canMega(g, Q){ return (megaUnlocked(g) || invN(g, "evoStone") > 0) && !Q.mega && (Q.n && Q.n.right || 0) >= MEGA_NEED && Q.phase === "fight"; }
 function canZ(g, Q){ return (zUnlocked(g) || invN(g, "zBand") > 0) && !Q.zUsed && Q.phase === "fight" && Q.energy >= ENERGY_MAX; }
 function doMega(g){ const Q = QST[g] || WST[g]; if(!Q || !canMega(g, Q)) return false;
   if(!megaUnlocked(g) && !unlockMega(g)) return false;
-  Q.mega = true; Q.anim = {kind:"mega", at:performance.now(), dur:2200}; Q.last = `💎 超級進化！${unitName(g, "main")} 變強了，攻擊大增！`;
-  tmsg(g, megaUnlocked(g) ? "💎 超級進化！" : "💎 超級進化！"); confetti(100); persist(); renderDev(g); return true; }
-function applyMegaIfUnlocked(g, Q){ if(!Q || Q.mega || activeId(g) !== "main" || !megaUnlocked(g) || Q.phase === "won" || Q.phase === "faint") return;
-  if(Q.phase === "fight") Q.mega = true; }
-function zMoveOf(g){ const pt = S.pets[g], attr = (ATTR[Object.entries(pt.subjectXP||{}).sort((a,b)=>b[1]-a[1])[0]?.[0]]||{}).k || "normal";
-  return {id:"z-ult", name:`⚡ 極具・${pt.name||"星寶"}必殺`, attr, pow:2.0, fx:"ultimate", col:"#FFD23F", ult:true, z:true}; }
+  const who = activeId(g);
+  Q.mega = true; Q.anim = {kind:"mega", at:performance.now(), dur:2200}; Q.last = `💎 超級進化！${unitName(g, who)} 變強了，攻擊大增！`;
+  tmsg(g, "💎 超級進化！"); confetti(100); persist(); renderDev(g); return true; }
+function applyMegaIfUnlocked(g, Q){ if(!Q || Q.mega || !megaUnlocked(g) || Q.phase !== "fight") return;
+  if((Q.n && Q.n.right || 0) >= MEGA_NEED){ Q.mega = true; if(!Q._megaAnim){ Q._megaAnim = 1; Q.anim = {kind:"mega", at:performance.now(), dur:2200}; Q.last = `💎 超級進化！${unitName(g, activeId(g))} 變成超進化型態了！`; tmsg(g, "💎 超級進化！變帥了！"); } } }
+function zMoveOf(g){ const id = activeId(g); const who = unitName(g, id);
+  let attr = "normal";
+  if(id === "main"){ const pt = S.pets[g]; attr = (ATTR[Object.entries(pt.subjectXP||{}).sort((a,b)=>b[1]-a[1])[0]?.[0]]||{}).k || "normal"; }
+  else if(typeof fighterAttr === "function"){ const Q = QST[g] || WST[g]; attr = fighterAttr(g, id, Q) || "normal"; }
+  else if(MON[id]) attr = MON[id].attr || "normal";
+  return {id:"z-ult", name:`⚡ 極具・${who}必殺`, attr, pow:2.0, fx:"ultimate", col:"#FFD23F", ult:true, z:true}; }
 
 const __fStats = fStats;
 fStats = function(g, id){ const s = __fStats(g, id); const Q = QST[g] || WST[g]; applyMegaIfUnlocked(g, Q);
-  if(Q && Q.mega && (id === "main" || !id) && activeId(g) === "main"){ s.atk = Math.round(s.atk * 1.55); s.hp = Math.round(s.hp * 1.15); s.mega = true; } return s; };
+  const act = activeId(g); id = id || act;
+  if(Q && Q.mega && id === act){ s.atk = Math.round(s.atk * 1.55); s.hp = Math.round(s.hp * 1.15); s.mega = true; } return s; };
 
 const __advMoves = advMoves;
 advMoves = function(g, Q){ applyMegaIfUnlocked(g, Q); const mv = __advMoves(g, Q); if(Q && canZ(g, Q)) mv.unshift(zMoveOf(g)); if(Q && Q.mega){ const m = {id:"mega-sig", name:`💎 超進・強襲`, attr:(typeof fighterAttr==='function'?fighterAttr(g,activeId(g),Q):(ATTR[(CARDS.find(c=>c.id===Q.card)||{}).subject]||{}).k||'normal'), pow:1.45, fx:"meteor", col:"#B388FF", mega:true}; mv.unshift(m); } return mv; };
@@ -4588,9 +4595,9 @@ shopHTML = function(g){
     return `<div class="dhead"><b>🛒 商店</b><span class="coins">🪙 <b data-coins="${g}">${c}</b></span></div>
       <div class="deal" data-deal="${deal}" style="--ec:${dIt.col==="rainbow"?"#FF6FA8":dIt.col}">${itemIcon(deal)}<div><b>🔥 今日特價：${dIt.n}</b><small>${esc(dIt.d||"")}</small></div>${buyBtn(deal)}</div>
       <div class="stabs">${tabs}</div>
-      <p class="dnote">💎 進化石／⌚ 腕帶：用掉 1 個就<strong>永久解鎖</strong>（同步到兩台平板）。解鎖後每場都能超級進化／用一次極具必殺，不用再消耗。</p>
+      <p class="dnote">💎 進化石／⌚ 腕帶：用掉 1 個就<strong>永久解鎖・全部寵物共用</strong>（主寵＋所有夥伴，同步到兩台平板）。解鎖後每場、每隻都能超級進化／用一次極具必殺，不用再買、不用再綁單隻。</p>
       <div class="igrid">${EVO_ITEMS.map(id => { const unlocked = id==="evoStone" ? megaUnlocked(g) : zUnlocked(g);
-        return itemCard(g, id, `<small>${unlocked ? "✅ 已永久解鎖" : `背包 ${invN(g, id)} 個・用 1 個解鎖`}</small>${unlocked ? "" : buyBtn(id)}${!unlocked && invN(g,id)>0 ? `<button class="btn small b-purple" data-evounlock="${id}" data-g="${g}">✨ 永久解鎖</button>` : ""}`); }).join("")}</div>`;
+        return itemCard(g, id, `<small>${unlocked ? "✅ 已永久解鎖・全部寵物共用" : `背包 ${invN(g, id)} 個・用 1 個解鎖（全部寵物共用）`}</small>${unlocked ? "" : buyBtn(id)}${!unlocked && invN(g,id)>0 ? `<button class="btn small b-purple" data-evounlock="${id}" data-g="${g}">✨ 永久解鎖（全部寵物）</button>` : ""}`); }).join("")}</div>`;
   }
   let html = __shopHTML0(g);
   if(!html.includes('data-stab="evo"')) html = html.replace(/(data-stab="fruit"[^>]*>🍓 果實<\/button>)/, `$1<button class="" data-stab="evo" data-g="${g}">💎 進化</button>`);
@@ -4642,7 +4649,7 @@ shopHTML = function(g){
 const __movesHTML = movesHTML;
 movesHTML = function(g, Q){
   let h = __movesHTML(g, Q);
-  if(canMega(g, Q)) h = `<div class="row quick"><button class="btn small b-purple" data-mega="${g}">💎 超級進化！${megaUnlocked(g) ? "（已永久解鎖）" : "（用 1 顆進化石永久解鎖）"}</button></div>` + h;
+  if(canMega(g, Q)) h = `<div class="row quick"><button class="btn small b-purple" data-mega="${g}">💎 超級進化！${megaUnlocked(g) ? "（全部寵物已解鎖）" : "（用 1 顆進化石・全部寵物永久解鎖）"}</button></div>` + h;
   return h;
 };
 
@@ -4650,7 +4657,7 @@ movesHTML = function(g, Q){
 const __drawFight = drawFight;
 drawFight = function(ctx, g, Q, now, t){
   __drawFight(ctx, g, Q, now, t);
-  if(!Q || !Q.mega || activeId(g) !== "main") return;
+  if(!Q || !Q.mega) return;
   const tt = (now || 0) / 1000;
   for(let i = 0; i < 6; i++){ const a = tt * 3 + i * Math.PI / 3; softEllAura(ctx, 16 + Math.cos(a) * 9, 14 + Math.sin(a) * 6, .9, "#B388FF"); }
   if(Q.anim && Q.anim.kind === "mega"){ const e = (now - Q.anim.at) / 1000; ctx.fillStyle = `rgba(179,136,255,${Math.max(0, .45 - e * .2)})`; ctx.fillRect(0, 0, 64 * CELLPX, 32 * CELLPX); }
@@ -5039,12 +5046,264 @@ recalcAll(); renderStatic(); renderFilters(); renderMap(); renderCard(); renderE
 // 跨分頁同步：同一台裝置開兩個分頁時，以最新存檔為準
 addEventListener("storage", (e) => { if(e.key === SAVE_KEY && e.newValue){ try{ S = migrate(JSON.parse(e.newValue)); renderAll(true); }catch(err){} } });
 // 測試用（不影響遊戲）
+// ---- v7.2.6b：超級進化明顯變身（更大輪廓＋鎧甲／角／披風，像素）
+// 帳號級解鎖後，任一上場寵物答對 MEGA_NEED 題即變身；造型與一般型差很多
+
+const MEGA_PAL = {
+  cat:   {body:"#7B5CFF", belly:"#E8DEFF", trim:"#FFD23F", accent:"#FF6FA8"},
+  bunny: {body:"#FF4FA3", belly:"#FFE0F0", trim:"#B388FF", accent:"#FFE36E"},
+  bear:  {body:"#E8912A", belly:"#FFE4B8", trim:"#FFD23F", accent:"#FF4B55"},
+  dino:  {body:"#1FA86A", belly:"#C8F5DC", trim:"#FFE36E", accent:"#7B5CFF"},
+  whale: {body:"#2F7BFF", belly:"#D6ECFF", trim:"#FFD23F", accent:"#7FDDAA"},
+  none:  {body:"#9B6BFF", belly:"#F0E8FF", trim:"#FFD23F", accent:"#FF6FA8"}
+};
+
+function megaPalOf(sp){
+  const ear = (sp && sp.ear) || "none";
+  // 主寵五種：用超進化專屬色；夥伴：沿用體色，加金邊／紫點綴
+  if(MEGA_PAL[ear] && sp && Object.values(SPECIES).includes(sp)) return MEGA_PAL[ear];
+  if(sp && sp.body) return {body: sp.body, belly: sp.belly || "#FFFFFF", trim: "#FFD23F", accent: "#B388FF"};
+  return MEGA_PAL[ear] || MEGA_PAL.none;
+}
+
+/** 超級進化型：明顯更高更大、雙翼／巨角／肩鎧／披風／胸寶石，跟一般型差很多 */
+function spriteMega(sp, mood, blink, acc){
+  sp = sp || {ear:"none", body:"#9B6BFF", belly:"#F0E8FF"};
+  const pal = megaPalOf(sp);
+  const B = pal.body, Bel = pal.belly, Trim = pal.trim, Acc = pal.accent;
+  const key = ["MEGA2", sp.ear, B, mood, blink, acc||""].join("|");
+  if(_spr.has(key)) return _spr.get(key);
+  const fill = new Map(), feat = new Map(), K = (x,y) => y*GRID + x;
+  const put = (m,x,y,c) => { if(x>=0 && y>=0 && x<GRID && y<GRID) m.set(K(x,y), c); };
+  const ell = (cx,cy,rx,ry,c) => { for(let y=Math.floor(cy-ry); y<=Math.ceil(cy+ry); y++) for(let x=Math.floor(cx-rx); x<=Math.ceil(cx+rx); x++){ const dx=(x+.5-cx)/rx, dy=(y+.5-cy)/ry; if(dx*dx+dy*dy <= 1) put(fill,x,y,c); } };
+  const cx = 16, base = 29;
+  // 1) 大披風（背後扇形，先畫）
+  for(let y = 8; y <= 28; y++){
+    const t = (y - 8) / 20;
+    const w = 3 + Math.floor(t * 9);
+    for(let dx = -w; dx <= w; dx++){
+      const edge = Math.abs(dx) >= w - 1;
+      put(fill, cx + dx, y, edge ? Acc : (y < 12 ? Trim : Acc));
+    }
+  }
+  // 2) 雙翼（左右明顯伸出）
+  for(const side of [-1, 1]){
+    for(let i = 0; i < 8; i++){
+      const x = cx + side * (10 + Math.floor(i / 2));
+      const y = 12 + i;
+      put(fill, x, y, Trim);
+      put(fill, x + side, y, Acc);
+      put(fill, x, y + 1, B);
+      if(i > 2) put(fill, x + side * 2, y, Trim);
+    }
+    // 翼尖
+    put(fill, cx + side * 14, 18, Trim); put(fill, cx + side * 15, 19, Acc);
+    put(fill, cx + side * 14, 20, Acc);
+  }
+  // 3) 高挑身體（直立橢圓，不是圓球）
+  const rx = 9, ry = 13, cy = base - ry - 1;
+  const top = Math.round(cy - ry);
+  // 肩鎧
+  ell(cx - 9, cy - 2, 4, 3.2, Trim); ell(cx + 9, cy - 2, 4, 3.2, Trim);
+  ell(cx - 9, cy - 2, 2.2, 1.8, Acc); ell(cx + 9, cy - 2, 2.2, 1.8, Acc);
+  ell(cx, cy, rx, ry, B);
+  ell(cx, cy + 3, rx * .55, ry * .4, Bel);
+  // 胸甲寶石（大）
+  ell(cx, cy + 1, 2.2, 2.2, Trim);
+  put(fill, 15, Math.round(cy)+1, Acc); put(fill, 16, Math.round(cy)+1, Acc);
+  put(fill, 15, Math.round(cy), "#FFFFFF"); put(fill, 16, Math.round(cy), "#FFFFFF");
+  // 4) 巨角／耳（依種類差很多）
+  const ear = sp.ear || "none";
+  if(ear === "cat"){
+    for(const side of [-1,1]){
+      for(let i=0;i<7;i++){
+        const w = 3 - Math.floor(i/3);
+        for(let dx=-w; dx<=w; dx++) put(fill, cx + side * 6 + dx, top + 3 - i, i>4 ? Trim : B);
+      }
+      put(fill, cx + side * 6, top - 4, Trim);
+      put(fill, cx + side * 6, top - 5, Acc);
+    }
+  } else if(ear === "bunny"){
+    for(const ex of [cx-7, cx+5]){
+      for(let y=top-11; y<=top+2; y++){ put(fill,ex,y,B); put(fill,ex+1,y,B); put(fill,ex+2,y,B); }
+      for(let y=top-10; y<=top; y++) put(feat, ex+1, y, Acc);
+      put(fill, ex, top-12, Trim); put(fill, ex+1, top-12, Trim); put(fill, ex+2, top-12, Acc);
+    }
+  } else if(ear === "bear"){
+    ell(cx-10, top+3, 3.5, 3.5, B); ell(cx+10, top+3, 3.5, 3.5, B);
+    put(fill, cx-10, top, Trim); put(fill, cx+10, top, Trim);
+    put(fill, cx-10, top-1, Acc); put(fill, cx+10, top-1, Acc);
+  } else if(ear === "dino"){
+    // 背脊巨刺一排
+    for(const s of [-6,-3,0,3,6]){
+      for(let h=0; h<5; h++){ put(fill, cx+s, top+1-h, h>2 ? Trim : B); put(fill, cx+s+1, top+1-h, Acc); }
+      put(fill, cx+s, top-4, Trim);
+    }
+  } else if(ear === "whale"){
+    for(let i=0;i<6;i++){ put(fill, cx+rx+i, Math.round(cy)-1-i, B); put(fill, cx-rx-1-i, Math.round(cy)-1-i, B); }
+    put(fill, cx+rx+5, Math.round(cy)-7, Trim); put(fill, cx-rx-6, Math.round(cy)-7, Trim);
+  } else {
+    for(const side of [-1,1]) for(let i=0;i<6;i++){ put(fill, cx+side*(7+Math.floor(i/2)), top+2-i, i>3?Trim:B); }
+  }
+  // 5) 頭冠
+  for(let x=12; x<=19; x++) put(fill, x, top+1, Trim);
+  for(let x=13; x<=18; x++) put(fill, x, top, Acc);
+  put(fill, 15, top-1, "#FFFFFF"); put(fill, 16, top-1, "#FFFFFF");
+  put(fill, 14, top-1, Trim); put(fill, 17, top-1, Trim);
+  put(fill, 15, top-2, Trim); put(fill, 16, top-2, Acc);
+  if(acc){ for(let x=12; x<=19; x++) put(fill, x, top-3, acc); }
+  // 6) 粗腿＋爪
+  for(const fx of [cx-7, cx+5]){
+    for(let dy=0; dy<3; dy++){ put(fill, fx, base-dy, B); put(fill, fx+1, base-dy, B); put(fill, fx+2, base-dy, B); }
+    put(fill, fx-1, base, Trim); put(fill, fx+3, base, Trim);
+    put(fill, fx, base+1, Trim); put(fill, fx+1, base+1, Acc); put(fill, fx+2, base+1, Trim);
+  }
+  // 7) 尾巴（長＋刺）
+  for(let i=0;i<7;i++){
+    put(fill, cx+rx-1+i, Math.round(cy)+4+Math.floor(i/2), B);
+    put(fill, cx+rx-1+i, Math.round(cy)+3+Math.floor(i/2), Trim);
+    if(i%2===0) put(fill, cx+rx+i, Math.round(cy)+2+Math.floor(i/2), Acc);
+  }
+  // 臉（兇一點／帥一點：細長眼＋自信笑）
+  const ey = Math.round(cy - ry*.35), xl = cx - 5, xr = cx + 4;
+  if(mood === "sleep"){ for(const x of [xl,xr]){ put(feat,x,ey,INK); put(feat,x+(x<cx?-1:1),ey,INK); } }
+  else {
+    // 長眼＋眉
+    for(const x of [xl, xr]){
+      put(feat, x, ey, INK); put(feat, x+1, ey, INK); put(feat, x+(x<cx?-1:2), ey, INK);
+      put(feat, x, ey-1, "#FFFFFF"); put(feat, x+1, ey-1, INK);
+      put(feat, x, ey-2, Trim); // 眉
+    }
+  }
+  put(feat, xl-1, ey+2, "#FF9FC0"); put(feat, xr+2, ey+2, "#FF9FC0");
+  const my = ey + 3;
+  put(feat, 14, my, INK); put(feat, 15, my+1, "#E8475F"); put(feat, 16, my+1, "#E8475F"); put(feat, 17, my, INK);
+  put(feat, 15, my, "#FFE36E"); put(feat, 16, my, "#FFE36E");
+  // 輪廓
+  const out = [];
+  for(const k of fill.keys()){ const x = k % GRID, y = (k - x) / GRID; for(const [dx,dy] of [[1,0],[-1,0],[0,1],[0,-1]]){ const nk = K(x+dx, y+dy); if(x+dx>=0 && x+dx<GRID && y+dy>=0 && y+dy<GRID && !fill.has(nk)) out.push([x+dx, y+dy, INK]); } }
+  const cells = [];
+  for(const [k,c] of fill){ const x = k % GRID; cells.push([x, (k-x)/GRID, feat.get(k) || c]); }
+  for(const [k,c] of feat){ if(!fill.has(k)){ const x = k % GRID; cells.push([x, (k-x)/GRID, c]); } }
+  const res = {cells: cells.concat(out), top, mega:true};
+  _spr.set(key, res); return res;
+}
+
+function megaSpOf(g, id){
+  if(id === "main" || !id){
+    const pt = S.pets[g]; return pt && pt.species ? SPECIES[pt.species] : {ear:"none", body:"#9B6BFF", belly:"#F0E8FF"};
+  }
+  const m = MON[id]; return m ? {ear:m.ear||"none", body:m.body, belly:m.belly} : {ear:"none", body:"#9B6BFF", belly:"#F0E8FF"};
+}
+
+// 旗標：只讓「我方上場」變超進化（對手維持原樣）
+window.__sbMegaDraw = false;   // 主寵走 sprite()
+window.__sbMegaMonId = null;   // 夥伴 id；對手 mon.id 不會相等
+const __spriteBaseMega = sprite;
+sprite = function(sp, stage, mood, blink, acc){
+  if(window.__sbMegaDraw) return spriteMega(sp, mood === "idle" ? "happy" : mood, blink, acc);
+  return __spriteBaseMega(sp, stage, mood, blink, acc);
+};
+const __fighterBaseMega = fighterSprite;
+fighterSprite = function(u, mood){
+  if(window.__sbMegaMonId && u.mon === window.__sbMegaMonId){
+    const m = MON[u.mon] || {body:"#CFC6E0", belly:"#FFFFFF"};
+    return {spr: spriteMega({ear:m.ear||"none", body:m.body, belly:m.belly}, mood === "idle" ? "happy" : mood, false, u.acc), deco:null, deco2:null};
+  }
+  // 對手／其他單位：即使主寵超進化中，也要用一般 sprite（底層 fighterSprite 會呼叫 sprite）
+  if(window.__sbMegaDraw){
+    const bak = window.__sbMegaDraw; window.__sbMegaDraw = false;
+    try { return __fighterBaseMega(u, mood); }
+    finally { window.__sbMegaDraw = bak; }
+  }
+  return __fighterBaseMega(u, mood);
+};
+
+function __sbWithMegaDraw(g, Q, fn){
+  const id = activeId(g);
+  window.__sbMegaDraw = (id === "main");
+  window.__sbMegaMonId = (id !== "main") ? id : null;
+  try { return fn(); }
+  finally { window.__sbMegaDraw = false; window.__sbMegaMonId = null; }
+}
+
+const __drawFightMegaVis = drawFight;
+drawFight = function(ctx, g, Q, now, t){
+  const A = Q && Q.anim && now - Q.anim.at < Q.anim.dur ? Q.anim : null;
+  if(A && A.kind === "mega"){
+    const e = (now - A.at) / 1000;
+    if(e < .55){
+      const showMega = Math.floor(e / .12) % 2 === 1;
+      if(showMega) __sbWithMegaDraw(g, Q, () => __drawFightMegaVis(ctx, g, Q, now, t));
+      else __drawFightMegaVis(ctx, g, Q, now, t);
+      ctx.fillStyle = `rgba(255,255,255,${Math.max(0, .55 - e)})`;
+      ctx.fillRect(0, 0, 64 * CELLPX, 32 * CELLPX);
+      try {
+        const F = typeof lcdFont === "function" ? lcdFont() : "sans-serif";
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.font = "900 22px " + F;
+        ctx.lineWidth = 4; ctx.strokeStyle = "#FFFFFF"; ctx.strokeText("💎 超級進化！", 192, 70);
+        ctx.fillStyle = "#B388FF"; ctx.fillText("💎 超級進化！", 192, 70);
+      } catch(err){}
+      return;
+    }
+  }
+  if(Q && Q.mega && Q.phase !== "won" && Q.phase !== "faint"){
+    __sbWithMegaDraw(g, Q, () => __drawFightMegaVis(ctx, g, Q, now, t));
+    try {
+      const F = typeof lcdFont === "function" ? lcdFont() : "sans-serif";
+      ctx.font = "900 11px " + F; ctx.textAlign = "left"; ctx.textBaseline = "middle";
+      ctx.fillStyle = "#B388FF"; ctx.fillText("💎超進化", 12, 48);
+    } catch(err){}
+    return;
+  }
+  __drawFightMegaVis(ctx, g, Q, now, t);
+};
+
+// 戰鬥列顯示超進化狀態
+const __monLineMega = typeof monLine === "function" ? monLine : null;
+if(__monLineMega){
+  monLine = function(g, Q){
+    let h = __monLineMega(g, Q);
+    if(Q && Q.mega) h = h.replace("</div>", ` <em class="fast">💎 超級進化中！</em></div>`);
+    return h;
+  };
+}
+const __monLineCMega = typeof monLineC === "function" ? monLineC : null;
+if(__monLineCMega){
+  monLineC = function(g, Q){
+    let h = __monLineCMega(g, Q);
+    if(Q && Q.mega) h = h.replace("</span>", ` <em class="fast">💎超進化</em></span>`);
+    return h;
+  };
+}
+
+// 商店文案強調「會變帥」
+const __shopHTMLMegaArt = shopHTML;
+shopHTML = function(g){
+  let h = __shopHTMLMegaArt(g);
+  if((TAMA[g].shopTab || "ball") === "evo"){
+    h = h.replace(
+      "解鎖後每場、每隻都能超級進化／用一次極具必殺，不用再買、不用再綁單隻。",
+      "解鎖後每場、每隻答對 3 題就會<strong>變成超進化型態</strong>（更大更帥的像素造型＋攻擊大增）；極具必殺則是能量滿時的大招。全部寵物共用，不用再買。"
+    );
+  }
+  return h;
+};
+
+try {
+  if (typeof NEXT !== "undefined" && Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("超進化型態")) {
+    NEXT[0] = "✅ v7.2.6 進化石／腕帶全部寵物共用；超級進化會變成更大更帥的超進化像素造型。✅ " + String(NEXT[0]).replace(/^✅\s*/, "");
+  }
+} catch (e) {}
+
 window.__shuangbao = { get save(){ return S; }, dev: DEV, get sync(){ return SYNC.status; }, recalcAll, petStats, skillList, bag, pvpToday, badgeSet, get bt(){ return BT; }, typeMult,
   setXp(g, n){ const pt = S.pets[g]; pt.xpC[DEV.id] = (pt.xpC[DEV.id]||0) + (n - pt.xp); recalcAll(); },
   setWallet(g, n){ const pt = S.pets[g], d = n - pt.wallet; if(d >= 0) bump(pt.earnC, d); else bump(pt.spendC, -d); recalcAll(); }, migrate, streakInfo, twDate, encodeSave, decodeSave, SCHEMA_VERSION, SAVE_KEY,
   v6: { adv, invN, invAdd, coins, cookiesLeft, fruitBoost, equipOf, catchChance, catchInfo, elemPow, dealOf, priceOf, fruitBlock, luckPending, BALLS, FRUITS, advDamage, questOf, spawnWild, wildOf, useMove, throwBall, buy, eatFruit, eatCookie, giveItem, setEquip, setView, lootPreview, nextItem, lootTier, advMoves, ITEMS, CATCH, ENERGY_MAX, FRUIT_CAP, LOOT_PER_DAY, MON_XP_PER_DAY, FREE_COOKIES, get QST(){ return QST; }, get WST(){ return WST; }, TAMA, mergeAdv, kidSection, mergeKid,
     traitAdd, trPts, trLv, TRAITS, lvInfo, careAdd, trainAdd, fStats, partnerStats, activeId, teamOf, setTeam, sendOut, teamToggle, feedPartner, fHp, monAttack, restUp, holidayOf, HOLIS, HOLI_MON, SPIRITS,
-    summonables, summon, setPlan, planProg, saveDiary, saveQNote, saveMotto, approveNote, isLegend, growHTML, wildFight, spawnQuest, devQ, wantHard, actN, PRICE70, TIER, seed70, evoGuard, renderTraitParent, FXL, FXDEF, FXDRAW, lvMoves, movesLearnedAt, sizeLcds, mvIsNew, GENS, smartPick, materializeGen, qOfG, gensFor, newQ, qs, qw, curId, secret, cardQs, HOMEWORK, hwHTML, doMega, canMega, megaUnlocked, zUnlocked, unlockMega, unlockZ, evoStageOf, evoLineHTML, hwState, hwAward, hwSubmit, SPECIES, sprite, buy } };
+    summonables, summon, setPlan, planProg, saveDiary, saveQNote, saveMotto, approveNote, isLegend, growHTML, wildFight, spawnQuest, devQ, wantHard, actN, PRICE70, TIER, seed70, evoGuard, renderTraitParent, FXL, FXDEF, FXDRAW, lvMoves, movesLearnedAt, sizeLcds, mvIsNew, GENS, smartPick, materializeGen, qOfG, gensFor, newQ, qs, qw, curId, secret, cardQs, HOMEWORK, hwHTML, doMega, canMega, megaUnlocked, zUnlocked, unlockMega, unlockZ, evoStageOf, evoLineHTML, hwState, hwAward, hwSubmit, SPECIES, sprite, spriteMega, buy } };
+
 </script>
 </body>
 </html>
