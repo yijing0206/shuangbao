@@ -147,7 +147,7 @@ a.back{color:#d8f5e0;font-size:16px;display:inline-block;margin-top:20px}
 #wavebar{flex:1;height:24px;border:3px solid var(--line);background:#334;position:relative;min-width:80px}
 #wavebar i{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#ff7a59,#ffd23f)}
 #wavebar span{position:absolute;inset:0;text-align:center;font-size:13px;font-weight:900;line-height:18px;color:#fff;text-shadow:1px 1px 0 #000}
-#pausetag{display:none;background:#7fd6ff !important}
+#pausetag{display:none;background:#7fd6ff !important;font-size:17px;padding:6px 12px}
 #pausetag.on{display:inline-block}
 #stage{flex:1 1 auto;min-height:0;position:relative;background:#0b1a10;line-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #cv{width:auto;height:auto;max-width:100%;max-height:100%;image-rendering:pixelated;image-rendering:crisp-edges;display:block;touch-action:none;flex:0 0 auto}
@@ -275,6 +275,34 @@ input.story{width:100%;font:inherit;font-size:18px;padding:10px;border:3px solid
 .nroom{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:18px;padding:8px;border-bottom:2px dashed #d5d9e0;text-align:left}
 .nroom .pbtn{margin-left:auto}
 .tchip.vs{background:#2a2340;color:#fff}
+
+/* v3.1 殭屍王、災害、圖鑑 */
+#hud .dzb,#hud .rsb{display:none;font-size:19px;padding:5px 12px;box-shadow:3px 3px 0 #0006}
+#hud .dzb{background:#ff9fb5;animation:askpulse .6s ease-in-out infinite}
+#hud .rsb{background:#7ee2a8;animation:askpulse 1s ease-in-out infinite}
+#hud .dzb.on,#hud .rsb.on{display:inline-block}
+.qmode.dzq{background:#ffdfe6;color:#9b1030;border-color:#9b1030}
+.dex{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;padding:6px 14px 30px}
+.dexc{padding:10px;text-align:center;position:relative}
+.dexc img{width:64px;height:64px;image-rendering:pixelated;display:block;margin:4px auto}
+.dexc.king img{width:72px;height:72px}
+.dexc h4{margin:4px 0;font-size:18px}
+.dexc p{font-size:14px;color:var(--ink2);margin:6px 0;line-height:1.4}
+.dexc .kd{display:block;font-size:13px;font-weight:800;color:#2b6b3a}
+.dexc .st{display:block;font-size:13px;font-weight:800;color:#7a4b00;margin:4px 0}
+.dexc .hg{display:block;font-size:12px;color:var(--ink2);margin-top:6px}
+.dexc .lk{font-weight:800;color:#7a4b00}
+.dexc .no{position:absolute;left:6px;top:4px;font-size:11px;color:var(--ink2);font-weight:800}
+.dexc .nw{position:absolute;right:6px;top:4px;font-size:12px;background:#e5484d;color:#fff;padding:0 5px;border:2px solid var(--line);font-weight:900}
+.dexc.off{background:#e9e4d8}.dexc.off2{opacity:.8}
+.dexc.rare{background:linear-gradient(160deg,#fff6d6,#ffe9f2)}.dexc.rare.off{background:#ece4cf}
+.dexc ol{text-align:left;font-size:13px;margin:6px 0;padding-left:22px;color:var(--ink)}
+.unlp{display:inline-flex;align-items:center;gap:4px;margin:4px 6px;font-weight:800;background:#fffaf0;border:3px solid var(--line);padding:2px 8px 2px 2px}
+.unlp img{width:40px;height:40px;image-rendering:pixelated}
+.unl.nx{background:#eef7ff}
+.kingok{font-size:18px;font-weight:900;color:#9b1030;margin:6px 0}
+.nwc{background:#e5484d;color:#fff;padding:0 6px;border:2px solid var(--line);font-size:15px}
+@media (max-width:600px){.dex{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px;padding:6px 8px 24px}.dexc p{font-size:13px}#hud .dzb,#hud .rsb{font-size:15px;padding:3px 6px}}
 </style>
 </head>
 <body>
@@ -293,6 +321,7 @@ input.story{width:100%;font:inherit;font-size:18px;padding:10px;border:3px solid
     <button class="pbtn pink" data-go="team">👥 團體戰（同一台）</button>
     <button class="pbtn sky" data-study="1">📚 學習地圖・翻牌</button>
     <button class="pbtn mint" data-go="shop">🛒 種子商店</button>
+    <button class="pbtn sun" data-go="dex" id="dexBtn">📖 植物圖鑑</button>
     <button class="pbtn sky" data-go="badges">🏅 心之力徽章</button>
     <button class="pbtn gray" data-act="help">❓ 怎麼玩</button>
     <button class="pbtn gray" data-act="settings">⚙️ 設定</button>
@@ -316,6 +345,11 @@ input.story{width:100%;font:inherit;font-size:18px;padding:10px;border:3px solid
   <div class="top"><button class="pbtn gray" data-go="title" style="font-size:16px;padding:6px 12px">← 首頁</button><h2>🌐 連線對戰（不同平板、不同家庭）</h2></div>
   <div id="netBody"></div>
 </section>
+<section class="scr" id="scr-dex">
+  <div class="top"><button class="pbtn gray" data-go="title" style="font-size:16px;padding:6px 12px">← 首頁</button><h2 id="dexTitle">📖 植物圖鑑</h2></div>
+  <div class="tabs" id="dexTabs"></div>
+  <div id="dexBody"></div>
+</section>
 <section class="scr" id="scr-badges">
   <div class="top"><button class="pbtn gray" data-go="title" style="font-size:16px;padding:6px 12px">← 首頁</button><h2>🏅 心之力徽章</h2></div>
   <div class="badges" id="badgeList"></div>
@@ -328,6 +362,8 @@ input.story{width:100%;font:inherit;font-size:18px;padding:10px;border:3px solid
     <button class="hb ask" id="askbtn" data-act="ask">📝 答題</button>
     <button class="hb gowave" id="gowave" data-act="gowave">▶ 開始防守</button>
     <span class="hb" id="pausetag">⏸ 答題中，戰場已暫停</span>
+    <button class="hb dzb" id="dzbtn" data-act="dzask">🛡️ 答題擋下</button>
+    <button class="hb rsb" id="rsbtn" data-act="rsask">🆘 緊急陽光</button>
     <span class="hb" id="heartv">❤❤❤</span>
   </div>
   <div id="teambar"></div>
@@ -696,7 +732,7 @@ window.SB_STUDY = {init(h){ H = h; }, open, close, semWeek, unitOpen, clockSVG, 
 /* 雙寶知識花園保衛戰（塔防＋答題複習）
    題庫與「雙寶複習冒險隊」同一份；答案、提示、解說都加密，作答後才解開
    存檔：localStorage「shuangbao-garden-save」（和寵物遊戲的存檔完全分開） */
-const GARDEN_VERSION = "3.0.0";
+const GARDEN_VERSION = "3.1.0";
 // v3：兩個家庭（家庭密碼登入，和冒險隊共用登入）。咪萌家沿用原本的花園存檔；奶哥家用自己的存檔
 const FAM = (window.SB_FAMILY && SB_FAMILY.current()) || null, FAMID = FAM ? FAM.id : "mimeng", NAIGE = FAMID === "naige";
 const SAVE_KEY = NAIGE ? "shuangbao-garden-save-naige" : "shuangbao-garden-save";
@@ -802,8 +838,8 @@ function oldNames(){ let r = {g2:"", g4:"", g6:""};
   try{ if(SV && SV.names && SV.names.g2) r.g2 = SV.names.g2; }catch(e){}
   if(FAM) for(const k of FAM.kids) if(!r[k.g]) r[k.g] = k.who;   // 還沒取名字：用「姊姊」「弟弟」
   return r; }
-function defKid(){ return {coins:0, stars:{}, wins:{}, plays:{}, losses:{}, unlock:{}, upg:{}, traits:{}, days:[], ans:0, right:0, best:0, subjWin:{}, story:[]}; }
-function defSave(){ return {v:3, kids:{g2:defKid(), g4:defKid(), g6:defKid()}, cur:"g4", set:{easy:true, slowRead:true, sound:true}, created:Date.now(), names:{}, team:{wins:0, plays:0, roster:[]}}; }
+function defKid(){ return {coins:0, stars:{}, wins:{}, plays:{}, losses:{}, unlock:{}, upg:{}, traits:{}, days:[], ans:0, right:0, best:0, subjWin:{}, story:[], rare:{}, kings:{}, deck:[], seen:{}}; }   // v3.1：rare 稀有植物、kings 打倒的殭屍王、deck 帶上場的植物、seen 圖鑑看過
+function defSave(){ return {v:4, kids:{g2:defKid(), g4:defKid(), g6:defKid()}, cur:"g4", set:{easy:true, slowRead:true, sound:true}, created:Date.now(), names:{}, team:{wins:0, plays:0, roster:[]}}; }
 function loadSave(){
   let s = null; try{ s = JSON.parse(localStorage.getItem(SAVE_KEY) || "null"); }catch(e){}
   if((!s || typeof s !== "object") && NAIGE){   // v3：奶哥家第一次開：把這台平板原本「小二」的花園進度複製過來（咪萌家的存檔不動）
@@ -813,7 +849,8 @@ function loadSave(){
   s.kids = s.kids || {}; for(const k of GRADES) s.kids[k] = Object.assign(defKid(), s.kids[k] || {});   // v3：加入小二（g2）；小四、小六原本進度原封不動
   s.set = Object.assign(defSave().set, s.set || {}); if(!GRADES.includes(s.cur)) s.cur = GRADES[0];
   s.names = s.names || {}; s.team = Object.assign({wins:0, plays:0, roster:[]}, s.team || {});
-  if(s.v !== 3) s.v = 3; // 只升版本號，不重置任何進度、金幣、星星
+  for(const k of Object.keys(s.kids)){ const K = s.kids[k]; if(!K || typeof K !== "object") continue; for(const f of ["rare", "kings", "seen"]) if(!K[f] || typeof K[f] !== "object" || Array.isArray(K[f])) K[f] = {}; if(!Array.isArray(K.deck)) K.deck = []; }
+  if(s.v !== 4) s.v = 4; // v3.1：只升版本號、補上新欄位（稀有植物、殭屍王、圖鑑），不重置任何進度、金幣、星星
   return s;
 }
 let SV = loadSave();
@@ -822,7 +859,7 @@ try{ if(SV.fromMimeng && !localStorage.getItem(SAVE_KEY)) save(); }catch(e){}
 const kid = () => SV.kids[SV.cur];
 function kidName(g){ const n = oldNames()[g], base = GLBL[g] || g; return n && n !== base ? `${base}・${n}` : base; }
 const clears = k => Object.values(k.wins || {}).reduce((a, b) => a + (b || 0), 0);
-const defOwnedBy = (k, d) => DEF[d].need ? clears(k) >= DEF[d].need : (DEF[d].price === 0 || !!k.unlock[d]);
+const defOwnedBy = (k, d) => !DEF[d] ? false : DEF[d].rare ? !!(k.rare && k.rare[d]) : DEF[d].need ? clears(k) >= DEF[d].need : (DEF[d].price === 0 || !!k.unlock[d]);
 const defOwned = d => G && G.team && !G.net ? G.team.owned.includes(d) : defOwnedBy(kid(), d);
 
 let AC = null;
@@ -881,8 +918,9 @@ function buildSprites(){
     R(5, 18, 16, 8, "#4a2a7a"); R(0, 19, 6, 3, "#8e5ad6"); R(0, 23, 5, 3, "#8e5ad6"); R(20, 19, 6, 3, "#8e5ad6"); R(11, 19, 4, 6, "#ffd23f");
     if(fr === 0){ R(6, 26, 5, 4, "#2a1a4a"); R(15, 26, 5, 3, "#2a1a4a"); } else { R(7, 26, 5, 3, "#2a1a4a"); R(14, 26, 5, 4, "#2a1a4a"); }
   }));
-  for(const k of ["basic", "fast", "tank", "boss", "armor", "ranged", "armor_naked"]){ SPR[k + "_ice"] = SPR[k].map(s => tint(s, "#5ec8ff", .45)); SPR[k + "_hit"] = SPR[k].map(s => tint(s, "#ffffff", .7)); }
-  for(const k of ["basic", "fast", "tank", "boss", "armor", "ranged"]) SPR[k + "0"] = SPR[k][0];
+  if(typeof buildSprites31 === "function") buildSprites31();   // v3.1：新植物、撐竿跳怪、殭屍王
+  for(const k of MON_ORDER.concat(["armor_naked", "k_iron_naked"])){ if(!SPR[k]) continue; SPR[k + "_ice"] = SPR[k].map(s => tint(s, "#5ec8ff", .45)); SPR[k + "_hit"] = SPR[k].map(s => tint(s, "#ffffff", .7)); }
+  for(const k of MON_ORDER) if(SPR[k]) SPR[k + "0"] = SPR[k][0];
   for(const k of DEF_ORDER) SPR[k + "_hit"] = tint(SPR[k], "#ffffff", .6);
   SPR.house = mk(22, 26, (P, R) => { for(let b = 0; b < 8; b++) R(10 - b, 2 + b, 2 + 2 * b, 1, "#c0392b"); R(3, 10, 16, 14, "#f5deb3"); R(8, 15, 6, 9, "#8d5a3b"); P(12, 19, "#ffd23f"); R(4, 12, 3, 3, "#7fd6ff"); R(15, 12, 3, 3, "#7fd6ff"); R(1, 24, 20, 2, "#6d4c41"); });
   SPR.book = mk(12, 10, (P, R) => { R(0, 1, 12, 8, "#1e88e5"); R(1, 2, 10, 6, "#90caf9"); R(5, 1, 2, 8, "#0d47a1"); P(3, 4, "#111"); P(8, 4, "#111"); R(3, 6, 6, 1, "#0d47a1"); });
@@ -944,11 +982,11 @@ function renderLevels(){
 function renderShop(){
   const k = kid(); $("shopCoins").textContent = `🪙 ${k.coins}`;
   const cl = clears(k);
-  const defs = DEF_ORDER.map(d => { const D = DEF[d], own = defOwnedBy(k, d);
+  const defs = DEF_ORDER.filter(d => DEF[d].price > 0).map(d => { const D = DEF[d], own = defOwnedBy(k, d);
     const how = own ? `<b>✅ 已擁有</b>` : D.need ? `<b class="lockt">🔒 過關 ${D.need} 次解鎖（還差 ${D.need - cl} 次）</b>` : `<button class="pbtn sun" data-buy="${d}" ${k.coins < D.price ? "disabled" : ""}>🪙 ${D.price} 解鎖</button>`;
     return `<div class="card ${own ? "" : "off"}"><img src="${sprURL(d, 72)}" alt=""><h3>${D.el} ${D.n}</h3><p>${D.sub ? D.sub + "屬性｜" : ""}種一株 ${D.cost} ☀<br>${D.d}</p>${how}</div>`; });
   const ups = UPGRADES.map(u => `<div class="card"><div style="font-size:54px">${u.e}</div><h3>${u.n}</h3><p>${u.d}</p>${k.upg[u.k] ? `<b>✅ 已擁有</b>` : `<button class="pbtn mint" data-upg="${u.k}" ${k.coins < u.price ? "disabled" : ""}>🪙 ${u.price} 購買</button>`}</div>`);
-  $("shopList").innerHTML = defs.join("") + ups.join("") + `<div class="card"><h3>🌱 新植物怎麼解鎖？</h3><p>每過關 1 次就累積 1 次（任何單元都算）。現在累積 <b>${cl}</b> 次。</p></div><div class="card"><h3>🪙 怎麼賺金幣？</h3><p>第一次就答對 +5、改正後答對 +2、打倒怪獸 +1、打倒魔王 +10、過關再加 30＋每顆星 10。</p></div>`;
+  $("shopList").innerHTML = defs.join("") + ups.join("") + `<div class="card"><h3>🌱 新植物怎麼拿到？</h3><p>每過關 1 次就累積 1 次（任何單元都算），幾乎每過關一次就多一種植物！現在累積 <b>${cl}</b> 次，已經有 <b>${DEF_ORDER.filter(d => defOwnedBy(k, d)).length}</b>／${DEF_ORDER.length} 種。打敗👑殭屍王還會掉落🌟稀有植物。</p><button class="pbtn sky" data-go="dex">📖 打開植物圖鑑</button></div><div class="card"><h3>🪙 怎麼賺金幣？</h3><p>第一次就答對 +5、改正後答對 +2、打倒怪獸 +1、打倒魔王 +10、過關再加 30＋每顆星 10。</p></div>`;
 }
 function renderBadges(){
   const k = kid();
@@ -969,16 +1007,26 @@ const cv = $("cv"), ctx = cv.getContext("2d");
 /* 每一波的怪獸：v2.0 有種類與等級；小二比較溫和，過關越多次越強 */
 function waveDefs(g, lv, nTeam){
   const young = g === "g2";
-  let w = [
+  // v3.1：小四、小六每一波更多、更兇（加撐竿跳怪）；Lv.2 起多一波「一大波」；最後一波是👑殭屍王。小二維持溫和
+  let w = young ? [
     ["basic", "basic", "fast", "basic", "basic"],
-    young ? ["basic", "fast", "basic", "armor", "basic", "fast", "basic"] : ["basic", "fast", "armor", "basic", "ranged", "basic", "fast", "basic"],
-    young ? ["basic", "armor", "fast", "ranged", "basic", "tank", "basic", "fast"] : ["armor", "fast", "ranged", "basic", "tank", "basic", "ranged", "armor", "fast", "basic"],
-    young ? ["boss", "basic", "armor", "basic", "ranged", "tank", "basic"] : ["boss", "basic", "armor", "ranged", "tank", "fast", "ranged", "basic", "armor"]
+    ["basic", "fast", "basic", "armor", "basic", "fast", "basic"],
+    ["basic", "armor", "fast", "ranged", "basic", "tank", "basic", "fast"],
+    ["boss", "basic", "armor", "basic", "ranged", "tank", "basic"]
+  ] : [
+    ["basic", "basic", "fast", "basic", "armor", "basic", "fast"],
+    ["basic", "fast", "armor", "jumper", "ranged", "basic", "fast", "basic", "armor"],
+    ["armor", "fast", "ranged", "jumper", "tank", "basic", "ranged", "armor", "fast", "basic", "jumper"],
+    ["boss", "basic", "armor", "ranged", "tank", "fast", "ranged", "jumper", "basic", "armor"]
   ];
-  if(lv >= 3) w = w.map((x, i) => i < 3 ? x.concat(i ? ["ranged", "armor"] : ["armor"]) : x.concat(["tank"]));
+  if(young && lv >= 2) w[2] = w[2].concat(["jumper"]);
+  if(!young && lv >= 2) w.splice(3, 0, ["tank", "armor", "jumper", "ranged", "fast", "armor", "basic", "tank", "jumper", "ranged", "fast", "basic"]);
+  if(lv >= 3) w = w.map((x, i) => i < w.length - 1 ? x.concat(i ? ["ranged", "armor"] : ["armor"]) : x.concat(["tank"]));
   if(nTeam > 1){ const extra = Math.round((nTeam - 1) * 0.4 * 6); w = w.map((x, i) => { const add = []; for(let k = 0; k < Math.round(extra * (0.6 + i * 0.25)); k++) add.push(["basic", "fast", "armor", "ranged", "tank"][(k + i) % (i < 1 ? 2 : 5)]); return x.concat(add); }); }
   return w;
 }
+/* v3.1：花園越強（累積過關越多、植物越多），怪獸也跟著變強一點；小二加得很少 */
+const gardenF = (k, g) => 1 + Math.min(30, k ? clears(k) : 0) * (g === "g2" ? 0.008 : 0.025);
 const fieldFrozen = () => !G || G.paused || G.asking || G.done;
 function quizCount(){
   const next = G.wave + 1;
@@ -1010,9 +1058,10 @@ function startLevel(cid){
   const g = SV.cur, k = kid(), c = cardOf(cid), easy = !!SV.set.easy, lv = 1 + (k.wins[cid] || 0);
   if(!c || !unitOpenWk(c)){ toast("這個單元還沒開放喔"); return; }
   G = Object.assign(baseG(cid, g, c, lv, easy), {
-    mult:(1 + 0.15 * (lv - 1)) * (easy ? 0.85 : 1) * (g === "g6" ? 1.1 : g === "g2" ? 0.8 : 1),
+    mult:(1 + 0.18 * (lv - 1)) * (easy ? 0.85 : 1) * (g === "g6" ? 1.4 : g === "g2" ? 0.8 : 1.25) * gardenF(k, g),
     sun:175 + (k.upg.startSun ? 50 : 0), hearts:k.upg.guard ? 4 : 3, maxHearts:k.upg.guard ? 4 : 3,
-    waves:waveDefs(g, lv, 1), pool:shuffle(cardQs(cid, g)), bossName:bossOf(c, g), team:null});
+    waves:waveDefs(g, lv, 1), pool:shuffle(cardQs(cid, g)), bossName:bossOf(c, g), team:null, kingType:kingFor(cid, lv, g)});
+  planDisasters();
   k.plays[cid] = (k.plays[cid] || 0) + 1;
   const d = today(); if(!k.days.includes(d)){ k.days.push(d); if(k.days.length >= 3) gainTrait("belief", "在不同的日子持續來練習"); }
   if(GRADES.some(o => o !== g && SV.kids[o].days.includes(d)) && k.leadDay !== d){ k.leadDay = d; gainTrait("lead", "今天兄弟姊妹都來保衛花園"); }
@@ -1028,9 +1077,10 @@ function startTeam(players, split){
   const rowsOf = i => split ? [0, 1, 2, 3, 4].filter(r => r % n === i) : [0, 1, 2, 3, 4];
   const ps = players.map((p, i) => ({...p, color:TEAM_COL[i], pool:shuffle(openUnitQs(p.g)), qi:0, sun:split ? 120 : 0, ans:0, first:0, chips:0, rows:rowsOf(i)}));
   G = Object.assign(baseG("team", gmax, card, lv, easy), {
-    mult:(1 + 0.12 * (lv - 1)) * (easy ? 0.85 : 1) * (gmax === "g6" ? 1.05 : gmax === "g2" ? 0.85 : 1),
+    mult:(1 + 0.15 * (lv - 1)) * (easy ? 0.85 : 1) * (gmax === "g6" ? 1.15 : gmax === "g2" ? 0.85 : 1.05),
     sun:split ? 0 : 150 + 40 * n, hearts:3 + (n > 2 ? 1 : 0), maxHearts:3 + (n > 2 ? 1 : 0),
-    waves:waveDefs(gmax, lv, n), pool:[], bossName:"聯合大魔王", team:{players:ps, turn:0, split, owned, planter:0}});
+    waves:waveDefs(gmax, lv, n), pool:[], bossName:"聯合大魔王", team:{players:ps, turn:0, split, owned, planter:0}, kingType:kingFor("team", lv, gmax)});
+  planDisasters();
   SV.team.plays = (SV.team.plays || 0) + 1; SV.team.roster = players.map(p => ({name:p.name, g:p.g, prof:p.prof || null})); save();
   closeModal(); enterGame();
 }
@@ -1052,9 +1102,9 @@ function spendSun(n){ if(G.team && G.team.split) planter().sun -= n; else G.sun 
 function startQuiz(){
   if(!G || G.done) return;
   if(G.net){ netBetween(); return; }
-  G.phase = "quiz"; G.quizGoal = quizCount(); G.quizLeft = G.quizGoal; G.sel = null;
+  G.phase = "quiz"; G.quizGoal = quizCount(); G.quizLeft = G.quizGoal; G.sel = null; G.dz = null; G.warns = [];
   const next = G.wave + 1;
-  const head = G.wave < 0 ? (G.team ? "👥 團體戰開始！" : `🌻 ${esc(unitName(G.card, G.g))}`) : (next === G.waves.length - 1 ? "⚠️ 下一波是大魔王！" : `打退第 ${G.wave + 1} 波！`);
+  const head = G.wave < 0 ? (G.team ? "👥 團體戰開始！" : `🌻 ${esc(unitName(G.card, G.g))}`) : (next === G.waves.length - 1 ? (G.kingType && MON[G.kingType] ? `⚠️ 下一波是👑殭屍王：${MON[G.kingType].e} ${MON[G.kingType].n}！` : "⚠️ 下一波是大魔王！") : `打退第 ${G.wave + 1} 波！`);
   const sub = G.team ? `大家輪流答題，每人 ${G.quizGoal / G.team.players.length} 題，存陽光和戰備籌碼 🎖️` : `準備時間：先答 ${G.quizGoal} 題收集 ☀，不限時，答完再種花！`;
   banner(`${head}<br><span style="font-size:18px">${sub}</span>`, 3200, next === G.waves.length - 1);
   openAsk();
@@ -1068,6 +1118,7 @@ function beginPrep(){
 }
 function openAsk(){
   if(!G || G.done) return;
+  const hd = $("hud"); if(hd && !G.asking && hd.offsetHeight) hd.style.minHeight = hd.offsetHeight + "px"; /* 打開答題時 HUD 高度不變，戰場不跳 */
   G.asking = true; G.sel = null;
   if(!G.q || !G.qs || G.qs.done) nextQ();
   else renderQ();
@@ -1075,11 +1126,12 @@ function openAsk(){
   hud();
 }
 function closeAsk(silent){
-  if(G){ G.asking = false; clearTimeout(G.autoT); }
+  if(G){ G.asking = false; clearTimeout(G.autoT); G.askFor = null; }
   const qp = $("qp"); if(qp) qp.classList.remove("on");
   try{ if(window.speechSynthesis) speechSynthesis.cancel(); }catch(e){}
   lastT = performance.now();
   if(!silent && G) hud();
+  const hd = $("hud"); if(hd) hd.style.minHeight = "";
 }
 
 function placePlant(r, c){
@@ -1093,29 +1145,34 @@ function placePlant(r, c){
   if((G.seedCd[k] || 0) > 0){ toast("種子還在充能中⋯"); return; }
   const hp = D.hp * (D.kind === "wall" ? homeBonus(k) : 1);
   G.plants[r][c] = {type:k, hp, max:hp, t:D.kind === "gen" ? 4 : 0.5 + Math.random() * 0.4, hit:0, bob:Math.random() * 6, arm:D.arm || 0, own:G.team ? G.team.planter : -1};
-  spendSun(D.cost); G.seedCd[k] = D.cd; G.sel = null; sfx.plant(); puff(colX(c) + 24, rowY(r) + 34, "#7ee27e"); hud(); renderSeedsLight();
+  spendSun(D.cost); G.seedCd[k] = D.cd; G.sel = null; sfx.plant(); puff(colX(c) + 24, rowY(r) + 34, "#7ee27e"); onPlanted(r, c); hud(); renderSeedsLight();
 }
 function monLv(){ return Math.max(1, G.lv + Math.max(0, G.wave)); }
 function newMon(type, row, x){
-  const M = MON[type], wl = 1 + 0.08 * Math.max(0, G.wave), hp = Math.round(M.hp * G.mult * wl), ar = M.armor ? Math.round(M.armor * G.mult * wl) : 0;
+  const M = MON[type], big = type === "boss" || !!M.king, wl = 1 + (G.g === "g2" ? 0.08 : 0.15) * Math.max(0, G.wave), hp = Math.round(M.hp * G.mult * wl), ar = M.armor ? Math.round(M.armor * G.mult * wl) : 0;
   return {id:(G.monId = (G.monId || 0) + 1), type, row, x, hp, max:hp, armor:ar, armorMax:ar, sp:M.sp * G.spd * (1 + Math.random() * 0.12), dps:M.dps, slow:0, freeze:0, hit:0, eat:false, fr:0, ft:Math.random() * .3,
-    summon:type === "boss" ? 8 : 0, boss:type === "boss", ranged:!!M.range, shootT:M.rate ? 1.2 : 0, lvl:monLv() + (type === "boss" ? 2 : type === "tank" ? 1 : 0)};
+    summon:type === "boss" ? 8 : 0, boss:big, ranged:!!M.range && type !== "k_storm", shootT:M.rate ? 1.2 : 0, lvl:monLv() + (big ? 2 : type === "tank" ? 1 : 0)};
 }
 function spawnMon(type, row){
   if(row == null){ do{ row = rnd(ROWS); }while(row === G.lastRow && Math.random() < .75); G.lastRow = row; }
-  if(type === "boss") row = 2;
+  if(type === "boss" && G.kingType && MON[G.kingType]) type = G.kingType;   // v3.1：最後一波是👑殭屍王
+  if(type === "boss" || MON[type].king) row = 2;
   G.mons.push(newMon(type, row, W + 4));
-  if(type === "boss"){ banner(`⚠️ 大魔王來了！<br>👾 ${esc(G.bossName)}`, 2600, true); sfx.boss(); }
+  if(MON[type].king){ const M = MON[type]; banner(`👑 殭屍王來了！<br>${M.e} ${esc(M.n)}・${esc(G.bossName)}<br><span style="font-size:17px">${esc(M.d)}</span>`, 3000, true); sfx.boss(); }
+  else if(type === "boss"){ banner(`⚠️ 大魔王來了！<br>👾 ${esc(G.bossName)}`, 2600, true); sfx.boss(); }
   else if(type === "ranged" && !G.seenRanged){ G.seenRanged = 1; toast("🎯 投墨怪會站遠遠丟墨水彈！種「🛡️ 反射盾葉」可以擋", 2600); }
+  else if(type === "jumper" && !G.seenJumper){ G.seenJumper = 1; toast("🤸 撐竿跳怪會跳過第一株植物！「🎍 高高竹籬」擋得住", 2600); }
 }
 function startWave(){
   if(!G || G.done) return;
   if(!G.net) closeAsk();
-  G.wave++; const list = G.waves[G.wave], gap = (G.easy ? 7.5 : 6.5) / (G.team ? 1 + 0.25 * (G.team.players.length - 1) : 1);
-  G.spawnQ = list.map((t, i) => ({type:t, at:(i === 0 ? 1.2 : 0) + i * gap}));
+  G.wave++; const list = G.waves[G.wave], young = G.g === "g2", gap = (young ? (G.easy ? 7.5 : 6.5) : (G.easy ? 6.3 : 5.6)) / (G.team ? 1 + 0.25 * (G.team.players.length - 1) : 1);
+  const surge = !young && G.waves.length >= 5 && G.wave === G.waves.length - 2, s0 = list.length - 5;   // v3.1：倒數第二波最後 5 隻一起衝（一大波）
+  G.spawnQ = list.map((t, i) => ({type:t, at:surge && i >= s0 ? (1.2 + s0 * gap + (i - s0) * 0.8) : (i === 0 ? 1.2 : 0) + i * gap, surge:surge && i === s0}));
+  G.dzWaveT = 0; G.dz = null; G.warns = [];
   G.spawnT = 0; G.phase = "wave"; G.sel = null; G.warned = {};
   if(G.wave < G.waves.length - 1) banner(`第 ${G.wave + 1} 波怪獸來了！（Lv.${monLv()}）<br><span style="font-size:18px">來不及就按「📝 答題」，戰場會暫停</span>`, 2200);
-  else banner(`⚠️ 大魔王這一波開始了！`, 2000, true);
+  else banner(G.kingType ? `⚠️ 👑 殭屍王這一波開始了！` : `⚠️ 大魔王這一波開始了！`, 2000, true);
   hud(); renderSeeds();
 }
 function banner(html, ms, boss, local){ if(!local && G && G.net && G.net.host) netEvent(html, ms, boss); const b = $("banner"); b.innerHTML = html; b.className = boss ? "boss" : ""; b.style.display = "block"; clearTimeout(banner.t); banner.t = setTimeout(() => b.style.display = "none", ms || 2000); }
@@ -1146,12 +1203,12 @@ function update(dt){
     G.fx = G.fx.filter(f => f.life > 0);
     return;
   }
-  G.t += dt;
+  G.t += dt; dzTick(dt); if(!G || G.done) return;
   for(const k in G.seedCd) if(G.seedCd[k] > 0) G.seedCd[k] = Math.max(0, G.seedCd[k] - dt);
   G.trickle += dt; if(G.trickle >= 12){ G.trickle = 0; if(G.team && G.team.split) G.team.players.forEach(p => p.sun += 5); else G.sun += 10; }
   if(G.phase === "wave"){
     G.spawnT += dt;
-    while(G.spawnQ.length && G.spawnQ[0].at <= G.spawnT) spawnMon(G.spawnQ.shift().type);
+    while(G.spawnQ.length && G.spawnQ[0].at <= G.spawnT){ const sq = G.spawnQ.shift(); if(sq.surge) banner("😱 一大波怪獸衝過來了！", 1800, true); spawnMon(sq.type); }
     if(!G.spawnQ.length && !G.mons.length){
       if(G.wave >= G.waves.length - 1){ winLevel(); return; }
       startQuiz(); return;
@@ -1159,6 +1216,7 @@ function update(dt){
   }
   for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++){
     const p = G.plants[r][c]; if(!p) continue; const D = DEF[p.type]; p.hit = Math.max(0, p.hit - dt); p.bob += dt;
+    if(plantTick31(p, D, r, c, dt)) continue;
     if(D.kind === "wall" || D.kind === "shield") continue;
     const px = colX(c) + 24;
     if(D.kind === "gen"){ p.t -= dt; if(p.t <= 0){ p.t = D.rate; const who = G.team ? G.team.players[Math.max(0, p.own)] : null; addSun(D.gain, who); G.fx.push({x:px, y:rowY(r) + 8, vx:0, vy:-26, life:1, col:"#ffd23f", s:4, txt:"+" + D.gain}); } continue; }
@@ -1167,8 +1225,8 @@ function update(dt){
     const ahead = G.mons.filter(m => m.row === r && m.x > px - 16 && targetable(m));
     p.t -= dt;
     if(ahead.length && p.t <= 0){
-      p.t = D.rate; const y = rowY(r) + 14, dmg = (D.dmg || 0) * homeBonus(p.type);
-      if(D.kind === "splash"){ const tg = ahead.reduce((a, b) => a.x < b.x ? a : b); G.shots.push({k:"lob", x:px, y, x0:px, y0:y, tx:tg.x + 10, ty:rowY(r) + 30, t:0, dur:0.9, dmg, row:r}); }
+      p.t = D.rate; const y = rowY(r) + 14, dmg = (D.dmg || 0) * homeBonus(p.type) * boostAt(r, c);
+      if(D.kind === "splash"){ const tg = ahead.reduce((a, b) => a.x < b.x ? a : b); G.shots.push({k:"lob", x:px, y, x0:px, y0:y, tx:tg.x + 10, ty:rowY(r) + 30, t:0, dur:0.9, dmg, row:r, slow:!!D.slow, pt:p.type}); }
       else if(D.kind === "laser"){ for(const m of ahead) hurt(m, dmg); G.beams.push({row:r, x:px + 8, life:.35}); }
       else if(D.kind === "pierce"){ G.shots.push({k:"cactus", x:px + 12, y, row:r, dmg, pierce:true, hitSet:new Set()}); }
       else { G.shots.push({k:p.type, x:px + 12, y, row:r, dmg, slow:D.kind === "slow"}); if(D.kind === "double") G.shots.push({k:p.type, x:px - 6, y:y + 5, row:r, dmg}); }
@@ -1176,9 +1234,9 @@ function update(dt){
   }
   for(const s of G.shots){
     if(s.k === "lob"){ s.t += dt; const f = Math.min(1, s.t / s.dur); s.x = s.x0 + (s.tx - s.x0) * f; s.y = s.y0 + (s.ty - s.y0) * f - Math.sin(f * Math.PI) * 40;
-      if(f >= 1){ s.dead = true; for(const m of G.mons) if(Math.abs(m.row - s.row) <= 1 && Math.abs(m.x + 10 - s.tx) <= 40) hurt(m, s.dmg); puff(s.tx, s.ty, "#ff8a65", 14); puff(s.tx, s.ty, "#2a2340", 8); }
+      if(f >= 1){ s.dead = true; for(const m of G.mons) if(Math.abs(m.row - s.row) <= 1 && Math.abs(m.x + 10 - s.tx) <= 40){ hurt(m, s.dmg); if(s.slow) m.slow = 3; } puff(s.tx, s.ty, s.pt === "melon" ? "#4cc35a" : s.pt === "wmelon" ? "#bfeaff" : "#ff8a65", 14); puff(s.tx, s.ty, "#2a2340", 8); }
       continue; }
-    s.x += 170 * dt;
+    s.x += 170 * dt; torchShot(s);
     if(s.x > W + 10){ s.dead = true; continue; }
     if(s.pierce){ for(const m of G.mons) if(!m.dead && m.row === s.row && targetable(m) && !s.hitSet.has(m) && s.x >= m.x + 2 && s.x <= m.x + (m.boss ? 44 : 28)){ s.hitSet.add(m); hurt(m, s.dmg, false, true); puff(s.x, s.y, "#c8ffc8", 4); } continue; }
     const m = G.mons.find(m => targetable(m) && m.row === s.row && s.x >= m.x + 2 && s.x <= m.x + (m.boss ? 44 : 28));
@@ -1190,7 +1248,7 @@ function update(dt){
     e.x += e.vx * dt; e.y += e.vy * dt; e.life -= dt;
     if(e.life <= 0 || e.x < OX - 10){ e.dead = true; continue; }
     const c = Math.floor((e.x - OX) / CELL), r = e.row, p = c >= 0 && c < COLS ? G.plants[r][c] : null;
-    if(p && Math.abs(e.x - (colX(c) + 24)) < 10){ e.dead = true; const D = DEF[p.type]; p.hp -= e.dmg * (D.kind === "shield" ? 0.25 : 1); p.hit = .15; puff(e.x, e.y, "#2a2340", 8); if(p.hp <= 0){ G.plants[r][c] = null; puff(colX(c) + 24, rowY(r) + 24, "#7a5a3a", 10); } }
+    if(p && Math.abs(e.x - (colX(c) + 24)) < 10 && DEF[p.type].kind !== "spike"){ e.dead = true; const D = DEF[p.type]; puff(e.x, e.y, "#2a2340", 8); plantHurt(r, c, e.dmg * (D.kind === "shield" ? 0.25 : 1)); }
   }
   G.eshots = G.eshots.filter(e => !e.dead);
   for(const b of G.beams) b.life -= dt; G.beams = G.beams.filter(b => b.life > 0);
@@ -1200,7 +1258,9 @@ function update(dt){
     if(m.freeze > 0) continue;
     m.ft += dt * (m.slow ? .5 : 1);
     if(m.ft > .35){ m.ft = 0; m.fr ^= 1; }
-    const c = Math.floor((m.x + 6 - OX) / CELL), p = c >= 0 && c < COLS ? G.plants[m.row][c] : null;
+    const c = Math.floor((m.x + 6 - OX) / CELL); let p = c >= 0 && c < COLS ? G.plants[m.row][c] : null;
+    if(p && DEF[p.type].kind === "spike") p = null;   // 地刺草：踩過去，咬不到
+    if(monSpecial(m, dt, p, c)){ if(m.x < OX - 14) m.x = OX - 13; continue; }
     // 遠程：前面射程內有植物就停下來丟墨水
     let shooting = false;
     if(m.ranged && m.x < TARGET_X){
@@ -1218,12 +1278,13 @@ function update(dt){
           G.eshots.push({x:m.x - 2, y:sy, vx:-(m.x - 2 - tx) / tt, vy:(ty - sy) / tt, row, dmg:M.shot * (1 + 0.05 * (m.lvl - 1)), life:tt + 0.2});
           puff(m.x, sy, "#6a5aa0", 4); } }
     }
-    if(p){ m.eat = true; p.hp -= m.dps * dt * (m.slow ? .5 : 1); p.hit = .1; if(p.hp <= 0){ G.plants[m.row][c] = null; puff(colX(c) + 24, rowY(m.row) + 24, "#7a5a3a", 10); } }
+    if(p){ m.eat = true; plantHurt(m.row, c, m.dps * dt * (m.slow ? .5 : 1)); }
     else if(shooting){ m.eat = false; }
-    else { m.eat = false; m.x -= m.sp * CELL * dt * (m.slow ? 0.5 : 1); }
-    if(m.boss){ m.summon -= dt; if(m.summon <= 0){ m.summon = 10; const rr = Math.max(0, Math.min(ROWS - 1, m.row + (Math.random() < .5 ? -1 : 1))); G.mons.push(newMon(Math.random() < .3 ? "armor" : "basic", rr, m.x + 12)); puff(m.x + 12, rowY(rr) + 24, "#a97ff0", 12); } }
+    else { m.eat = false; m.x -= m.sp * CELL * dt * (m.slow ? 0.5 : 1) * (m.charge > 0 ? 3.2 : 1); }
+    if(m.type === "boss"){ m.summon -= dt; if(m.summon <= 0){ m.summon = 10; const rr = Math.max(0, Math.min(ROWS - 1, m.row + (Math.random() < .5 ? -1 : 1))); G.mons.push(newMon(Math.random() < .3 ? "armor" : "basic", rr, m.x + 12)); puff(m.x + 12, rowY(rr) + 24, "#a97ff0", 12); } }
     if(m.x < DANGER_X && !G.warned[m.row]){ G.warned[m.row] = 1; toast(`⚠️ 第 ${m.row + 1} 路有怪獸靠近家了！快守住！`, 2200); }
     if(m.x < OX - 14){
+      if(m.boss && G.guards[m.row]) hurt(m, 99999, true);   // 書本守衛擋下殭屍王＝打倒
       m.dead = true;
       if(G.guards[m.row]){ G.guards[m.row] = 0; G.guardFx.push({row:m.row, x:OX - 24}); toast("📘 書本守衛出動，清掉這一排！"); }
       else { G.hearts--; G.lostHeart = true; sfx.bad(); toast("💔 怪獸闖進花園了！"); hud(); if(G.hearts <= 0){ loseLevel(); return; } }
@@ -1239,7 +1300,8 @@ function hurt(m, d, trueDmg, anti){
   if(m.dead) return;
   if(m.armor > 0 && !trueDmg){ const a = anti ? d * 2 : d; m.armor -= a; m.hit = .08; if(m.armor <= 0){ m.armor = 0; puff(m.x + 10, rowY(m.row) + 4, "#ffd23f", 10); } return; }
   m.hp -= d; m.hit = .08;
-  if(m.hp <= 0){ m.dead = true; G.stats.kills++; const c = MON[m.type].coin; credit(c); G.coinsGot += c; puff(m.x + 10, rowY(m.row) + 20, m.boss ? "#ffd23f" : "#9ccc65", m.boss ? 34 : 10); if(m.boss) banner(`🎉 打倒 ${esc(G.bossName)}！`, 1800); }
+  if(m.hp <= 0){ m.dead = true; G.stats.kills++; const c = MON[m.type].coin; credit(c); G.coinsGot += c; puff(m.x + 10, rowY(m.row) + 20, m.boss ? "#ffd23f" : "#9ccc65", m.boss ? 34 : 10);
+    if(MON[m.type].king){ G.kingKilled = m.type; G.warns = (G.warns || []).filter(w => w.kind !== "stomp" && w.kind !== "bomb" && w.kind !== "row"); banner(`🎉 打倒 👑 ${esc(MON[m.type].n)}！`, 2000); } else if(m.boss) banner(`🎉 打倒 ${esc(G.bossName)}！`, 1800); }
 }
 /* 金幣記到誰：單人＝目前孩子；團體戰＝有存檔的孩子平分 */
 function credit(n, who){
@@ -1259,7 +1321,7 @@ function draw(){
   ctx.fillStyle = "#6d4c41"; ctx.fillRect(0, OY + ROWS * CELL, W, H - OY - ROWS * CELL);
   if(!G) return;
   if(G.team && G.team.split){ for(const p of G.team.players) for(const r of p.rows){ ctx.fillStyle = p.color; ctx.globalAlpha = G.team.players[G.team.planter] === p && (G.phase === "prep" || G.sel) ? .28 : .12; ctx.fillRect(OX, rowY(r), COLS * CELL, CELL); ctx.globalAlpha = 1; ctx.fillRect(OX - 6, rowY(r) + 2, 4, CELL - 4); } }
-  const visT = G.t + (G.asking || G.paused ? performance.now() / 1000 : 0);
+  const calm = !!(G.asking || G.paused); if(!calm) G.calmT = null; else if(G.calmT == null) G.calmT = G.t; const visT = calm ? G.calmT : G.t; /* 答題／暫停時畫面完全靜止，不閃 */
   const dangerRows = new Set(G.mons.filter(m => !m.dead && m.x < DANGER_X).map(m => m.row));
   for(const r of dangerRows){
     const pulse = 0.22 + 0.28 * Math.abs(Math.sin(visT * 8));
@@ -1268,15 +1330,19 @@ function draw(){
     ctx.fillStyle = "#fffaf0"; ctx.fillRect(2, rowY(r) + 4, 20, 16);
     ctx.fillStyle = "#c0102a"; ctx.font = "bold 14px monospace"; ctx.fillText("!", 8, rowY(r) + 17);
   }
+  draw31Under(visT);
   if(G.sel && hoverCell){ ctx.fillStyle = "rgba(255,255,255,.3)"; ctx.fillRect(colX(hoverCell.c), rowY(hoverCell.r), CELL, CELL); }
   if(G.sel && G.sel !== "shovel"){ ctx.strokeStyle = "rgba(255,255,255,.35)"; ctx.lineWidth = 1; for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++) if(!G.plants[r][c] && (!G.team || !G.team.split || planter().rows.includes(r))) ctx.strokeRect(colX(c) + 2.5, rowY(r) + 2.5, CELL - 5, CELL - 5); }
   ctx.drawImage(SPR.house, 2, OY + 2 * CELL - 6, 44, 52);
   for(let r = 0; r < ROWS; r++) if(G.guards[r]) ctx.drawImage(SPR.book, r === 2 ? 26 : 12, rowY(r) + (r === 2 ? 34 : 16), r === 2 ? 18 : 24, r === 2 ? 15 : 20);
   for(const gf of G.guardFx) ctx.drawImage(SPR.book, gf.x, rowY(gf.row) + 12, 32, 27);
   for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++){ const p = G.plants[r][c]; if(!p) continue;
-    const D = DEF[p.type]; let s = p.hit > 0 ? SPR[p.type + "_hit"] : SPR[p.type]; if(D.kind === "mine" && p.arm <= 0 && Math.floor(visT * 4) % 2) s = SPR.mineArm;
-    const bob = D.kind === "wall" || D.kind === "mine" || D.kind === "shield" ? 0 : Math.round(Math.sin(p.bob * 3));
-    ctx.drawImage(s, colX(c) + 24 - s.width, rowY(r) + CELL - s.height * 2 - 2 + bob, s.width * 2, s.height * 2);
+    const D = DEF[p.type]; let s = p.hit > 0 && !calm ? SPR[p.type + "_hit"] : SPR[p.type]; if(D.kind === "mine" && p.arm <= 0 && Math.floor(visT * 4) % 2) s = SPR.mineArm;
+    const bob = D.kind === "wall" || D.kind === "mine" || D.kind === "shield" || D.kind === "spike" ? 0 : Math.round(Math.sin(p.bob * 3)), [fx, fy] = plantFly(p, r, c);
+    if(p.stun > 0) ctx.globalAlpha = .6 + .3 * Math.sin(visT * 12);
+    if(D.kind === "chomp" && p.chew > 0) s = SPR[p.type + "_hit"] && Math.floor(visT * 3) % 2 ? SPR[p.type + "_hit"] : s;
+    ctx.drawImage(s, Math.round(colX(c) + 24 - s.width + fx), Math.round(rowY(r) + CELL - s.height * 2 - 2 + bob + fy), s.width * 2, s.height * 2); ctx.globalAlpha = 1;
+    if(p.stun > 0){ ctx.font = "bold 10px monospace"; ctx.fillStyle = "#ffd23f"; ctx.fillText("✦", colX(c) + 20, rowY(r) + 10); }
     if(D.kind === "mine" && p.arm > 0){ ctx.fillStyle = "#222"; ctx.fillRect(colX(c) + 10, rowY(r) + 4, 28, 4); ctx.fillStyle = "#ffd23f"; ctx.fillRect(colX(c) + 11, rowY(r) + 5, 26 * (1 - p.arm / D.arm), 2); }
     else if(p.hp < p.max){ ctx.fillStyle = "#222"; ctx.fillRect(colX(c) + 8, rowY(r) + 1, 32, 4); ctx.fillStyle = "#4cd964"; ctx.fillRect(colX(c) + 9, rowY(r) + 2, 30 * Math.max(0, p.hp / p.max), 2); }
     if(G.team && p.own >= 0){ ctx.fillStyle = G.team.players[p.own].color; ctx.fillRect(colX(c) + 2, rowY(r) + CELL - 7, 5, 5); }
@@ -1284,8 +1350,8 @@ function draw(){
   for(const b of G.beams){ ctx.fillStyle = `rgba(255,243,160,${Math.min(1, b.life * 3)})`; ctx.fillRect(b.x, rowY(b.row) + 14, W - b.x, 6); ctx.fillStyle = `rgba(255,255,255,${Math.min(1, b.life * 3)})`; ctx.fillRect(b.x, rowY(b.row) + 16, W - b.x, 2); }
   const ms = G.mons.slice().sort((a, b) => a.row - b.row);
   for(const m of ms){
-    const kind = m.type === "armor" && m.armor <= 0 ? "armor_naked" : m.type;
-    const base = m.hit > 0 ? kind + "_hit" : (m.slow || m.freeze) ? kind + "_ice" : kind, s = SPR[base][m.eat ? (Math.floor(G.t * 6) % 2) : m.fr];
+    const kind = (m.type === "armor" || m.type === "k_iron") && m.armor <= 0 ? m.type + "_naked" : m.type;
+    const base = m.hit > 0 && !calm ? kind + "_hit" : (m.slow || m.freeze) ? kind + "_ice" : kind, s = SPR[base][m.eat ? (Math.floor(visT * 6) % 2) : m.fr];
     const sc = 2, w = s.width * sc, h = s.height * sc, y = rowY(m.row) + CELL - h + (m.boss ? 8 : 2), x = Math.round(m.x - (m.boss ? 6 : 0));
     ctx.drawImage(s, x, Math.round(y), w, h);
     if(m.freeze > 0){ ctx.fillStyle = "rgba(190,235,255,.45)"; ctx.fillRect(x, Math.round(y), w, h); }
@@ -1295,11 +1361,12 @@ function draw(){
     ctx.font = "bold 9px monospace"; ctx.fillStyle = "#1b1b2a"; ctx.fillRect(bx, y - 16, 26, 10); ctx.fillStyle = m.lvl >= 5 ? "#ff9f7a" : "#fffaf0"; ctx.fillText(`Lv${m.lvl}`, bx + 2, y - 8);
   }
   for(const s of G.shots){
-    if(s.k === "lob"){ ctx.fillStyle = "#1b1b2a"; ctx.fillRect(s.x - 5, s.y - 5, 10, 10); ctx.fillStyle = "#ff8a65"; ctx.fillRect(s.x - 4, s.y - 4, 8, 8); ctx.fillStyle = "#2a2340"; ctx.fillRect(s.x - 1, s.y - 4, 4, 4); continue; }
+    if(s.k === "lob"){ const big = s.pt === "melon" || s.pt === "wmelon", z = big ? 7 : 5; ctx.fillStyle = "#1b1b2a"; ctx.fillRect(s.x - z, s.y - z, z * 2, z * 2); ctx.fillStyle = s.pt === "melon" ? "#2fae4a" : s.pt === "wmelon" ? "#5ec8ff" : "#ff8a65"; ctx.fillRect(s.x - z + 1, s.y - z + 1, z * 2 - 2, z * 2 - 2); ctx.fillStyle = big ? "#145a22" : "#2a2340"; ctx.fillRect(s.x - 1, s.y - z + 1, big ? 2 : 4, big ? z * 2 - 2 : 4); continue; }
     if(s.k === "cactus"){ ctx.fillStyle = "#1b1b2a"; ctx.fillRect(s.x - 6, s.y - 2, 13, 5); ctx.fillStyle = "#c8ffc8"; ctx.fillRect(s.x - 5, s.y - 1, 11, 3); continue; }
-    const col = s.k === "sci" ? "#bfeaff" : s.k === "eng" ? "#8be38b" : "#ffd23f";
+    const col = s.fire ? "#ff6a00" : s.col || (s.k === "sci" ? "#bfeaff" : s.k === "eng" || s.k === "gat" ? "#8be38b" : s.k === "phoenix" ? "#ff8a00" : s.k === "star" ? "#fff3a0" : "#ffd23f");
     ctx.fillStyle = "#1b1b2a"; ctx.fillRect(s.x - 4, s.y - 4, 9, 9); ctx.fillStyle = col; ctx.fillRect(s.x - 3, s.y - 3, 7, 7); ctx.fillStyle = "#fff"; ctx.fillRect(s.x - 2, s.y - 2, 2, 2);
   }
+  draw31Over(visT);
   for(const e of G.eshots) ctx.drawImage(SPR.ink, Math.round(e.x - 7), Math.round(e.y - 7), 14, 14);
   for(const f of G.fx){ if(f.txt){ ctx.font = "bold 11px monospace"; ctx.fillStyle = "#1b1b2a"; ctx.fillText(f.txt, f.x - 9, f.y + 1); ctx.fillStyle = f.col; ctx.fillText(f.txt, f.x - 10, f.y); continue; } ctx.fillStyle = f.col; ctx.fillRect(Math.round(f.x), Math.round(f.y), f.s, f.s); }
   ctx.font = "bold 12px monospace"; ctx.fillStyle = "#1b1b2a";
@@ -1317,24 +1384,27 @@ function loop(now){
   draw(); const tk = Math.floor(now / 200); if(tk !== loop.tick){ loop.tick = tk; hud(); renderSeedsLight(); }
   raf = requestAnimationFrame(loop);
 }
+const setH = (el, h) => { if(el && el.__h !== h){ el.__h = h; el.innerHTML = h; } };
+const setT = (el, t) => { if(el && el.textContent !== t) el.textContent = t; };
 function hud(){
   if(!G) return;
-  $("sunv").textContent = `☀ ${sunOf()}`;
-  $("heartv").textContent = "❤".repeat(Math.max(0, G.hearts)) + "🤍".repeat(Math.max(0, G.maxHearts - G.hearts));
+  setT($("sunv"), `☀ ${sunOf()}`);
+  setT($("heartv"), "❤".repeat(Math.max(0, G.hearts)) + "🤍".repeat(Math.max(0, G.maxHearts - G.hearts)));
   const n = G.waves.length, cur = G.wave >= 0 ? G.waves[G.wave].length : 1;
   const prog = G.phase === "won" ? 1 : Math.max(0, (G.wave + (G.phase === "wave" ? 1 - G.spawnQ.length / cur : G.phase === "between" || G.phase === "quiz" && G.wave >= 0 || G.phase === "prep" && G.wave >= 0 ? 1 : 0)) / n);
-  $("wavebar").querySelector("i").style.width = (prog * 100) + "%";
-  const wtxt = G.phase === "quiz" ? `準備答題 ${Math.max(0, G.quizGoal - G.quizLeft + (G.qs && !G.qs.done ? 1 : 0))}/${G.quizGoal}` : G.phase === "prep" ? "種植物・準備防守" : `第 ${G.wave + 1}/${n} 波${G.wave === n - 1 ? "・👾魔王" : ""}`;
-  $("wavebar").querySelector("span").textContent = wtxt;
+  { const wi = $("wavebar").querySelector("i"), pw = (prog * 100) + "%"; if(wi.style.width !== pw) wi.style.width = pw; }
+  const wtxt = G.phase === "quiz" ? `準備答題 ${Math.max(0, G.quizGoal - G.quizLeft + (G.qs && !G.qs.done ? 1 : 0))}/${G.quizGoal}` : G.phase === "prep" ? "種植物・準備防守" : `第 ${G.wave + 1}/${n} 波${G.wave === n - 1 ? (G.kingType ? "・👑殭屍王" : "・👾魔王") : ""}`;
+  setT($("wavebar").querySelector("span"), wtxt);
   const netAsk = G.net && !G.net.prep && (G.phase === "wave" || G.phase === "prep");
   $("pausetag").classList.toggle("on", !!G.asking && !G.net);
   $("askbtn").classList.toggle("on", (G.phase === "wave" || netAsk) && !G.asking);
   $("askbtn").classList.toggle("pulse", (G.phase === "wave" || netAsk) && !G.asking);
   $("gowave").classList.toggle("on", G.phase === "prep" && !G.asking && (!G.net || (G.net.host && !G.net.prep)));
   const tb = $("teambar");
-  if(tb && G.net){ netBar(tb); } else if(tb){ if(G.team){ tb.style.display = "flex"; tb.innerHTML = `<span class="tchip chips">🎖️ ${G.chips}</span>` + G.team.players.map((p, i) => `<button class="tchip ${G.team.split && G.team.planter === i ? "on" : ""}" style="border-color:${p.color}" data-planter="${i}"><i style="background:${p.color}"></i>${esc(p.name)}${G.team.split ? ` ☀${p.sun}` : ""}</button>`).join("") + (G.phase === "wave" ? SKILLS.map(s => `<button class="tchip sk" data-skill="${s.k}" ${G.chips < s.cost ? "disabled" : ""} title="${s.d}">${s.n} 🎖️${s.cost}</button>`).join("") : ""); }
+  if(tb && G.net){ netBar(tb); } else if(tb){ if(G.team){ tb.style.display = "flex"; setH(tb, `<span class="tchip chips">🎖️ ${G.chips}</span>` + G.team.players.map((p, i) => `<button class="tchip ${G.team.split && G.team.planter === i ? "on" : ""}" style="border-color:${p.color}" data-planter="${i}"><i style="background:${p.color}"></i>${esc(p.name)}${G.team.split ? ` ☀${p.sun}` : ""}</button>`).join("") + (G.phase === "wave" ? SKILLS.map(s => `<button class="tchip sk" data-skill="${s.k}" ${G.chips < s.cost ? "disabled" : ""} title="${s.d}">${s.n} 🎖️${s.cost}</button>`).join("") : "")); }
     else tb.style.display = "none"; }
-  const sd = $("sideStat"); if(sd){ const st = G.stats; sd.innerHTML = `<span>🔥 連對 ${st.streak}</span><span>🎯 第一次就對 ${st.ans ? Math.round(st.first / st.ans * 100) : 0}%</span><span>👾 打倒 ${st.kills}</span><span>🪙 +${G.coinsGot}</span>`; }
+  hud31();
+  const sd = $("sideStat"); if(sd){ const st = G.stats; setH(sd, `<span>🔥 連對 ${st.streak}</span><span>🎯 第一次就對 ${st.ans ? Math.round(st.first / st.ans * 100) : 0}%</span><span>👾 打倒 ${st.kills}</span><span>🪙 +${G.coinsGot}</span>`); }
 }
 function renderSide(){
   const mons = MON_ORDER.map(k => [k, k === "boss" ? G.bossName : MON[k].n, MON[k].d]);
@@ -1343,7 +1413,7 @@ function renderSide(){
 }
 function renderSeeds(){
   if(!G) return;
-  $("seeds").innerHTML = DEF_ORDER.filter(defOwned).map(k => { const D = DEF[k];
+  $("seeds").innerHTML = seedList().map(k => { const D = DEF[k];
     return `<button class="seed" data-seed="${k}"><img src="${sprURL(k, 56)}" alt=""><b>${D.n}</b><span class="cost">☀${D.cost}</span>${D.sub && G.card && D.sub === G.card.subject ? `<span class="home">主場</span>` : ""}<span class="cdv"></span></button>`; }).join("")
     + `<button class="seed tool" data-seed="shovel"><div class="ic">🧹</div><b>移除</b><span class="cost">退一半</span></button>`;
   renderSeedsLight(); hud();
@@ -1507,11 +1577,11 @@ function netStartBattle(d){
   const host = ps[0].uid === fb.uid, gm = gmaxOf(ps), n = ps.length, lv = d.moves.lv || 1, easy = !!SV.set.easy;
   const sumE = ps.reduce((a, p) => a + ((d.pets[p.uid] || {}).earn || 0), 0), sumC = ps.reduce((a, p) => a + ((d.pets[p.uid] || {}).chips || 0), 0);
   closeAsk(true);
-  G = Object.assign(baseG("net", gm, netCard(d), lv, easy), {mult:(1 + 0.12 * (lv - 1)) * (easy ? 0.85 : 1) * (gm === "g6" ? 1.05 : gm === "g2" ? 0.85 : 1),
+  G = Object.assign(baseG("net", gm, netCard(d), lv, easy), {mult:(1 + 0.15 * (lv - 1)) * (easy ? 0.85 : 1) * (gm === "g6" ? 1.15 : gm === "g2" ? 0.85 : 1.05),
     sun:150 + sumE, hearts:3 + (n > 2 ? 1 : 0), maxHearts:3 + (n > 2 ? 1 : 0), waves:waveDefs(gm, lv, n), pool:[], bossName:"連線大魔王",
     team:{players:ps, turn:0, split:false, owned:[], planter:me},
     net:{host, guest:!host, prep:false, me, side, code:NET.code, applied:{}, chipApplied:{}, cmdSeen:{}, cd:{}, t:0, prepT:30, hostUid:ps[0].uid}});
-  G.chips = sumC;
+  G.chips = sumC; G.kingType = kingFor("net-" + NET.code, lv, gm); if(host) planDisasters();   // v3.1：殭屍王、災害由主持的平板算
   for(const p of ps){ const e = d.pets[p.uid] || {}; G.net.applied[p.uid] = e.earn || 0; G.net.chipApplied[p.uid] = e.chips || 0; G.net.cmdSeen[p.uid] = Math.max(0, ...((e.q || []).map(c => c.s || 0)), 0); }
   go("game"); fitCanvas(); renderSeeds(); renderSide();
   if(host) netBetween(true); else { G.phase = "prep"; banner("⚔️ 開打！<br><span style='font-size:18px'>種在自己的路上，戰鬥中也可以答題補陽光</span>", 2600, false, true); }
@@ -1525,7 +1595,7 @@ function netStartBattle(d){
 }
 function netBetween(first){
   if(!G || G.done) return;
-  G.phase = "prep"; G.sel = null; G.net.prepT = first ? 30 : 20;
+  G.phase = "prep"; G.sel = null; G.net.prepT = first ? 30 : 20; G.dz = null; G.warns = [];
   banner(first ? `🌱 大家一起種植物！<br><span style="font-size:18px">30 秒後怪獸出發（主持的人可以按「開始防守」提早）</span>` : `打退第 ${G.wave + 1} 波！<br><span style="font-size:18px">20 秒後下一波，快補種、答題存陽光</span>`, 2600);
   hud(); renderSeeds(); netWrite(true);
 }
@@ -1554,13 +1624,15 @@ function netHostRoom(d){
 function netApply(p, c){
   const i = G.team.players.indexOf(p), r = c.r, col = c.c;
   if(c.a === "k"){ if(G.phase === "wave") useSkill(c.k, true); return; }
+  if(c.a === "sh"){ if(G.dz && G.dz.st === "warn" && dzShield()) G.fx.push({x:W / 2, y:40, vx:0, vy:-20, life:1.4, col:"#7ee2a8", s:4, txt:`🛡️ ${p.name}`}); netWrite(true); return; }
+  if(c.a === "rs"){ if(G.rescue){ const a = G.rescue.amt; G.rescue = null; G.sun += a; banner(`🆘 ${esc(p.name)} 答對了！緊急陽光 +${a} ☀`, 1600); } netWrite(true); return; }
   if(!(r >= 0 && r < ROWS && col >= 0 && col < COLS) || !p.rows.includes(r)) return;
   if(c.a === "x"){ const pl = G.plants[r][col]; if(pl){ G.plants[r][col] = null; G.sun += Math.floor(DEF[pl.type].cost / 2); puff(colX(col) + 24, rowY(r) + 24, "#c8a070"); } return; }
   const D = DEF[c.k]; if(!D || G.plants[r][col] || G.sun < D.cost) return;
   const cd = G.net.cd[p.uid] = G.net.cd[p.uid] || {}; if((cd[c.k] || 0) > G.net.t + 0.3) return;
   const hp = D.hp * (D.kind === "wall" ? homeBonus(c.k) : 1);
   G.plants[r][col] = {type:c.k, hp, max:hp, t:D.kind === "gen" ? 4 : 0.5 + Math.random() * 0.4, hit:0, bob:Math.random() * 6, arm:D.arm || 0, own:i};
-  G.sun -= D.cost; cd[c.k] = G.net.t + D.cd; puff(colX(col) + 24, rowY(r) + 34, "#7ee27e"); netWrite(true);
+  G.sun -= D.cost; cd[c.k] = G.net.t + D.cd; puff(colX(col) + 24, rowY(r) + 34, "#7ee27e"); onPlanted(r, col); netWrite(true);
 }
 function netEvent(html, ms, boss){ NET.evSeq++; NET.evs.push({i:NET.evSeq, t:String(html).slice(0, 300), ms:ms || 2000, b:boss ? 1 : 0}); NET.evs = NET.evs.slice(-6); NET.lastW = 0; }
 function netWrite(force){
@@ -1572,12 +1644,13 @@ function netWrite(force){
     (m.freeze > 0 ? "f" : "") + (m.slow > 0 ? "s" : "") + (m.eat ? "e" : "") + (m.hit > 0 ? "h" : "") || "-", m.lvl].join("."));
   const es = G.eshots.slice(0, 30).map(e => [e.x, e.y, e.vx, e.vy].map(v => Math.round(v)).join("."));
   const cur = G.wave >= 0 && G.waves[G.wave] ? G.waves[G.wave].length : 1;
+  const x31 = netEnc31();
   NET.fb.F.setDoc(nref(`F-${NET.code}-${G.net.side}`), {state:G.phase, round:G.wave, hp:{h:G.hearts, mh:G.maxHearts, sun:Math.round(G.sun), ch:G.chips, k:G.stats.kills, nw:G.waves.length, wl:cur, ws:G.spawnQ.length,
-    lv:G.lv, pt:Math.max(0, Math.ceil(G.net.prepT || 0)), gd:G.guards.join(""), ts:now}, pets:{p:pl}, moves:{m:ms.join("|"), e:es.join("|"), ev:NET.evs.slice(-6)}, log:[], winner:G.netWin || "",
+    lv:G.lv, pt:Math.max(0, Math.ceil(G.net.prepT || 0)), gd:G.guards.join(""), ts:now, rs:G.rescue ? G.rescue.amt : 0, kk:G.kingKilled || ""}, pets:{p:pl}, moves:{m:ms.join("|"), e:es.join("|"), ev:NET.evs.slice(-6), w:x31.w, z:x31.z, tw:x31.tw}, log:[], winner:G.netWin || "",
     updatedAt:now, createdBy:NET.fb.uid, v:9}).catch(netErr);
 }
 /* 其他平板：照收到的戰場畫面顯示（怪獸位置會平滑補間） */
-function monView(type){ const M = MON[type] || MON.basic; return {id:0, type, row:0, x:0, hp:100, max:100, armor:0, armorMax:M.armor ? 1 : 0, sp:M.sp, dps:M.dps, slow:0, freeze:0, hit:0, eat:false, fr:0, ft:Math.random() * .3, boss:type === "boss", ranged:!!M.range, lvl:1, v:0}; }
+function monView(type){ const M = MON[type] || MON.basic; return {id:0, type, row:0, x:0, hp:100, max:100, armor:0, armorMax:M.armor ? 1 : 0, sp:M.sp, dps:M.dps, slow:0, freeze:0, hit:0, eat:false, fr:0, ft:Math.random() * .3, boss:type === "boss" || !!M.king, ranged:!!M.range, lvl:1, v:0}; }
 function netApplyField(d){
   if(!G || !G.net || !G.net.guest) return;
   const h = d.hp || {}, now = performance.now(); G.net.lastRx = Date.now(); G.net.staleWarned = false;
@@ -1604,17 +1677,19 @@ function netApplyField(d){
   for(const m of G.mons) if(!seen.has(m.nid)){ m.dead = true; puff(m.x + 10, rowY(m.row) + 20, m.boss ? "#ffd23f" : "#9ccc65", m.boss ? 34 : 10); }
   G.mons = G.mons.filter(m => !m.dead);
   G.eshots = String((d.moves && d.moves.e) || "").split("|").filter(Boolean).map(t => { const [x, y, vx, vy] = t.split(".").map(Number); return {x, y, vx, vy, life:1.2, row:0, dmg:0}; });
+  netDec31(d.moves || {}, h); if(h.kk) G.kingKilled = h.kk;
   for(const e of ((d.moves && d.moves.ev) || [])) if(e.i > NET.seenEv){ NET.seenEv = e.i; banner(e.t, e.ms, !!e.b, true); }
   if(prevPhase !== G.phase){ G.sel = null; renderSeeds(); }
   hud(); renderSeedsLight();
 }
 function guestUpdate(dt){
-  if(!G) return; G.t += dt;
+  if(!G) return; G.t += dt; guestFx31(dt);
   for(const k in G.seedCd) if(G.seedCd[k] > 0) G.seedCd[k] = Math.max(0, G.seedCd[k] - dt);
   for(const f of G.fx){ f.life -= dt; f.x += f.vx * dt; f.y += f.vy * dt; f.vy += 140 * dt; } G.fx = G.fx.filter(f => f.life > 0);
   for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++){ const p = G.plants[r][c]; if(!p) continue; p.hit = Math.max(0, p.hit - dt); p.bob += dt; if(p.ghost > 0) p.ghost = Math.max(0, p.ghost - dt);
     const D = DEF[p.type]; if(D.kind === "mine" && p.arm > 0) p.arm = Math.max(0.01, p.arm - dt);
-    if(G.phase !== "wave" || !["shoot", "slow", "double", "pierce", "splash", "laser"].includes(D.kind)) continue;
+    if(p.fly){ p.fly.t += dt * 1.4; if(p.fly.t >= 1) p.fly = null; }
+    if(G.phase !== "wave" || !["shoot", "slow", "double", "pierce", "splash", "laser", "quad", "star", "rainbow", "breath", "chain"].includes(D.kind)) continue;
     const px = colX(c) + 24, ahead = G.mons.filter(m => m.row === r && m.x > px - 16 && m.x < TARGET_X); p.t -= dt;
     if(ahead.length && p.t <= 0){ p.t = D.rate; const y = rowY(r) + 14;
       if(D.kind === "laser") G.beams.push({row:r, x:px + 8, life:.35});
@@ -1674,13 +1749,13 @@ function netResult(d){
   if(w === "x"){ modal(`<h2>🚪 房間關閉了</h2><p style="font-size:18px">房主離開了這個房間。</p><div class="trow"><button class="pbtn sun" data-netleave="1">回連線大廳</button></div>`); return; }
   const win = vs ? (me && w === me.s) : w === "A", draw = w === "draw";
   if(!NET.credited){ NET.credited = true; const k = kid(), before = DEF_ORDER.filter(x => defOwnedBy(k, x));
-    k.coins += win ? 40 : draw ? 25 : 12; if(win){ k.wins.team = (k.wins.team || 0) + 1; SV.team.wins = (SV.team.wins || 0) + 1; } SV.team.plays = (SV.team.plays || 0) + 1;
-    NET.unl = DEF_ORDER.filter(x => !before.includes(x) && defOwnedBy(k, x)).map(x => `${DEF[x].el} ${DEF[x].n}`); save(); }
+    k.coins += win ? 40 : draw ? 25 : 12; if(win){ k.wins.team = (k.wins.team || 0) + 1; SV.team.wins = (SV.team.wins || 0) + 1; if(G && G.kingType && (!vs || G.kingKilled)) kingReward(k, G.kingType); } SV.team.plays = (SV.team.plays || 0) + 1;
+    NET.unlK = DEX_ORDER.filter(x => !before.includes(x) && defOwnedBy(k, x)); NET.unl = NET.unlK.map(x => `${DEF[x].el} ${DEF[x].n}`); save(); }
   const title = vs ? (draw ? "🤝 平手！兩隊都很強！" : `🏆 ${w === "A" ? "🔴 A 隊" : "🔵 B 隊"} 贏了！`) : (w === "A" ? "🎉 大家一起守住花園了！" : "😵 怪獸闖進來了⋯");
   const rows = netPlayers(d).map(([u, p]) => `<tr><td>${vs ? (p.s === "A" ? "🔴" : "🔵") : ""} ${esc(p.fe || "")} ${esc(p.n)}（${GLBL[p.g] || ""}）</td><td>${esc(p.fn || "")}</td><td>${p.ans || 0}</td><td>${p.first || 0}</td><td>${p.chips || 0}</td><td>☀${p.earn || 0}</td></tr>`).join("");
   const lat = NET.lat.length ? Math.round(NET.lat.reduce((a, b) => a + b, 0) / NET.lat.length) : 0;
   modal(`<h2>${title}</h2><p style="font-size:18px">${win ? "你們這隊贏了！🪙 +40" : draw ? "🪙 +25" : "下次一定更強！🪙 +12"}</p>
-    ${NET.unl && NET.unl.length ? `<div class="unl">🌱 解鎖新植物：${NET.unl.map(esc).join("、")}</div>` : ""}
+    ${NET.unlK && NET.unlK.length ? `<div class="unl">🎁 得到新植物！${NET.unlK.map(plantTag).join("")}</div>` : ""}
     <table class="ttab"><tr><th>隊員</th><th>家庭</th><th>答題</th><th>第一次就對</th><th>🎖️</th><th>存的陽光</th></tr>${rows}</table>
     ${lat ? `<p style="font-size:13px;color:#5b6475">連線延遲平均約 ${lat} 毫秒</p>` : ""}
     <div class="trow" style="margin-top:12px"><button class="pbtn sun" data-netleave="1">🌐 回連線大廳</button><button class="pbtn mint" data-nethome="1">🌻 回首頁</button></div>`);
@@ -1697,7 +1772,7 @@ function netBar(tb){
     if(G.phase === "prep") h += `<span class="tchip">⏳ ${Math.max(0, Math.ceil(G.net.prepT || 0))} 秒後出怪</span>`;
     const me = G.team.players[G.net.me]; if(G.team.players.length > 1) h += `<span class="tchip">🛤️ 你的路：${me.rows.map(x => x + 1).join("、")}</span>`; }
   if(d.moves.mode === "vs" && NET.other){ const o = NET.other.hp || {}; h += `<span class="tchip vs">⚔️ 對手 ${"❤".repeat(Math.max(0, o.h || 0))} 👾${o.k || 0}${NET.other.state === "won" ? " ✅守完" : NET.other.state === "lost" ? " 💥" : ""}</span>`; }
-  tb.style.display = "flex"; tb.innerHTML = h;
+  tb.style.display = "flex"; setH(tb, h);
 }
 
 /* ---------- 畫面 ---------- */
@@ -1739,6 +1814,478 @@ document.addEventListener("click", ev => {
   if(d.netlogin){ SB_FAMILY.showLogin(); return; }
 });
 document.addEventListener("keydown", ev => { if(ev.key === "Enter" && ev.target && ev.target.id === "netCode") netJoin(ev.target.value); });
+/* ---------- v3.1：👑 殭屍王、⚠️ 災害事件、📖 植物圖鑑（34 種植物）----------
+   新植物：每過關 1 次就多一種（need ＝ 累積過關次數）；🌟 稀有植物：打敗殭屍王掉落（rare）
+   災害：大爆炸、龍捲風、雷暴、大地震。來之前會先警告，可以「答題擋下」或災後「答題拿緊急陽光」重建
+   連線時由主持的平板算災害和殭屍王，畫面（警告格子、災害狀態）跟著戰場一起送給其他平板 */
+Object.assign(DEF, {
+  tall:   {n:"高高竹籬",   sub:"", el:"🎍", cost:75,  cd:16, hp:2200, kind:"wall", tall:1, d:"超高的竹籬，很耐打；撐竿跳怪、蹦蹦殭屍王都跳不過去。", price:0, need:5},
+  cloud:  {n:"雲朵傘",     sub:"", el:"☂️", cost:100, cd:20, hp:320, kind:"umbrella", d:"撐起雲朵保護周圍 3×3：大爆炸、雷暴、炸彈的傷害只剩 1/4。", price:0, need:7},
+  frost:  {n:"冰雪蓮",     sub:"", el:"🪷", cost:110, cd:12, hp:300, kind:"freeze", rate:5, dmg:14, d:"每 5 秒把這一排最前面的怪獸冰住 2.5 秒。", price:0, need:9},
+  cherry: {n:"爆爆櫻桃",   sub:"", el:"🍒", cost:150, cd:30, hp:999, kind:"cherry", dmg:900, d:"種下 1 秒就爆炸，炸掉周圍 3×3 的怪獸（用一次就沒了）。", price:0, need:10},
+  anchor: {n:"定根藤",     sub:"", el:"🪢", cost:75,  cd:18, hp:500, kind:"anchor", d:"抓住周圍 3×3 的植物：龍捲風吹不走、地震震不亂。", price:0, need:11},
+  melon:  {n:"西瓜投手",   sub:"", el:"🍉", cost:175, cd:10, hp:300, kind:"splash", rate:3.2, dmg:75, d:"丟大西瓜，炸到一整片，傷害很高。", price:0, need:12},
+  garlic: {n:"大蒜擋路",   sub:"", el:"🧄", cost:50,  cd:10, hp:450, kind:"divert", d:"怪獸咬一口就被嗆到，換到隔壁那一路。", price:0, need:13},
+  spike:  {n:"地刺草",     sub:"", el:"🦔", cost:100, cd:10, hp:400, kind:"spike", dmg:45, d:"鋪在地上，怪獸走過去一直被刺，而且咬不到它。", price:0, need:14},
+  chomp:  {n:"大嘴花",     sub:"", el:"🦷", cost:150, cd:14, hp:400, kind:"chomp", d:"一口吞掉面前的怪獸！要嚼 12 秒才能再吃（殭屍王只能咬一大口）。", price:0, need:15},
+  magnet: {n:"磁鐵菇",     sub:"", el:"🧲", cost:100, cd:12, hp:300, kind:"magnet", rate:7, d:"每 7 秒把附近怪獸的鐵頭盔吸走。", price:0, need:16},
+  torch:  {n:"火炬樹樁",   sub:"", el:"🪵", cost:175, cd:12, hp:500, kind:"torch", d:"子彈穿過火炬會變成火球，傷害加倍。種在射手前面！", price:0, need:17},
+  star:   {n:"楊桃星星",   sub:"", el:"⭐", cost:125, cd:9,  hp:300, kind:"star", rate:1.6, dmg:20, d:"同時往這一排和上下兩排發射星星。", price:0, need:18},
+  twin:   {n:"雙子向日葵", sub:"", el:"🌼", cost:150, cd:12, hp:300, kind:"gen", rate:9, gain:50, d:"每 9 秒產 50 ☀，是陽光向日葵的兩倍。", price:0, need:19},
+  wmelon: {n:"冰西瓜",     sub:"", el:"🧊", cost:200, cd:12, hp:300, kind:"splash", rate:3.2, dmg:65, slow:1, d:"冰凍大西瓜：炸一整片，還會讓怪獸變慢。", price:0, need:20},
+  gat:    {n:"四連發豆莢", sub:"", el:"🫛", cost:200, cd:12, hp:300, kind:"quad", rate:1.5, dmg:20, d:"一次連射 4 顆豆子。", price:0, need:21},
+  fan:    {n:"三葉草風扇", sub:"", el:"🍀", cost:100, cd:25, hp:300, kind:"fan", d:"種下就吹大風：吹散快要來的災害，把怪獸吹回後面（用一次就沒了）。", price:0, need:22},
+  // 🌟 稀有植物：打敗殭屍王掉落
+  crystal: {n:"知識水晶樹", sub:"", el:"💎", cost:175, cd:16, hp:400, kind:"boost", rate:12, gain:20, rare:"k_summon", d:"周圍 3×3 的攻擊植物傷害 +30%，每 12 秒產 20 ☀。", price:0},
+  guardian:{n:"守護神木",   sub:"", el:"🌳", cost:150, cd:30, hp:4200, kind:"wall", tall:1, immune:1, regen:25, rare:"k_stomp", d:"最強城牆：會自己長回血，災害傷不了它，跳不過去。", price:0},
+  thunder: {n:"雷神竹",     sub:"", el:"🌩️", cost:225, cd:14, hp:300, kind:"chain", rate:3, dmg:62, rare:"k_jump", d:"閃電連鎖：一次電 4 隻最近的怪獸（不分哪一路）。", price:0},
+  rainbow: {n:"彩虹花",     sub:"", el:"🌈", cost:150, cd:10, hp:350, kind:"rainbow", rate:1.3, dmg:24, gain:15, rare:"k_storm", d:"彩色子彈會隨機冰凍或雙倍傷害，還會慢慢產陽光。", price:0},
+  phoenix: {n:"鳳凰花",     sub:"", el:"🪶", cost:200, cd:14, hp:350, kind:"shoot", rate:1.4, dmg:34, phoenix:1, rare:"k_bomb", d:"射火焰子彈；被打倒時會浴火重生一次，還會炸開周圍。", price:0},
+  dragon:  {n:"火龍草",     sub:"", el:"🐉", cost:200, cd:12, hp:400, kind:"breath", rate:2.2, dmg:60, rare:"k_iron", d:"噴火 3 格，前面一整片怪獸都燒到。", price:0},
+  golden:  {n:"黃金向日葵", sub:"", el:"🌞", cost:125, cd:12, hp:350, kind:"gen", rate:10, gain:75, rare:"any", d:"每 10 秒產 75 ☀！打敗殭屍王時隨機掉落。", price:0}
+});
+DEF_ORDER.push("tall", "cloud", "frost", "cherry", "anchor", "melon", "garlic", "spike", "chomp", "magnet", "torch", "star", "twin", "wmelon", "gat", "fan", "crystal", "guardian", "thunder", "rainbow", "phoenix", "dragon", "golden");
+// 圖鑑／種子列的順序：基本 5 種 → 過關解鎖（照次數）→ 商店 → 稀有
+const DEX_ORDER = ["soc", "math", "sci"].concat(DEF_ORDER.filter(d => DEF[d].need).sort((a, b) => DEF[a].need - DEF[b].need), ["chi", "eng"], DEF_ORDER.filter(d => DEF[d].rare));
+const RARES = DEF_ORDER.filter(d => DEF[d].rare);
+Object.assign(MON, {
+  jumper:  {n:"撐竿跳怪", hp:210, sp:0.2, dps:40, coin:2, jump:1, d:"撐竿跳過第一株植物（高高竹籬擋得住）"},
+  k_summon:{n:"叫叫殭屍王", king:1, hp:3300, sp:0.07, dps:150, coin:15, e:"📣", d:"一直叫小怪出來；快被打倒時會補血"},
+  k_stomp: {n:"跺跺巨人王", king:1, hp:3800, sp:0.06, dps:180, coin:15, e:"🦶", d:"跺地：先閃紅格，再把前面的植物踩扁"},
+  k_jump:  {n:"蹦蹦殭屍王", king:1, hp:3000, sp:0.085, dps:150, coin:15, e:"🦘", d:"會換路、跳過植物（竹籬擋得住）"},
+  k_storm: {n:"旋風殭屍王", king:1, hp:3200, sp:0.065, dps:150, coin:15, e:"🌪️", d:"叫出龍捲風弄亂陣形，還會丟墨水", range:5, rate:5, shot:70},
+  k_bomb:  {n:"轟隆殭屍王", king:1, hp:3200, sp:0.065, dps:150, coin:15, e:"💣", d:"丟炸彈炸植物；最後會叫出大爆炸"},
+  k_iron:  {n:"鋼鐵殭屍王", king:1, hp:2800, armor:1500, sp:0.065, dps:170, coin:15, e:"🛡️", d:"超厚鐵甲會重新穿上；最後會衝撞"}
+});
+MON_ORDER.push("jumper", "k_summon", "k_stomp", "k_jump", "k_storm", "k_bomb", "k_iron");
+const KING_ORDER = ["k_summon", "k_stomp", "k_jump", "k_storm", "k_bomb", "k_iron"];
+const KING_SIG = {k_summon:"crystal", k_stomp:"guardian", k_jump:"thunder", k_storm:"rainbow", k_bomb:"phoenix", k_iron:"dragon"};
+const KING_PH = {   // 每一階段的招式說明（banner 用）
+  k_summon:["叫小怪出來", "叫出盔甲怪、撐竿跳怪", "大聲補血，叫得更快！"],
+  k_stomp:["跺地踩扁前面 2 格", "跺地範圍變成 3 路", "震波：整排植物都受傷！"],
+  k_jump:["會換到植物少的路", "跳過擋路的植物", "跳得更快！"],
+  k_storm:["叫出龍捲風", "開始丟墨水彈", "兩路一起颳龍捲風！"],
+  k_bomb:["丟炸彈炸植物", "炸彈丟得更快", "叫出大爆炸！"],
+  k_iron:["超厚鐵甲", "重新穿上鐵甲！", "衝撞！撞壞擋路的植物"]};
+/* 每一關的殭屍王：照單元和等級輪流，小二第一次先遇到比較溫和的叫叫王 */
+function kingFor(cid, lv, g){
+  let h = 0; for(const ch of String(cid)) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  if(g === "g2" && lv <= 1) return "k_summon";
+  return KING_ORDER[(h + lv - 1) % KING_ORDER.length];
+}
+
+/* ---------- 像素圖（v3.1）---------- */
+function buildSprites31(){
+  SPR.tall = mk(16, 20, (P, R) => { for(const a of [2, 7, 12]){ R(a, 1, 3, 19, "#7cc04a"); R(a, 1, 1, 19, "#b5e27a"); for(let b = 5; b < 20; b += 5) R(a, b, 3, 1, "#3f7a22"); } R(0, 7, 16, 2, "#c8a070"); R(0, 14, 16, 2, "#c8a070"); R(5, 10, 2, 2, "#fff"); R(10, 10, 2, 2, "#fff"); P(6, 11, "#111"); P(11, 11, "#111"); });
+  SPR.cloud = mk(18, 18, (P, R, C) => { R(8, 8, 2, 10, "#2f8f3a"); R(4, 14, 4, 2, "#4cc35a"); C(5, 6, 3.6, "#e8f4ff"); C(12, 6, 3.6, "#e8f4ff"); C(8.5, 4, 4.2, "#ffffff"); R(2, 6, 14, 4, "#ffffff"); R(2, 9, 14, 1, "#b8d4ee"); for(const a of [3, 8, 13]) P(a, 12, "#7fd6ff"); eyes(P, 6, 5); P(8, 8, "#5a7a9a"); P(9, 8, "#5a7a9a"); });
+  SPR.frost = mk(18, 16, (P, R, C) => { R(2, 13, 14, 3, "#2f8f3a"); for(const [a, b, col] of [[4, 8, "#bfeaff"], [14, 8, "#bfeaff"], [6, 5, "#e8fbff"], [12, 5, "#e8fbff"], [9, 3, "#ffffff"]]) C(a, b, 3, col); C(9, 9, 3.6, "#ffb3d1"); C(8.4, 8.4, 1.6, "#ffe0ee"); eyes(P, 7, 8); P(9, 12, "#7a3050"); for(const [a, b] of [[1, 2], [16, 3], [3, 0]]) P(a, b, "#e8fbff"); });
+  SPR.cherry = mk(18, 17, (P, R, C) => { R(8, 1, 2, 6, "#2f8f3a"); R(5, 3, 3, 2, "#2f8f3a"); R(10, 3, 3, 2, "#2f8f3a"); R(9, 0, 5, 2, "#4cc35a"); C(5, 11, 4.6, "#c0102a"); C(13, 11, 4.6, "#e5484d"); C(4, 10, 1.5, "#ff9fb5"); C(12, 10, 1.5, "#ffc0cb"); R(3, 10, 2, 1, "#111"); R(6, 10, 2, 1, "#111"); R(11, 10, 2, 1, "#111"); R(14, 10, 2, 1, "#111"); R(4, 13, 3, 1, "#3b0a10"); R(12, 13, 3, 1, "#3b0a10"); });
+  SPR.anchor = mk(18, 16, (P, R, C) => { R(1, 13, 16, 3, "#6d4c41"); for(let i = 0; i < 4; i++){ C(4 + i * 3.3, 11 - (i % 2) * 2, 2.6, i % 2 ? "#4cc35a" : "#2f8f3a"); } C(9, 5, 4.6, "#7cc04a"); C(9, 5, 3, "#a8e070"); R(2, 9, 2, 5, "#8d5a3b"); R(14, 9, 2, 5, "#8d5a3b"); eyes(P, 7, 4); R(8, 7, 3, 1, "#2f5a1a"); });
+  SPR.melon = mk(18, 17, (P, R, C) => { R(1, 14, 16, 3, "#2f8f3a"); R(4, 9, 2, 6, "#2f8f3a"); R(4, 9, 11, 2, "#4cc35a"); C(13, 6, 4.8, "#2fae4a"); for(const a of [10, 13, 16]) R(a, 2, 1, 9, "#145a22"); C(12, 5, 1.4, "#8be38b"); C(5, 12, 3.4, "#4cc35a"); eyes(P, 3, 11); });
+  SPR.garlic = mk(16, 17, (P, R, C) => { R(7, 0, 2, 4, "#7cc04a"); C(8, 10, 6, "#f5f0e6"); C(8, 10, 4.6, "#ffffff"); for(const a of [4, 8, 12]) R(a, 5, 1, 10, "#e0d6c2"); R(6, 15, 4, 2, "#d9c8a8"); R(5, 8, 2, 2, "#111"); R(10, 8, 2, 2, "#111"); R(6, 12, 4, 1, "#a07050"); P(4, 7, "#5a4a3a"); P(12, 7, "#5a4a3a"); });
+  SPR.spike = mk(18, 9, (P, R) => { R(0, 6, 18, 3, "#6d8a3a"); for(let a = 0; a < 18; a += 3){ R(a + 1, 2, 1, 4, "#e8e8e8"); P(a + 1, 1, "#ffffff"); R(a, 5, 3, 1, "#4a6a2a"); } P(6, 7, "#111"); P(11, 7, "#111"); });
+  SPR.chomp = mk(18, 18, (P, R, C) => { R(7, 11, 3, 7, "#2f8f3a"); R(2, 14, 5, 2, "#4cc35a"); R(10, 15, 5, 2, "#4cc35a"); C(9, 6, 6.5, "#8e3aa0"); C(9, 6, 5, "#b45ad0"); R(5, 6, 11, 3, "#2a0a2a"); for(let a = 5; a < 16; a += 2){ P(a, 6, "#fff"); P(a + 1, 8, "#fff"); } R(6, 2, 2, 2, "#fff"); P(7, 3, "#111"); C(13, 3, 1, "#ffd23f"); });
+  SPR.magnet = mk(18, 17, (P, R, C) => { R(6, 9, 6, 8, "#f5deb3"); R(7, 11, 1, 1, "#111"); R(10, 11, 1, 1, "#111"); R(8, 14, 2, 1, "#8d5a3b"); C(9, 6, 6, "#7a5aa0"); C(9, 6, 4.6, "#a07ad0"); for(const [a, b] of [[5, 3], [12, 4], [8, 7]]) C(a, b, 1, "#e0d0ff"); R(1, 0, 3, 7, "#c0102a"); R(14, 0, 3, 7, "#c0102a"); R(1, 0, 3, 2, "#cfd8dc"); R(14, 0, 3, 2, "#cfd8dc"); R(1, 6, 16, 2, "#c0102a"); });
+  SPR.torch = mk(16, 18, (P, R, C) => { R(2, 9, 12, 9, "#8d5a3b"); R(2, 9, 12, 2, "#c8a070"); C(8, 10, 3, "#e0b080"); C(8, 10, 1.5, "#a07040"); R(4, 13, 2, 2, "#fff"); R(10, 13, 2, 2, "#fff"); P(5, 14, "#111"); P(11, 14, "#111"); C(8, 5, 4.4, "#ff6a00"); C(8, 5.5, 3, "#ffb000"); C(8, 6, 1.6, "#fff3a0"); P(6, 0, "#ff8a00"); P(10, 1, "#ff8a00"); });
+  SPR.star = mk(18, 17, (P, R, C) => { stem(R, P); const pts = []; for(let i = 0; i < 5; i++){ const a = -Math.PI / 2 + i * Math.PI * 2 / 5; C(8.5 + Math.cos(a) * 4.6, 6.5 + Math.sin(a) * 4.6, 2.2, "#ffd23f"); } C(8.5, 6.5, 3.8, "#ffe066"); C(8, 6, 1.6, "#fff7c0"); eyes(P, 6, 5); R(7, 9, 3, 1, "#a07000"); });
+  SPR.twin = mk(18, 17, (P, R, C) => { R(8, 9, 2, 8, "#2f8f3a"); R(4, 12, 4, 2, "#4cc35a"); R(10, 13, 4, 2, "#4cc35a"); for(const [cx, cy] of [[4.5, 5], [13.5, 5]]){ for(let i = 0; i < 8; i++){ const a = i * Math.PI / 4; C(cx + Math.cos(a) * 3.4, cy + Math.sin(a) * 3.4, 1.6, i % 2 ? "#ffb000" : "#ffd23f"); } C(cx, cy, 2.4, "#8d5a3b"); P(cx - 1, cy - 1, "#fff"); P(cx + 1, cy - 1, "#fff"); } });
+  SPR.wmelon = mk(18, 17, (P, R, C) => { R(1, 14, 16, 3, "#2f8f3a"); R(4, 9, 2, 6, "#2f8f3a"); R(4, 9, 11, 2, "#4cc35a"); C(13, 6, 4.8, "#5ec8ff"); for(const a of [10, 13, 16]) R(a, 2, 1, 9, "#1e6aa0"); C(12, 5, 1.4, "#e8fbff"); P(15, 1, "#ffffff"); P(9, 2, "#ffffff"); C(5, 12, 3.4, "#7fd6ff"); eyes(P, 3, 11); });
+  SPR.gat = mk(18, 17, (P, R, C) => { stem(R, P); C(8, 6, 5.5, "#2fae4a"); C(8, 6, 4.3, "#4cc35a"); R(11, 3, 7, 6, "#2f8f3a"); for(const b of [3, 5, 7]) R(17, b, 1, 1, "#123"); R(2, 0, 10, 3, "#3d4a5a"); R(2, 2, 11, 1, "#2a3340"); eyes(P, 4, 5); R(5, 9, 3, 1, "#145a22"); });
+  SPR.fan = mk(18, 17, (P, R, C) => { R(8, 9, 2, 8, "#2f8f3a"); R(4, 13, 4, 2, "#4cc35a"); C(9, 3.5, 3.2, "#2fae4a"); C(5, 7.5, 3.2, "#4cc35a"); C(13, 7.5, 3.2, "#3cb84a"); C(9, 6.5, 2, "#8be38b"); P(8, 6, "#111"); P(10, 6, "#111"); for(const [a, b] of [[15, 2], [16, 4], [2, 2]]) P(a, b, "#e8fbff"); });
+  SPR.crystal = mk(18, 19, (P, R, C) => { R(7, 12, 4, 7, "#6d4c41"); R(3, 17, 12, 2, "#4a8a32"); for(const [a, b, h, col] of [[3, 6, 7, "#5ec8ff"], [8, 1, 11, "#9fe8ff"], [13, 5, 8, "#38b6ff"]]){ R(a, b, 3, h, col); P(a + 1, b - 1, col); R(a, b, 1, h, "#e8fbff"); } eyes(P, 7, 8); P(16, 1, "#ffffff"); P(1, 3, "#ffffff"); });
+  SPR.guardian = mk(18, 20, (P, R, C) => { R(6, 11, 6, 9, "#6d4c41"); R(6, 11, 2, 9, "#8d6a51"); C(9, 7, 7.5, "#1f7a2a"); C(6, 5, 4, "#2fae4a"); C(13, 6, 4, "#2fae4a"); C(9, 3, 3.6, "#4cc35a"); R(7, 13, 1, 2, "#fff"); R(10, 13, 1, 2, "#fff"); R(7, 17, 4, 1, "#3d2414"); for(const [a, b] of [[4, 7], [14, 4], [9, 1]]) P(a, b, "#ffd23f"); });
+  SPR.thunder = mk(16, 18, (P, R, C) => { R(6, 4, 4, 14, "#7a5ad0"); for(let b = 6; b < 18; b += 4) R(5, b, 6, 1, "#4a2a8a"); R(10, 8, 4, 2, "#b090ff"); R(2, 12, 4, 2, "#b090ff"); R(9, 0, 3, 2, "#ffd23f"); R(7, 2, 3, 2, "#ffd23f"); R(8, 4, 3, 1, "#fff3a0"); eyes(P, 6, 9); });
+  SPR.rainbow = mk(18, 17, (P, R, C) => { stem(R, P); const cols = ["#e5484d", "#ff8a00", "#ffd23f", "#4cc35a", "#38b6ff", "#8e5ad6"]; for(let i = 0; i < 6; i++){ const a = i * Math.PI / 3 - Math.PI / 2; C(8 + Math.cos(a) * 4.6, 6.5 + Math.sin(a) * 4.6, 2.4, cols[i]); } C(8, 6.5, 3, "#fffaf0"); eyes(P, 6, 5); P(8, 8, "#e5484d"); });
+  SPR.phoenix = mk(18, 17, (P, R, C) => { stem(R, P); C(8, 6.5, 5, "#e5484d"); C(8, 7, 3.6, "#ff8a00"); C(8, 7.5, 2, "#ffd23f"); R(1, 2, 4, 2, "#ff6a00"); R(13, 2, 4, 2, "#ff6a00"); R(0, 0, 2, 2, "#ffd23f"); R(16, 0, 2, 2, "#ffd23f"); R(6, 0, 1, 3, "#ffd23f"); R(9, 0, 1, 2, "#ffd23f"); eyes(P, 5, 5); R(12, 6, 4, 2, "#ffb000"); });
+  SPR.dragon = mk(18, 17, (P, R, C) => { stem(R, P); C(7, 6, 5, "#2fae4a"); R(9, 4, 8, 5, "#2fae4a"); R(9, 8, 8, 1, "#ffd23f"); R(15, 5, 2, 1, "#123"); R(3, 0, 2, 3, "#ff8a00"); R(7, 0, 2, 2, "#ff8a00"); R(5, 4, 2, 2, "#fff"); P(6, 5, "#c0102a"); for(let b = 3; b < 10; b += 2) P(1, b, "#ff8a00"); });
+  SPR.golden = mk(18, 17, (P, R, C) => { stem(R, P); for(let i = 0; i < 12; i++){ const a = i * Math.PI / 6; C(8 + Math.cos(a) * 5.4, 6.5 + Math.sin(a) * 5.4, 1.9, i % 2 ? "#ffb000" : "#fff3a0"); } C(8, 6.5, 3.7, "#d4a000"); C(7.4, 6, 1.6, "#ffe066"); eyes(P, 6, 5); P(7, 8, "#6a4a00"); P(8, 8, "#6a4a00"); P(16, 0, "#ffffff"); P(0, 2, "#ffffff"); });
+  // 撐竿跳怪
+  SPR.jumper = [0, 1].map(fr => mk(16, 22, (P, R, C) => {
+    C(8, 6, 5, "#aed581"); R(4, 4, 3, 2, "#fff"); R(9, 4, 3, 2, "#fff"); P(4, 5, "#c0102a"); P(9, 5, "#c0102a"); R(5, 8, 6, 1, "#3b1a1a"); R(3, 0, 10, 2, "#e5484d");
+    R(4, 11, 8, 6, "#ffd23f"); R(5, 12, 6, 1, "#e5484d"); R(0, 12, 5, 2, "#aed581"); R(0, 2, 1, 20, "#8d5a3b");
+    if(fr === 0){ R(4, 17, 3, 4, "#3949ab"); R(9, 17, 3, 4, "#3949ab"); R(3, 21, 4, 1, "#222"); R(10, 21, 3, 1, "#222"); } else { R(5, 17, 3, 4, "#3949ab"); R(8, 17, 3, 4, "#3949ab"); R(4, 21, 4, 1, "#222"); R(8, 21, 4, 1, "#222"); } }));
+  // 👑 殭屍王：同一個大身體，換顏色和道具
+  const king = (skin, robe, crown, extra) => [0, 1].map(fr => mk(26, 30, (P, R, C) => {
+    R(6, 3, 14, 2, crown); R(7, 0, 2, 3, crown); R(12, 0, 2, 4, crown); R(17, 0, 2, 3, crown); P(13, 3, "#e5484d"); P(8, 3, "#38b6ff"); P(18, 3, "#4cc35a");
+    C(13, 11, 8, skin); R(7, 8, 4, 3, "#fff"); R(15, 8, 4, 3, "#fff"); R(8, 9, 2, 2, "#c0102a"); R(16, 9, 2, 2, "#c0102a"); R(5, 6, 6, 1, "#2a1a1a"); R(15, 6, 6, 1, "#2a1a1a");
+    R(8, 14, 10, 2, "#3b1a1a"); P(9, 14, "#fff"); P(12, 14, "#fff"); P(16, 14, "#fff");
+    R(5, 18, 16, 8, robe); R(0, 19, 6, 3, skin); R(0, 23, 5, 3, skin); R(20, 19, 6, 3, skin);
+    if(fr === 0){ R(6, 26, 5, 4, "#2a1a2a"); R(15, 26, 5, 3, "#2a1a2a"); } else { R(7, 26, 5, 3, "#2a1a2a"); R(14, 26, 5, 4, "#2a1a2a"); }
+    if(extra) extra(P, R, C, fr); }));
+  SPR.k_summon = king("#9ccc65", "#e5484d", "#ffd23f", (P, R, C) => { R(20, 15, 6, 6, "#ffd23f"); R(22, 13, 4, 2, "#ffb000"); R(11, 19, 4, 6, "#ffd23f"); });
+  SPR.k_stomp = king("#a1887f", "#5d4037", "#ffd23f", (P, R, C, fr) => { R(4, 26, 8, 4, "#3e2723"); R(14, 26, 8, 4, "#3e2723"); R(2, 17, 22, 3, "#795548"); if(fr) R(3, 28, 2, 2, "#c8a070"); });
+  SPR.k_jump = king("#ffb74d", "#43a047", "#ffd23f", (P, R) => { R(23, 4, 2, 26, "#8d5a3b"); R(4, 26, 3, 4, "#ff7043"); R(18, 26, 3, 4, "#ff7043"); R(11, 19, 4, 6, "#c5e1a5"); });
+  SPR.k_storm = king("#90a4ae", "#37474f", "#b3e5fc", (P, R, C) => { for(let i = 0; i < 4; i++) R(19 - i, 14 + i * 3, 6 + i, 2, "#cfd8dc"); R(11, 19, 4, 6, "#7fd6ff"); });
+  SPR.k_bomb = king("#ce93d8", "#4a148c", "#ffd23f", (P, R, C) => { C(22, 17, 3.6, "#212121"); R(22, 11, 1, 3, "#8d5a3b"); P(23, 10, "#ff8a00"); P(22, 9, "#ffd23f"); C(21, 16, 1, "#757575"); R(11, 19, 4, 6, "#ff8a00"); });
+  SPR.k_iron = king("#80cbc4", "#455a64", "#cfd8dc", (P, R) => { R(4, 4, 18, 4, "#9e9e9e"); R(4, 4, 18, 1, "#eceff1"); R(3, 18, 20, 6, "#78909c"); R(3, 18, 20, 1, "#cfd8dc"); R(11, 19, 4, 4, "#ffd23f"); });
+  SPR.k_iron_naked = king("#80cbc4", "#455a64", "#cfd8dc");
+  SPR.tornado = mk(16, 26, (P, R) => { for(let b = 0; b < 26; b++){ const w = Math.max(2, 14 - b / 2), x0 = 8 - w / 2 + Math.sin(b / 3) * 2; R(Math.round(x0), b, Math.round(w), 1, b % 3 ? "#cfd8dc" : "#90a4ae"); } });
+  for(const d of DEF_ORDER) if(SPR[d]) SPR[d + "_sil"] = tint(SPR[d], "#2a2a3a", 1);
+  SPR.bomb = mk(9, 9, (P, R, C) => { C(4.5, 5, 3.6, "#212121"); C(3.5, 4, 1, "#757575"); R(4, 0, 1, 2, "#8d5a3b"); P(5, 0, "#ffb000"); });
+}
+
+/* ---------- 植物：受傷、死亡、新種類的動作 ---------- */
+const nearPlant = (r, c, type) => { for(let dr = -1; dr <= 1; dr++) for(let dc = -1; dc <= 1; dc++){ const q = G.plants[r + dr] && G.plants[r + dr][c + dc]; if(q && q.type === type) return true; } return false; };
+const boostAt = (r, c) => nearPlant(r, c, "crystal") ? 1.3 : 1;
+function plantHurt(r, c, dmg){
+  const p = G.plants[r] && G.plants[r][c]; if(!p || dmg <= 0) return false;
+  p.hp -= dmg; p.hit = .15;
+  if(p.hp > 0) return false;
+  const D = DEF[p.type];
+  if(D.phoenix && !p.reborn){ p.reborn = 1; p.hp = p.max; puff(colX(c) + 24, rowY(r) + 24, "#ff8a00", 26); puff(colX(c) + 24, rowY(r) + 24, "#ffd23f", 16);
+    for(const m of G.mons) if(!m.dead && Math.abs(m.row - r) <= 1 && Math.abs(m.x + 10 - (colX(c) + 24)) <= CELL * 1.5) hurt(m, 300, true);
+    if(!G.net || G.net.host) banner("🪶 鳳凰花浴火重生！", 1300); return false; }
+  G.plants[r][c] = null; puff(colX(c) + 24, rowY(r) + 24, "#7a5a3a", 10); return true;
+}
+function onPlanted(r, c){
+  const p = G.plants[r][c]; if(!p) return; const D = DEF[p.type];
+  if(D.kind === "cherry"){ p.t = 1.0; }
+  if(D.kind === "fan"){ p.t = 0.9;
+    for(const m of G.mons) if(!m.dead && !MON[m.type].king) m.x = Math.min(W + 4, m.x + CELL * 1.6); else if(!m.dead) m.x = Math.min(W - 30, m.x + CELL * 0.6);
+    for(let i = 0; i < 18; i++) G.fx.push({x:OX + rnd(COLS * CELL), y:OY + rnd(ROWS * CELL), vx:160 + rnd(80), vy:0, life:.6, col:"#e8fbff", s:3});
+    if(G.dz && G.dz.st === "warn"){ const n = DZ[G.dz.k].n; G.dz = null; banner(`🍀 三葉草風扇把${n}吹散了！`, 1800); }
+    else if(!G.net || G.net.host) banner("🍀 大風！怪獸被吹回去了", 1300); }
+  if(DEF[p.type].kind === "chomp") p.chew = 0;
+}
+const SHOOT_KINDS = ["shoot", "slow", "double", "pierce", "splash", "laser", "quad", "star", "breath", "chain", "rainbow", "freeze"];
+/* 回傳 true ＝ 這株已經處理完（g3 的植物迴圈就跳過） */
+function plantTick31(p, D, r, c, dt){
+  const px = colX(c) + 24;
+  if(p.stun > 0){ p.stun = Math.max(0, p.stun - dt); if(SHOOT_KINDS.includes(D.kind)) return true; }
+  if(D.regen && p.hp < p.max) p.hp = Math.min(p.max, p.hp + D.regen * dt);
+  switch(D.kind){
+    case "umbrella": case "anchor": case "torch": case "divert": return true;
+    case "cherry": p.t -= dt; if(p.t <= 0){ for(const m of G.mons) if(!m.dead && Math.abs(m.row - r) <= 1 && Math.abs(m.x + 10 - px) <= CELL * 1.5) hurt(m, D.dmg, true);
+        puff(px, rowY(r) + 26, "#e5484d", 34); puff(px, rowY(r) + 26, "#ffb000", 20); G.shake = .35; sfx.boss(); G.plants[r][c] = null; } return true;
+    case "fan": p.t -= dt; if(p.t <= 0) G.plants[r][c] = null; return true;
+    case "spike": { p.t -= dt; if(p.t <= 0){ p.t = 0.5; for(const m of G.mons) if(!m.dead && m.row === r && targetable(m) && m.x + 14 > px - 24 && m.x + 6 < px + 24){ hurt(m, D.dmg * 0.5); G.fx.push({x:m.x + 8, y:rowY(r) + 40, vx:0, vy:-30, life:.3, col:"#e8e8e8", s:2}); } } return true; }
+    case "chomp": { if(p.chew > 0){ p.chew = Math.max(0, p.chew - dt); return true; }
+      const m = G.mons.find(m => !m.dead && m.row === r && targetable(m) && m.x > px - 20 && m.x < px + CELL * 1.2);
+      if(m){ if(MON[m.type].king || m.boss) hurt(m, 500, true); else hurt(m, 99999, true); p.chew = 12; puff(px + 12, rowY(r) + 20, "#b45ad0", 14); }
+      return true; }
+    case "magnet": { p.t -= dt; if(p.t > 0) return true;
+      const m = G.mons.find(m => !m.dead && m.armor > 0 && Math.abs(m.row - r) <= 1 && Math.abs(m.x - px) < CELL * 3.5 && targetable(m));
+      if(m){ p.t = D.rate; if(MON[m.type].king) m.armor = Math.max(0, m.armor - 450); else m.armor = 0; for(let i = 0; i < 8; i++) G.fx.push({x:m.x + 10, y:rowY(m.row) + 6, vx:(px - m.x) * 1.6, vy:(rowY(r) - rowY(m.row)) * 1.6 - 10, life:.5, col:"#cfd8dc", s:3}); }
+      else p.t = 0.5; return true; }
+    case "freeze": { p.t -= dt; if(p.t > 0) return true; const ahead = G.mons.filter(m => !m.dead && m.row === r && m.x > px - 16 && targetable(m));
+      if(!ahead.length) return true; p.t = D.rate; const m = ahead.reduce((a, b) => a.x < b.x ? a : b);
+      m.freeze = Math.max(m.freeze, MON[m.type].king ? 1 : 2.5); hurt(m, D.dmg * boostAt(r, c)); puff(m.x + 10, rowY(r) + 20, "#e8fbff", 14); return true; }
+    case "breath": { p.t -= dt; if(p.t > 0) return true; const hit = G.mons.filter(m => !m.dead && m.row === r && targetable(m) && m.x > px - 16 && m.x < px + CELL * 3.2);
+      if(!hit.length) return true; p.t = D.rate; const dmg = D.dmg * boostAt(r, c); for(const m of hit) hurt(m, dmg);
+      for(let i = 0; i < 16; i++) G.fx.push({x:px + 10 + rnd(CELL * 3), y:rowY(r) + 14 + rnd(16), vx:40, vy:-20, life:.4, col:i % 2 ? "#ff8a00" : "#ffd23f", s:3}); return true; }
+    case "chain": { p.t -= dt; if(p.t > 0) return true; const list = G.mons.filter(m => !m.dead && targetable(m)).sort((a, b) => Math.hypot(a.x - px, rowY(a.row) - rowY(r)) - Math.hypot(b.x - px, rowY(b.row) - rowY(r))).slice(0, 4);
+      if(!list.length) return true; p.t = D.rate; const dmg = D.dmg * boostAt(r, c); const pts = [[px, rowY(r) + 10]];
+      for(const m of list){ hurt(m, dmg); pts.push([m.x + 10, rowY(m.row) + 20]); } G.zaps = (G.zaps || []).concat([{pts, life:.3}]); return true; }
+    case "boost": { p.t -= dt; if(p.t <= 0){ p.t = D.rate; addSun(D.gain, G.team ? G.team.players[Math.max(0, p.own)] : null); G.fx.push({x:px, y:rowY(r) + 8, vx:0, vy:-26, life:1, col:"#9fe8ff", s:4, txt:"+" + D.gain}); } return true; }
+    case "rainbow": { p.g = (p.g == null ? 15 : p.g) - dt; if(p.g <= 0){ p.g = 15; addSun(D.gain, G.team ? G.team.players[Math.max(0, p.own)] : null); G.fx.push({x:px, y:rowY(r) + 8, vx:0, vy:-26, life:1, col:"#ffd23f", s:4, txt:"+" + D.gain}); }
+      const ahead = G.mons.some(m => !m.dead && m.row === r && m.x > px - 16 && targetable(m)); p.t -= dt;
+      if(ahead && p.t <= 0){ p.t = D.rate; const fx = Math.random(); G.shots.push({k:"rb", x:px + 12, y:rowY(r) + 14, row:r, dmg:D.dmg * boostAt(r, c) * (fx < .4 ? 2 : 1), slow:fx >= .4 && fx < .7, col:["#e5484d", "#ff8a00", "#ffd23f", "#4cc35a", "#38b6ff", "#8e5ad6"][rnd(6)]}); }
+      return true; }
+    case "star": { const ahead = G.mons.some(m => !m.dead && Math.abs(m.row - r) <= 1 && m.x > px - 16 && targetable(m)); p.t -= dt;
+      if(ahead && p.t <= 0){ p.t = D.rate; const dmg = D.dmg * boostAt(r, c); for(const rr of [r - 1, r, r + 1]) if(rr >= 0 && rr < ROWS) G.shots.push({k:"star", x:px + 10, y:rowY(rr) + 14, row:rr, dmg}); }
+      return true; }
+    case "quad": { const ahead = G.mons.some(m => !m.dead && m.row === r && m.x > px - 16 && targetable(m)); p.t -= dt;
+      if(ahead && p.t <= 0){ p.t = D.rate; const dmg = D.dmg * boostAt(r, c); for(let i = 0; i < 4; i++) G.shots.push({k:"gat", x:px + 12 - i * 11, y:rowY(r) + 14 + (i % 2) * 3, row:r, dmg}); }
+      return true; }
+  }
+  return false;
+}
+/* 子彈經過火炬樹樁：變火球、傷害加倍 */
+function torchShot(s){
+  if(s.fire || s.pierce || s.k === "lob") return; const tc = Math.floor((s.x - OX) / CELL); if(tc < 0 || tc >= COLS) return;
+  const tp = G.plants[s.row] && G.plants[s.row][tc]; if(tp && tp.type === "torch" && Math.abs(s.x - (colX(tc) + 24)) < 10){ s.fire = 1; s.dmg *= 2; }
+}
+
+/* ---------- 怪獸的特別動作：撐竿跳、被大蒜嗆到、殭屍王 ---------- */
+const kingPh = m => m.hp / m.max > 2 / 3 ? 1 : m.hp / m.max > 1 / 3 ? 2 : 3;
+const youngF = () => G && G.g === "g2" ? 1.4 : 1;   // 小二：招式比較慢、傷害比較小
+const warnSec = () => (G.g === "g2" ? 4 : G.g === "g4" ? 2.8 : 2.4) + (G.net ? 1.2 : 0);
+function addWarn(cells, t, kind, dmg, extra){ cells = cells.filter(([r, c]) => r >= 0 && r < ROWS && c >= 0 && c < COLS); if(!cells.length) return null; const w = Object.assign({cells, t, max:t, kind, dmg}, extra || {}); (G.warns = G.warns || []).push(w); return w; }
+function resolveWarn(w){
+  const young = G.g === "g2";
+  if(w.kind === "stomp" || w.kind === "bomb" || w.kind === "charge"){
+    for(const [r, c] of w.cells){ const p = G.plants[r][c]; const ringCell = w.kind === "bomb" ? !(w.cr === r && w.cc === c) : !!(w.ext && w.ext.includes(r * 10 + c));
+      let d = ringCell ? (p ? p.max * w.ring : 0) : w.dmg;
+      if(p){ const D = DEF[p.type]; if(D.immune) d = 0; else if(w.kind === "bomb" && nearPlant(r, c, "cloud")) d *= .25; else if(D.tall) d *= .5; if(young) d *= .6; plantHurt(r, c, d); }
+      puff(colX(c) + 24, rowY(r) + 30, w.kind === "bomb" ? "#ff8a00" : "#8d6e63", 10); }
+    G.shake = Math.max(G.shake || 0, .3); sfx.boss();
+  }
+}
+function kingAI(m, dt){
+  const M = MON[m.type], ph = kingPh(m), yf = youngF(), c0 = Math.floor((m.x + 6 - OX) / CELL);
+  if(!m.ph){ m.ph = 1; m.abT = 5 * yf; m.leapCd = 0; }
+  if(ph > m.ph){ m.ph = ph;
+    banner(`👑 ${esc(M.n)} 第 ${ph} 階段！<br><span style="font-size:18px">${KING_PH[m.type][ph - 1]}</span>`, 2200, true); sfx.boss(); G.shake = .4;
+    if(m.type === "k_summon" && ph === 3){ m.hp = Math.min(m.max, m.hp + m.max * .1); puff(m.x + 12, rowY(m.row) + 20, "#4cd964", 20); }
+    if(m.type === "k_iron" && ph === 2){ m.armor = Math.round(m.armorMax * .6); puff(m.x + 12, rowY(m.row) + 10, "#cfd8dc", 20); }
+    if(m.type === "k_bomb" && ph === 3) dzStart("boom", {src:m});
+    if(m.type === "k_storm" && ph >= 2) m.ranged = true;
+  }
+  m.abT -= dt; m.leapCd = Math.max(0, (m.leapCd || 0) - dt);
+  if(m.jumpT > 0){ m.jumpT -= dt; if(m.jumpT <= 0){ puff(m.x + 12, rowY(m.row) + 30, "#ffb74d", 14); m.row = m.jumpTo; puff(m.x + 12, rowY(m.row) + 30, "#ffb74d", 14); } }
+  if(m.charge > 0) m.charge = Math.max(0, m.charge - dt);
+  if(m.abT > 0 || m.x > TARGET_X) return;
+  switch(m.type){
+    case "k_summon": { m.abT = [9, 7, 5][ph - 1] * yf; const n = G.g === "g2" ? [1, 2, 2][ph - 1] : [2, 3, 3][ph - 1]; const pool = ph === 1 ? ["basic", "fast"] : ph === 2 ? ["basic", "armor", "jumper", "fast"] : ["armor", "jumper", "ranged", "tank"];
+      for(let i = 0; i < n; i++){ const rr = Math.max(0, Math.min(ROWS - 1, m.row + [-1, 1, -2, 2, 0][i % 5])); const mm = newMon(pool[rnd(pool.length)], rr, Math.min(W - 20, m.x + 14)); G.mons.push(mm); puff(mm.x + 10, rowY(rr) + 24, "#a97ff0", 12); }
+      break; }
+    case "k_stomp": { m.abT = [9, 8, 7][ph - 1] * yf; const cells = [];
+      const rows = ph >= 2 ? [m.row - 1, m.row, m.row + 1] : [m.row]; for(const r of rows) for(const c of [c0 - 1, c0 - 2]) cells.push([r, c]);
+      const ext = []; if(ph === 3) for(let c = 0; c < c0 - 2; c++){ cells.push([m.row, c]); ext.push(m.row * 10 + c); }
+      addWarn(cells, warnSec(), "stomp", G.g === "g2" ? 500 : 900, {ring:.4, ext, cr:m.row, cc:c0 - 1}); m.windup = warnSec(); break; }
+    case "k_jump": { m.abT = [8, 6, 4.5][ph - 1] * yf; const cnt = r => G.plants[r].filter((p, c) => p && c < c0).length;
+      const opts = [m.row - 1, m.row + 1].filter(r => r >= 0 && r < ROWS).sort((a, b) => cnt(a) - cnt(b)); if(opts.length){ m.jumpTo = opts[0]; m.jumpT = 1.2; } break; }
+    case "k_storm": { m.abT = [18, 15, 13][ph - 1] * yf; dzStart("tornado", {src:m, rows:ph === 3 && G.g !== "g2" ? 2 : 1}); break; }
+    case "k_bomb": { m.abT = [10, 8.5, 7][ph - 1] * yf; let best = null, bv = -1;
+      for(let r = 0; r < ROWS; r++) for(let c = 0; c < Math.min(COLS, c0); c++){ const p = G.plants[r][c]; if(p && !DEF[p.type].immune){ const v = DEF[p.type].cost + rnd(40); if(v > bv){ bv = v; best = [r, c]; } } }
+      if(best){ const [r, c] = best, cells = []; for(let dr = -1; dr <= 1; dr++) for(let dc = -1; dc <= 1; dc++) cells.push([r + dr, c + dc]);
+        addWarn(cells, warnSec(), "bomb", G.g === "g2" ? 600 : 1000, {ring:G.g === "g2" ? .2 : .35, cr:r, cc:c, bx:m.x, by:rowY(m.row) + 10}); }
+      break; }
+    case "k_iron": { m.abT = (ph === 3 ? 10 : 6) * yf; if(ph === 3){ const cells = []; for(let c = 0; c < c0; c++) cells.push([m.row, c]); addWarn(cells, 1.6, "row", 0); m.chargeIn = 1.6; } break; }
+  }
+}
+/* 每一隻怪獸每一格都會呼叫：回傳 true ＝ 這一格已經自己動完（跳過一般的吃／走） */
+function monSpecial(m, dt, p, c){
+  const M = MON[m.type];
+  if(M.king){ kingAI(m, dt); if(m.chargeIn > 0){ m.chargeIn -= dt; if(m.chargeIn <= 0) m.charge = 3; }
+    if(m.windup > 0){ m.windup -= dt; m.eat = false; return true; }
+    if(m.jumpT > 0){ m.eat = false; return true; }
+    if(p && m.charge > 0){ const r = m.row; plantHurt(r, c, 650); m.charge = 0; G.shake = .3; puff(colX(c) + 24, rowY(r) + 24, "#cfd8dc", 16); return true; }
+    if(p && m.type === "k_jump" && m.ph >= 2 && !m.leapCd && !DEF[p.type].tall){ m.x -= CELL * 1.15; m.leapCd = 9 * youngF(); puff(m.x + 20, rowY(m.row) + 30, "#ffb74d", 16); return true; }
+    return false; }
+  if(M.jump && p && !m.jumped){ m.jumped = 1;
+    if(DEF[p.type].tall){ puff(m.x + 6, rowY(m.row) + 10, "#c8a070", 8); return false; }
+    m.x -= CELL * 1.1; m.sp *= .6; puff(m.x + 10, rowY(m.row) + 30, "#ffd23f", 10); return true; }
+  if(p && DEF[p.type].kind === "divert" && !m.boss){ m.bite = (m.bite || 0) + dt; if(m.bite > .5){ m.bite = 0; const r0 = m.row;
+      plantHurt(r0, c, 40); const opts = [r0 - 1, r0 + 1].filter(r => r >= 0 && r < ROWS); m.row = opts[rnd(opts.length)]; m.eat = false; puff(m.x + 10, rowY(m.row) + 20, "#f5f0e6", 8); return true; }
+    return false; }
+  return false;
+}
+
+/* ---------- ⚠️ 災害事件 ---------- */
+const DZ = {
+  boom:   {n:"大爆炸", e:"💥", how:"炸掉一大片植物（中間那格直接炸飛）", tip:"☂️ 雲朵傘可以擋 3/4"},
+  tornado:{n:"龍捲風", e:"🌪️", how:"把一整排植物捲起來、亂丟到別的格子", tip:"🪢 定根藤抓得住"},
+  storm:  {n:"雷暴",   e:"⚡", how:"打雷劈中好幾株植物", tip:"☂️ 雲朵傘可以擋 3/4"},
+  quake:  {n:"大地震", e:"🌋", how:"每一排植物都滑一格、受傷、暈 3 秒", tip:"🪢 定根藤抓得住"}
+};
+/* 這一關要來幾次災害：小二比較少、比較晚；等級越高越多 */
+function planDisasters(){
+  const g = G.g, lv = G.lv, n = G.waves.length; let cnt, first;
+  if(g === "g2"){ cnt = lv >= 3 ? 2 : 1; first = 2; } else if(g === "g4"){ cnt = lv >= 3 ? 3 : 2; first = 1; } else { cnt = lv >= 2 ? 3 : 2; first = 1; }
+  if(lv >= 6 && g !== "g2") cnt++;
+  const kinds = g === "g2" ? ["boom", "storm", "tornado"] : ["boom", "tornado", "storm", "quake"], ks = shuffle(kinds), plan = [];
+  const ws = []; for(let w = first; w < n; w++) ws.push(w);
+  for(let i = 0; i < cnt && ws.length; i++){ const w = ws[i % ws.length]; plan.push({w, at:(i >= ws.length ? 30 : 9) + rnd(12), k:ks[i % ks.length], done:false}); }
+  G.dzPlan = plan; G.dzWaveT = 0;
+}
+function dzTargets(k, opt){
+  const val = (r, c) => { const p = G.plants[r] && G.plants[r][c]; return p && !DEF[p.type].immune ? DEF[p.type].cost + p.hp / 40 : 0; };
+  if(k === "boom"){ let best = [2, 4], bv = -1; for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS - 1; c++){ let v = 0; for(let dr = -1; dr <= 1; dr++) for(let dc = -1; dc <= 1; dc++) v += val(r + dr, c + dc) * (dr || dc ? 1 : 1.5); v += Math.random() * 5; if(v > bv){ bv = v; best = [r, c]; } }
+    const [r, c] = best, cells = []; for(let dr = -1; dr <= 1; dr++) for(let dc = -1; dc <= 1; dc++) if(G.g !== "g2" || !dr || !dc) cells.push([r + dr, c + dc]);
+    return {cells:cells.filter(([a, b]) => a >= 0 && a < ROWS && b >= 0 && b < COLS), cr:r, cc:c}; }
+  if(k === "tornado"){ const n = (opt && opt.rows) || (G.g === "g6" && G.lv >= 3 ? 2 : 1);
+    const rows = [0, 1, 2, 3, 4].map(r => [r, G.plants[r].filter(Boolean).length + Math.random()]).sort((a, b) => b[1] - a[1]).slice(0, n).map(x => x[0]);
+    const cells = []; for(const r of rows) for(let c = 0; c < COLS; c++) cells.push([r, c]); return {cells, rows}; }
+  if(k === "storm"){ const n = G.g === "g2" ? 2 : G.g === "g4" ? 3 : 4; const all = []; for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++) if(val(r, c)) all.push([r, c, val(r, c) + Math.random() * 60]);
+    all.sort((a, b) => b[2] - a[2]); const cells = all.slice(0, n).map(x => [x[0], x[1]]); while(cells.length < n) cells.push([rnd(ROWS), 1 + rnd(COLS - 2)]); return {cells}; }
+  return {cells:[]};   // 地震：全場
+}
+function dzStart(k, opt){
+  if(!G || G.done || G.dz || (G.net && G.net.guest)) return false;
+  const T = dzTargets(k, opt), t = warnSec() + (k === "quake" ? .5 : 0) + 0.6;
+  G.dz = Object.assign({k, st:"warn", t, max:t, shield:false, tried:false, id:(G.dzId = (G.dzId || 0) + 1)}, T);
+  banner(`⚠️ ${DZ[k].e} ${DZ[k].n}要來了！<br><span style="font-size:17px">${DZ[k].how}<br>快按上面「🛡️ 答題擋下」</span>`, 1900, true);
+  sfx.boss(); return true;
+}
+function dzShield(){ if(!G || !G.dz || G.dz.st !== "warn") return false; G.dz.shield = true; G.dz.t = Math.min(G.dz.t, 0.8);
+  banner(`🛡️ 知識護盾！<br><span style="font-size:18px">擋下了${DZ[G.dz.k].n}</span>`, 1800); sfx.ok(); return true; }
+function dzHit(){
+  const z = G.dz; if(!z) return; const young = G.g === "g2"; let lost = 0, hurtN = 0;
+  const costOf = p => DEF[p.type].cost;
+  const hurtP = (r, c, d) => { const p = G.plants[r][c]; if(!p) return; const D = DEF[p.type]; if(D.immune) return; if((z.k === "boom" || z.k === "storm") && nearPlant(r, c, "cloud")) d *= .25; if(d <= 0) return; hurtN++; const cost = costOf(p); if(plantHurt(r, c, d)) lost += cost; };
+  if(z.shield){ if(z.k === "tornado") for(const m of G.mons) if(!m.dead && z.rows.includes(m.row)) m.x = Math.min(W + 4, m.x + CELL); G.dz = null; G.dzDone = (G.dzDone || 0) + 1; G.dzBlocked = (G.dzBlocked || 0) + 1; return; }
+  if(z.k === "boom"){
+    for(const [r, c] of z.cells){ const p = G.plants[r][c]; const center = r === z.cr && c === z.cc; if(p) hurtP(r, c, center ? (young ? p.max * .8 : 99999) : p.max * (young ? .35 : .6)); puff(colX(c) + 24, rowY(r) + 24, "#ff8a00", 16); puff(colX(c) + 24, rowY(r) + 24, "#3d2414", 8); }
+    for(const m of G.mons) if(!m.dead && z.cells.some(([r, c]) => r === m.row && Math.abs(m.x + 10 - (colX(c) + 24)) < CELL)) hurt(m, 250, true);
+    G.shake = .6; banner(`💥 大爆炸！`, 1300, true);
+  } else if(z.k === "storm"){
+    for(const [r, c] of z.cells){ const p = G.plants[r][c]; if(p) hurtP(r, c, p.max * (young ? .45 : .7)); G.zaps = (G.zaps || []).concat([{pts:[[colX(c) + 18, 0], [colX(c) + 30, rowY(r) - 10], [colX(c) + 20, rowY(r) + 10], [colX(c) + 26, rowY(r) + 30]], life:.45, sky:1}]); }
+    G.shake = .3; banner(`⚡ 雷暴！`, 1200, true);
+  } else if(z.k === "tornado"){
+    const moved = [];
+    for(const r of z.rows) for(let c = COLS - 1; c >= 0; c--){ const p = G.plants[r][c]; if(!p || DEF[p.type].immune || nearPlant(r, c, "anchor")) continue;
+      G.plants[r][c] = null; if(!young && Math.random() < (G.g === "g6" ? .3 : .2)){ lost += costOf(p); puff(colX(c) + 24, rowY(r) + 10, "#cfd8dc", 10); continue; }
+      moved.push([p, r, c]); }
+    for(const [p, r, c] of moved){ const empty = []; for(let rr = 0; rr < ROWS; rr++) for(let cc = 0; cc < COLS - 1; cc++) if(!G.plants[rr][cc] && !(z.rows.includes(rr) && cc === c)) empty.push([rr, cc]);
+      if(!empty.length){ lost += costOf(p); continue; } const [rr, cc] = empty[rnd(empty.length)];
+      p.fly = {x:colX(c), y:rowY(r), t:0}; p.hp = Math.max(1, p.hp - p.max * (young ? .1 : .2)); p.t = Math.max(p.t || 0, 1); G.plants[rr][cc] = p; hurtN++; }
+    for(const m of G.mons) if(!m.dead && z.rows.includes(m.row)) m.x = Math.min(W + 4, m.x + CELL * .5);
+    G.tw = {rows:z.rows, x:W + 20, life:1.4}; G.shake = .3; banner(`🌪️ 龍捲風把植物捲走了！`, 1400, true);
+  } else if(z.k === "quake"){
+    for(let r = 0; r < ROWS; r++){ const dir = Math.random() < .5 ? -1 : 1; const cs = []; for(let c = 0; c < COLS; c++) if(G.plants[r][c]) cs.push(c); if(dir > 0) cs.reverse();
+      for(const c of cs){ const p = G.plants[r][c], nc = c + dir; if(DEF[p.type].immune || nearPlant(r, c, "anchor")) continue;
+        if(nc >= 0 && nc < COLS && !G.plants[r][nc]){ G.plants[r][nc] = p; G.plants[r][c] = null; p.fly = {x:colX(c), y:rowY(r), t:.5}; } } }
+    for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++){ const p = G.plants[r][c]; if(!p || DEF[p.type].immune || nearPlant(r, c, "anchor")) continue; hurtP(r, c, p.max * (young ? .1 : .15)); if(G.plants[r][c]) G.plants[r][c].stun = 3; }
+    G.shake = 1.2; banner(`🌋 大地震！植物都滑開了，暈 3 秒`, 1500, true);
+  }
+  sfx.boss(); G.dz = null; G.dzDone = (G.dzDone || 0) + 1;
+  if(lost > 0 || hurtN > 0){ const amt = Math.max(60, Math.round(lost * .6 / 5) * 5); G.rescue = {amt, t:30};
+    setTimeout(() => { if(G && G.rescue && !G.done) toast(`🆘 按「🆘 緊急陽光」答一題，拿 +${amt} ☀ 重建花園！`, 2600); }, 900); }
+}
+function dzTick(dt){
+  if(G.phase === "wave" && G.dzPlan){ G.dzWaveT += dt; for(const d of G.dzPlan) if(!d.done && d.w === G.wave && G.dzWaveT >= d.at && !G.dz){ d.done = true; dzStart(d.k); } }
+  if(G.dz){ G.dz.t -= dt; if(G.dz.t <= 0) dzHit(); }
+  if(G.rescue){ G.rescue.t -= dt; if(G.rescue.t <= 0) G.rescue = null; }
+  if(G.warns && G.warns.length){ for(const w of G.warns){ w.t -= dt; if(w.t <= 0){ w.done = true; resolveWarn(w); } } G.warns = G.warns.filter(w => !w.done); }
+  if(G.shake > 0) G.shake = Math.max(0, G.shake - dt);
+  if(G.tw){ G.tw.x -= 420 * dt; G.tw.life -= dt; if(G.tw.life <= 0) G.tw = null; }
+  if(G.zaps){ for(const z of G.zaps) z.life -= dt; G.zaps = G.zaps.filter(z => z.life > 0); }
+  for(let r = 0; r < ROWS; r++) for(let c = 0; c < COLS; c++){ const p = G.plants[r][c]; if(p && p.fly){ p.fly.t += dt * 1.4; if(p.fly.t >= 1) p.fly = null; } }
+}
+/* 答題擋災害／拿緊急陽光（solo：戰場暫停時答；連線：送給主持的平板） */
+function askFor(kind){
+  if(!G || G.done) return;
+  if(kind === "shield" && !(G.dz && G.dz.st === "warn" && !G.dz.tried)) return;
+  if(kind === "rescue" && !G.rescue) return;
+  G.askFor = kind; G.askForId = kind === "shield" ? G.dz.id : 0;
+  if(G.asking){ if(G.qs && G.qs.done) nextQ(); renderQ(); hud(); return; }
+  openAsk(); if(G.qs && G.qs.done) nextQ();
+}
+function askForResult(ok, first){
+  const k = G.askFor; if(!k) return ""; G.askFor = null;
+  if(k === "shield"){
+    if(ok && first){ if(G.net && G.net.guest){ netCmd({a:"sh", i:G.askForId}); return "<br>🛡️ 護盾送出！擋下災害"; } return dzShield() ? "<br>🛡️ 知識護盾！擋下災害" : "<br>（災害已經過去了）"; }
+    if(G.dz) G.dz.tried = true; return "<br>😢 這次護盾沒有成功，快補種植物準備重建！";
+  }
+  if(k === "rescue" && ok){ if(G.net && G.net.guest){ netCmd({a:"rs"}); return "<br>🆘 緊急陽光送給隊伍！"; } const r = G.rescue; if(!r) return ""; G.rescue = null; addSun(r.amt); return `<br>🆘 緊急陽光 +${r.amt} ☀，快重建！`; }
+  return "";
+}
+
+/* ---------- 畫面：警告格子、災害、龍捲風、閃電、殭屍王名牌 ---------- */
+function draw31Under(visT){
+  const flash = .25 + .3 * Math.abs(Math.sin(visT * 9));
+  for(const w of (G.warns || [])){ for(const [r, c] of w.cells){ ctx.fillStyle = w.kind === "row" ? `rgba(207,216,220,${flash})` : `rgba(229,72,77,${flash})`; ctx.fillRect(colX(c) + 1, rowY(r) + 1, CELL - 2, CELL - 2); }
+    const [r0, c0] = w.cells[0]; if(w.kind !== "row"){ ctx.font = "bold 13px monospace"; ctx.fillStyle = "#1b1b2a"; ctx.fillRect(colX(w.cc != null ? w.cc : c0) + 14, rowY(w.cr != null ? w.cr : r0) + 2, 20, 15); ctx.fillStyle = "#ffd23f"; ctx.fillText(String(Math.max(1, Math.ceil(w.t))), colX(w.cc != null ? w.cc : c0) + 20, rowY(w.cr != null ? w.cr : r0) + 14); } }
+  const z = G.dz; if(z && z.st === "warn"){
+    const col = z.shield ? `rgba(126,226,168,${flash})` : z.k === "boom" ? `rgba(255,138,0,${flash})` : z.k === "storm" ? `rgba(142,90,214,${flash})` : z.k === "tornado" ? `rgba(144,164,174,${flash + .1})` : `rgba(141,110,99,${flash})`;
+    if(z.k === "quake"){ ctx.fillStyle = col; ctx.fillRect(OX, OY, COLS * CELL, ROWS * CELL); }
+    else for(const [r, c] of (z.cells || [])){ ctx.fillStyle = col; ctx.fillRect(colX(c) + 1, rowY(r) + 1, CELL - 2, CELL - 2); }
+  }
+}
+function draw31Over(visT){
+  const fl = .5 + .5 * Math.abs(Math.sin(visT * 9));
+  for(const w of (G.warns || [])) if(w.kind !== "row") for(const [r, c] of w.cells){ ctx.strokeStyle = `rgba(229,72,77,${fl})`; ctx.lineWidth = 3; ctx.strokeRect(colX(c) + 2.5, rowY(r) + 2.5, CELL - 5, CELL - 5); }
+  if(G.dz && G.dz.st === "warn" && G.dz.k !== "quake") for(const [r, c] of (G.dz.cells || [])){ ctx.strokeStyle = G.dz.shield ? `rgba(47,179,107,${fl})` : `rgba(255,138,0,${fl})`; ctx.lineWidth = 3; ctx.strokeRect(colX(c) + 2.5, rowY(r) + 2.5, CELL - 5, CELL - 5); }
+  const calm = !!(G.asking || G.paused), sh = G.shake > 0 && !calm ? `translate(${rnd(7) - 3}px,${rnd(7) - 3}px)` : ""; if(cv.style.transform !== sh) cv.style.transform = sh;
+  if(G.tw){ for(const r of G.tw.rows){ const s = SPR.tornado; for(let i = 0; i < 2; i++) ctx.drawImage(s, Math.round(G.tw.x + i * 26 + Math.sin(visT * 20 + i) * 4), rowY(r) - 6, s.width * 2, s.height * 2); } }
+  for(const z of (G.zaps || [])){ ctx.strokeStyle = z.sky ? "#fff3a0" : "#c9a7ff"; ctx.lineWidth = z.sky ? 4 : 3; ctx.globalAlpha = Math.min(1, z.life * 4); ctx.beginPath(); z.pts.forEach(([x, y], i) => i ? ctx.lineTo(x + (calm ? 0 : rnd(5) - 2), y + (calm ? 0 : rnd(5) - 2)) : ctx.moveTo(x, y)); ctx.stroke();
+    ctx.strokeStyle = "#ffffff"; ctx.lineWidth = 1; ctx.stroke(); ctx.globalAlpha = 1; }
+  for(const w of (G.warns || [])) if(w.kind === "bomb" && w.bx){ const f = 1 - Math.max(0, w.t) / w.max, tx = colX(w.cc) + 24, ty = rowY(w.cr) + 20, x = w.bx + (tx - w.bx) * f, y = w.by + (ty - w.by) * f - Math.sin(f * Math.PI) * 70;
+    ctx.drawImage(SPR.bomb, Math.round(x - 9), Math.round(y - 9), 18, 18); }
+  const z = G.dz; if(z && z.st === "warn"){ const D = DZ[z.k]; const txt = `${z.shield ? "🛡️ 擋下了" : "⚠ " + D.n + " " + Math.max(1, Math.ceil(z.t))}`;
+    ctx.font = "bold 16px monospace"; const w = ctx.measureText(txt).width + 16; ctx.fillStyle = z.shield ? "#2fb36b" : "#c0102a"; ctx.fillRect(W / 2 - w / 2, OY + 2, w, 22); ctx.fillStyle = "#fffaf0"; ctx.fillText(txt, W / 2 - w / 2 + 8, OY + 18);
+    if(z.k === "tornado") for(const r of (z.rows || [])){ ctx.drawImage(SPR.tornado, FIELD_R + 4 + Math.sin(visT * 12) * 3, rowY(r) - 4, 24, 39); }
+  }
+  for(const m of G.mons) if(MON[m.type] && MON[m.type].king){ const s = SPR[m.type][0], y = rowY(m.row) + CELL - s.height * 2 + 8, x = Math.round(m.x - 6); const ph = m.ph || kingPh(m);
+    ctx.font = "bold 9px monospace"; ctx.fillStyle = "#1b1b2a"; ctx.fillRect(x + 28, y - 16, 26, 10); ctx.fillStyle = ph >= 3 ? "#ff6b6b" : ph === 2 ? "#ffb000" : "#ffd23f"; ctx.fillText("P" + ph + "♛", x + 30, y - 8);
+    if(m.jumpT > 0 && m.jumpTo != null){ ctx.fillStyle = `rgba(255,183,77,${.3 + .3 * Math.abs(Math.sin(visT * 10))})`; ctx.fillRect(Math.round(m.x) - 6, rowY(m.jumpTo) + 4, 56, CELL - 8); } }
+}
+/* 植物被龍捲風／地震移動時：從原本的位置飛過去 */
+function plantFly(p, r, c){ if(!p.fly) return [0, 0]; const f = Math.min(1, Math.max(0, p.fly.t)); return [(p.fly.x - colX(c)) * (1 - f), (p.fly.y - rowY(r)) * (1 - f) - Math.sin(f * Math.PI) * 34]; }
+function hud31(){
+  const db = $("dzbtn"), rb = $("rsbtn"); if(!db || !rb || !G) return;
+  const z = G.dz, canS = !!(z && z.st === "warn" && !z.tried && !z.shield && !G.done && !(G.net && G.net.prep));
+  db.classList.toggle("on", canS && !G.asking); if(canS) setT(db, `🛡️ 答題擋下${DZ[z.k].n}（${Math.max(1, Math.ceil(z.t))}）`);
+  const canR = !!(G.rescue && !G.done); rb.classList.toggle("on", canR && !G.asking); if(canR) setT(rb, `🆘 緊急陽光 +${G.rescue.amt}`);
+}
+
+/* ---------- 過關獎勵：新植物、稀有植物 ---------- */
+function kingReward(K, ktype){
+  if(!K || !ktype || !MON[ktype]) return [];
+  K.kings = K.kings || {}; K.rare = K.rare || {}; K.kings[ktype] = (K.kings[ktype] || 0) + 1;
+  const sig = KING_SIG[ktype], out = [];
+  if(sig && !K.rare[sig]){ K.rare[sig] = 1; out.push(sig); }
+  else { const left = RARES.filter(d => !K.rare[d]); if(left.length && Math.random() < .4){ const d = left[rnd(left.length)]; K.rare[d] = 1; out.push(d); } else { K.coins += 20; } }
+  for(const d of out) if(Array.isArray(K.deck) && K.deck.length && K.deck.length < 12 && !K.deck.includes(d)) K.deck.push(d);
+  return out;
+}
+const plantTag = d => `<span class="unlp"><img src="${sprURL(d, 40)}" alt="">${DEF[d].rare ? "🌟" : ""}${esc(DEF[d].n)}</span>`;
+function seedList(){
+  const own = DEX_ORDER.filter(defOwned);
+  if(G && G.team && !G.net) return own;
+  const k = kid(), deck = (k.deck || []).filter(d => own.includes(d)); return deck.length ? deck : own;
+}
+function newPlantsCount(k){ k = k || kid(); return DEX_ORDER.filter(d => defOwnedBy(k, d) && !(k.seen || {})[d] && (DEF[d].need || DEF[d].rare || DEF[d].price)).length; }
+
+/* ---------- 📖 植物圖鑑 ---------- */
+let dexTab = "plants";
+const KIND_TXT = {wall:"🧱 擋路", shoot:"🎯 射擊", slow:"❄️ 減速", splash:"💥 範圍", double:"🎯 雙發", gen:"☀ 產陽光", shield:"🛡️ 擋墨水", heal:"💚 補血", pierce:"🗡️ 穿透", mine:"💣 地雷", laser:"🔆 光束",
+  umbrella:"☂️ 擋災害", freeze:"🧊 冰凍", cherry:"💥 一次性炸彈", anchor:"🪢 防亂", divert:"🔀 換路", spike:"🦔 地面", chomp:"🦷 吞怪", magnet:"🧲 吸盔甲", torch:"🔥 加倍", star:"⭐ 三路", quad:"🎯 四連發", fan:"🍀 吹風",
+  boost:"💎 加強", chain:"⚡ 連鎖", rainbow:"🌈 隨機", breath:"🔥 噴火"};
+function howGet(d, k){ const D = DEF[d];
+  if(D.rare) return D.rare === "any" ? "🌟 稀有：打敗任何殭屍王隨機掉落" : `🌟 稀有：打敗 ${MON[D.rare].e} ${MON[D.rare].n} 掉落`;
+  if(D.need) return `🌱 累積過關 ${D.need} 次${defOwnedBy(k, d) ? "" : `（還差 ${D.need - clears(k)} 次）`}`;
+  if(D.price) return `🛒 商店 🪙 ${D.price}`; return "🌱 一開始就有"; }
+function renderDex(){
+  const k = kid(), own = DEX_ORDER.filter(d => defOwnedBy(k, d)), deck = k.deck || [];
+  $("dexTitle").textContent = `📖 植物圖鑑｜${kidName(SV.cur)}`;
+  $("dexTabs").innerHTML = [["plants", `🌱 植物 ${own.length}/${DEX_ORDER.length}`], ["kings", "👑 殭屍王"], ["dz", "⚠️ 災害"]].map(([t, n]) => `<button class="${dexTab === t ? "on" : ""}" data-dextab="${t}">${n}</button>`).join("");
+  let h = "";
+  if(dexTab === "plants"){
+    h = `<p class="lvnote">🌱 每過關 1 次就多一種植物（任何單元、團體戰、連線都算）；打敗👑殭屍王會掉落🌟稀有植物。現在累積過關 <b>${clears(k)}</b> 次。<br>⭐ 按「帶上場」挑最多 12 種放進種子列（都不挑＝全部帶）。現在帶 ${deck.filter(d => own.includes(d)).length || "全部"} 種。</p>`;
+    h += `<div class="dex">${DEX_ORDER.map((d, i) => { const D = DEF[d], has = own.includes(d), isNew = has && !(k.seen || {})[d] && !!(D.need || D.rare || D.price), st = [`☀${D.cost}`, `❤${D.hp}`];
+      if(D.dmg) st.push(`⚔${D.dmg}${D.rate ? "/" + D.rate + "秒" : ""}`); if(D.gain) st.push(`+${D.gain}☀/${D.rate}秒`);
+      return `<div class="card dexc ${has ? "" : "off"} ${D.rare ? "rare" : ""}"><span class="no">No.${String(i + 1).padStart(2, "0")}</span>${isNew ? `<span class="nw">NEW</span>` : ""}
+        <img src="${has ? sprURL(d, 64) : sprURL(d + "_sil", 64)}" alt=""><h4>${has ? `${D.el} ${esc(D.n)}` : "？？？"}</h4><small class="kd">${KIND_TXT[D.kind] || ""}${D.tall ? "・🎍 擋跳" : ""}${D.immune ? "・🛡️ 不怕災害" : ""}</small>
+        ${has ? `<p>${esc(D.d)}</p><small class="st">${st.join("　")}</small>` : `<p class="lk">${howGet(d, k)}</p>`}
+        ${has ? `<button class="pbtn mini ${deck.includes(d) ? "sun" : "gray"}" data-deck="${d}">${deck.includes(d) ? "⭐ 帶上場" : "☆ 帶上場"}</button>` : ""}<small class="hg">${has ? howGet(d, k) : ""}</small></div>`; }).join("")}</div>`;
+    k.seen = k.seen || {}; for(const d of own) k.seen[d] = 1; save();
+  } else if(dexTab === "kings"){
+    h = `<p class="lvnote">👑 每一關最後一波是殭屍王。殭屍王有 3 個階段（血條剩 2/3、1/3 時變身），招式會越來越強。招式要放之前，地上會先<b>閃紅色</b>倒數，看到就快補種、換位置！</p><div class="dex">${KING_ORDER.map(t => { const M = MON[t], n = (k.kings || {})[t] || 0;
+      return `<div class="card dexc king ${n ? "" : "off2"}"><img src="${sprURL(t + "0", 72)}" alt=""><h4>${M.e} ${esc(M.n)}</h4><small class="kd">打倒 ${n} 次</small><ol>${KING_PH[t].map(x => `<li>${esc(x)}</li>`).join("")}</ol><small class="hg">掉落：🌟 ${DEF[KING_SIG[t]].el} ${esc(DEF[KING_SIG[t]].n)}${(k.rare || {})[KING_SIG[t]] ? " ✅" : ""}</small></div>`; }).join("")}</div>`;
+  } else {
+    h = `<p class="lvnote">⚠️ 防守時會突然發生災害！來之前會先<b>警告 2～4 秒</b>（小二比較久），戰場上會閃出範圍。<br>🛡️ 快按「答題擋下」：第一次就答對＝知識護盾，整個擋掉！（自己玩的時候答題，戰場一樣會暫停）<br>🆘 沒擋到也沒關係：按「緊急陽光」答對一題，拿陽光重建花園。</p><div class="dex">${Object.entries(DZ).map(([k2, D]) =>
+      `<div class="card dexc"><div style="font-size:52px">${D.e}</div><h4>${D.n}</h4><p>${D.how}</p><small class="hg">🛡️ 答題擋下・🍀 三葉草風扇吹散・${D.tip}</small></div>`).join("")}</div>`;
+  }
+  $("dexBody").innerHTML = h;
+}
+const _goDex = go; go = function(s){ _goDex(s); if(s === "dex") renderDex(); if(s === "title") titleDex(); };
+function titleDex(){ const b = $("dexBtn"); if(!b) return; const n = newPlantsCount(); b.innerHTML = `📖 植物圖鑑${n ? ` <span class="nwc">🆕 ${n}</span>` : ""}`; }
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("button"); if(!b || b.disabled) return; const d = b.dataset;
+  if(d.dextab){ dexTab = d.dextab; renderDex(); return; }
+  if(d.deck){ const k = kid(); k.deck = Array.isArray(k.deck) ? k.deck : []; const i = k.deck.indexOf(d.deck);
+    if(i >= 0) k.deck.splice(i, 1); else { if(k.deck.length >= 12){ toast("最多帶 12 種植物上場喔"); return; } k.deck.push(d.deck); } save(); renderDex(); return; }
+  if(d.act === "dzask"){ askFor("shield"); return; }
+  if(d.act === "rsask"){ askFor("rescue"); return; }
+});
+
+/* ---------- 連線：把警告、災害一起送出去 ---------- */
+function netEnc31(){
+  const w = (G.warns || []).map(x => x.cells.map(([r, c]) => "" + r + c).join(",") + "~" + Math.round(Math.max(0, x.t) * 10) + "~" + (x.kind === "row" ? "r" : x.kind === "bomb" ? "b" : "s") + "~" + (x.cr != null ? "" + x.cr + x.cc : "")).join("|");
+  const z = G.dz ? [G.dz.k, G.dz.st, Math.round(Math.max(0, G.dz.t) * 10), G.dz.shield ? 1 : 0, G.dz.tried ? 1 : 0, G.dz.id, (G.dz.cells || []).map(([r, c]) => "" + r + c).join(","), (G.dz.rows || []).join("")].join("~") : "";
+  return {w, z, tw:G.tw ? G.tw.rows.join("") : ""};
+}
+function netDec31(mv, hp){
+  const prevZ = G.dz;
+  G.warns = String(mv.w || "").split("|").filter(Boolean).map(s => { const [cs, t, k, cc] = s.split("~"); const cells = cs.split(",").filter(Boolean).map(x => [+x[0], +x[1]]); return {cells, t:+t / 10, max:Math.max(.1, +t / 10), kind:k === "r" ? "row" : k === "b" ? "bomb" : "stomp", cr:cc ? +cc[0] : null, cc:cc ? +cc[1] : null}; });
+  if(mv.z){ const [k, st, t, sh, tr, id, cs, rows] = String(mv.z).split("~"); G.dz = {k, st, t:+t / 10, max:+t / 10, shield:sh === "1", tried:tr === "1" || !!(prevZ && prevZ.id === +id && prevZ.tried), id:+id, cells:String(cs || "").split(",").filter(Boolean).map(x => [+x[0], +x[1]]), rows:String(rows || "").split("").map(Number)}; }
+  else { if(prevZ && !prevZ.shield) G.shake = .5; G.dz = null; }
+  if(mv.tw && !G.tw) G.tw = {rows:String(mv.tw).split("").map(Number), x:W + 20, life:1.4};
+  G.rescue = hp && hp.rs ? {amt:hp.rs, t:30} : null;
+}
+/* 其他平板：只做畫面（倒數、龍捲風、閃電、搖晃），真正的傷害在主持的平板算 */
+function guestFx31(dt){
+  for(const w of (G.warns || [])) w.t = Math.max(0, w.t - dt);
+  if(G.dz) G.dz.t = Math.max(0, G.dz.t - dt);
+  if(G.shake > 0) G.shake = Math.max(0, G.shake - dt);
+  if(G.tw){ G.tw.x -= 420 * dt; G.tw.life -= dt; if(G.tw.life <= 0) G.tw = null; }
+  if(G.zaps){ for(const z of G.zaps) z.life -= dt; G.zaps = G.zaps.filter(z => z.life > 0); }
+}
+
+function nextUnlockTxt(){ const k = kid(), cl = clears(k), nx = DEX_ORDER.filter(d => DEF[d].need && DEF[d].need > cl).sort((a, b) => DEF[a].need - DEF[b].need)[0];
+  return nx ? `再過關 ${DEF[nx].need - cl} 次，就能拿到 ${DEF[nx].el} ${DEF[nx].n}！` : "過關植物都收集完了！打敗👑殭屍王收集🌟稀有植物吧"; }
 /* ---------- 題目面板 ---------- */
 const FMT = {multi:"☑️ 複選", read:"📖 閱讀題組", table:"📊 看表格", order:"🔢 排順序", match:"🔗 配對", tf:"⭕❌ 是非"};
 function nextQ(){
@@ -1780,6 +2327,8 @@ function mqHTML(q){
 }
 function quizModeHTML(){
   if(!G) return "";
+  if(G.askFor === "shield" && G.dz) return `<div class="qmode dzq">🛡️ 擋下${DZ[G.dz.k].e} ${DZ[G.dz.k].n}：第一次就答對＝知識護盾！${G.net ? "（連線時戰場不會暫停，快！）" : "（戰場暫停中）"}</div>`;
+  if(G.askFor === "rescue" && G.rescue) return `<div class="qmode dzq">🆘 緊急陽光：答對拿 +${G.rescue.amt} ☀ 重建花園${G.net ? "" : "（戰場暫停中）"}</div>`;
   const p = G.team ? G.team.players[G.qs ? G.qs.who : 0] : null, pl = p ? `<span class="who" style="background:${p.color}">👤 輪到 ${esc(p.name)}（${GLBL[p.g]}）</span>` : "";
   if(G.net) return G.net.prep ? `<div class="qmode">🌐 連線準備：第 ${G.quizGoal - G.quizLeft + 1} / ${G.quizGoal} 題　答對的陽光、籌碼都存進隊伍</div>` : `<div class="qmode">🌐 連線戰鬥中答題：戰場不會暫停（隊友還在守）　答對陽光直接加進隊伍</div>`;
   if(G.phase === "quiz") return `<div class="qmode">${pl}📝 準備時間　第 ${G.quizGoal - G.quizLeft + 1} / ${G.quizGoal} 題　不限時　戰場暫停中</div>`;
@@ -1827,6 +2376,7 @@ function answer(oi, ev){
       if(G.stats.streak === 8) trait("focus", "一關裡連續答對 8 題");
     } else { G.stats.retry++; G.stats.streak = 0; if(st.tries >= 3) trait("grit", "錯了好幾次還是把題目答對"); }
     const coin = first ? 5 : 2; if(K) K.coins += coin; G.coinsGot += coin;
+    extra += askForResult(true, first);
     addSun(gain, P); sfx.ok(); flySun(gain, ev); save(); if(G.net) netAnswered(true, first, gain);
     st.fb = {cls:"good", html:`<b>✅ 答對了！ +${gain} ☀${P && G.team.split ? `（給 ${esc(P.name)}）` : ""}${extra}</b><br>${esc(sec.e)}${afterBtns(first)}`};
     renderQ(); hud(); renderSeedsLight();
@@ -1834,10 +2384,11 @@ function answer(oi, ev){
     st.done = true;
     if(oi >= 0 && !st.picked.includes(oi)) st.picked.push(oi);
     G.stats.streak = 0; sfx.bad(); if(G.net) netAnswered(false, false, 0);
+    const afr = askForResult(false, false);
     if(st.tries === 1){ G.stats.wrong.push(q.id); if(!G.team) G.again.push({q, after:G.stats.ans + 3}); }
     const why = oi >= 0 && sec.w ? sec.w[String(oi)] : "";
     const ansTxt = q.mm && Array.isArray(q.mo) ? "請看上面標出的正確答案。" : `✅ 正確答案：${esc(q.o[sec.c])}`;
-    st.fb = {cls:"hint", html:`<b>🤔 這題先看答案，不扣陽光！</b>${why ? `<br>❌ ${esc(why)}` : ""}<br>${ansTxt}<br>📖 ${esc(sec.e || sec.h || "再讀一次題目的關鍵字。")}${q.u && sec.h ? `<br>💡 ${esc(sec.h)}` : ""}<br><small>這題稍後會再出現，再練習一次。</small>${afterBtns(false)}`};
+    st.fb = {cls:"hint", html:`<b>🤔 這題先看答案，不扣陽光！</b>${afr}${why ? `<br>❌ ${esc(why)}` : ""}<br>${ansTxt}<br>📖 ${esc(sec.e || sec.h || "再讀一次題目的關鍵字。")}${q.u && sec.h ? `<br>💡 ${esc(sec.h)}` : ""}<br><small>這題稍後會再出現，再練習一次。</small>${afterBtns(false)}`};
     if(q.mm) st.msel = null;
     renderQ(); hud();
   }
@@ -1870,7 +2421,7 @@ function finishQuizQ(){
 function winLevel(){
   if(G.done) return;
   if(G.net){ netEnd(true); return; } G.done = true; G.phase = "won"; G.asking = false; clearTimeout(G.autoT); closeAsk(true); sfx.win();
-  if(G.team){ SV.team.wins = (SV.team.wins || 0) + 1; credit(30); G.coinsGot += 30; const un = []; for(const p of G.team.players) if(p.prof){ const before = DEF_ORDER.filter(d => defOwnedBy(SV.kids[p.prof], d)); SV.kids[p.prof].wins.team = (SV.kids[p.prof].wins.team || 0) + 1; DEF_ORDER.forEach(d => { if(!before.includes(d) && defOwnedBy(SV.kids[p.prof], d)) un.push(`${p.name}：${DEF[d].el} ${DEF[d].n}`); }); } G.unlocked = un; save(); hud(); setTimeout(() => showResult(true, 3, G.stats.ans ? G.stats.first / G.stats.ans : 0), 900); return; }
+  if(G.team){ SV.team.wins = (SV.team.wins || 0) + 1; credit(30); G.coinsGot += 30; const un = [], uk = []; for(const p of G.team.players) if(p.prof){ const K = SV.kids[p.prof], before = DEF_ORDER.filter(d => defOwnedBy(K, d)); K.wins.team = (K.wins.team || 0) + 1; kingReward(K, G.kingKilled); DEF_ORDER.forEach(d => { if(!before.includes(d) && defOwnedBy(K, d)){ un.push(`${p.name}：${DEF[d].el} ${DEF[d].n}`); uk.push(d); } }); } G.unlocked = un; G.unlockKeys = uk; save(); hud(); setTimeout(() => showResult(true, 3, G.stats.ans ? G.stats.first / G.stats.ans : 0), 900); return; }
   const ownBefore = DEF_ORDER.filter(d => defOwnedBy(kid(), d));
   const k = kid(), s = G.stats, acc = s.ans ? s.first / s.ans : 0;
   let stars = 1; if(G.hearts === G.maxHearts && acc >= 0.75) stars = 3; else if(G.hearts >= 2 && acc >= 0.5) stars = 2;
@@ -1881,7 +2432,9 @@ function winLevel(){
   if((k.losses[G.cid] || 0) > 0 || G.lostHeart) gainTrait("resil", "跌倒了還是站起來贏");
   k.subjWin[G.card.subject] = 1; if(Object.keys(k.subjWin).length >= 3 && G.card.subject !== k.lastSubj) gainTrait("cross", "跨科目闖關");
   k.lastSubj = G.card.subject; k.best = Math.max(k.best, s.best);
-  G.unlocked = DEF_ORDER.filter(d => !ownBefore.includes(d) && defOwnedBy(k, d)).map(d => `${DEF[d].el} ${DEF[d].n}`); save(); hud();
+  kingReward(k, G.kingKilled);
+  G.unlockKeys = DEX_ORDER.filter(d => !ownBefore.includes(d) && defOwnedBy(k, d));
+  G.unlocked = G.unlockKeys.map(d => `${DEF[d].el} ${DEF[d].n}`); save(); hud();
   setTimeout(() => showResult(true, stars, acc), 900);
 }
 function loseLevel(){
@@ -1894,13 +2447,15 @@ function showResult(win, stars, acc){
   if(!G) return;
   const s = G.stats, allQ = Object.values(MCQ).flat(), wrongQs = [...new Set(s.wrong)].map(id => allQ.find(q => q.id === id)).filter(Boolean);
   const wl = wrongQs.length ? `<div style="text-align:left;font-weight:800;margin-top:8px">📒 這關答錯過的題目（看一下正確答案）：</div><ol class="wrongs">${wrongQs.map(q => { const sec = secret(q); return `<li><b>${esc(q.q)}</b><br>✅ ${esc(q.o[sec.c])}<br><small>${esc(sec.e)}</small></li>`; }).join("")}</ol>` : (s.ans ? `<p>🎯 這關每一題都是第一次就答對，太厲害了！</p>` : "");
-  const unl = G.unlocked && G.unlocked.length ? `<div class="unl">🌱 解鎖新植物：${G.unlocked.map(esc).join("、")}</div>` : "";
+  const unl = G.unlockKeys && G.unlockKeys.length && !G.team ? `<div class="unl">🎁 得到新植物！${G.unlockKeys.map(plantTag).join("")}<br><button class="pbtn mini sky" data-go="dex">📖 去圖鑑看看</button></div>`
+    : G.unlocked && G.unlocked.length ? `<div class="unl">🌱 解鎖新植物：${G.unlocked.map(esc).join("、")}</div>` : (win ? `<div class="unl nx">🌱 ${nextUnlockTxt()}</div>` : "");
+  const kk = win && G.kingKilled ? `<p class="kingok">👑 打倒 ${MON[G.kingKilled].e} ${esc(MON[G.kingKilled].n)}！${G.dzBlocked ? `　🛡️ 擋下災害 ${G.dzBlocked} 次` : ""}</p>` : "";
   const tm = G.team ? `<table class="ttab"><tr><th>隊員</th><th>答題</th><th>第一次就對</th><th>🎖️ 籌碼</th></tr>${G.team.players.map(p => `<tr><td><i style="background:${p.color}"></i>${esc(p.name)}（${GLBL[p.g]}）</td><td>${p.ans}</td><td>${p.first}</td><td>${p.chips}</td></tr>`).join("")}</table>` : "";
   const nt = G.newTraits.length ? `<div>${[...new Set(G.newTraits)].map(t => `<span class="newb">🏅 ${esc(t)}</span>`).join("")}</div>` : "";
   modal(`<h2>${win ? "🎉 花園守住了！" : "😵 怪獸闖進來了⋯"}</h2>
     ${win ? `<div class="stars">${"⭐".repeat(stars)}<span style="opacity:.2">${"⭐".repeat(3 - stars)}</span></div>` : `<p style="font-size:18px">沒關係！答錯的題目都整理在下面，再挑戰一次一定更強 💪</p>`}
     <div class="res"><div>答題<b>${s.ans}</b></div><div>第一次就對<b>${Math.round(acc * 100)}%</b></div><div>最長連對<b>${s.best}</b></div><div>打倒怪獸<b>${s.kills}</b></div><div>獲得金幣<b>🪙 ${G.coinsGot}</b></div><div>剩下愛心<b>${"❤".repeat(Math.max(0, G.hearts)) || "0"}</b></div></div>
-    ${unl}${tm}${nt}${wl}
+    ${kk}${unl}${tm}${nt}${wl}
     ${win && !G.team ? `<div style="text-align:left;margin-top:10px"><b>📖 一句話：今天學到什麼？（寫了可以得到「故事力」）</b><input class="story" id="storyIn" maxlength="60" placeholder="例如：月亮每天大約晚 50 分鐘升起"><button class="pbtn sky" data-act="story" style="margin-top:8px;font-size:16px;padding:8px 14px">送出</button></div>` : ""}
     <div class="trow" style="margin-top:14px"><button class="pbtn sun" data-act="retry">🔁 ${win ? "再玩一次（怪獸更強）" : "再挑戰一次"}</button><button class="pbtn mint" data-act="tolevels">${G.team ? "👥 回團體戰" : "🗺️ 選別關"}</button></div>`);
 }
@@ -1917,11 +2472,14 @@ function helpHTML(){ return `<h2>❓ 怎麼玩</h2><div class="help">
   <p>5️⃣ 點下面的<b>種子</b>，再點<b>草地</b>就能種下守護植物。和這關同一科的植物有「主場」加成，更強！</p>
   <p>🪨 石堡城牆：擋怪　⚡ 雷電算盤花：射擊　❄️ 冰晶花：讓怪變慢　🔥 墨水火山：炸一整片　🌪️ 旋風雙發花：一次兩發</p>
   <p>🌱 <b>過關越多次，解鎖越多新植物</b>：🌻 陽光向日葵（1 次，產陽光）、🛡️ 反射盾葉（2 次，擋墨水彈）、💚 治癒蒲公英（3 次，補血）、🌵 刺刺仙人掌（4 次，穿透＋破盔甲）、🍠 地瓜地雷（6 次，一踩就爆）、🎋 光束竹（8 次，整排光束）。</p>
+  <p>📖 <b>植物圖鑑（34 種）</b>：幾乎每過關一次就多一種新植物！打敗👑殭屍王還會掉落🌟稀有植物。在圖鑑可以挑「⭐ 帶上場」的植物。</p>
+  <p>👑 <b>殭屍王</b>：每一關最後一波。有 3 個階段，會叫小怪、跺地、換路跳過植物、丟炸彈、叫龍捲風、穿鐵甲衝撞。地上<b>閃紅格</b>＝招式要來了，快換位置！</p>
+  <p>⚠️ <b>災害</b>：💥 大爆炸、🌪️ 龍捲風、⚡ 雷暴、🌋 大地震會突然來，先警告幾秒。按「🛡️ 答題擋下」第一次就答對＝護盾擋掉；沒擋到就按「🆘 緊急陽光」答題重建。☂️ 雲朵傘、🪢 定根藤、🍀 三葉草風扇也能幫忙。</p>
   <p>👾 怪獸有種類和等級（頭上 Lv）：錯字小怪、粗心快跑怪（快）、盔甲怪（先打掉黃色盔甲）、投墨怪（站遠遠丟墨水彈打植物）、拖延鐵桶怪（耐打）、大魔王。怪獸要走上草地才會被打到。</p>
   <p>👥 <b>團體戰</b>：2～4 人輪流答題，答對存陽光和 🎖️ 戰備籌碼，再一起防守；籌碼可以用 ☄️ 流星雨、❄️ 全場冰凍、💖 補愛心。</p>
   <p>🌐 <b>連線對戰</b>：各拿各的平板（也可以和另一個家庭）開房間一起玩。每個人在自己的平板答題存陽光和籌碼，再一起開打；連線時戰場不會暫停。⚔️ 對戰時打倒 3 隻怪會送 1 隻去對手那邊。</p>
   <p>6️⃣ 怪獸走到最左邊，📘 書本守衛會清掉一整排（每排一次）；守衛用完再被闖進就掉 ❤。靠近家的那一排會<b>紅燈閃爍</b>警告。</p>
-  <p>7️⃣ 打完 4 波（最後是單元大魔王）就過關！</p></div>`; }
+  <p>7️⃣ 打完 4～5 波（最後是👑殭屍王）就過關！</p></div>`; }
 function renderSettings(){
   const row = (k, n, sub) => `<div class="set"><span>${n}<br><small style="font-weight:500;color:#5b6475">${sub}</small></span><button class="pbtn ${SV.set[k] ? "mint" : "gray"}" data-act="tg" data-k="${k}" style="font-size:16px;padding:6px 14px">${SV.set[k] ? "開" : "關"}</button></div>`;
   modal(`<h2>⚙️ 設定</h2>${row("easy", "輕鬆模式", "怪獸走得更慢、血少一點（建議開著）")}${row("sound", "音效", "答對、種植物、魔王出場的音效")}
@@ -1932,7 +2490,7 @@ function renderSettings(){
 function pauseGame(){ if(!G || G.done) return; if(G.net){ netMenu(); return; } G.paused = true; modal(`<h2>⏸ 暫停</h2><p style="font-size:18px">${esc(unitName(G.card, G.g))}｜Lv.${G.lv}</p><div class="trow"><button class="pbtn sun" data-act="resume">▶ 繼續</button><button class="pbtn gray" data-act="help">❓ 怎麼玩</button><button class="pbtn pink" data-act="quit">🚪 離開這關</button></div>`); }
 document.addEventListener("click", ev => {
   const b = ev.target.closest("button"); if(!b || b.disabled) return; const d = b.dataset;
-  if(d.go){ go(d.go); return; }
+  if(d.go){ if(d.go === "dex" && G && G.done){ quitLevel(); } closeModal(); go(d.go); return; }
   if(d.kid){ SV.cur = d.kid; save(); renderTitle(); return; }
   if(d.sub){ subTab = d.sub; renderLevels(); return; }
   if(d.lv){ startLevel(d.lv); return; }
@@ -2005,7 +2563,7 @@ if(SBS) SBS.init({curric:CURRIC, getQs:uid => (UQ[uid] || []), secret, names:() 
 buildSprites();
 go("title");
 // 測試用掛勾（不含任何答案）
-window.__garden = {get G(){ return G; }, get SV(){ return SV; }, startLevel, startTeam, useSkill, UNITS, semWeek, startWave, startQuiz, beginPrep, openAsk, closeAsk, fieldFrozen, fitCanvas, spawnMon, placePlant, nextQ, renderQ, version:GARDEN_VERSION, winLevel, loseLevel, net:{get NET(){ return NET; }, netCreate, netJoin, netStartPrepClick, netGoBattle, netLeave, netSide}};
+window.__garden = {get G(){ return G; }, get SV(){ return SV; }, v31:{dzStart, dzShield, dzHit, askFor, kingReward, kingFor, renderDex, DEX_ORDER, KING_ORDER, RARES, DZ, plantHurt, seedList}, startLevel, startTeam, useSkill, UNITS, semWeek, startWave, startQuiz, beginPrep, openAsk, closeAsk, fieldFrozen, fitCanvas, spawnMon, placePlant, nextQ, renderQ, version:GARDEN_VERSION, winLevel, loseLevel, net:{get NET(){ return NET; }, netCreate, netJoin, netStartPrepClick, netGoBattle, netLeave, netSide}};
 </script>
 </body>
 </html>
