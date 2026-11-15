@@ -580,6 +580,44 @@ a{color:var(--blue-d)}
 .sm-note{font-size:15px;color:#5b6475}
 @media (max-width:600px){.sm-q{font-size:19px}.sm-opt{font-size:17px}.sm-big .sm-q{font-size:25px}.sm-big .sm-opt{font-size:23px}.sm-grid{grid-template-columns:repeat(3,1fr)}.sm-card{height:96px;font-size:24px}.sm-card.up{font-size:14px}.sm-card.up.term{font-size:17px}.sm-big .sm-card.up{font-size:16px}.sm-big .sm-card.up.term{font-size:20px}}
 </style>
+<style id="sb-fam-css">/* 家庭登入畫面 */
+html.sbf-lock,html.sbf-lock body{overflow:hidden!important}
+#sbf-ov{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;padding:16px;
+  background:repeating-linear-gradient(45deg,#5cae3c 0 24px,#6fbf4a 24px 48px);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;overflow:auto}
+#sbf-ov.on{display:flex}
+.sbf-card{background:#fffaf0;border:4px solid #1b1b2a;box-shadow:6px 6px 0 #1b1b2a;border-radius:18px;max-width:640px;width:100%;padding:22px 20px;text-align:center;color:#2a2340}
+.sbf-card h1{margin:0 0 6px;font-size:clamp(24px,5vw,34px)}
+.sbf-sub{margin:0 0 14px;font-size:17px;color:#5b6475;font-weight:700}
+.sbf-fams{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.sbf-fam{flex:1 1 230px;max-width:290px;border:4px solid #1b1b2a;border-radius:16px;background:var(--f);box-shadow:4px 4px 0 #1b1b2a;padding:16px 10px;cursor:pointer;color:#1b1b2a;font:inherit;display:flex;flex-direction:column;align-items:center;gap:6px}
+.sbf-fam:active{transform:translate(3px,3px);box-shadow:1px 1px 0 #1b1b2a}
+.sbf-fam b{font-size:28px}.sbf-big{font-size:52px;line-height:1}
+.sbf-kids{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.sbf-kid{background:#fff;border:3px solid var(--k);border-radius:999px;padding:3px 10px;font-weight:800;font-size:15px}
+.sbf-dots{display:flex;gap:14px;justify-content:center;margin:8px 0}
+.sbf-dots i{width:22px;height:22px;border-radius:50%;border:3px solid #1b1b2a;background:#fff}
+.sbf-dots i.on{background:#ffd23f}
+.sbf-dots.shake{animation:sbfsh .35s}
+@keyframes sbfsh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.sbf-err{min-height:1.4em;color:#e5484d;font-weight:800;margin:4px 0 8px}
+.sbf-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:330px;margin:0 auto}
+.sbf-pad button{font:800 30px/1 ui-monospace,monospace;padding:16px 0;border:4px solid #1b1b2a;border-radius:14px;background:#fff;box-shadow:3px 3px 0 #1b1b2a;cursor:pointer;color:#1b1b2a}
+.sbf-pad button.ok{background:#7ee2a8}.sbf-pad button.del{background:#ffd6d6}
+.sbf-pad button:disabled{opacity:.5}
+.sbf-pad button:active{transform:translate(2px,2px);box-shadow:1px 1px 0 #1b1b2a}
+.sbf-link{margin-top:14px;background:none;border:none;font-weight:800;font-size:17px;font-family:inherit;color:#5b6475;text-decoration:underline;cursor:pointer}
+.sbf-roles{display:flex;flex-direction:column;gap:10px;max-width:360px;margin:0 auto}
+.sbf-roles button{font-weight:800;font-size:22px;font-family:inherit;padding:14px;border:4px solid #1b1b2a;border-left:14px solid var(--k);border-radius:14px;background:#fff;box-shadow:3px 3px 0 #1b1b2a;cursor:pointer;color:#1b1b2a}
+
+/* 奶哥家：小四姊姊＝橘色日落、小二弟弟＝綠色草地（和咪萌家的藍、粉紫不一樣） */
+body.fam-naige .tama.g4{--c:#FF9F1C} body.fam-naige .tama.g6{--c:#22C08A}
+body.fam-naige .tama.g4 .egg{background:radial-gradient(rgba(255,255,255,.8) 3px,transparent 4px) 0 0/24px 24px, linear-gradient(165deg,#FFF6D6 0%,#FFD28A 45%,#FF9F5A 100%)}
+body.fam-naige .tama.g6 .egg{background:radial-gradient(rgba(255,255,255,.8) 3px,transparent 4px) 0 0/24px 24px, linear-gradient(165deg,#ECFFE4 0%,#A8EFA0 45%,#3FBF85 100%)}
+body.fam-naige{--blue:#FF9F1C;--blue-d:#C97400;--red:#22C08A;--red-d:#138A5E}
+body.fam-naige #pinErr,body.fam-naige .sbf-err{color:#e5484d!important}
+body.fam-naige #sg6{display:none}
+.famchip{font-size:15px;padding:6px 12px}
+</style>
 </head>
 <body>
 <canvas id="fx"></canvas>
@@ -602,7 +640,7 @@ a{color:var(--blue-d)}
 <div class="wrap">
   <header class="top">
     <h1>🌟 雙寶複習冒險隊<small>新光國小 四年級 🔵 × 六年級 🔴｜115 學年上學期期中考</small></h1>
-    <div class="row"><a href="garden/" class="btn b-mint" style="text-decoration:none;font-size:15px;padding:6px 12px">🌻 花園保衛戰（新遊戲）</a><button class="btn b-blue" id="studyBtn" type="button" style="font-size:15px;padding:6px 12px">📚 學習地圖（小二・小四・小六）</button><span id="saveState" style="font-size:13px;color:var(--ink2)"></span></div>
+    <div class="row"><a href="garden/" class="btn b-mint" style="text-decoration:none;font-size:15px;padding:6px 12px">🌻 花園保衛戰（新遊戲）</a><button class="btn b-blue" id="studyBtn" type="button" style="font-size:15px;padding:6px 12px">📚 學習地圖（小二・小四・小六）</button><button class="btn b-yellow famchip" id="famChip" type="button">🏡 家庭</button><span id="saveState" style="font-size:13px;color:var(--ink2)"></span></div>
   </header>
   <nav class="tabs" id="tabs">
     <button class="tab on" data-p="game">🎮 遊戲</button>
@@ -732,6 +770,142 @@ a{color:var(--blue-d)}
   </section>
 </div>
 
+<script id="sb-fam-js">/* ===== 雙寶家庭登入（冒險隊／花園保衛戰共用）v9 =====
+   兩個家庭：咪萌家、奶哥家。家庭密碼不存明碼：只放「加鹽 PBKDF2 雜湊」用來檢查，
+   雲端家庭資料夾的代碼也是從密碼算出來的（不知道密碼就找不到另一家的資料）。
+   登入記在這台平板（localStorage「shuangbao-device」），兩個遊戲共用。 */
+(function(){
+"use strict";
+const DEVICE_KEY = "shuangbao-device";
+const ITER = 150000;
+const CODE_ABC = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+const ARENA = "ARENASHUANGBAOPUBLIC2026";   // 跨家庭連線房間（只放對戰資料，不放家庭進度）
+const FAMS = {
+  mimeng:{id:"mimeng", name:"咪萌家", emo:"🐱", color:"#ff7eb6", verify:{"salt": "11c260b0694bc7f5b267c14b2a4e9c78", "hash": "126879b9d06fe2fb564968f859d43e69ba070d1d154336fd36a14d55540f8f95"},
+    kids:[{slot:"g6", g:"g6", label:"小六", who:"姊姊", sex:"girl", emo:"🔴", color:"#FF4B55"},
+          {slot:"g4", g:"g4", label:"小四", who:"弟弟", sex:"boy",  emo:"🔵", color:"#2F9BFF"}]},
+  naige:{id:"naige", name:"奶哥家", emo:"🐮", color:"#ffb347", verify:{"salt": "0643110d761d639c76ac089af85e48e9", "hash": "6683e66a77102ceb494833b890e52cb005873bbdce203f6d416cda3e88fcc1a8"},
+    kids:[{slot:"g4", g:"g4", label:"小四", who:"姊姊", sex:"girl", emo:"🟠", color:"#FF9F1C"},
+          {slot:"g6", g:"g2", label:"小二", who:"弟弟", sex:"boy",  emo:"🟢", color:"#22C08A"}]}
+};
+function dev(){ try{ return JSON.parse(localStorage.getItem(DEVICE_KEY) || "{}") || {}; }catch(e){ return {}; } }
+function saveDev(d){ try{ localStorage.setItem(DEVICE_KEY, JSON.stringify(d)); }catch(e){} }
+function current(){
+  const d = dev(), F = FAMS[d.fam];
+  if(!F || !d.family) return null;
+  return Object.assign({}, F, {family:d.family, role:d.role || "both"});
+}
+const kidOfSlot = (famId, slot) => (FAMS[famId] || FAMS.mimeng).kids.find(k => k.slot === slot) || null;
+const kidOfGrade = (famId, g) => (FAMS[famId] || FAMS.mimeng).kids.find(k => k.g === g) || null;
+const hex = b => Array.from(new Uint8Array(b), x => x.toString(16).padStart(2, "0")).join("");
+async function pbkdf2(pw, salt, nbytes){
+  const enc = new TextEncoder();
+  const key = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+  return crypto.subtle.deriveBits({name:"PBKDF2", hash:"SHA-256", salt:enc.encode(salt), iterations:ITER}, key, nbytes * 8);
+}
+async function verify(famId, pw){
+  const F = FAMS[famId]; if(!F || !/^\d{4,8}$/.test(pw)) return false;
+  return hex(await pbkdf2(pw, `sbfam-v1|verify|${famId}|${F.verify.salt}`, 32)) === F.verify.hash;
+}
+async function familyCode(famId, pw){
+  const b = new Uint8Array(await pbkdf2(pw, `sbfam-v1|family|${famId}`, 24));
+  return Array.from(b, x => CODE_ABC[x % 32]).join("");
+}
+/* ---------- 畫面 ---------- */
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let OV = null, ST = null;
+function ov(){
+  if(OV) return OV;
+  OV = document.createElement("div"); OV.id = "sbf-ov"; document.body.appendChild(OV);
+  OV.addEventListener("click", onClick);
+  document.addEventListener("keydown", ev => { if(!OV.classList.contains("on") || !ST || ST.step !== "pw") return;
+    if(/^\d$/.test(ev.key)) key(ev.key); else if(ev.key === "Backspace") key("del"); else if(ev.key === "Enter") key("ok"); });
+  return OV;
+}
+function showLogin(opts){
+  ST = {step:"fam", fam:null, pw:"", err:"", busy:false, fails:0, lockUntil:0, opts:opts || {}};
+  ov().classList.add("on"); document.documentElement.classList.add("sbf-lock"); render();
+}
+function hide(){ if(OV) OV.classList.remove("on"); document.documentElement.classList.remove("sbf-lock"); }
+function kidChips(F){ return F.kids.map(k => `<span class="sbf-kid" style="--k:${k.color}">${k.emo} ${k.label}${k.sex === "girl" ? "女生" : "男生"}</span>`).join(""); }
+function render(){
+  const s = ST; let h = "";
+  if(s.step === "fam"){
+    h = `<h1>🏡 你是哪一家？</h1><p class="sbf-sub">選自己的家庭，再輸入家庭密碼。登入一次，這台平板會記住。</p>
+      <div class="sbf-fams">${Object.values(FAMS).map(F => `<button class="sbf-fam" data-sbf-fam="${F.id}" style="--f:${F.color}"><span class="sbf-big">${F.emo}</span><b>${F.name}</b><span class="sbf-kids">${kidChips(F)}</span></button>`).join("")}</div>
+      ${s.opts.cancel ? `<button class="sbf-link" data-sbf="cancel">取消</button>` : ""}`;
+  }else if(s.step === "pw"){
+    const F = FAMS[s.fam], locked = Date.now() < s.lockUntil;
+    h = `<h1>${F.emo} ${F.name}</h1><p class="sbf-sub">請輸入家庭密碼（${s.opts.title ? esc(s.opts.title) : "5 碼數字"}）</p>
+      <div class="sbf-dots ${s.err ? "shake" : ""}">${[0,1,2,3,4].map(i => `<i class="${i < s.pw.length ? "on" : ""}"></i>`).join("")}</div>
+      <p class="sbf-err">${s.busy ? "⏳ 檢查中⋯" : esc(s.err)}</p>
+      <div class="sbf-pad">${["1","2","3","4","5","6","7","8","9","del","0","ok"].map(k => `<button data-sbf-key="${k}" ${s.busy || locked ? "disabled" : ""} class="${k === "ok" ? "ok" : k === "del" ? "del" : ""}">${k === "del" ? "⌫" : k === "ok" ? "✓" : k}</button>`).join("")}</div>
+      <button class="sbf-link" data-sbf="back">← ${s.opts.fixedFam ? "取消" : "換一個家庭"}</button>`;
+  }else if(s.step === "role"){
+    const F = FAMS[s.fam];
+    h = `<h1>✅ 歡迎 ${F.emo} ${F.name}！</h1><p class="sbf-sub">這台平板是誰的？（之後可以在「存檔 → 家庭」改）</p>
+      <div class="sbf-roles">${F.kids.map(k => `<button data-sbf-role="${k.slot}" style="--k:${k.color}">${k.emo} ${k.label} ${k.who}</button>`).join("")}<button data-sbf-role="both" style="--k:#9b6bff">👫 兩個人共用</button></div>`;
+  }
+  ov().innerHTML = `<div class="sbf-card">${h}</div>`;
+}
+function key(k){
+  const s = ST; if(s.busy || Date.now() < s.lockUntil) return;
+  if(k === "del"){ s.pw = s.pw.slice(0, -1); s.err = ""; render(); return; }
+  if(k === "ok"){ submit(); return; }
+  if(s.pw.length >= 5) return; s.pw += k; s.err = ""; render();
+  if(s.pw.length === 5) setTimeout(submit, 120);
+}
+async function submit(){
+  const s = ST; if(s.busy || s.pw.length < 4) return;
+  s.busy = true; render();
+  const ok = await verify(s.fam, s.pw).catch(() => false);
+  s.busy = false;
+  if(!ok){ s.fails++; s.pw = ""; s.err = "密碼不對，再試一次"; if(s.fails >= 5){ s.lockUntil = Date.now() + 30000; s.err = "錯太多次了，30 秒後再試"; setTimeout(render, 30500); } render(); return; }
+  if(s.opts.onVerified){ const cb = s.opts.onVerified; hide(); cb(true); return; }   // 只是確認密碼（例如切換家庭前）
+  const code = await familyCode(s.fam, s.pw); s.pw = "";
+  const d = dev(), was = d.fam;
+  if(d.family && d.family !== code && !d.oldFamily) d.oldFamily = d.family;   // 舊的 24 碼家庭碼留著備查（不刪雲端資料）
+  d.fam = s.fam; d.family = code; d.famPending = "login"; d.famLoginAt = Date.now();
+  if(was !== s.fam) d.role = "both";
+  saveDev(d); s.step = "role"; render();
+}
+function onClick(ev){
+  const b = ev.target.closest("button"); if(!b || b.disabled) return; const d = b.dataset;
+  if(d.sbfFam){ ST.fam = d.sbfFam; ST.step = "pw"; ST.pw = ""; ST.err = ""; render(); return; }
+  if(d.sbfKey){ key(d.sbfKey); return; }
+  if(d.sbf === "back"){ if(ST.opts.fixedFam){ const cb = ST.opts.onVerified; hide(); if(cb) cb(false); return; } ST.step = "fam"; ST.err = ""; render(); return; }
+  if(d.sbf === "cancel"){ hide(); return; }
+  if(d.sbfRole){ const x = dev(); x.role = d.sbfRole; saveDev(x); hide(); const cb = ST.opts.onDone; if(cb) cb(current()); else location.reload(); return; }
+}
+/* 確認目前家庭的密碼（切換家庭、登出用） */
+function askPassword(title){
+  const cur = current();
+  return new Promise(res => { ST = {step:"pw", fam:cur ? cur.id : "mimeng", pw:"", err:"", busy:false, fails:0, lockUntil:0, opts:{fixedFam:true, title, onVerified:res}}; ov().classList.add("on"); document.documentElement.classList.add("sbf-lock"); render(); });
+}
+function logout(){ const d = dev(); delete d.fam; d.family = null; d.famPending = null; d.role = "both"; saveDev(d); location.reload(); }
+async function switchFamily(){ if(await askPassword("切換家庭前，先輸入目前家庭的密碼")) logout(); }
+/* 連線用 Firebase（花園用；冒險隊有自己的） */
+let _fb = null;
+function fb(){
+  if(_fb) return _fb;
+  _fb = (async () => {
+    const base = "https://www.gstatic.com/firebasejs/12.6.0/";
+    const [A, AU, F] = await Promise.all([import(base + "firebase-app.js"), import(base + "firebase-auth.js"), import(base + "firebase-firestore.js")]);
+    const cfg = {apiKey:"AIzaSyD77lL-1ASFc83G8WBaCsvzxaC98i70nR8", authDomain:"shuangbao-family.firebaseapp.com", projectId:"shuangbao-family",
+      storageBucket:"shuangbao-family.firebasestorage.app", messagingSenderId:"839995253612", appId:"1:839995253612:web:9d2122c7d6e4afcb834949"};
+    const app = A.getApps().find(a => a.name === "sbnet") || A.initializeApp(cfg, "sbnet");
+    const auth = AU.getAuth(app); const db = F.getFirestore(app);
+    await auth.authStateReady(); if(!auth.currentUser) await AU.signInAnonymously(auth);
+    return {app, auth, db, F, AU, uid:auth.currentUser.uid};
+  })();
+  _fb.catch(() => { _fb = null; });
+  return _fb;
+}
+window.SB_FAMILY = {FAMS, ARENA, CODE_ABC, current, kidOfSlot, kidOfGrade, showLogin, askPassword, logout, switchFamily, verify, familyCode, fb};
+function boot(){ if(!current()) showLogin(); }
+if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot); else boot();
+})();
+</script>
 <script id="sb-study-js">/* ===== 學習地圖（雙寶複習冒險隊／花園保衛戰共用）=====
    照「單元總覽」週次開放單元；💡重點卡（學習重點）、🃏翻牌配對（關鍵詞）、📝練習題（四選一，含 🔊唸題目、鐘面圖）
    存檔：localStorage「shuangbao-study-save」（獨立一份，不碰兩個遊戲原本的存檔） */
@@ -781,10 +955,14 @@ function speak(text, slow){
 function qSpeech(q){ return q.q + "。" + q.o.map((o, i) => "選項" + "一二三四"[i] + "，" + o).join("。"); }
 
 /* ---- 存檔 ---- */
-const SKEY = "shuangbao-study-save";
-function load(){ let s = null; try{ s = JSON.parse(localStorage.getItem(SKEY) || "null"); }catch(e){} if(!s || typeof s !== "object") s = {v:1, cur:"g4", units:{}, match:{}, days:[]}; s.units = s.units || {}; s.match = s.match || {}; s.days = s.days || []; return s; }
+// v9：每個家庭一份。奶哥家第一次使用時，把這台平板上原本「小二」的進度複製過來（原檔不動）
+const SFAM = (() => { try{ const c = window.SB_FAMILY && window.SB_FAMILY.current(); return c ? c.id : ""; }catch(e){ return ""; } })();
+const SKEY = SFAM === "naige" ? "shuangbao-study-save-naige" : "shuangbao-study-save";
+function load(){ let s = null; try{ s = JSON.parse(localStorage.getItem(SKEY) || "null"); }catch(e){}
+  if(!s && SFAM === "naige"){ try{ const o = JSON.parse(localStorage.getItem("shuangbao-study-save") || "null"); if(o && typeof o === "object"){ const pick = m => Object.fromEntries(Object.entries(m || {}).filter(([k]) => /^g2/.test(k))); s = {v:1, cur:"g4", units:pick(o.units), match:pick(o.match), days:(o.days || []).slice(), fromMimeng:Date.now()}; } }catch(e){} } if(!s || typeof s !== "object") s = {v:1, cur:"g4", units:{}, match:{}, days:[]}; s.units = s.units || {}; s.match = s.match || {}; s.days = s.days || []; return s; }
 let SS = load();
 function save(){ try{ localStorage.setItem(SKEY, JSON.stringify(SS)); }catch(e){} }
+try{ if(SS.fromMimeng && !localStorage.getItem(SKEY)) save(); }catch(e){}
 
 /* ---- 狀態 ---- */
 let H = null;           // host：{curric, getQs(uid), secret(q), names(), grades}
@@ -948,9 +1126,13 @@ window.SB_STUDY = {init(h){ H = h; }, open, close, semWeek, unitOpen, clockSVG, 
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "8.0.0";
-const SAVE_KEY = "shuangbao-save";
-const PREV_KEY = "shuangbao-save-prev";
+const APP_VERSION = "9.0.0";
+// v9：兩個家庭。咪萌家沿用原本的存檔（完全不動）；奶哥家用自己的存檔
+const SB_FAM = (window.SB_FAMILY && SB_FAMILY.current()) || null;
+const NAIGE = !!(SB_FAM && SB_FAM.id === "naige");
+const QG = (g) => (NAIGE && g === "g6") ? "g2" : g;   // 奶哥家：第二個位置是小二弟弟，題目用小二的
+const SAVE_KEY = NAIGE ? "shuangbao-save-naige" : "shuangbao-save";
+const PREV_KEY = NAIGE ? "shuangbao-save-naige-prev" : "shuangbao-save-prev";
 // 這台裝置的設定（不放進存檔、不會被匯出）：裝置 id、家庭碼、這台是誰的
 const DEVICE_KEY = "shuangbao-device";
 function loadDevice(){
@@ -1046,7 +1228,17 @@ function secret(q){
   const bytes = Uint8Array.from(bin, (c,i) => c.charCodeAt(0) ^ key[i % key.length]);
   const v = JSON.parse(new TextDecoder().decode(bytes)); _secretCache.set(q.id, v); return v;
 }
-function cardQs(cardId, g){ const wk = (window.SB_STUDY ? SB_STUDY.semWeek() : 99); return (MCQ[cardId]||[]).filter(q => q.g === g && !(q.wk > wk)); }
+let G2BY = null;
+function g2By(){ if(G2BY) return G2BY; G2BY = {}; const put = (cid, q) => (G2BY[cid] = G2BY[cid] || []).push(q);
+  const no = q => Number(String(q.u || "").split("-")[2]) || 1;
+  for(const q of (MCQ["g2-math"]||[])) put(["math-a","math-b","math-c","math-d"][(no(q) - 1) % 4], q);
+  for(const q of (MCQ["g2-chi"]||[])) put(no(q) % 2 ? "chi-a" : "chi-b", q);
+  for(const q of (MCQ["g2-life"]||[])){ put(["sci-a","sci-b","soc-a","soc-b"][(no(q) - 1) % 4], q); if(no(q) % 3 === 0) put("eng-a", q); }
+  return G2BY; }
+function cardQs(cardId, g){ const wk = (window.SB_STUDY ? SB_STUDY.semWeek() : 99);
+  if(NAIGE && g === "g6") return (g2By()[cardId]||[]).filter(q => !(q.wk > wk));
+  return (MCQ[cardId]||[]).filter(q => q.g === g && !(q.wk > wk)); }
+const findQ = (cid, qid) => (MCQ[cid]||[]).find(z => z.id === qid) || (NAIGE ? (g2By()[cid]||[]).find(z => z.id === qid) : null);
 
 const STAGES = [
  {name:"神秘蛋",min:0,emoji:"🥚"},{name:"星寶寶",min:5,emoji:"🐣"},
@@ -1324,6 +1516,7 @@ function loadSave(){
   }
 }
 let S = loadSave();
+if(NAIGE && S.settings && S.settings.names && S.settings.names.g6 === "小六"){ S.settings.names = {g4:S.settings.names.g4 === "小四" ? "姊姊" : S.settings.names.g4, g6:"弟弟"}; }
 function persist(){
   S.updatedAt = new Date().toISOString();
   for(const g of ["g4","g6"]){ const pt = S.pets && S.pets[g]; if(!pt) continue; const js = JSON.stringify(petState(pt));
@@ -1371,8 +1564,8 @@ function streakInfo(){
 }
 // 間隔複習：第一次過關後第 1、3、7、14 天
 // v5.1：換成正式範圍後，有些舊題退休了。舊題的作答紀錄全部保留（能力值、招式照算），但退休的題目不會再讓卡片顯示「該複習」
-let liveQ = (cid, qid) => (MCQ[cid]||[]).some(q => q.id === qid);
-const gradeOfQ = (qid) => /-g4-/.test(qid) ? "g4" : /-g6-/.test(qid) ? "g6" : null;
+let liveQ = (cid, qid) => !!findQ(cid, qid);
+const gradeOfQ = (qid) => /-g4-/.test(qid) ? "g4" : /-g6-/.test(qid) ? "g6" : (NAIGE && /-g2-/.test(qid)) ? "g6" : null;
 function wrongDue(id){
   const p = S.cards[id]; if(!p || !isObj(p.mc)) return false;
   const today = twDate();
@@ -1834,7 +2027,7 @@ const FOODS = [
 ];
 const ICONS = [{id:"feed",e:"🍙",t:"餵食"},{id:"play",e:"🎾",t:"玩耍"},{id:"clean",e:"🧽",t:"清潔"},{id:"light",e:"💡",t:"睡覺/開燈"},{id:"status",e:"📊",t:"狀態"},{id:"gift",e:"🎁",t:"送禮"}];
 const OTHER = {g4:"g6", g6:"g4"};
-const KIDLBL = {g4:"小四", g6:"小六"};
+const KIDLBL = NAIGE ? {g4:"小四", g6:"小二"} : {g4:"小四", g6:"小六"};
 const PLAY_PER_DAY = 3;
 const TAMA = {g4:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0, view:"quest"}, g6:{sel:0, sub:null, subSel:0, fx:null, anim:null, parts:[], msgT:0, view:"quest"}};
 
@@ -2278,7 +2471,7 @@ function confLocal(L){ return (Array.isArray(L) ? L : []).map(x => Array.isArray
 function kidSection(g){
   const pt = S.pets[g], cards = {}, daily = {};
   for(const [id,c] of Object.entries(S.cards)){
-    const mc = {}; for(const [qid,r] of Object.entries(c.mc||{})) if(qid.includes("-"+g+"-")) mc[qid] = Object.assign({}, r, {confLog:confWire(r.confLog)});
+    const mc = {}; for(const [qid,r] of Object.entries(c.mc||{})) if(qid.includes("-"+QG(g)+"-")) mc[qid] = Object.assign({}, r, {confLog:confWire(r.confLog)});
     cards[id] = {mc, playedOn:c.playedOn||[], cleared:!!c.cleared, firstClearedOn:c.firstClearedOn||null, stars:((c.stars||{})[g])||0};
   }
   for(const [d,r] of Object.entries(S.daily)){
@@ -2384,7 +2577,7 @@ function isDenied(e){ return e && (e.code === "permission-denied" || /permission
 function onSyncError(e){ if(isDenied(e)) setSync("denied", ""); else if(!navigator.onLine) setSync("offline"); else setSync("error", String(e && (e.code||e.message) || e)); }
 let syncStarting = false;
 async function startSync(){
-  if(!DEV.family){ setSync("local"); return; }
+  if(!DEV.family || !SB_FAM){ setSync("local"); return; }
   if(syncStarting || SYNC.unsub.length) return; syncStarting = true;
   setSync("loading");
   try{
@@ -2395,6 +2588,10 @@ async function startSync(){
     if(SYNC.creating){ SYNC.creating = false; DEV.famPending = "create"; saveDevice(); }
     if(SYNC.joining){ SYNC.joining = false; DEV.famPending = "join"; saveDevice(); }
     if(DEV.famPending === "join") SYNC.preferRemote = {g4:true, g6:true};
+    if(DEV.famPending === "login"){ // v9：家庭密碼登入後第一次連線
+      try{ const snap = await F.getDoc(famRef()); if(snap.exists()) SYNC.preferRemote = {g4:true, g6:true}; else await F.setDoc(famRef(), {v:9, createdAt:F.serverTimestamp(), createdBy:auth.currentUser.uid}); DEV.famPending = null; saveDevice(); }
+      catch(e){ if(isDenied(e)){ setSync("denied"); syncStarting = false; return; } }
+    }
     if(DEV.famPending === "create"){ // 建立家庭的那一筆寫入成功前，每次連線都再試一次
       try{ await F.setDoc(famRef(), {v:4, createdAt:F.serverTimestamp(), createdBy:auth.currentUser.uid}); DEV.famPending = null; saveDevice(); }
       catch(e){ if(isDenied(e)){ setSync("denied"); syncStarting = false; return; } }
@@ -2513,28 +2710,14 @@ const cleanCode = (t) => String(t||"").toUpperCase().replace(/[^A-Z0-9]/g, "");
 function joinLink(){ return location.origin + location.pathname + "#join=" + DEV.family; }
 function renderFamily(){
   const box = $("famBox"); if(!box) return;
-  const roleBtns = [["g4","🔵 小四"],["g6","🔴 小六"],["both","👫 兩個人共用"]].map(([r,t]) => `<button class="btn ${DEV.role===r?"b-purple":"ghost b-purple"} small" data-role="${r}">${t}</button>`).join("");
-  const status = `<p><b>狀態：</b><span id="famStatus">${SYNC_TEXT[SYNC.status]||SYNC.status}</span>${SYNC.status==="denied"?"<br><small>家長還沒在 Firebase 發布安全規則。先照常玩，進度存在這台，規則發布後會自動同步。</small>":""}${SYNC.status==="error"&&SYNC.err?`<br><small>${esc(SYNC.err)}</small>`:""}</p>`;
-  if(!DEV.family){
-    box.innerHTML = `<p>現在是<b>單機模式</b>：進度只存在這台。想讓兩台平板同步，請家長在第一台按「建立家庭」，第二台輸入家庭碼加入。</p>
-      <p><b>這台是誰的？</b></p><div class="row">${roleBtns}</div>
-      <div class="row" style="margin-top:12px"><button class="btn b-mint" id="famCreate">🏠 建立家庭（家長）</button></div>
-      <p style="margin-top:12px"><b>加入家庭：</b>輸入另一台顯示的家庭碼（24 碼）</p>
-      <input id="famCodeIn" type="text" autocomplete="off" autocapitalize="characters" placeholder="XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" style="width:100%;font:700 18px ui-monospace,monospace;letter-spacing:1px;border:3px solid var(--line);border-radius:14px;padding:10px">
-      <div class="row" style="margin-top:8px"><button class="btn b-blue" id="famJoin">🔗 加入家庭</button></div>${SYNC.status==="notfound"?`<p style="color:var(--red-d);font-weight:700">找不到這個家庭，請確認家庭碼。</p>`:""}`;
-    $("famCreate").onclick = () => requireParent("建立家庭（兩台平板同步）", () => { DEV.family = randCode(24); saveDevice(); SYNC.creating = true; startSync(); renderAll(true); toast("🏠 家庭建立好了！把家庭碼給另一台輸入"); });
-    $("famJoin").onclick = () => { const c = cleanCode($("famCodeIn").value); if(c.length !== 24 || [...c].some(ch => !CODE_ABC.includes(ch))){ toast("家庭碼是 24 碼，請再檢查一次"); return; } DEV.family = c; saveDevice(); SYNC.joining = true; startSync(); renderAll(true); };
-    const pre = (location.hash.match(/join=([A-Za-z0-9-]+)/)||[])[1]; if(pre && $("famCodeIn")) $("famCodeIn").value = groupCode(cleanCode(pre));
-  }else{
-    box.innerHTML = `<p><b>家庭碼</b>（另一台輸入這組，或打開加入連結）：</p>
-      <p id="famCode" style="font:800 20px ui-monospace,monospace;letter-spacing:1px;background:#F4F0FF;border-radius:14px;padding:10px;word-break:break-all">${groupCode(DEV.family)}</p>
-      <div class="row"><button class="btn b-blue small" id="famCopy">📋 複製加入連結</button>${navigator.share?`<button class="btn b-mint small" id="famShare">📤 分享</button>`:""}</div>
-      ${status}<p><b>這台是誰的？</b></p><div class="row">${roleBtns}</div>
-      <div class="row" style="margin-top:12px"><button class="btn ghost b-gray small" id="famLeave">🚪 這台離開家庭（改回單機，進度留在這台）</button></div>`;
-    $("famCopy").onclick = () => copyText(joinLink());
-    if($("famShare")) $("famShare").onclick = () => navigator.share({title:"雙寶複習冒險隊", text:"用這個連結加入我們家的冒險隊", url:joinLink()}).catch(()=>{});
-    $("famLeave").onclick = () => { if(!confirm("這台要離開家庭嗎？進度會留在這台，之後可以用家庭碼再加入。")) return; stopSync(); DEV.family = null; DEV.famPending = null; saveDevice(); setSync("local"); renderAll(true); };
-  }
+  const status = `<p><b>雲端同步：</b><span id="famStatus">${SYNC_TEXT[SYNC.status]||SYNC.status}</span>${SYNC.status==="error"&&SYNC.err?`<br><small>${esc(SYNC.err)}</small>`:""}</p>`;
+  if(!SB_FAM){ box.innerHTML = `<p>這台還沒登入家庭。</p><div class="row"><button class="btn b-mint" id="famLogin">🏡 登入家庭</button></div>`; $("famLogin").onclick = () => SB_FAMILY.showLogin(); return; }
+  const roleBtns = SB_FAM.kids.map(k => [k.slot, `${k.emo} ${k.label} ${k.who}`]).concat([["both","👫 兩個人共用"]]).map(([r,t]) => `<button class="btn ${DEV.role===r?"b-purple":"ghost b-purple"} small" data-role="${r}">${t}</button>`).join("");
+  box.innerHTML = `<p><b>已登入：</b>${SB_FAM.emo} <b>${SB_FAM.name}</b>（家庭密碼登入，這台平板會記住；家裡每台平板都登入同一家就會自動同步）</p>${status}
+    <p><b>這台是誰的？</b>（各拿各的平板時選自己，就能跨平板友誼賽）</p><div class="row">${roleBtns}</div>
+    <div class="row" style="margin-top:12px"><button class="btn ghost b-gray small" id="famSwitch">🔁 切換家庭／登出（輸入家庭密碼）</button><button class="btn ghost b-gray small" id="famSwitchPin">👩‍⚕️ 用家長 PIN 切換</button></div>`;
+  $("famSwitch").onclick = () => SB_FAMILY.switchFamily();
+  $("famSwitchPin").onclick = () => requireParent("切換家庭／登出這台", () => SB_FAMILY.logout());
   box.querySelectorAll("[data-role]").forEach(b => b.onclick = () => { DEV.role = b.dataset.role; saveDevice(); qs = {}; renderAll(true); renderFamily(); });
 }
 // 打開加入連結時，自動帶到存檔頁
@@ -3004,7 +3187,7 @@ function resultHTML(){
   const blocks = res.map(x => {
     const rw = x.rw === "cookie" ? "🍪 戰利餅乾 +1（放進背包）" : x.rw === "candy" ? "🍬 安慰糖 +1（放進背包）" : x.r === "x" ? "" : "今天的獎勵拿完了，明天再來～";
     const miss = (bt.missed[x.g] || []);
-    const cards = miss.map(([cid, qid]) => { const q = (MCQ[cid]||[]).find(z => z.id === qid); if(!q) return ""; const sec = secret(q), c = CARDS.find(z => z.id === cid);
+    const cards = miss.map(([cid, qid]) => { const q = findQ(cid, qid); if(!q) return ""; const sec = secret(q), c = CARDS.find(z => z.id === cid);
       return `<div class="rcard"><b>📇 複習卡｜${SUBJECTS[c.subject].emoji} ${c.code}</b><p>${esc(q.q)}</p><p>✅ ${esc(q.o[sec.c])}</p><p class="note">📝 ${esc(sec.e)}</p><button class="btn b-blue small" data-review="${cid}">📚 去 ${c.code} 再練一次</button></div>`; }).join("");
     return `<div class="kid ${x.g}"><span class="badge">${KIDLBL[x.g]}：${head(x.g)}</span>
       <p>命中 ${x.s.hits}・會心 ${x.s.crit}・最高 ${x.s.combo} 連擊・失誤 ${x.s.miss}</p>
@@ -4659,7 +4842,7 @@ function materializeGen(gdef, seed){
   const fmt = q.fmt || Rpick(r, gdef.formats);
   return packQ(gdef.id, gdef.g, gdef.cid, q.q, q.o, c, q.h, q.e, q.w, {d:q.d||1, fmt, draw:q.draw, drawA:q.drawA, skill:gdef.skill, seed});
 }
-function gensFor(cid, g){ return GENS.filter(x => x.cid === cid && x.g === g); }
+function gensFor(cid, g){ if(NAIGE && g === "g6") return []; return GENS.filter(x => x.cid === cid && x.g === g); }
 function isGenId(id){ return /^-gen-/.test(id) || /-gen-/.test(id); }
 
 // ---- 作答狀態裡的題目
@@ -5017,7 +5200,7 @@ const HOMEWORK = [
 ];
 function hwWeek(){ const d = new Date(Date.now() + 8 * 3600000); const t = new Date(d); t.setUTCDate(d.getUTCDate() - ((d.getUTCDay() + 6) % 7)); return t.toISOString().slice(0, 10); }
 function hwState(g){ const a = adv(g); if(!isObj(a.hw)) a.hw = {done:{}, week:""}; if(a.hw.week !== hwWeek()){ a.hw.week = hwWeek(); a.hw.picked = null; } return a.hw; }
-function hwFor(g){ return HOMEWORK.filter(h => h.g === g || h.g === "both"); }
+function hwFor(g){ if(NAIGE && g === "g6") return HOMEWORK.filter(h => h.g === "both"); return HOMEWORK.filter(h => h.g === g || h.g === "both"); }
 function hwPick(g){ const st = hwState(g), pool = hwFor(g).filter(h => !st.done[h.id]); if(!pool.length) return null;
   if(st.picked && pool.some(h => h.id === st.picked)) return HOMEWORK.find(h => h.id === st.picked);
   // 每週最多推 2 題：依目前關卡科目加權
@@ -5714,6 +5897,7 @@ try {
 try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v7.3.1")) NEXT[0] = "✅ v7.3.1 依弟弟四上社會「家鄉的人口與生活」複習卷新增 59 題（是非改錯、看人口年齡表、看老年人口比例表、閱讀題組、複選、配對、排順序）＋2 個社會功課挑戰；⌚ 極具必殺修好了，主寵和每隻夥伴每場各能用一次。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
 try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v7.4.0")) NEXT[0] = "✅ v7.4.0 依 115-1 期中考卷範圍新增 80 題：小四自然 21 題（滿月觀測紀錄表、高度角觀測器步驟、指北針、水生植物看圖分類、魚鰭配對）；小六數學 59 題（質數合數互質是非、看短除法、最簡分數、裁／拼正方形、發車時刻、分數除法比大小、小數除法商不變與四捨五入、圓周長圓面積、半徑變 2 倍、環形、正方形內最大圓、多步驟應用題）。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
 try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v8.0.0")) NEXT[0] = "✅ v8.0.0 加入 115 上學期整本教材：新增「📚 學習地圖」（小二・小四・小六），每個單元有 💡重點卡、🃏翻牌配對、📝練習題，小二大字＋🔊唸題目＋鐘面圖；單元依學校進度週次自動開放（還沒教到的先鎖住）；小四、小六的對戰卡片也多了教材題（一樣依週次開放）。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
+try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v9.0.0")) NEXT[0] = "✅ v9.0.0 變成兩個家庭：🐱 咪萌家（小六姊姊＋小四弟弟，原本的進度全部保留）、🐮 奶哥家（小四姊姊＋小二弟弟）。每家用家庭密碼登入，平板會記住；家裡的平板登入同一家就會自動同步，各拿各的平板可以跨平板友誼賽。花園保衛戰可以跨家庭連線合作、對戰。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
 // 測試用（不影響遊戲）：指定某一題
 window.__sb73 = { force(g, id){ const cid = id.split("-" + g + "-")[0]; const L = cardQs(cid, g), i = L.findIndex(q => q.id === id); if(i < 0) return -1; qs[g] = newQ(cid, g, i); renderDev(g); return i; } };
 
@@ -5732,11 +5916,38 @@ const SB_CURRIC = /*__CURRIC__*/{"g2":[{"key":"chi","name":"國語","pub":"翰�
   if(!window.SB_STUDY) return;
   const byU = {};
   for(const cid of Object.keys(MCQ)) for(const q of MCQ[cid]) if(q.u) (byU[q.u] = byU[q.u] || []).push(q);
-  const names = () => { const r = {g2:"", g4:"", g6:""}; try{ const n = S.settings.names || {}; r.g4 = n.g4 || ""; r.g6 = n.g6 || ""; }catch(e){}
-    try{ const gs = JSON.parse(localStorage.getItem("shuangbao-garden-save") || "null"); if(gs && gs.names && gs.names.g2) r.g2 = gs.names.g2; }catch(e){} return r; };
-  SB_STUDY.init({curric:SB_CURRIC, getQs:uid => byU[uid] || [], secret, names, grades:["g2","g4","g6"], onReward:() => {}});
+  const names = () => { const r = {g2:"", g4:"", g6:""}; try{ const n = S.settings.names || {}; r.g4 = n.g4 || ""; r.g6 = n.g6 || ""; if(NAIGE){ r.g2 = n.g6 || ""; r.g6 = ""; } }catch(e){}
+    try{ const gs = JSON.parse(localStorage.getItem("shuangbao-garden-save") || "null"); if(!NAIGE && gs && gs.names && gs.names.g2) r.g2 = gs.names.g2; }catch(e){} return r; };
+  SB_STUDY.init({curric:SB_CURRIC, getQs:uid => byU[uid] || [], secret, names, grades:(window.SB_FAMILY && SB_FAMILY.current() && SB_FAMILY.current().id === "naige") ? ["g4","g2"] : ["g4","g6"], onReward:() => {}});
   const b = document.getElementById("studyBtn"); if(b) b.addEventListener("click", () => SB_STUDY.open());
 })();
+</script>
+<script id="sb-fam-init">
+(function(){
+  const F = window.SB_FAMILY && SB_FAMILY.current(); const chip = document.getElementById("famChip");
+  if(!F){ if(chip) chip.onclick = () => SB_FAMILY.showLogin(); return; }
+  document.body.classList.add("fam-" + F.id);
+  if(chip){ chip.textContent = `${F.emo} ${F.name}`; chip.onclick = () => { const t = document.querySelector('.tab[data-p="save"]'); if(t) t.click(); setTimeout(() => { const b = document.getElementById("famBox"); if(b) b.scrollIntoView({behavior:"smooth"}); }, 200); }; }
+  const sm = document.querySelector("header.top h1 small");
+  if(sm) sm.textContent = `${F.emo} ${F.name}｜${F.kids.map(k => `${k.emo} ${k.label}${k.who}`).join(" × ")}｜115 學年上學期`;
+  const sb = document.getElementById("studyBtn"); if(sb) sb.textContent = `📚 學習地圖（${F.kids.map(k => k.label).join("・")}）`;
+  if(F.id !== "naige") return;
+  // 奶哥家：卡片標題換成小二單元
+  try{ const N = {}; for(const [cid, qs] of Object.entries(g2By())){ const us = [...new Set(qs.map(q => q.u))]; N[cid] = us; }
+    for(const c of CARDS){ const us = N[c.id] || []; const nm = us.map(u => { for(const s of (SB_CURRIC.g2 || [])) for(const x of s.units) if(x.uid === u) return x.name.replace(/^第.+?[課單元]\s*/, ""); return ""; }).filter(Boolean);
+      if(nm.length) c.title = `${c.u4} × 小二：${nm.slice(0, 2).join("、")}${nm.length > 2 ? "…" : ""}`; }
+    if(typeof renderAll === "function") renderAll(); }catch(e){}
+  const MAP = [["六年級","二年級"],["小六","小二"],["🔴","🟢"],["🔵","🟠"],["紅隊","綠隊"],["藍隊","橘隊"]];
+  const SKIP = new Set(["SCRIPT","STYLE","TEXTAREA","INPUT"]);
+  const fix = (n) => { let t = n.nodeValue, o = t; for(const [a, b] of MAP) if(t.includes(a)) t = t.split(a).join(b); if(t !== o) n.nodeValue = t; };
+  const walk = (root) => { if(!root) return; if(root.nodeType === 3){ fix(root); return; } if(root.nodeType !== 1 || SKIP.has(root.tagName) || root.id === "sm-ov" || root.id === "sbf-ov") return;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n => { let p = n.parentNode; while(p && p !== root){ if(p.id === "sm-ov" || p.id === "sbf-ov" || SKIP.has(p.tagName)) return NodeFilter.FILTER_REJECT; p = p.parentNode; } return NodeFilter.FILTER_ACCEPT; }});
+    let n; while((n = w.nextNode())) fix(n); };
+  walk(document.body);
+  new MutationObserver(ms => { for(const m of ms){ if(m.type === "characterData") fix(m.target); else m.addedNodes.forEach(walk); } }).observe(document.body, {childList:true, subtree:true, characterData:true});
+  const sc = document.getElementById("sg6"); if(sc && sc.parentNode && !document.getElementById("g2scope")){ const p = document.createElement("p"); p.id = "g2scope"; p.className = "note"; p.textContent = "🟢 小二弟弟的範圍、單元重點和翻牌，請按上面的「📚 學習地圖」。"; sc.parentNode.after(p); }
+})();
+window.__sbfam = {get NAIGE(){ return NAIGE; }, QG, g2By, cardQs, SAVE_KEY, get fam(){ return SB_FAM; }};
 </script>
 </body>
 </html>

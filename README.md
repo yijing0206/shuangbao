@@ -113,3 +113,13 @@
 - 共用「📚 學習地圖」（`study/study.js`）：💡重點卡、🃏翻牌配對、📝練習題；小二大字、🔊唸題目（zh-TW）、自動畫鐘面。存檔 `shuangbao-study-save`，不碰兩個遊戲的存檔。
 - 花園 v2.0：小二角色、殭屍種類／等級（含投墨遠程怪）、6 種新植物依過關數解鎖、同一台 2–4 人團體戰。花園存檔 v3 由 v2 自動轉換，舊進度保留。
 - 改版流程：`questions.json`（先備份）→ `node build.mjs index.html` → `patch_garden_link.py` → `patch_v740.py` → `patch_v800.py`；花園 `cat g1.html g2.js g3.js g4.js > garden.html && node gbuild.mjs`。
+
+## 兩個家庭＋即時連線（冒險隊 v9.0.0／花園 v3.0.0）
+- 兩個家庭：🐱 咪萌家（小六姊姊 g6、小四弟弟 g4）、🐮 奶哥家（小四姊姊 g4、小二弟弟，用 g6 的位置存、出小二題目）。
+- 第一次打開會出現「你是哪一家？」→ 輸入 5 碼家庭密碼 → 選這台平板是誰的。登入記在這台平板（localStorage `shuangbao-device`），之後不用再輸入。
+- 切換家庭：冒險隊「💾 存檔」頁或花園首頁的「🔁 切換家庭」，要先輸入目前家庭的密碼（冒險隊也可以用家長 PIN）。
+- **密碼不在 repo 裡**：`family.js` 只放 PBKDF2-SHA256（150000 次、加鹽）的驗證雜湊；雲端用的 24 碼家庭碼也是用密碼另外推導，不存在任何檔案裡。
+- 存檔：咪萌家沿用原本的 `shuangbao-save`／`shuangbao-garden-save`（不重置、不搬動）；奶哥家用 `shuangbao-save-naige`／`shuangbao-garden-save-naige`／`shuangbao-study-save-naige`。奶哥家第一次在同一台平板打開時，會把原本「小二」的花園與學習地圖進度**複製**過去（原檔不動）。
+- 冒險隊跨平板友誼賽：同一個家庭的兩個孩子各拿一台平板（`families/{家庭碼}/battles`）。
+- 花園「🌐 連線對戰」：開房間（4 位數房號，或在大廳清單按加入），最多 4 人、可以跨家庭。🤝 合作：每個人在自己的平板答 6 題存陽光和籌碼，全員準備好就一起開打，每人守自己的路。⚔️ 對戰：兩隊各守自己的花園（同一家自動同一隊），打倒 3 隻怪就送 1 隻到對手那邊。房間資料放在公開對戰區 `families/ARENASHUANGBAOPUBLIC2026/battles/{LOBBY|R-房號|F-房號-隊}`，只存名字、年級、家庭名稱，沒有家庭碼。
+- 測試：`/workspace/sbtest/v9/`（a_login、a_pvp、g_net、iso）。
