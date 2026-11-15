@@ -106,3 +106,10 @@
 5. 存檔裡程式不認得的欄位要原樣保留，不能清掉。
 6. 存檔版本比程式新時，不降級、不刪資料。
 7. 發布前，先用前一版的存檔測一次：放進 localStorage，重新整理，確認星星、過關、連續天數都還在。
+
+## v8.0.0／花園 v2.0.0（2026-11-15）
+- 115 上教材（小二國語／數學／生活、小四、小六各科）整合：題目帶 `u`（單元）、`wk`（開放週次）、`clk`（鐘面），答案一樣加密在 `s`。
+- 學期第 1 週＝2026/8/30 那週；`wk` 大於目前週次的題目與單元先鎖住，到週自動開放。測試可用 localStorage `shuangbao-week-override` 指定週次。
+- 共用「📚 學習地圖」（`study/study.js`）：💡重點卡、🃏翻牌配對、📝練習題；小二大字、🔊唸題目（zh-TW）、自動畫鐘面。存檔 `shuangbao-study-save`，不碰兩個遊戲的存檔。
+- 花園 v2.0：小二角色、殭屍種類／等級（含投墨遠程怪）、6 種新植物依過關數解鎖、同一台 2–4 人團體戰。花園存檔 v3 由 v2 自動轉換，舊進度保留。
+- 改版流程：`questions.json`（先備份）→ `node build.mjs index.html` → `patch_garden_link.py` → `patch_v740.py` → `patch_v800.py`；花園 `cat g1.html g2.js g3.js g4.js > garden.html && node gbuild.mjs`。
