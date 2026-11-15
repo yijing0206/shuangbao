@@ -1126,7 +1126,7 @@ window.SB_STUDY = {init(h){ H = h; }, open, close, semWeek, unitOpen, clockSVG, 
 /* =========================================================
    1. 內容資料（CONTENT）— 改版時可以新增/修改，卡片 id 永遠不改
    ========================================================= */
-const APP_VERSION = "9.0.0";
+const APP_VERSION = "9.1.0";
 // v9：兩個家庭。咪萌家沿用原本的存檔（完全不動）；奶哥家用自己的存檔
 const SB_FAM = (window.SB_FAMILY && SB_FAMILY.current()) || null;
 const NAIGE = !!(SB_FAM && SB_FAM.id === "naige");
@@ -2988,6 +2988,7 @@ function renderBattle(){
     <div class="kids">${["g4","g6"].map(kidBattleCard).join("")}</div>
     <h3>👫 兩個人一起</h3>${pairBtns}
     <div id="remoteBox">${remoteMenuHTML()}</div>
+    <div id="arxBox"></div>
     <div id="bossPick"></div>
     <h3>📖 圖鑑與徽章</h3><div class="kids">${ownedKids().map(dexHTML).join("")}</div>`;
   root.querySelectorAll("[data-thumb]").forEach(c => drawThumb(c, c.dataset.thumb, c.dataset.hide === "1"));
@@ -2996,7 +2997,7 @@ function renderBattle(){
   root.querySelectorAll("[data-eat]").forEach(b => b.onclick = () => eatSnack(b.dataset.g, b.dataset.eat));
   if($("pvpLocal")) $("pvpLocal").onclick = () => { if(pvpToday() >= PVP_PER_DAY){ toast("今天的友誼賽打完了，明天再來！"); return; } startLocal("pvp", ["g4","g6"], null); };
   if($("raidLocal")) $("raidLocal").onclick = () => startLocal("raid", ["g4","g6"], RAID_ID);
-  bindRemoteMenu();
+  bindRemoteMenu(); if(window.ARX) ARX.menu();
 }
 function showBossPick(g){
   const box = $("bossPick"); if(!box) return;
@@ -5898,6 +5899,7 @@ try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v7.3.1")) 
 try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v7.4.0")) NEXT[0] = "✅ v7.4.0 依 115-1 期中考卷範圍新增 80 題：小四自然 21 題（滿月觀測紀錄表、高度角觀測器步驟、指北針、水生植物看圖分類、魚鰭配對）；小六數學 59 題（質數合數互質是非、看短除法、最簡分數、裁／拼正方形、發車時刻、分數除法比大小、小數除法商不變與四捨五入、圓周長圓面積、半徑變 2 倍、環形、正方形內最大圓、多步驟應用題）。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
 try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v8.0.0")) NEXT[0] = "✅ v8.0.0 加入 115 上學期整本教材：新增「📚 學習地圖」（小二・小四・小六），每個單元有 💡重點卡、🃏翻牌配對、📝練習題，小二大字＋🔊唸題目＋鐘面圖；單元依學校進度週次自動開放（還沒教到的先鎖住）；小四、小六的對戰卡片也多了教材題（一樣依週次開放）。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
 try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v9.0.0")) NEXT[0] = "✅ v9.0.0 變成兩個家庭：🐱 咪萌家（小六姊姊＋小四弟弟，原本的進度全部保留）、🐮 奶哥家（小四姊姊＋小二弟弟）。每家用家庭密碼登入，平板會記住；家裡的平板登入同一家就會自動同步，各拿各的平板可以跨平板友誼賽。花園保衛戰可以跨家庭連線合作、對戰。✅ " + String(NEXT[0]).replace(/^✅\s*/, ""); } catch(e){}
+try { if(Array.isArray(NEXT) && NEXT[0] && !String(NEXT[0]).includes("v9.1.0")) NEXT[0] = "✅ v9.1.0 🌐 跨家庭連線：在「⚔️ 對戰」打開連線大廳，看到另一家誰在線上，就能邀請一對一友誼賽，或 2～4 人一起討伐考試大魔王（每個人在自己的平板答題）。平常把寵物照顧到「精神飽滿」，對戰攻擊、防禦 +8%；太餓太累會變弱。討伐成功有團隊徽章。"; } catch(e) {}
 // 測試用（不影響遊戲）：指定某一題
 window.__sb73 = { force(g, id){ const cid = id.split("-" + g + "-")[0]; const L = cardQs(cid, g), i = L.findIndex(q => q.id === id); if(i < 0) return -1; qs[g] = newQ(cid, g, i); renderDev(g); return i; } };
 
@@ -5939,8 +5941,8 @@ const SB_CURRIC = /*__CURRIC__*/{"g2":[{"key":"chi","name":"國語","pub":"翰�
     if(typeof renderAll === "function") renderAll(); }catch(e){}
   const MAP = [["六年級","二年級"],["小六","小二"],["🔴","🟢"],["🔵","🟠"],["紅隊","綠隊"],["藍隊","橘隊"]];
   const SKIP = new Set(["SCRIPT","STYLE","TEXTAREA","INPUT"]);
-  const fix = (n) => { let t = n.nodeValue, o = t; for(const [a, b] of MAP) if(t.includes(a)) t = t.split(a).join(b); if(t !== o) n.nodeValue = t; };
-  const walk = (root) => { if(!root) return; if(root.nodeType === 3){ fix(root); return; } if(root.nodeType !== 1 || SKIP.has(root.tagName) || root.id === "sm-ov" || root.id === "sbf-ov") return;
+  const fix = (n) => { if(n.parentElement && n.parentElement.closest("#sm-ov,#sbf-ov,#arx-ov,#arx-inv")) return; let t = n.nodeValue, o = t; for(const [a, b] of MAP) if(t.includes(a)) t = t.split(a).join(b); if(t !== o) n.nodeValue = t; };
+  const walk = (root) => { if(!root) return; if(root.nodeType === 3){ fix(root); return; } if(root.nodeType !== 1 || SKIP.has(root.tagName) || root.closest("#sm-ov,#sbf-ov,#arx-ov,#arx-inv")) return;
     const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {acceptNode:n => { let p = n.parentNode; while(p && p !== root){ if(p.id === "sm-ov" || p.id === "sbf-ov" || SKIP.has(p.tagName)) return NodeFilter.FILTER_REJECT; p = p.parentNode; } return NodeFilter.FILTER_ACCEPT; }});
     let n; while((n = w.nextNode())) fix(n); };
   walk(document.body);
@@ -5948,6 +5950,578 @@ const SB_CURRIC = /*__CURRIC__*/{"g2":[{"key":"chi","name":"國語","pub":"翰�
   const sc = document.getElementById("sg6"); if(sc && sc.parentNode && !document.getElementById("g2scope")){ const p = document.createElement("p"); p.id = "g2scope"; p.className = "note"; p.textContent = "🟢 小二弟弟的範圍、單元重點和翻牌，請按上面的「📚 學習地圖」。"; sc.parentNode.after(p); }
 })();
 window.__sbfam = {get NAIGE(){ return NAIGE; }, QG, g2By, cardQs, SAVE_KEY, get fam(){ return SB_FAM; }};
+</script>
+<style id="sb-arena-css">
+/* v9.1 跨家庭連線 */
+html.arx-lock{overflow:hidden}
+.arx-ov{position:fixed;inset:0;z-index:900;background:rgba(30,20,50,.55);display:none;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px}
+.arx-ov.on{display:block}
+.arx-card{max-width:860px;margin:0 auto;background:#FFF8EC;border:3px solid var(--ink,#3A2E4A);border-radius:18px;padding:14px;box-shadow:0 6px 0 rgba(0,0,0,.25)}
+.arx-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.arx-head h2{margin:0;font-size:22px}
+.arx-me{display:flex;gap:12px;align-items:center;text-align:left}
+.arx-pet{width:72px;height:72px;image-rendering:pixelated;flex:0 0 auto;background:#fff;border-radius:12px;border:2px solid #e5dccd}
+.arx-list{display:flex;flex-direction:column;gap:6px;margin:6px 0}
+.arx-row{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid #e5dccd;border-radius:14px;padding:6px 10px;text-align:left}
+.arx-row .arx-pet{width:56px;height:56px}
+.arx-ri{flex:1;min-width:0}
+.arx-in{width:9em;font-size:18px;padding:8px 10px;border-radius:12px;border:2px solid var(--ink,#3A2E4A)}
+.arx-cond{display:inline-block;font-size:13px;font-weight:800;padding:1px 8px;border-radius:999px;background:#eee;white-space:nowrap}
+.arx-cond.c-great{background:#DFF7E8;color:#16794A}.arx-cond.c-ok{background:#EEF2FF;color:#4450A0}.arx-cond.c-tired{background:#FFF0D6;color:#A35E00}.arx-cond.c-hungry{background:#FFE1E1;color:#B3261E}
+.arx-condline{margin:4px 0;font-size:14px}
+.arx-code{font:900 54px/1 ui-monospace,monospace;letter-spacing:10px;background:#2A2340;color:#FFD23F;border-radius:14px;padding:10px 18px;display:inline-block;margin:6px 0}
+.arx-team{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px;margin:8px 0}
+.arx-mate{position:relative;display:flex;gap:8px;align-items:center;background:#fff;border:2px solid #e5dccd;border-radius:14px;padding:6px;text-align:left}
+.arx-mate.me{border-color:#FF9F1C;background:#FFF6E0}.arx-mate.ko{opacity:.55;filter:grayscale(.6)}
+.arx-mate .arx-pet{width:56px;height:56px}.arx-mi{flex:1;min-width:0;font-size:14px}
+.arx-boss{position:relative;text-align:center;margin:4px auto;max-width:420px}
+.arx-boss .fcv canvas{width:min(170px,40vw)}
+.arx-arena{position:relative}
+.arx-feed{background:rgba(255,255,255,.85);border-radius:12px;padding:6px 10px;margin-top:8px;font-size:14px;text-align:left;min-height:2.6em}
+.arx-float{position:absolute;left:50%;top:30%;transform:translateX(-50%);font:900 26px/1 sans-serif;color:#FF4B55;text-shadow:0 2px 0 #fff;pointer-events:none;animation:arxup 1.2s ease-out forwards}
+.arx-float.heal{color:#16a34a}
+@keyframes arxup{from{opacity:1;transform:translate(-50%,0)}to{opacity:0;transform:translate(-50%,-40px)}}
+.hit .arx-pet,[data-xf].hit canvas{animation:hitflash .5s}
+.arx-tbl{width:100%;border-collapse:collapse;margin:8px 0;background:#fff;border-radius:10px;overflow:hidden}
+.arx-tbl th,.arx-tbl td{border-bottom:1px solid #eee;padding:6px;text-align:center}
+.arx-inv{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:950;background:#FFF6E0;border:3px solid var(--ink,#3A2E4A);border-radius:16px;padding:10px 14px;box-shadow:0 6px 0 rgba(0,0,0,.25);max-width:min(560px,94vw);display:none;text-align:center}
+.arx-inv.on{display:block}
+.arx-entry p{margin:4px 0}
+@media (max-width:480px){.arx-code{font-size:40px;letter-spacing:6px}.arx-head h2{font-size:18px}}
+</style>
+<script id="sb-arena-js">
+/* 冒險隊 v9.1：🌐 跨家庭連線（線上大廳、跨家友誼賽、合體討伐考試大魔王）
+   資料放在公開對戰區 families/{ARENA}/battles/{A-LOBBY | AP-對戰碼 | AR-房號}。
+   只存孩子名字、年級、家庭名稱、寵物資料；不放家庭碼、不放答案。 */
+(() => {
+const FAMC = window.SB_FAMILY && SB_FAMILY.current();
+if(!FAMC || typeof S === "undefined") return;
+const ARENA = SB_FAMILY.ARENA, LOBBY = "A-LOBBY";
+const ONLINE_MS = 100000, HB_MS = 40000, PRUNE_MS = 20 * 60000, INV_MS = 60000, IDLE_MS = 120000;
+const XPVP_PER_DAY = 6, XPVP_REWARD = 3, XRAID_REWARD = 2, RAID_MAX_BOSS = 14, RAID_FALLBACK_MS = 30000, PVP_TURNS = 8;
+const X = {fb:null, uid:"", lobby:null, unsubL:null, d:null, unsubM:null, mid:"", kind:"", q:null, open:false, inv:null, invSeen:{}, recorded:{}, results:{}, shownLog:0,
+  hbT:null, tickT:null, combo:0, asked:[], missed:[], lobbyKey:"", startCond:"", feed:[]};
+const $x = id => document.getElementById(id);
+const now = () => Date.now();
+const ref = id => X.fb.F.doc(X.fb.db, "families", ARENA, "battles", id);
+const clean = o => JSON.parse(JSON.stringify(o));
+const shufN = n => { const a = [...Array(n).keys()]; for(let i = n - 1; i > 0; i--){ const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const COND = {
+  great:{e:"😄", n:"精神飽滿", m:1.08, tip:"平常照顧得很好！對戰時攻擊、防禦 +8%。"},
+  ok:{e:"🙂", n:"狀態普通", m:1, tip:"再餵食、玩耍、清潔，讓牠「精神飽滿」，攻擊、防禦就會 +8%。"},
+  tired:{e:"😟", n:"有點累", m:0.94, tip:"攻擊、防禦 −6%。先去餵食、陪牠玩、清便便再出戰吧！"},
+  hungry:{e:"😫", n:"肚子好餓", m:0.88, tip:"攻擊、防禦 −12%。快去「🎮 遊戲」餵牠、陪牠玩！"}
+};
+function condKey(g){ const pt = S.pets[g]; if(!pt || !pt.species) return "ok";
+  const v = ((pt.fullness || 0) + (pt.happiness || 0)) / 2 - (pt.poop || 0) * 8;
+  return v >= 70 ? "great" : v >= 40 ? "ok" : v >= 20 ? "tired" : "hungry"; }
+const condTag = k => { const c = COND[k] || COND.ok; return `<span class="arx-cond c-${k || "ok"}" title="${esc(c.tip)}">${c.e} ${c.n}</span>`; };
+
+/* ---- 責任心：寵物狀態（飽足、開心、便便）影響所有對戰的攻擊、防禦（±8～12%）---- */
+const _unitOf = window.unitOf;
+window.unitOf = function(g){ const u = _unitOf(g), k = condKey(g), m = COND[k].m;
+  if(m !== 1){ u.atk = Math.max(1, Math.round(u.atk * m)); u.def = Math.max(1, Math.round(u.def * m)); }
+  u.cond = k; return u; };
+const _kbc = window.kidBattleCard;
+window.kidBattleCard = function(g){ let h = _kbc(g); if(S.pets[g] && S.pets[g].species){ const k = condKey(g);
+  h = h.replace("</span>", `</span><p class="arx-condline">寵物狀態：${condTag(k)}　<small>${esc(COND[k].tip)}</small></p>`); } return h; };
+
+/* ---- 團隊徽章 ---- */
+const rf = f => { const a = String(f || "").split("-"); return {n:+a[1] || 0, cond:a[2] || "", cheer:+a[3] || 0}; };
+BADGES.push(
+  {id:"xpvp1", e:"🌐", n:"跨家友誼賽", t:"和另一個家庭的小朋友完成一場友誼賽", f:L => L.some(e => e.m === "xpvp" && e.r !== "p" && e.r !== "x")},
+  {id:"xraid1", e:"🤝", n:"跨家討伐成功", t:"和大家一起打倒考試大魔王", f:L => L.some(e => e.m === "xraid" && e.r === "w")},
+  {id:"xraid4", e:"👨‍👩‍👧‍👦", n:"四人同心", t:"4 個人一起討伐成功", f:L => L.some(e => e.m === "xraid" && e.r === "w" && rf(e.foe).n >= 4)},
+  {id:"xcare", e:"💗", n:"照顧滿分出擊", t:"寵物「精神飽滿」時討伐成功（平常有好好照顧）", f:L => L.some(e => e.m === "xraid" && e.r === "w" && rf(e.foe).cond === "great")},
+  {id:"xcheer", e:"📣", n:"最佳啦啦隊", t:"討伐時累積幫隊友打氣 5 次", f:L => L.filter(e => e.m === "xraid").reduce((a, e) => a + rf(e.foe).cheer, 0) >= 5},
+  {id:"xraid5", e:"🏰", n:"討伐 5 次成功", t:"合體討伐成功 5 次", f:L => L.filter(e => e.m === "xraid" && e.r === "w").length >= 5}
+);
+
+/* ---- 我是誰 ---- */
+function myKids(){ return ownedKids().filter(g => S.pets[g] && S.pets[g].species); }
+function myKid(){ const l = myKids(); let k = null; try{ k = localStorage.getItem("shuangbao-arena-kid"); }catch(e){}
+  return l.includes(k) ? k : l.includes(DEV.role) ? DEV.role : l[0] || null; }
+function kidInfo(g){ const K = SB_FAMILY.kidOfSlot(FAMC.id, g), nm = ((S.settings || {}).names || {})[g];
+  return {n:nm || (K && K.who) || KIDLBL[g], gl:K ? K.label : KIDLBL[g], ke:K ? K.emo : ""}; }
+function pack(g){ const u = unitOf(g), i = kidInfo(g), s = petStats(g);
+  return clean(Object.assign({}, u, {slot:g, n:i.n, gl:i.gl, ke:i.ke, fid:FAMC.id, fn:FAMC.name, fe:FAMC.emo, lv:s.lv})); }
+function entry(){ const g = myKid(); const pt = S.pets[g], s = petStats(g), u = unitOf(g), i = kidInfo(g);
+  const busy = X.mid && X.d && X.d.state !== "done" ? X.kind : "";
+  return clean({n:i.n, gl:i.gl, ke:i.ke, fid:FAMC.id, fn:FAMC.name, fe:FAMC.emo, pn:petLabel(g), sp:pt.species || "", st:s.stage, lv:s.lv, at:s.attr, acc:u.acc || null,
+    cond:u.cond, ok:canBattle(g), busy, inv:X.inv || null, t:now()}); }
+const who = u => `${u.fe || ""} ${esc(u.fn || "")}・${u.ke || ""}${esc(u.gl || "")} ${esc(u.n || "")}`;
+const todayN = (mode, g) => logList(g).filter(e => e.d === twDate() && e.m === mode).length;
+
+/* ---- 連線、上線狀態 ---- */
+async function init(){ if(X.fb) return X.fb; try{ X.fb = await SB_FAMILY.fb(); X.uid = X.fb.uid; }catch(e){ X.fb = null; } return X.fb; }
+const TESTMODE = (() => { try{ return !!localStorage.getItem("shuangbao-emulator"); }catch(e){ return false; } })();   // 離線測試模式：不上線
+async function startPresence(){
+  if(!myKid() || TESTMODE) return; if(!await init()) return;
+  if(!X.unsubL) X.unsubL = X.fb.F.onSnapshot(ref(LOBBY), s => { X.lobby = s.exists() ? s.data() : {pets:{}, moves:{}}; onLobby(); }, () => { X.unsubL = null; });
+  beat(); clearInterval(X.hbT); X.hbT = setInterval(() => { if(document.visibilityState === "visible") beat(); }, HB_MS);
+  clearInterval(X.tickT); X.tickT = setInterval(tick, 2000);
+}
+async function beat(extra){
+  if(!X.fb || !myKid()) return; const {F} = X.fb, t = now(), L = X.lobby || {};
+  const pets = {[X.uid]:entry()}, moves = {};
+  for(const [k, e] of Object.entries(L.pets || {})) if(k !== X.uid && (!e || t - (e.t || 0) > PRUNE_MS)) pets[k] = F.deleteField();
+  for(const [k, r] of Object.entries(L.moves || {})) if(!r || t - (r.t || 0) > PRUNE_MS) moves[k] = F.deleteField();
+  Object.assign(moves, extra || {});
+  const data = {pets, updatedAt:t, v:91}; if(Object.keys(moves).length) data.moves = moves;
+  try{ await F.setDoc(ref(LOBBY), data, {merge:true}); }catch(e){}
+}
+window.addEventListener("pagehide", () => { if(X.fb) X.fb.F.setDoc(ref(LOBBY), {pets:{[X.uid]:X.fb.F.deleteField()}, updatedAt:now(), v:91}, {merge:true}).catch(() => {}); });
+document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible" && X.fb) beat(); });
+function online(){ const t = now(); return Object.entries((X.lobby || {}).pets || {}).filter(([k, e]) => k !== X.uid && e && t - (e.t || 0) < ONLINE_MS); }
+function onLobby(){
+  const t = now();
+  for(const [k, e] of Object.entries((X.lobby || {}).pets || {})){
+    if(k === X.uid || !e || !e.inv || e.inv.to !== X.uid || t - (e.inv.t || 0) > INV_MS || X.invSeen[e.inv.id]) continue;
+    if(X.mid && X.d && X.d.state === "live") continue;
+    showInv(k, e); break;
+  }
+  if(X.open && !X.mid) render();
+  menu();
+}
+function showInv(from, e){
+  let el = $x("arx-inv"); if(!el){ el = document.createElement("div"); el.id = "arx-inv"; el.className = "arx-inv"; document.body.appendChild(el); }
+  el.dataset.id = e.inv.id;
+  el.innerHTML = `<b>🌐 ${who(e)}</b> 邀請你來一場跨家友誼賽！<br><small>對手寵物：${esc(e.pn)}　Lv.${e.lv} ${attrTag(e.at)} ${condTag(e.cond)}</small>
+    <div class="row"><button class="btn b-red" data-xacc="${esc(e.inv.id)}">⚔️ 接受挑戰</button><button class="btn ghost b-gray small" data-xdec="${esc(e.inv.id)}">之後再說</button></div>`;
+  el.classList.add("on"); toast(`🌐 ${e.fn}的${e.n}邀請你友誼賽！`);
+  clearTimeout(showInv._t); showInv._t = setTimeout(hideInv, Math.max(3000, INV_MS - (now() - e.inv.t)));
+}
+function hideInv(){ const el = $x("arx-inv"); if(el) el.classList.remove("on"); }
+
+/* ---- 對戰文件 ---- */
+function watch(id, kind){ unwatch(); X.mid = id; X.kind = kind; X.d = null; X.shownLog = 0; X.q = null; X.combo = 0; X.asked = []; X.missed = []; X.feed = []; X.startCond = condKey(myKid());
+  X.unsubM = X.fb.F.onSnapshot(ref(id), s => onMatch(s.exists() ? s.data() : null), () => {}); }
+function unwatch(){ if(X.unsubM){ try{ X.unsubM(); }catch(e){} } X.unsubM = null; X.mid = ""; X.kind = ""; X.d = null; X.q = null; }
+function onMatch(d){
+  const id = X.mid; X.d = d;
+  if(!d){ toast("這場已經不在了"); unwatch(); render(); return; }
+  if(X.inv && X.inv.id === id && d.state !== "wait"){ X.inv = null; beat(); }
+  if(X.kind === "xraid" && d.moves && d.moves.host === X.uid){   // 房主維護大廳上的房間清單
+    const n = Object.keys(d.pets || {}).length, key = d.state + n;
+    if(key !== X.lobbyKey){ X.lobbyKey = key; const code = d.moves.code;
+      beat({[code]:d.state === "wait" ? {n:(d.pets[X.uid] || {}).n || "", fe:FAMC.emo, fn:FAMC.name, c:n, st:"wait", t:now()} : X.fb.F.deleteField()}); }
+  }
+  for(const ev of (d.log || []).slice(X.shownLog)) X.feed.push(ev); X.feed = X.feed.slice(-6);
+  const fresh = (d.log || []).slice(X.shownLog); X.shownLog = (d.log || []).length;
+  if(d.state === "done" && !X.recorded[id]){ X.recorded[id] = 1; X.results[id] = recordMine(d); }
+  render(); fx(fresh);
+}
+async function leaveMatch(){
+  const d = X.d, id = X.mid;
+  if(d && X.fb){ const {F} = X.fb;
+    try{
+      if(X.kind === "xpvp" && d.state !== "done") await F.updateDoc(ref(id), {state:"done", winner:d.state === "wait" ? "cancel" : "x", updatedAt:now()});
+      if(X.kind === "xraid" && d.state === "wait"){
+        if(d.moves.host === X.uid){ await F.updateDoc(ref(id), {state:"done", winner:"x", updatedAt:now()}); beat({[d.moves.code]:F.deleteField()}); }
+        else await F.updateDoc(ref(id), {[`pets.${X.uid}`]:F.deleteField(), updatedAt:now()});
+      }
+    }catch(e){}
+  }
+  X.inv = null; unwatch(); beat(); render();
+}
+
+/* ---- 跨家友誼賽 ---- */
+async function invite(to){
+  const g = myKid(); if(!g || !canBattle(g)){ toast("寵物要長到「少年」（成長值 15）才能對戰"); return; }
+  if(todayN("xpvp", g) >= XPVP_PER_DAY){ toast(`今天的跨家友誼賽打了 ${XPVP_PER_DAY} 場，明天再來！`); return; }
+  const e = ((X.lobby || {}).pets || {})[to]; if(!e || !e.ok || e.busy || now() - e.t > ONLINE_MS){ toast("對方現在不能對戰"); return; }
+  if(!await init()) return;
+  const id = "AP-" + randCode(10), t = now();
+  try{ await X.fb.F.setDoc(ref(id), {state:"wait", createdBy:X.uid, createdAt:t, updatedAt:t, moves:{mode:"xpvp", host:X.uid, to, bid:twDate() + "-x" + randCode(6), max:PVP_TURNS},
+    pets:{[X.uid]:pack(g)}, hp:{}, turn:"", round:0, log:[], winner:"", v:91}); }catch(err){ toast("邀請失敗，請確認網路"); return; }
+  X.inv = {to, id, t}; watch(id, "xpvp"); openOv(); beat();
+  setTimeout(() => { if(X.mid === id && X.d && X.d.state === "wait"){ toast("對方沒有回應，邀請取消了"); leaveMatch(); } }, INV_MS);
+}
+async function accept(id){
+  X.invSeen[id] = 1; hideInv();
+  const g = myKid(); if(!g || !canBattle(g)){ toast("寵物要長到「少年」才能對戰"); decline(id); return; }
+  if(todayN("xpvp", g) >= XPVP_PER_DAY){ toast("今天的跨家友誼賽打完了，明天再來！"); decline(id); return; }
+  if(X.mid){ if(X.d && X.d.state === "live"){ toast("你正在另一場對戰中"); return; } await leaveMatch(); }
+  if(!await init()) return; const {F, db} = X.fb;
+  try{
+    await F.runTransaction(db, async tx => {
+      const s = await tx.get(ref(id)); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "wait" || d.moves.to !== X.uid) throw new Error("gone");
+      const me = pack(g), host = d.moves.host, op = d.pets[host];
+      const hpB = Math.round((me.max + op.max) / 2);   // 公平：跨家（不同年級）體力取兩隻的平均
+      const pets = {[host]:Object.assign({}, op, {max:hpB}), [X.uid]:Object.assign({}, me, {max:hpB})};
+      const order = [host, X.uid].sort((a, b) => pets[b].spd - pets[a].spd || (a === host ? -1 : 1));
+      tx.update(ref(id), {pets, hp:{[host]:hpB, [X.uid]:hpB}, turn:order[0], round:0, state:"live", updatedAt:now(), moves:Object.assign({}, d.moves, {order})});
+    });
+    watch(id, "xpvp"); openOv();
+  }catch(e){ toast("這個邀請已經不在了"); }
+}
+async function decline(id){ X.invSeen[id] = 1; hideInv(); if(!await init()) return; try{ await X.fb.F.updateDoc(ref(id), {state:"done", winner:"cancel", updatedAt:now()}); }catch(e){} }
+const opOf = d => Object.keys(d.pets || {}).find(k => k !== X.uid);
+function dmgOf(A, D, skill, ok, crit, combo){
+  const k = skill ? skill.attr : A.attr, pow = skill ? skill.pow : 1, m = typeMult(k, D.attr);
+  const dmg = ok ? Math.max(1, Math.round(hitBase(A.atk, D.def) * pow * m * (crit ? 1.5 : 1) * (1 + Math.min(3, Math.max(0, combo - 1)) * 0.1) * (0.9 + Math.random() * 0.2) * (A.epow ? 1 + (A.epow[k] || 0) : 1))) : 0;
+  return {k, m, dmg};
+}
+async function firePvp(st){
+  const d = X.d, op = opOf(d), A = d.pets[X.uid], D = d.pets[op], sk = st.action.skill;
+  const r = dmgOf(A, D, sk, st.ok, st.crit, X.combo);
+  const ev = {e:"atk", a:X.uid, t:op, s:sk.name, k:r.k, m:r.m, ok:!!st.ok, crit:!!st.crit, dmg:r.dmg, c:X.combo, ts:now()};
+  const {F, db} = X.fb, id = X.mid;
+  try{
+    await F.runTransaction(db, async tx => {
+      const s = await tx.get(ref(id)); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "live" || d.turn !== X.uid) throw new Error("turn");
+      const hp = Object.assign({}, d.hp); hp[op] = Math.max(0, hp[op] - ev.dmg);
+      const round = (d.round || 0) + 1; let state = "live", winner = "";
+      if(hp[op] <= 0){ state = "done"; winner = X.uid; }
+      else if(round >= (d.moves.max || PVP_TURNS)){ state = "done"; const a = hp[X.uid] / d.pets[X.uid].max, b = hp[op] / d.pets[op].max; winner = Math.abs(a - b) < 0.005 ? "draw" : a > b ? X.uid : op; }
+      tx.update(ref(id), {hp, log:(d.log || []).concat([ev]).slice(-40), round, turn:op, state, winner, updatedAt:now()});
+    });
+  }catch(e){ toast("連線不穩，這一招沒送出，請再試一次"); render(); }
+}
+
+/* ---- 合體討伐：考試大魔王（2～4 人、可以跨家庭）---- */
+const phaseOf = r => r > 2 / 3 ? 1 : r > 1 / 3 ? 2 : 3;
+const PHASE = {1:{n:"第一階段", e:"👾", t:"每回合攻擊一隻寵物"}, 2:{n:"第二階段・怒氣", e:"🔥", t:"攻擊變強 ×1.25"}, 3:{n:"最終型態", e:"🌀", t:"每回合攻擊全隊"}};
+async function raidCreate(){
+  const g = myKid(); if(!g || !canBattle(g)){ toast("寵物要長到「少年」（成長值 15）才能討伐"); return; }
+  if(!await init()) return; const {F} = X.fb;
+  let code = null;
+  for(let i = 0; i < 8 && !code; i++){ const c = String(1000 + Math.floor(Math.random() * 9000)); const s = await F.getDoc(ref("AR-" + c)).catch(() => null);
+    if(!s || !s.exists() || s.data().state === "done" || now() - (s.data().updatedAt || 0) > 30 * 60000) code = c; }
+  if(!code){ toast("房間號碼滿了，再按一次"); return; }
+  const t = now();
+  try{ await F.setDoc(ref("AR-" + code), {state:"wait", createdBy:X.uid, createdAt:t, updatedAt:t, moves:{mode:"xraid", host:X.uid, code, bid:twDate() + "-r" + randCode(6)},
+    pets:{[X.uid]:Object.assign(pack(g), {dmg:0, hits:0, miss:0, cheer:0, j:t})}, hp:{}, turn:"", round:0, log:[], winner:"", v:91}); }catch(e){ toast("開房間失敗，請確認網路"); return; }
+  X.lobbyKey = ""; watch("AR-" + code, "xraid"); openOv();
+}
+async function raidJoin(code){
+  code = String(code || "").replace(/\D/g, "").slice(0, 4); if(code.length !== 4){ toast("房間號碼是 4 位數字"); return; }
+  const g = myKid(); if(!g || !canBattle(g)){ toast("寵物要長到「少年」才能討伐"); return; }
+  if(!await init()) return; const {F, db} = X.fb;
+  if(X.mid) await leaveMatch();
+  try{
+    await F.runTransaction(db, async tx => {
+      const s = await tx.get(ref("AR-" + code)); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "wait") throw new Error("gone");
+      if(d.pets[X.uid]) return;
+      if(Object.keys(d.pets).length >= 4) throw new Error("full");
+      tx.update(ref("AR-" + code), {[`pets.${X.uid}`]:Object.assign(pack(g), {dmg:0, hits:0, miss:0, cheer:0, j:now()}), updatedAt:now()});
+    });
+    watch("AR-" + code, "xraid"); openOv();
+  }catch(e){ toast(e && e.message === "full" ? "房間滿了（最多 4 人）" : "找不到這個房間，或已經開打了"); }
+}
+async function raidStart(){
+  const {F, db} = X.fb, id = X.mid;
+  try{
+    await F.runTransaction(db, async tx => {
+      const s = await tx.get(ref(id)); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "wait" || d.moves.host !== X.uid) throw new Error("no");
+      const ks = Object.keys(d.pets); if(ks.length < 2) throw new Error("few");
+      const us = ks.map(k => d.pets[k]), avg = f => us.reduce((a, u) => a + f(u), 0) / us.length;
+      const def = Math.round(avg(u => u.def)), mx = avg(u => u.max);
+      const max = Math.max(80, Math.round(us.reduce((a, u) => a + hitBase(u.atk, def), 0) * 8));
+      const atk = Math.max(4, Math.round((mx / 4.5) / (2.2 * 50 / (50 + def))));
+      const hp = {boss:max}; ks.forEach(k => hp[k] = d.pets[k].max);
+      tx.update(ref(id), {state:"live", hp, round:0, log:[{e:"start", ts:now()}], updatedAt:now(),
+        moves:Object.assign({}, d.moves, {boss:{name:"考試大魔王", max, atk, def, attr:ATTR_ORDER[0]}, acts:0, bossN:0, phase:1, lastAct:now(), t0:now()})});
+    });
+  }catch(e){ toast(e && e.message === "few" ? "至少要 2 個人才能開始討伐" : "開始失敗，請再試一次"); }
+}
+function bossAttack(mv, hp, pets, log){
+  const B = mv.boss; mv.bossN = (mv.bossN || 0) + 1; B.attr = ATTR_ORDER[mv.bossN % 5];
+  const alive = Object.keys(pets).filter(k => hp[k] > 0); if(!alive.length) return;
+  const hit = (k, f) => { const u = pets[k], m = typeMult(B.attr, u.attr); const dmg = Math.max(1, Math.round(hitBase(B.atk, u.def) * f * m * (0.9 + Math.random() * 0.2))); hp[k] = Math.max(0, hp[k] - dmg); return dmg; };
+  if(mv.phase === 3){ const dd = {}; alive.forEach(k => dd[k] = hit(k, 0.6)); log.push({e:"boss", aoe:true, k:B.attr, d:dd, ts:now()}); }
+  else { const t = alive.sort((a, b) => hp[b] / pets[b].max - hp[a] / pets[a].max)[0];   // 公平：打血最多的那隻，不會一直欺負答比較慢的人
+    log.push({e:"boss", t, k:B.attr, dmg:hit(t, mv.phase === 2 ? 1.25 : 1), ts:now()}); }
+}
+function endCheck(mv, hp, pets, log){
+  if(hp.boss <= 0){ log.push({e:"win", ts:now()}); return "A"; }
+  if(Object.keys(pets).every(k => hp[k] <= 0)){ log.push({e:"lose", ts:now()}); return "lost"; }
+  if((mv.bossN || 0) >= RAID_MAX_BOSS){ log.push({e:"flee", ts:now()}); return "lost"; }
+  return "";
+}
+async function fireRaid(st){
+  const {F, db} = X.fb, id = X.mid, combo = X.combo;
+  try{
+    await F.runTransaction(db, async tx => {
+      const s = await tx.get(ref(id)); const d = s.exists() ? s.data() : null;
+      if(!d || d.state !== "live") throw new Error("over");
+      const hp = Object.assign({}, d.hp), pets = d.pets, me = pets[X.uid]; if(!me) throw new Error("over");
+      if(hp[X.uid] <= 0) throw new Error("ko");
+      const mv = JSON.parse(JSON.stringify(d.moves)), log = (d.log || []).slice(), P = Object.assign({}, me), B = mv.boss;
+      if(st.action.type === "cheer"){
+        if(st.ok){ const t = Object.keys(pets).sort((a, b) => hp[a] / pets[a].max - hp[b] / pets[b].max)[0]; const v = Math.round(pets[t].max * 0.3);
+          hp[t] = Math.min(pets[t].max, hp[t] + v); P.cheer = (P.cheer || 0) + 1; log.push({e:"cheer", a:X.uid, t, v, ok:true, ts:now()}); }
+        else { P.miss = (P.miss || 0) + 1; log.push({e:"cheer", a:X.uid, ok:false, ts:now()}); }
+      }else{
+        const r = dmgOf(me, {def:B.def, attr:B.attr}, st.action.skill, st.ok, st.crit, combo);
+        if(st.ok){ hp.boss = Math.max(0, hp.boss - r.dmg); P.dmg = (P.dmg || 0) + r.dmg; P.hits = (P.hits || 0) + 1; if(st.crit) P.crit = (P.crit || 0) + 1; }
+        else P.miss = (P.miss || 0) + 1;
+        log.push({e:"atk", a:X.uid, t:"boss", s:st.action.skill.name, k:r.k, m:r.m, ok:!!st.ok, crit:!!st.crit, dmg:r.dmg, c:combo, ts:now()});
+      }
+      P.combo = Math.max(P.combo || 0, combo);
+      mv.acts = (mv.acts || 0) + 1; mv.lastAct = now();
+      let winner = "";
+      if(hp.boss <= 0) winner = endCheck(mv, hp, pets, log);
+      else {
+        const ph = phaseOf(hp.boss / B.max); if(ph !== mv.phase){ mv.phase = ph; log.push({e:"phase", v:ph, ts:now()}); }
+        const alive = Object.keys(pets).filter(k => hp[k] > 0).length;
+        if(mv.acts >= alive){ bossAttack(mv, hp, pets, log); mv.acts = 0; winner = endCheck(mv, hp, pets, log); }   // 公平：大家都出手一次，大魔王才反擊（答得慢不吃虧）
+      }
+      tx.update(ref(id), {hp, [`pets.${X.uid}`]:P, moves:mv, log:log.slice(-40), state:winner ? "done" : "live", winner, round:(d.round || 0) + 1, updatedAt:now()});
+    });
+  }catch(e){ if(e && e.message === "ko") toast("你的寵物倒下了，等隊友幫你打氣！"); else if(!(e && e.message === "over")) toast("連線不穩，這一招沒送出，請再試一次"); render(); }
+}
+async function raidIdle(){   // 太久沒人出手（30 秒）：大魔王自己反擊一次（房主負責，房主不在就由其他人接手）
+  const d = X.d; if(!d || d.state !== "live" || !d.moves) return;
+  const idle = now() - (d.moves.lastAct || 0); if(idle < RAID_FALLBACK_MS || (d.moves.host !== X.uid && idle < RAID_FALLBACK_MS + 10000)) return;
+  const {F, db} = X.fb, id = X.mid;
+  try{ await F.runTransaction(db, async tx => {
+    const s = await tx.get(ref(id)); const d = s.exists() ? s.data() : null; if(!d || d.state !== "live" || now() - (d.moves.lastAct || 0) < RAID_FALLBACK_MS) return;
+    const hp = Object.assign({}, d.hp), mv = JSON.parse(JSON.stringify(d.moves)), log = (d.log || []).slice();
+    bossAttack(mv, hp, d.pets, log); mv.acts = 0; mv.lastAct = now(); const winner = endCheck(mv, hp, d.pets, log);
+    tx.update(ref(id), {hp, moves:mv, log:log.slice(-40), state:winner ? "done" : "live", winner, updatedAt:now()});
+  }); }catch(e){}
+}
+function tick(){
+  if(X.kind === "xraid") raidIdle();
+  if(X.open && X.mid && X.d && X.d.state === "live" && !X.q){ const w = $x("arx-wait"); if(w) renderAct(); }
+}
+
+/* ---- 作答（和原本對戰同一套：先選信心、答對才打中、答錯看解說並進「該複習」）---- */
+function ask(action){
+  const g = myKid(); const card = action.skill && action.skill.card;
+  let pool0 = (card ? [card] : CARDS.map(c => c.id)).flatMap(cid => cardQs(cid, g).map(q => [cid, q]));
+  if(!pool0.length) pool0 = CARDS.map(c => c.id).flatMap(cid => cardQs(cid, g).map(q => [cid, q]));
+  if(!pool0.length){ toast("這一關還沒有題目"); return; }
+  let pool = pool0.filter(([c, q]) => !X.asked.includes(q.id)); if(!pool.length) pool = pool0;
+  const due = pool.filter(([c, q]) => { const r = S.cards[c] && isObj(S.cards[c].mc) && S.cards[c].mc[q.id]; return r && r.wrongPending; });
+  const src = due.length && Math.random() < .5 ? due : pool;
+  const [cid, q] = src[Math.floor(Math.random() * src.length)];
+  X.asked.push(q.id);
+  X.q = {action, cid, q, order:shufN(q.o.length), conf:0, t0:performance.now(), picked:null};
+  renderAct();
+}
+function pick(i){
+  const st = X.q; if(!st || st.picked !== null) return; if(!st.conf){ toast("👉 先選信心"); return; }
+  st.picked = i; const sec = secret(st.q), ok = i === sec.c, ms = performance.now() - st.t0;
+  st.ok = ok; st.crit = ok && (ms <= CRIT_MS || st.conf === 3);
+  battleMc(st.cid, st.q, ok, st.conf); persist();
+  if(!ok) X.missed.push([st.cid, st.q.id]);
+  X.combo = ok ? X.combo + 1 : 0;
+  renderAct();
+  if(ok) setTimeout(fire, still ? 200 : 900);
+}
+function fire(){ const st = X.q; if(!st || st.fired) return; st.fired = true; X.q = null;
+  const box = $x("arx-act"); if(box) box.innerHTML = `<div class="box">${st.ok ? (st.action.type === "cheer" ? "💗 加油！幫隊友打氣！" : "⚔️ " + esc(st.action.skill.name) + " 出擊！") : "💨 這一招沒成功…"}</div>`;
+  if(X.kind === "xpvp") firePvp(st); else fireRaid(st); }
+
+/* ---- 結果與獎勵（寫進自己孩子的存檔；輸了不扣任何東西）---- */
+function statsOf(d){ let hits = 0, miss = 0, crit = 0, combo = 0, run = 0;
+  for(const e of d.log || []){ if(e.a !== X.uid || (e.e !== "atk" && e.e !== "cheer")) continue; if(e.ok){ hits++; run++; combo = Math.max(combo, run); if(e.crit) crit++; } else { miss++; run = 0; } }
+  return {hits, miss, crit, combo}; }
+function recordMine(d){
+  const g = myKid(); if(!g || !d.pets || !d.pets[X.uid]) return null;
+  const mode = X.kind, bid = d.moves.bid; let r, foe;
+  if(mode === "xpvp"){ if(d.winner === "cancel" || d.winner === "x") return {r:"x"}; r = d.winner === "draw" ? "d" : d.winner === X.uid ? "w" : "l"; const o = d.pets[opOf(d)] || {}; foe = "xpvp-" + (o.fid || ""); }
+  else { if(d.winner === "x") return {r:"x"}; r = d.winner === "A" ? "w" : "l"; foe = ["xraid", Object.keys(d.pets).length, X.startCond || "ok", (d.pets[X.uid].cheer || 0)].join("-"); }
+  const b = btRec(g); if(b.log[bid] && parseLog(bid, b.log[bid]).r !== "p") return null;
+  const t = twDate(), L = logList(g).filter(e => e.d === t && e.id !== bid), s = statsOf(d);
+  let rw = "-";
+  if(r === "w" && L.filter(e => e.m === mode && e.rw === "cookie").length < (mode === "xpvp" ? XPVP_REWARD : XRAID_REWARD)) rw = "cookie";
+  if((r === "l" || r === "d") && L.filter(e => e.rw === "candy").length < REWARD_CAP.candy) rw = "candy";
+  const before = badgeSet(g);
+  b.log[bid] = [t, mode, r, foe, s.crit, s.miss, s.combo, rw, s.hits].join("|");
+  const pt = S.pets[g]; pt.happiness = Math.min(100, (pt.happiness || 0) + (r === "w" ? 10 : 6)); markPlayed(null);
+  const after = badgeSet(g), fresh = BADGES.filter(x => after.has(x.id) && !before.has(x.id));
+  persist();
+  return {r, rw, s, fresh, missed:X.missed.slice()};
+}
+
+/* ---- 畫面 ---- */
+function openOv(){
+  let ov = $x("arx-ov");
+  if(!ov){ ov = document.createElement("div"); ov.id = "arx-ov"; ov.className = "arx-ov"; ov.innerHTML = `<div class="arx-card"><div id="arx-top"></div><div id="arx-act"></div></div>`; document.body.appendChild(ov); }
+  ov.classList.add("on"); document.documentElement.classList.add("arx-lock"); X.open = true; render();
+  if(!X.unsubL) startPresence();
+}
+function closeOv(){ const ov = $x("arx-ov"); if(ov) ov.classList.remove("on"); document.documentElement.classList.remove("arx-lock"); X.open = false; menu(); }
+function petCanvas(attrs){ return `<canvas class="arx-pet" ${attrs}></canvas>`; }
+function drawPets(root){
+  (root || document).querySelectorAll("canvas[data-xsp]").forEach(c => { try{ drawFighter(c, {sp:c.dataset.xsp, stage:+c.dataset.xst || 2, acc:c.dataset.xacc || null}, "idle", c.dataset.mirror === "1"); }catch(e){} });
+  (root || document).querySelectorAll("canvas[data-xu]").forEach(c => { const u = c.dataset.xu === "boss" ? bossUnit() : (X.d && X.d.pets[c.dataset.xu]); if(!u) return;
+    const hp = X.d.hp[c.dataset.xu]; try{ drawFighter(c, u, hp <= 0 ? "sleep" : hp / (u.max || 1) < .3 ? "sad" : "idle", c.dataset.mirror === "1"); }catch(e){} });
+}
+function bossUnit(){ const B = X.d.moves.boss || {}; return {mon:RAID_ID, stage:3, acc:"#FFD23F", attr:B.attr || "thunder", max:B.max}; }
+function hpBar(hp, max){ const r = Math.max(0, hp / (max || 1)); return `<div class="hpbar"><i style="width:${r * 100}%;background:${r < .3 ? "#FF4B55" : r < .6 ? "#FFD23F" : "#3DDC97"}"></i></div><div class="hpn">${Math.max(0, Math.round(hp))} / ${max}</div>`; }
+function render(){ if(!X.open) return; renderTop(); if(!X.q) renderAct(); }
+function renderTop(){
+  const top = $x("arx-top"); if(!top) return; const d = X.d;
+  const head = (t) => `<div class="arx-head"><h2>${t}</h2><button class="btn ghost b-gray small" data-xclose="1">${X.mid && d && d.state === "live" ? "⬇️ 縮小" : "✕ 關閉"}</button></div>`;
+  if(!X.mid || !d){ const ci = $x("arxCode"), cv = ci ? ci.value : "", foc = ci && document.activeElement === ci;
+    top.innerHTML = head("🌐 跨家庭連線") + lobbyTopHTML(); drawPets(top);
+    const ni = $x("arxCode"); if(ni && cv){ ni.value = cv; } if(ni && foc) ni.focus(); return; }
+  if(X.kind === "xpvp"){
+    const op = opOf(d), me = d.pets[X.uid], o = op && d.pets[op];
+    const f = (k, u, mirror) => `<div class="fighter" data-xf="${k}"><div class="fname">${who(u)}・${esc(u.name)} ${attrTag(u.attr)} ${condTag(u.cond)}</div>${hpBar(d.hp[k] ?? u.max, u.max)}<div class="fcv">${petCanvas(`data-xu="${k}" data-mirror="${mirror ? 1 : 0}"`)}</div></div>`;
+    top.innerHTML = head("🌐 跨家友誼賽") + `<div class="arena arx-arena"><div class="atop"><b>${d.state === "wait" ? "等對方接受…" : d.state === "live" ? `第 ${Math.min((d.round || 0) + 1, d.moves.max || PVP_TURNS)} / ${d.moves.max || PVP_TURNS} 招・輪到 ${d.turn === X.uid ? "你" : esc((o || {}).n || "對手")}` : "結束"}</b></div>
+      <div class="fighters"><div class="side">${f(X.uid, me, false)}</div><div class="vs">VS</div><div class="side">${o ? f(op, o, true) : `<div class="fighter"><div class="fname">${esc(((X.lobby || {}).pets || {})[d.moves.to] ? who(X.lobby.pets[d.moves.to]) : "對手")}</div><p>⏳</p></div>`}</div></div>
+      <div class="arx-feed">${feedHTML()}</div></div>`;
+    drawPets(top); return;
+  }
+  // 討伐
+  const ks = Object.keys(d.pets || {}).sort((a, b) => (d.pets[a].j || 0) - (d.pets[b].j || 0));
+  if(d.state === "wait"){
+    top.innerHTML = head("🛡️ 合體討伐・等隊友") + `<div class="box"><p>房間號碼（告訴另一家的小朋友，或請他在大廳按「加入」）：</p><div class="arx-code">${esc(d.moves.code)}</div>
+      <div class="arx-team">${ks.map(k => { const u = d.pets[k]; return `<div class="arx-mate ${k === X.uid ? "me" : ""}">${petCanvas(`data-xu="${k}"`)}<div>${who(u)}${k === d.moves.host ? " 👑" : ""}${k === X.uid ? "（你）" : ""}<br><small>${esc(u.name)} Lv.${u.lv} ${attrTag(u.attr)} ${condTag(u.cond)}</small></div></div>`; }).join("")}</div>
+      <p class="note">${ks.length}/4 人。2～4 人就能開始。每個人在自己的平板答題替寵物出招，大家一起把大魔王的體力打光！</p></div>`;
+    drawPets(top); return;
+  }
+  const B = d.moves.boss || {}, ph = PHASE[d.moves.phase || 1];
+  top.innerHTML = head("🛡️ 合體討伐：考試大魔王") + `<div class="arena arx-arena arx-raid">
+    <div class="atop"><b>${ph.e} ${ph.n}</b><span>${ph.t}・大魔王反擊 ${d.moves.bossN || 0}/${RAID_MAX_BOSS} 次</span></div>
+    <div class="arx-boss" data-xf="boss"><div class="fname">👾 ${esc(B.name || "考試大魔王")} ${attrTag(B.attr)}</div>${hpBar(d.hp.boss, B.max)}<div class="fcv">${petCanvas(`data-xu="boss" data-mirror="1"`)}</div></div>
+    <div class="arx-team">${ks.map(k => { const u = d.pets[k]; return `<div class="arx-mate ${k === X.uid ? "me" : ""} ${d.hp[k] <= 0 ? "ko" : ""}" data-xf="${k}">${petCanvas(`data-xu="${k}"`)}<div class="arx-mi">${who(u)}${k === X.uid ? "（你）" : ""} ${condTag(u.cond)}${hpBar(d.hp[k], u.max)}<small>⚔️ ${u.dmg || 0}　💗 ${u.cheer || 0}</small></div></div>`; }).join("")}</div>
+    <div class="arx-feed">${feedHTML()}</div></div>`;
+  drawPets(top);
+}
+function nameOf(k){ if(k === "boss") return "大魔王"; const u = X.d && X.d.pets[k]; return u ? (k === X.uid ? "你" : u.n) : "？"; }
+function feedHTML(){
+  return X.feed.slice(-4).map(e => {
+    if(e.e === "atk") return `<div>${esc(nameOf(e.a))}：${e.ok ? `${attrOf(e.k).e} ${esc(e.s)} → ${esc(nameOf(e.t))} −${e.dmg}${e.crit ? "（會心一擊！）" : ""}${e.m > 1 ? "　效果絕佳！" : ""}` : "💨 沒打中"}</div>`;
+    if(e.e === "cheer") return `<div>${esc(nameOf(e.a))}：${e.ok ? `💗 幫 ${esc(nameOf(e.t))} 打氣，體力 +${e.v}` : "💨 打氣沒成功"}</div>`;
+    if(e.e === "boss") return e.aoe ? `<div>👾 大魔王 ${attrOf(e.k).e} 全體攻擊！${Object.entries(e.d || {}).map(([k, v]) => `${esc(nameOf(k))} −${v}`).join("、")}</div>` : `<div>👾 大魔王 ${attrOf(e.k).e} 攻擊 ${esc(nameOf(e.t))} −${e.dmg}</div>`;
+    if(e.e === "phase") return `<div><b>${PHASE[e.v].e} 大魔王進入${PHASE[e.v].n}！${PHASE[e.v].t}</b></div>`;
+    if(e.e === "start") return `<div><b>⚔️ 討伐開始！</b></div>`;
+    if(e.e === "win") return `<div><b>🎉 大家一起打倒了考試大魔王！</b></div>`;
+    if(e.e === "flee") return `<div><b>💨 大魔王逃走了…</b></div>`;
+    if(e.e === "lose") return `<div><b>😵 全隊都倒下了…</b></div>`;
+    return ""; }).join("");
+}
+function fx(evs){
+  for(const e of evs){ const tg = e.e === "atk" ? e.t : e.e === "cheer" ? e.t : e.e === "boss" ? e.t : null;
+    const el = tg && document.querySelector(`#arx-top [data-xf="${tg}"]`);
+    if(el && (e.dmg || e.v)){ el.classList.remove("hit"); void el.offsetWidth; el.classList.add("hit"); const f = document.createElement("div"); f.className = "arx-float" + (e.e === "cheer" ? " heal" : ""); f.textContent = e.e === "cheer" ? "+" + e.v : "−" + e.dmg; el.appendChild(f); setTimeout(() => f.remove(), 1300); }
+  }
+}
+function lobbyTopHTML(){
+  const g = myKid();
+  if(!g) return `<div class="box">先到「🎮 遊戲」領養寵物，就能和別家的小朋友連線！</div>`;
+  const pt = S.pets[g], s = petStats(g), i = kidInfo(g), k = condKey(g), ks = myKids(), u = unitOf(g);
+  const on = online(), raids = Object.entries((X.lobby || {}).moves || {}).filter(([c, r]) => r && r.st === "wait" && now() - (r.t || 0) < PRUNE_MS);
+  const left = XPVP_PER_DAY - todayN("xpvp", g), canB = canBattle(g);
+  return `<div class="box arx-me">${petCanvas(`data-xsp="${esc(pt.species)}" data-xst="${s.stage}" data-xacc="${esc(u.acc || "")}"`)}
+      <div><b>${FAMC.emo} ${esc(FAMC.name)}・${i.ke}${esc(i.gl)} ${esc(i.n)}</b><br>🐾 ${esc(petLabel(g))}（${esc(petStageName(pt))}）Lv.${s.lv} ${attrTag(s.attr)}<br>
+      寵物狀態：${condTag(k)} <small>${esc(COND[k].tip)}</small>
+      ${k !== "great" ? `<br><button class="btn b-mint small" data-xcare="1">🍙 先去照顧寵物</button>` : ""}
+      ${ks.length > 1 ? `<div class="row">${ks.map(x => `<button class="btn small ${x === g ? "b-purple" : "ghost b-gray"}" data-xkid="${x}">${esc(kidInfo(x).n)}</button>`).join("")}</div>` : ""}
+      ${canB ? "" : `<p class="hint">🔒 寵物長到「少年」（成長值 15）才能對戰和討伐，現在先看看誰在線上吧！</p>`}
+      <small>${X.fb ? "🟢 已連上" : "⏳ 連線中…"}　今天跨家友誼賽還可以打 ${Math.max(0, left)} 場</small></div></div>
+    <h3>👀 現在在線上（${on.length} 人）</h3>
+    <div class="arx-list">${on.length ? on.map(([uid, e]) => `<div class="arx-row">${petCanvas(`data-xsp="${esc(e.sp)}" data-xst="${e.st}" data-xacc="${esc(e.acc || "")}"`)}
+        <div class="arx-ri"><b>${who(e)}</b><br><small>🐾 ${esc(e.pn)} Lv.${e.lv} ${attrTag(e.at)} ${condTag(e.cond)}${e.busy ? "　⚔️ 對戰中" : ""}</small></div>
+        <button class="btn b-red small" data-xinv="${esc(uid)}" ${canB && e.ok && !e.busy && left > 0 ? "" : "disabled"}>⚔️ 邀請對戰</button></div>`).join("") : `<p class="note">現在沒有其他人在線上。請另一家的小朋友打開冒險隊，幾秒後就會出現在這裡。</p>`}</div>
+    <h3>🛡️ 合體討伐：考試大魔王（2～4 人，可以跨家庭）</h3>
+    <div class="row"><button class="btn b-blue" data-xraidnew="1" ${canB ? "" : "disabled"}>🛡️ 開一個討伐房間</button>
+      <input id="arxCode" inputmode="numeric" maxlength="4" placeholder="房號 4 位數" class="arx-in"><button class="btn b-mint" data-xraidcode="1" ${canB ? "" : "disabled"}>加入</button></div>
+    <div class="arx-list">${raids.map(([c, r]) => `<div class="arx-row"><div class="arx-ri"><b>#${esc(c)}</b>　${esc(r.fe || "")} ${esc(r.fn || "")}・${esc(r.n || "")} 開的　${r.c || 1}/4 人</div><button class="btn b-yellow small" data-xraidjoin="${esc(c)}" ${canB ? "" : "disabled"}>加入</button></div>`).join("")}</div>
+    <p class="note">⚔️ 跨家友誼賽：每次出招都答自己年級的題目，答對才打得中；兩隻寵物的體力取平均，比較公平。<br>🛡️ 合體討伐：每個人在自己的平板答題出招；大家都出手一次，大魔王才反擊。答對「💗 打氣」可以幫最需要的隊友回血、把倒下的隊友救起來。<br>💗 平常有餵食、陪玩、清便便，寵物「精神飽滿」，對戰時攻擊、防禦 +8%；太餓太累會變弱。</p>`;
+}
+function questionHTML(){
+  const st = X.q, q = st.q, c = CARDS.find(x => x.id === st.cid), g = myKid(), i = kidInfo(g);
+  const sec = st.picked !== null ? secret(q) : null;
+  const opts = st.order.map(n => { let cls = ""; if(sec){ if(n === sec.c) cls = "right"; else if(n === st.picked) cls = "wrong"; }
+    return `<button class="opt ${cls}" data-xpick="${n}" ${sec || !st.conf ? "disabled" : ""}>${cls === "right" ? "✅ " : cls === "wrong" ? "❌ " : ""}${esc(q.o[n])}</button>`; }).join("");
+  let fb = "";
+  if(sec){ const ok = st.picked === sec.c;
+    fb = ok ? `<div class="ans">🎯 答對了！${st.action.type === "cheer" ? "💗 打氣成功！" : esc(st.action.skill.name) + "出擊！"}${st.crit ? "（會心一擊！）" : ""}</div>`
+      : `<div class="ans">💨 沒成功…但沒關係，看懂就是賺到！<br>✅ 正確答案：<b>${esc(q.o[sec.c])}</b><br>📝 為什麼：${esc(sec.e)}${sec.w && sec.w[String(st.picked)] ? `<br>🔍 你選的那個：${esc(sec.w[String(st.picked)])}` : ""}</div>
+         <div class="row" style="margin-top:8px"><button class="btn b-blue" data-xgo="1">我看懂了 ➡️</button></div>`; }
+  const lbl = st.action.type === "cheer" ? "💗 打氣" : `${attrOf(st.action.skill.attr).e} ${esc(st.action.skill.name)}`;
+  return `<div class="kid ${g}"><span class="badge">${i.ke} ${esc(i.gl)}・${esc(i.n)}｜${lbl}｜${SUBJECTS[c.subject].emoji} ${esc(c.code)}</span>
+    ${sec ? "" : `<div class="tbar"><i id="arx-tbar"></i></div>`}
+    <p class="q">${esc(q.q)}</p>
+    <div class="conf">${st.conf ? "我的信心：" : "👉 先選信心："}${[1, 2, 3].map(n => `<button data-xconf="${n}" class="${st.conf === n ? "on" : ""}" ${sec ? "disabled" : ""}>${"⭐".repeat(n)}</button>`).join("")}</div>
+    <div class="opts">${opts}</div>${fb}</div>`;
+}
+function skillsHTML(targetAttr, extra){
+  const g = myKid(), sk = skillList(g).filter(x => x.unlocked);
+  return `<div class="skills">${sk.map(x => { const m = typeMult(x.attr, targetAttr);
+    return `<button class="btn ${m > 1 ? "b-yellow" : m < 1 ? "ghost b-gray" : "b-purple"} skbtn" data-xsk="${x.id}">${attrOf(x.attr).e} ${esc(x.name)}${m > 1 ? " <small>效果絕佳</small>" : m < 1 ? " <small>效果不好</small>" : ""}${x.pow > 1 ? " <small>💪強</small>" : ""}</button>`; }).join("")}${extra || ""}</div>`;
+}
+function resultHTML(d){
+  const res = X.results[X.mid] || {}, g = myKid();
+  let title;
+  if(X.kind === "xpvp") title = d.winner === "cancel" ? "🚪 邀請取消了" : d.winner === "x" ? "🚪 這場不算輸贏" : d.winner === "draw" ? "🤝 平手！兩個都很強！" : d.winner === X.uid ? "🏆 你贏了！" : `🌈 雖敗猶榮！${esc((d.pets[d.winner] || {}).n || "")} 贏了`;
+  else title = d.winner === "A" ? "🎉 大家一起打倒了考試大魔王！" : d.winner === "x" ? "🚪 討伐取消了" : "💪 這次沒打贏，下次再一起挑戰！";
+  const rw = res.rw === "cookie" ? "🍪 戰利餅乾 +1（放進背包）" : res.rw === "candy" ? "🍬 安慰糖 +1（放進背包）" : res.r && res.r !== "x" ? "今天這種獎勵拿完了，明天再來～" : "";
+  const team = X.kind === "xraid" && d.state === "done" ? `<table class="arx-tbl"><tr><th>隊員</th><th>⚔️ 傷害</th><th>🎯 命中</th><th>💗 打氣</th></tr>${Object.keys(d.pets).map(k => { const u = d.pets[k]; return `<tr><td>${who(u)}</td><td>${u.dmg || 0}</td><td>${u.hits || 0}</td><td>${u.cheer || 0}</td></tr>`; }).join("")}</table>` : "";
+  const cards = (res.missed || []).map(([cid, qid]) => { const q = findQ(cid, qid); if(!q) return ""; const sec = secret(q), c = CARDS.find(z => z.id === cid);
+    return `<div class="rcard"><b>📇 複習卡｜${SUBJECTS[c.subject].emoji} ${esc(c.code)}</b><p>${esc(q.q)}</p><p>✅ ${esc(q.o[sec.c])}</p><p class="note">📝 ${esc(sec.e)}</p></div>`; }).join("");
+  return `<div class="box result"><h2 style="margin-top:0">${title}</h2>${team}
+    ${res.s ? `<p>命中 ${res.s.hits}・會心 ${res.s.crit}・最高 ${res.s.combo} 連擊・失誤 ${res.s.miss}</p>` : ""}
+    ${rw ? `<p><b>${rw}</b>　${res.r === "w" ? "開心 +10" : res.r && res.r !== "x" ? "開心 +6" : ""}</p>` : ""}
+    ${res.r === "l" || res.r === "d" ? `<p class="note">輸了不會扣任何能力值、星星或成長值。</p>` : ""}
+    ${res.fresh && res.fresh.length ? `<p>🎖️ 新徽章：${res.fresh.map(b => `<span class="bdg on">${b.e} ${esc(b.n)}</span>`).join(" ")}</p>` : ""}
+    ${cards}<div class="row"><button class="btn b-purple big" data-xback="1">⬅️ 回到連線大廳</button></div></div>`;
+}
+function renderAct(){
+  const box = $x("arx-act"); if(!box || !X.open) return; const d = X.d;
+  if(X.q){ box.innerHTML = questionHTML(); const tb = $x("arx-tbar"); if(tb && X.q.picked === null){ const left = Math.max(0, CRIT_MS - (performance.now() - X.q.t0)); tb.style.transition = "none"; tb.style.width = (left / CRIT_MS * 100) + "%"; requestAnimationFrame(() => { tb.style.transition = `width ${left}ms linear`; tb.style.width = "0%"; }); } return; }
+  if(!X.mid || !d){ box.innerHTML = ""; return; }
+  if(d.state === "done"){ box.innerHTML = resultHTML(d); return; }
+  if(X.kind === "xpvp"){
+    if(d.state === "wait"){ box.innerHTML = `<div class="box">📡 已送出邀請，等對方在自己的平板按「接受」…（60 秒）<div class="row"><button class="btn ghost b-gray small" data-xleave="1">取消邀請</button></div></div>`; return; }
+    const op = opOf(d);
+    if(d.turn !== X.uid){ const idle = now() - (d.updatedAt || 0);
+      box.innerHTML = `<div class="box" id="arx-wait">⏳ 輪到 ${esc((d.pets[op] || {}).n || "對手")}（另一台平板）作答中…${idle > IDLE_MS ? `<div class="row"><button class="btn ghost b-gray small" data-xleave="1">🚪 對方很久沒動作，結束這場（不算輸贏）</button></div>` : ""}</div>`; return; }
+    box.innerHTML = `<div class="kid ${myKid()}"><span class="badge">輪到你！選一招（對手 ${attrTag(d.pets[op].attr)}）</span>${skillsHTML(d.pets[op].attr)}
+      <div class="row" style="margin-top:8px"><button class="btn ghost b-gray small" data-xleave="1">🏳️ 先離開（不算輸贏）</button></div></div>`; return;
+  }
+  if(d.state === "wait"){ const n = Object.keys(d.pets).length, host = d.moves.host === X.uid;
+    box.innerHTML = `<div class="row">${host ? `<button class="btn b-yellow big" data-xstart="1" ${n >= 2 ? "" : "disabled"}>▶️ 開始討伐（${n} 人）</button>` : `<div class="box">⏳ 等房主按「開始討伐」…</div>`}<button class="btn ghost b-gray" data-xleave="1">🚪 離開房間</button></div>`; return; }
+  if((d.hp[X.uid] || 0) <= 0){ box.innerHTML = `<div class="box" id="arx-wait">😵 你的寵物倒下了…等隊友答對「💗 打氣」把你救起來！</div>`; return; }
+  const B = d.moves.boss || {};
+  box.innerHTML = `<div class="kid ${myKid()}"><span class="badge">選一招打大魔王（現在是 ${attrTag(B.attr)}，${attrTag(Object.keys(BEATS).find(x => BEATS[x] === B.attr))} 效果絕佳）或幫隊友打氣</span>
+    ${skillsHTML(B.attr, `<button class="btn b-pink skbtn" data-xcheer="1">💗 幫隊友打氣（答對：最需要的隊友回血 30%）</button>`)}
+    <p class="note">大家都出手一次，大魔王才反擊；不用搶快，慢慢想。</p>
+    <div class="row"><button class="btn ghost b-gray small" data-xleave="1">🚪 離開（不算輸贏）</button></div></div>`;
+}
+/* 對戰分頁的入口 */
+function menu(){
+  const box = $x("arxBox"); if(!box) return; const n = online().length, g = myKid();
+  box.innerHTML = `<h3>🌐 跨家庭連線</h3><div class="box arx-entry"><p>和另一個家庭的小朋友連線：一對一友誼賽，或 2～4 人一起討伐考試大魔王。${X.fb ? `現在線上 <b>${n}</b> 人。` : ""}</p>
+    ${g ? `<p>寵物狀態：${condTag(condKey(g))} <small>${esc(COND[condKey(g)].tip)}</small></p>` : ""}
+    <div class="row"><button class="btn b-blue" data-xopen="1">🌐 打開連線大廳${X.mid && X.d && X.d.state !== "done" ? "（對戰中）" : ""}</button></div></div>`;
+}
+document.addEventListener("click", ev => {
+  const b = ev.target.closest("[data-xopen],[data-xclose],[data-xinv],[data-xacc],[data-xdec],[data-xsk],[data-xcheer],[data-xconf],[data-xpick],[data-xgo],[data-xleave],[data-xback],[data-xraidnew],[data-xraidjoin],[data-xraidcode],[data-xstart],[data-xkid],[data-xcare]");
+  if(!b || b.disabled) return; const ds = b.dataset;
+  if(ds.xopen) openOv();
+  else if(ds.xclose) closeOv();
+  else if(ds.xinv) invite(ds.xinv);
+  else if(ds.xacc) accept(ds.xacc);
+  else if(ds.xdec) decline(ds.xdec);
+  else if(ds.xsk){ const sk = skillList(myKid()).find(x => x.id === ds.xsk); if(sk) ask({type:"atk", skill:sk}); }
+  else if(ds.xcheer) ask({type:"cheer"});
+  else if(ds.xconf){ if(X.q && X.q.picked === null){ X.q.conf = Number(ds.xconf); renderAct(); } }
+  else if(ds.xpick) pick(Number(ds.xpick));
+  else if(ds.xgo) fire();
+  else if(ds.xleave){ if(X.d && X.d.state === "live" && !confirm("要離開嗎？這場不算輸贏，也不會扣任何東西。")) return; leaveMatch(); }
+  else if(ds.xback){ X.inv = null; unwatch(); beat(); render(); }
+  else if(ds.xraidnew) raidCreate();
+  else if(ds.xraidjoin) raidJoin(ds.xraidjoin);
+  else if(ds.xraidcode){ const i = $x("arxCode"); raidJoin(i ? i.value : ""); }
+  else if(ds.xstart) raidStart();
+  else if(ds.xkid){ try{ localStorage.setItem("shuangbao-arena-kid", ds.xkid); }catch(e){} beat(); render(); }
+  else if(ds.xcare){ closeOv(); const t = document.querySelector('.tab[data-p="game"]'); if(t) t.click(); }
+});
+window.ARX = {menu, open:openOv, close:closeOv, get X(){ return X; }, condKey, COND, invite, accept, raidCreate, raidJoin, raidStart, leaveMatch, ask, pick, fire, startPresence};
+if(myKid()) setTimeout(startPresence, 1500);
+})();
 </script>
 </body>
 </html>
